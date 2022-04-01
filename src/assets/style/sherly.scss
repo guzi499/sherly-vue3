@@ -1,0 +1,17 @@
+.sherly-page {
+  height: 100%;
+  width: 100%;
+}
+
+.sherly-warpper {
+  height: 100vh;
+  width: 100vw;
+  min-width: 1000px;
+  background: #f0f2f5;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  &-content {
+    display: flex;
+    flex-direction: column;
+  }
+}
