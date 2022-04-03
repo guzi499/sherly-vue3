@@ -8,9 +8,37 @@
  */
 import { createStore, createLogger } from "vuex";
 import user from "./modules/user";
+import Cookies from "js-cookie";
 
 const debug = process.env.NODE_ENV !== "production";
 export default createStore({
+  state() {
+    return {
+      /**全局路由元 title 信息 */
+      metaTitle: '',
+      routePath: ''
+    }
+  },
+  mutations: {
+    SETTITLE(state, data) {
+      state.metaTitle = data
+    },
+    SETROUTEPATH(state, data) {
+      state.routePath = data
+    }
+  },
+  actions: {
+    setTitle({commit}) {
+      const data = Cookies.get('metaTitle')
+      console.log(data);
+      commit('SETTITLE', data)
+    },
+    setRoutePath({commit}){ 
+      console.log();
+      const data = Cookies.get('routePath')
+      commit('SETROUTEPATH', data)
+    }
+  },
   modules: {
     user,
   },

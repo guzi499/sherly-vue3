@@ -8,11 +8,18 @@
  */
 import router from "./router";
 import { ElNotification } from "element-plus";
+import Cookies from "js-cookie";
+import store from "@/store";
 
 router.beforeEach((to, from, next) => {
   console.log(to, from);
   if (to.meta.title) {
     document.title = to.meta.title;
+    document.path = to.path;
+    Cookies.set('metaTitle', document.title)
+    Cookies.set('routePath', document.path)
+    store.dispatch('setTitle')
+    store.dispatch('setRoutePath')
   }
   if (to.matched.length === 0) {
     ElNotification({

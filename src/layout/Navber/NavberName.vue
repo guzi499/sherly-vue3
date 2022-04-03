@@ -20,12 +20,16 @@
           v-if="datas.isShow == 0"
           @click="handleSide"
         />
-        <div style="font-size: 1rem">{{ route.meta.title }}</div>
+        <div style="font-size: 1rem">{{ $store.state.metaTitle }}</div>
       </el-row>
     </div>
     <div class="header_right">
       <el-row>
-        <el-avatar :size="sizeList" :src="circleUrl" style="margin-right: 0.5rem"/>
+        <el-avatar
+          :size="sizeList"
+          :src="circleUrl"
+          style="margin-right: 0.5rem"
+        />
         <el-dropdown style="margin: auto 0">
           <span class="el-dropdown-link">
             个人中心
@@ -47,11 +51,8 @@
 </template>
 <script>
 import { reactive, toRefs } from "vue";
-import { useRoute } from "vue-router";
 export default {
   setup() {
-    /**获取路由xinxi */
-    const route = useRoute();
     /**控制头部按钮的切换 */
     const datas = reactive({
       isShow: 0,
@@ -59,6 +60,7 @@ export default {
     const handleSide = () => {
       datas.isShow == 0 ? (datas.isShow = 1) : (datas.isShow = 0);
     };
+
     /**头像 */
     const state = reactive({
       circleUrl:
@@ -66,7 +68,7 @@ export default {
       sizeList: "small",
     });
     const { circleUrl, sizeList } = toRefs(state);
-    return { route, datas, handleSide, circleUrl, sizeList };
+    return { datas, handleSide, circleUrl, sizeList };
   },
 };
 </script>

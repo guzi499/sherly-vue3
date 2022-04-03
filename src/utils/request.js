@@ -38,7 +38,7 @@ axiosLnstance.interceptors.request.use(
 axiosLnstance.interceptors.response.use(
   (response) => {
     // 对响应数据做点什么
-    if (response.status === 200 && response.data.code == "100000") {
+    if (response.status === 200 && response.data.code === "000000") {
       return response.data;
     } else {
       ElNotification({
