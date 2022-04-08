@@ -1,13 +1,13 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:26:42
- * @LastEditTime: 2022-04-02 00:18:35
+ * @LastEditTime: 2022-04-07 22:01:00
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
 -->
 <template>
-  <div class="TagsView-warpper">浏览记录导航栏</div>
+  <div class="TagsView-warpper"></div>
 </template>
 <script>
 export default {

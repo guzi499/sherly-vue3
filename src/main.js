@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-28 23:41:35
- * @LastEditTime: 2022-04-01 23:10:54
+ * @LastEditTime: 2022-04-07 23:55:15
  * @LastEditors: lihaoyu
  * @Description: 入口文件
  * @FilePath: /sherly-vue3/src/main.js
@@ -23,7 +23,6 @@ const app = createApp(App);
 app.use(store);
 
 app.use(ElementPlus);
-
 for (const name in ElIcons) {
   app.component(name, ElIcons[name]);
 }

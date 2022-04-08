@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-04-02 00:30:10
+ * @LastEditTime: 2022-04-07 23:05:47
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/pages/login/loginPage.vue
@@ -104,7 +104,7 @@ export default {
       getCookie();
     });
     const login = () => {
-      server.login(loginForm).then(() => {
+      server.login(loginForm).then((res) => {
         Cookies.set("phone", loginForm.phone, {
           expires: Config.passCookieExpires,
         });
@@ -114,6 +114,7 @@ export default {
         Cookies.set("tenantCode", loginForm.tenantCode, {
           expires: Config.passCookieExpires,
         });
+        localStorage.setItem("token", res.token);
         router.push({ path: "/home" });
       });
     };
