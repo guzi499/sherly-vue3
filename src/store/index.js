@@ -8,39 +8,13 @@
  */
 import { createStore, createLogger } from "vuex";
 import user from "./modules/user";
-import Cookies from "js-cookie";
+import tagViews from "./modules/tagViews";
 
 const debug = process.env.NODE_ENV !== "production";
 export default createStore({
-  state() {
-    return {
-      /**全局路由元 title 信息 */
-      metaTitle: '',
-      routePath: ''
-    }
-  },
-  mutations: {
-    SETTITLE(state, data) {
-      state.metaTitle = data
-    },
-    SETROUTEPATH(state, data) {
-      state.routePath = data
-    }
-  },
-  actions: {
-    setTitle({commit}) {
-      const data = Cookies.get('metaTitle')
-      console.log(data);
-      commit('SETTITLE', data)
-    },
-    setRoutePath({commit}){ 
-      console.log();
-      const data = Cookies.get('routePath')
-      commit('SETROUTEPATH', data)
-    }
-  },
   modules: {
     user,
+    tagViews
   },
   // 在严格模式下，无论何时发生了状态变更且不是由 mutation 函数引起的，将会抛出错误。这能保证所有的状态变更都能被调试工具跟踪到。
   strict: debug,

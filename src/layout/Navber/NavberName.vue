@@ -20,7 +20,7 @@
           v-if="datas.isShow == 0"
           @click="handleSide"
         />
-        <div style="font-size: 1rem">{{ $store.state.metaTitle }}</div>
+        <div style="font-size: 1rem">运营商名称</div>
       </el-row>
     </div>
     <div class="header_right">
