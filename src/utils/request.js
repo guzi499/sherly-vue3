@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-04-02 00:28:50
+ * @LastEditTime: 2022-04-07 23:18:18
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -20,6 +20,9 @@ axiosLnstance.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
     config.headers["Content-Type"] = "application/json";
+    if (localStorage.getItem("token")) {
+      config.headers["token"] = localStorage.getItem("token");
+    }
     return config;
   },
   (error) => {
@@ -39,7 +42,7 @@ axiosLnstance.interceptors.response.use(
   (response) => {
     // 对响应数据做点什么
     if (response.status === 200 && response.data.code === "000000") {
-      return response.data;
+      return response.data.data;
     } else {
       ElNotification({
         title: "警告",
