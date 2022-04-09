@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-04-09 12:04:42
+ * @LastEditTime: 2022-04-09 12:48:53
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -15,12 +15,6 @@ import server from "@/api/router";
 import Layout from "@/layout/layoutBox.vue";
 
 router.beforeEach((to, from, next) => {
-  //登录页面时不加载动态菜单
-  if (to.meta.href !== "/login") {
-    if (store.state.router.isUpdata) {
-      loadRouter();
-    }
-  }
   if (to.meta.title) {
     document.title = to.meta.title + " - " + Config.systemName;
     document.path = to.path;
@@ -29,23 +23,34 @@ router.beforeEach((to, from, next) => {
     store.dispatch("setTitle");
     store.dispatch("setRoutePath");
   }
-  if (to.matched.length === 0) {
-    ElNotification({
-      title: "警告",
-      message: "当前跳转页面不存在，请联系服务商。",
-      duration: 3000,
-      type: "error",
-    });
-    from.path ? next({ path: from.path }) : next("/");
+  //登录页面时不加载动态菜单
+  if (to.meta.href !== "/login") {
+    if (store.state.router.isUpdata) {
+      loadRouter(to, next);
+    } else {
+      next();
+    }
   } else {
     next();
   }
 });
 
-const loadRouter = () => {
-  server.getMenu().then((res) => {
+const loadRouter = (to, next) => {
+  return server.getMenu().then((res) => {
     const MenuList = res;
     addRoute(formatRouter(MenuList));
+    // 判断去跳转的路由是否注册
+    if (!router.getRoutes().find((i) => i.path === to.path)) {
+      ElNotification({
+        title: "警告",
+        message: "当前跳转页面不存在，请联系服务商。",
+        duration: 3000,
+        type: "error",
+      });
+      next("/login");
+    } else {
+      next({ ...to, replace: true });
+    }
     store.dispatch("router/loadMenus", false);
     store.dispatch("router/setMenuList", MenuList);
   });
@@ -83,7 +88,6 @@ const filterchildren = (children, currentMenu) => {
 const addRoute = (formatRouter) => {
   console.log(formatRouter);
   formatRouter.forEach((i) => {
-    console.log("i", i);
     router.addRoute(i);
   });
   console.log(router.getRoutes());
