@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-04-08 00:14:03
+ * @LastEditTime: 2022-04-09 11:59:57
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -9,89 +9,49 @@
 <template>
   <div class="sidebar-warpper">
     <Logo />
-    <el-tree :data="Tree" :props="defaultProps" @node-click="handleNodeClick">
-      <Item />
-    </el-tree>
+    <el-tree :data="Tree" :props="defaultProps" @node-click="handleNodeClick" />
   </div>
 </template>
 <script>
-import Item from "./components/SidebarItem.vue";
+// import Item from "./components/SidebarItem.vue";
 import Logo from "./components/LogoBox.vue";
+import { useStore } from "vuex";
 // import server from "@/api/router";
-import { onMounted } from "vue-demi";
+import { onMounted, watch, computed } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
     Logo,
-    Item,
+    // Item,
   },
   setup() {
     onMounted(() => {
       //
     });
-    const Tree = [
-      {
-        label: "Level one 1",
-        children: [
-          {
-            label: "Level two 1-1",
-            children: [
-              {
-                label: "Level three 1-1-1",
-              },
-            ],
-          },
-        ],
+
+    const Store = useStore();
+    console.log(Store.state.router.menuList);
+    const router = useRouter();
+    let Tree = computed(() => {
+      return Store.state.router.menuList;
+    });
+    watch(
+      Tree,
+      (newVal, oldVal) => {
+        console.log("newVal, oldVal", newVal, oldVal);
       },
-      // {
-      //   label: "Level one 2",
-      //   children: [
-      //     {
-      //       label: "Level two 2-1",
-      //       children: [
-      //         {
-      //           label: "Level three 2-1-1",
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       label: "Level two 2-2",
-      //       children: [
-      //         {
-      //           label: "Level three 2-2-1",
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
-      // {
-      //   label: "Level one 3",
-      //   children: [
-      //     {
-      //       label: "Level two 3-1",
-      //       children: [
-      //         {
-      //           label: "Level three 3-1-1",
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       label: "Level two 3-2",
-      //       children: [
-      //         {
-      //           label: "Level three 3-2-1",
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
-    ];
+      { immediate: true, deep: true }
+    );
     const defaultProps = {
       children: "children",
-      label: "label",
+      label: "menuName",
     };
     const handleNodeClick = (data) => {
-      console.log(data);
+      if (data.link) {
+        console.log(data.link);
+        router.push({ path: data.link });
+      }
     };
 
     return {
@@ -110,7 +70,7 @@ export default {
   width: 200px;
   & > .el-tree {
     background: #334154;
-    color: #fff;
+    color: #000;
     .el-tree-node__content:hover {
       background: #33415495;
     }

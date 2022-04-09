@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-30 23:33:28
- * @LastEditTime: 2022-04-07 22:50:53
+ * @LastEditTime: 2022-04-09 12:03:26
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/router.js
@@ -15,12 +15,12 @@ const routes = [
     path: "/",
     redirect: "/login",
     component: Login,
-    meta: { title: "登陆" },
+    meta: { title: "登录" },
   },
   {
     path: "/login",
     component: Login,
-    meta: { title: "登陆" },
+    meta: { title: "登录" },
   },
   {
     path: "/home",
