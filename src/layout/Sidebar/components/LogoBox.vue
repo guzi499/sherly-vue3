@@ -12,19 +12,12 @@
       style="width: 32px; height: 32px"
       src="../../../assets/sherlyLogo.jpg"
     />
-    <text>{{ config.systemName }}</text>
   </div>
 </template>
 
 <script>
-import Config from "@/config";
-import { ref } from "vue";
 export default {
   setup() {
-    const config = ref(Config);
-    return {
-      config,
-    };
   },
 };
 </script>

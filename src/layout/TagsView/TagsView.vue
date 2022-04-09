@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="TagsView-warpper">
-    <el-dropdown trigger="contextmenu" @visible-change="handleVisible2">
+    <el-dropdown trigger="contextmenu" @visible-change="visibleChange">
       <el-scrollbar class="scrollbar_inner">
           <p
               v-for="item in $store.state.tagViews.metaTitle"

@@ -20,7 +20,7 @@
           v-if="datas.isShow == 0"
           @click="handleSide"
         />
-        <div style="font-size: 1rem">运营商名称</div>
+        <div style="font-size: 1rem">{{ config.systemName }}</div>
       </el-row>
     </div>
     <div class="header_right">
@@ -50,9 +50,11 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, ref } from "vue";
+import Config from "@/config";
 export default {
   setup() {
+    const config = ref(Config)
     /**控制头部按钮的切换 */
     const datas = reactive({
       isShow: 0,
@@ -68,7 +70,7 @@ export default {
       sizeList: "small",
     });
     const { circleUrl, sizeList } = toRefs(state);
-    return { datas, handleSide, circleUrl, sizeList };
+    return { datas, handleSide, circleUrl, sizeList, config };
   },
 };
 </script>
