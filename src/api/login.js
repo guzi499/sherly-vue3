@@ -1,9 +1,9 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-30 00:42:42
- * @LastEditTime: 2022-04-01 22:01:26
+ * @LastEditTime: 2022-04-09 12:03:28
  * @LastEditors: lihaoyu
- * @Description: 登陆页api
+ * @Description: 登录页api
  * @FilePath: /sherly-vue3/src/api/login.js
  */
 

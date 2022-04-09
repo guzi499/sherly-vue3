@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-04-07 23:05:47
+ * @LastEditTime: 2022-04-09 12:02:50
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/pages/login/loginPage.vue
@@ -14,7 +14,7 @@
       </div>
       <div class="login-layout-dividing" />
       <div class="login-layout-right">
-        <div class="login-layout-right-title">登陆</div>
+        <div class="login-layout-right-title">登录</div>
         <div class="login-layout-right-formbox">
           <el-form :model="loginForm">
             <el-form-item>
@@ -77,7 +77,7 @@
           </el-form>
         </div>
         <el-button class="login-layout-right-button" @click="login()"
-          >登陆</el-button
+          >登录</el-button
         >
       </div>
     </div>
@@ -163,7 +163,6 @@ export default {
     width: 1px;
     background: #ddd;
     margin: 12px;
-    // box-shadow: 0px 0px 8px 1px rgba(75, 75, 75, 0.69);
   }
   &-right {
     display: flex;
