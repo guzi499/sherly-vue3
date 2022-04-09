@@ -10,15 +10,11 @@
   <div class="TagsView-warpper">
     <el-dropdown trigger="contextmenu" @visible-change="visibleChange">
       <el-scrollbar class="scrollbar_inner">
-          <p
-              v-for="item in $store.state.tagViews.metaTitle"
-              :key="item"
-              class="scrollbar-demo-item"
-            >
-              <i>{{ item.title }}</i>
-              <i class="close" @click="handleCloseRoute">x</i>
-            </p>
-        </el-scrollbar>
+        <p class="scrollbar-demo-item">
+          <i>首页</i>
+          <i class="close" @click="handleCloseRoute">x</i>
+        </p>
+      </el-scrollbar>
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>刷新页面</el-dropdown-item>
@@ -37,9 +33,9 @@ export default {
   setup() {
     // 点击关闭存储的路由
     const handleCloseRoute = () => {
-      console.log('关闭');
-    }
-    return {handleCloseRoute}
+      console.log("关闭");
+    };
+    return { handleCloseRoute };
   },
 };
 </script>

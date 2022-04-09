@@ -45,6 +45,7 @@ router.beforeEach((to, from, next) => {
 const loadRouter = () => {
   server.getMenu().then((res) => {
     const MenuList = res;
+    console.log('获取菜单信息', MenuList);
     addRoute(formatRouter(MenuList));
     store.dispatch("router/loadMenus", false);
     store.dispatch("router/setMenuList", MenuList);
