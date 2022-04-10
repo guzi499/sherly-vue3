@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-04-09 12:48:53
+ * @LastEditTime: 2022-04-10 14:49:51
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
     store.dispatch("setRoutePath");
   }
   //登录页面时不加载动态菜单
-  if (to.meta.href !== "/login") {
+  if (to.href !== "/login") {
     if (store.state.router.isUpdata) {
       loadRouter(to, next);
     } else {
