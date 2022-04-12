@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="TagsView-warpper">
-    <el-dropdown trigger="contextmenu" @visible-change="visibleChange">
+    <el-dropdown trigger="contextmenu">
       <el-scrollbar class="scrollbar_inner">
         <p class="scrollbar-demo-item">
           <i>首页</i>
