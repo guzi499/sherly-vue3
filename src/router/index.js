@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
 const loadRouter = (to, next) => {
   return server.getMenu().then((res) => {
     const MenuList = res;
-    console.log('获取菜单信息', MenuList);
+    console.log("获取菜单信息", MenuList);
     addRoute(formatRouter(MenuList));
     // 判断去跳转的路由是否注册
     if (!router.getRoutes().find((i) => i.path === to.path)) {
