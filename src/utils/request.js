@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-04-07 23:18:18
+ * @LastEditTime: 2022-04-15 15:36:51
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -10,9 +10,12 @@
 import axios from "axios";
 import Config from "@/config";
 import { ElNotification } from "element-plus";
-
 const axiosLnstance = axios.create({
   timeout: Config.timeout,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? process.env.VUE_APP_URL + "/api"
+      : "/api",
 });
 
 // 添加请求拦截器
