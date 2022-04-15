@@ -1,17 +1,31 @@
 <template>
   <div class="menu-container">
+    <!-- 菜单搜索框 -->
+    <el-form>
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="菜单名称:">
+            <el-input />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="primary">搜索</el-button>
+          <el-button>重置</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
     <!-- 操作按钮 -->
-    <el-row :gutter="5">
+    <el-row :gutter="5" type="flex" justify="end" style="margin-right: 1rem">
       <el-col :span="1.5">
         <el-button type="primary" plain size="small" @click="handleEdit('1')"
           >新增</el-button
         >
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button type="danger" plain size="small" @click="handleDelete('1')"
           >批量删除</el-button
         >
-      </el-col>
+      </el-col> -->
     </el-row>
     <!-- 表格菜单 -->
     <el-table
@@ -23,34 +37,26 @@
     >
       <el-table-column
         label="菜单名称"
-        prop="name"
-        width="180"
+        prop="menuName"
+        width="230"
         align="center"
       />
-      <el-table-column label="排序" prop="id" width="180" align="center" />
       <el-table-column
-        label="请求地址"
-        prop="address"
-        width="180"
+        label="菜单路径"
+        prop="link"
+        width="230"
         align="center"
       />
-      <el-table-column label="类型" prop="type" width="180" align="center" />
-      <el-table-column label="可见" width="180" align="center">
-        <el-switch v-model="tableData.visible" />
-      </el-table-column>
-      <el-table-column
-        label="权限标识"
-        prop="permission"
-        width="180"
-        align="center"
-      />
-      <el-table-column label="操作" align="center">
+      <el-table-column label="图标" prop="icon" width="150" align="center" />
+      <el-table-column label="排序" prop="sort" width="150" align="center" />
+      <el-table-column label="创建时间" prop="currentDate" align="center" />
+      <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
           <el-button
             type="primary"
             size="small"
             @click="handleEdit('2', scope.$index, scope.row)"
-            >编辑</el-button
+            >修改</el-button
           >
           <el-button
             size="small"
@@ -224,18 +230,19 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const $store = useStore();
-    // console.log($store);
+    // 获取路由信息
     const menuList = $store.state.router.menuList;
     console.log(menuList);
     // 表格数据
     const tableData = reactive([
       {
-        name: "user1",
-        id: "1",
-        address: "湖北省",
-        type: "菜单",
-        visible: true,
-        permission: "CA 90036",
+        menuId: 0,
+        menuName: "",
+        link: "/",
+        icon: "/",
+        sort: 0,
+        currentDate: '2022-4-21 12:12:12',
+        // parentId: 0,
       },
     ]);
     // 弹框标题
