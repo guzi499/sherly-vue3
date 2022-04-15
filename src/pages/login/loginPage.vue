@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-04-09 12:02:50
+ * @LastEditTime: 2022-04-15 16:06:53
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/pages/login/loginPage.vue
@@ -10,7 +10,7 @@
   <div class="sherly-page">
     <div class="login-layout">
       <div class="login-layout-left">
-        <img src="@/assets/sherlyLogo.jpg" alt="" />
+        <img src="../../assets/sherlyLogo.jpg" alt="" />
       </div>
       <div class="login-layout-dividing" />
       <div class="login-layout-right">

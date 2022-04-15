@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-04-10 14:49:51
+ * @LastEditTime: 2022-04-14 22:16:14
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -23,8 +23,13 @@ router.beforeEach((to, from, next) => {
     store.dispatch("setTitle");
     store.dispatch("setRoutePath");
   }
+
   //登录页面时不加载动态菜单
   if (to.href !== "/login") {
+    if (!localStorage.getItem("token")) {
+      next("/");
+      return;
+    }
     if (store.state.router.isUpdata) {
       loadRouter(to, next);
     } else {
@@ -62,8 +67,6 @@ const formatRouter = (MenuList) => {
   MenuList.forEach((i) => {
     _router.push({
       path: i.link,
-      // component: () =>
-      //   require.ensure([], (require) => require(`@/pages${i.link}Page`)),
       component: Layout,
       meta: { title: i.menuName },
       children: filterchildren(i.children, i),
