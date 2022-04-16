@@ -52,7 +52,7 @@
           <el-button type="text" size="small" @click="handleClick(row, $index)"
             >修改</el-button
           >
-          <el-button type="text" size="small" @click="tips = true"
+          <el-button type="text" size="small" @click="handleDelect(row, $index)"
             >删除</el-button
           >
         </template>
@@ -133,6 +133,8 @@ const handleClick = (row, $index) => {
 const handleDelect = (row, $index) => {
   console.log(row, $index)
   tips.value = true
+  delConfirm()
+
   // console.log('这是删除')
 }
 // 提交表单
@@ -147,7 +149,7 @@ const resetBtn = () => {}
 
 // 删除确认
 const delConfirm = () => {
-  handleDelect()
+  console.log('删除成功')
 }
 </script>
 
