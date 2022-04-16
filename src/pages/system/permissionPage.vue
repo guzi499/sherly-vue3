@@ -6,10 +6,12 @@
         <el-input v-model="input" placeholder="请输入权限名称" />
       </el-col>
       <el-col :span="1.2" class="btn">
-        <el-button type="primary" :icon="Search">搜索</el-button>
+        <el-button type="primary" :icon="Search" @click="searchBtn"
+          >搜索</el-button
+        >
       </el-col>
       <el-col :span="1.2" class="btn">
-        <el-button :icon="Refresh">重置</el-button>
+        <el-button :icon="Refresh" @click="resetBtn">重置</el-button>
       </el-col>
       <el-col :span="1.2" class="btn">
         <el-button type="primary" :icon="Plus" @click="handleClick('')"
@@ -78,6 +80,23 @@
         </span>
       </template>
     </el-dialog>
+
+    <!-- 提示框 -->
+    <el-dialog
+      v-model="tips"
+      title="提示"
+      width="30%"
+      :before-close="handleClose"
+      center
+    >
+      <span>确定要删除本条数据吗？</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="tips = false">取消</el-button>
+          <el-button type="primary" @click="delConfirm">确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -99,6 +118,7 @@ const form = reactive({
   description: '',
   parentId: ''
 })
+const tips = ref(false)
 
 // 方法;;
 // 编辑，新增
@@ -109,11 +129,25 @@ const handleClick = (row, $index) => {
 // 删除
 const handleDelect = (row, $index) => {
   console.log(row, $index)
-  console.log('这是删除')
+  // console.log('这是删除')
+  tips.value = true
+  delConfirm()
 }
+
+// 搜索
+const searchBtn = () => {}
+
+// 重置
+const resetBtn = () => {}
+
 // 提交表单
 const confirm = () => {
   dialogFormVisible.value = false
+}
+
+// 删除确认
+const delConfirm = () => {
+  console.log('删除成功')
 }
 </script>
 
