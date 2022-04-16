@@ -21,7 +21,7 @@ export function updateMenu(data) {
 // 删除菜单
 export function delMenu(menuId) {
   return request({
-    url: "/menu/update/one" + menuId,
+    url: "/menu/remove/one?menuId=" + menuId,
     method: "delete",
   });
 }
