@@ -7,11 +7,11 @@
  * @FilePath: /sherly-vue3/src/layout/layoutBox.vue
 -->
 <template>
-  <div class="sherly-warpper">
-    <div class="sherly-warpper-Sidebar">
+  <div class="sherly-wrapper">
+    <div class="sherly-wrapper-Sidebar">
       <Sidebar />
     </div>
-    <div class="sherly-warpper-content">
+    <div class="sherly-wrapper-content">
       <Navber />
       <TagsView />
       <AppMain />

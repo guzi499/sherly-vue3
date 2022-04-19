@@ -134,12 +134,12 @@ export default {
     });
     // 根据查询条件搜索
     const handleQuery = () => {
-      console.log('搜索');
-    }
+      console.log("搜索");
+    };
     const resetFn = () => {
-      queryparms.menuName = ''
-      getList()
-    }
+      queryparms.menuName = "";
+      getList();
+    };
     // 判断弹框类型
     const dialogType = ref("1");
     onMounted(() => {

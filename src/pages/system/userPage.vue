@@ -1,5 +1,13 @@
+<!--
+ * @Author: lihaoyu
+ * @Date: 2022-04-18 09:52:49
+ * @LastEditTime: 2022-04-19 11:23:13
+ * @LastEditors: lihaoyu
+ * @Description: 
+ * @FilePath: /sherly-vue3/src/pages/system/userPage.vue
+-->
 <template>
-  <div id="usr_container">
+  <div class="user_container">
     <!-- 查询条件 -->
     <el-form :model="queryparms">
       <el-row>
@@ -52,21 +60,26 @@
 </template>
 
 <script>
-import { getCurrentInstance } from "vue";
+import { getCurrentInstance, reactive } from "vue";
 export default {
   setup() {
     const proxy = getCurrentInstance();
     console.log(proxy);
     // 查询条件
-    // const queryparms = reactive({
-
-    // })
+    const queryparms = reactive({
+      phone: "",
+      realName: "",
+      nickname: "",
+    });
+    return {
+      queryparms,
+    };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-#usr_container {
+.user_container {
   padding: 16px;
 }
 </style>

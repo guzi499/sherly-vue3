@@ -1,13 +1,15 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:38
- * @LastEditTime: 2022-04-09 01:58:51
+ * @LastEditTime: 2022-04-19 11:21:18
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/AppMain/AppMain.vue
 -->
 <template>
-  <div class="AppMain-warpper"><router-view /></div>
+  <div class="AppMain-wrapper">
+    <router-view />
+  </div>
 </template>
 <script>
 export default {
@@ -15,10 +17,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.AppMain-warpper {
+.AppMain-wrapper {
   flex: 1;
-  margin: 8px;
-  border: 1px solid #ccc;
-  text-align: center;
+  margin: 12px;
+  background: #fff;
+  border-radius: 8px;
 }
 </style>

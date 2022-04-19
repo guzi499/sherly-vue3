@@ -103,54 +103,54 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import { Search, Refresh, Plus } from '@element-plus/icons-vue'
-const input = ref('')
+import { reactive, ref } from "vue";
+import { Search, Refresh, Plus } from "@element-plus/icons-vue";
+const input = ref("");
 const tableData = reactive([
   {
     // parentId: '0', // id
-    createTime: '2020', // 创建时间
-    description: '描述', // 描述
-    departmentName: '研发部', // 部门名称
-    sort: '1' // 排序
-  }
-])
-const dialogFormVisible = ref(false)
+    createTime: "2020", // 创建时间
+    description: "描述", // 描述
+    departmentName: "研发部", // 部门名称
+    sort: "1", // 排序
+  },
+]);
+const dialogFormVisible = ref(false);
 const form = reactive({
-  permissionName: '',
-  description: '',
-  parentId: ''
-})
-const tips = ref(false)
+  permissionName: "",
+  description: "",
+  parentId: "",
+});
+const tips = ref(false);
 
 // 方法;;
 // 编辑，新增
 const handleClick = (row, $index) => {
-  console.log(row, $index)
-  dialogFormVisible.value = true
-}
+  console.log(row, $index);
+  dialogFormVisible.value = true;
+};
 // 删除
 const handleDelect = (row, $index) => {
-  console.log(row, $index)
-  tips.value = true
-  delConfirm()
+  console.log(row, $index);
+  tips.value = true;
+  delConfirm();
 
   // console.log('这是删除')
-}
+};
 // 提交表单
 const confirm = () => {
-  dialogFormVisible.value = false
-}
+  dialogFormVisible.value = false;
+};
 // 搜索
-const searchBtn = () => {}
+const searchBtn = () => {};
 
 // 重置
-const resetBtn = () => {}
+const resetBtn = () => {};
 
 // 删除确认
 const delConfirm = () => {
-  console.log('删除成功')
-}
+  console.log("删除成功");
+};
 </script>
 
 <style lang="scss" scope>

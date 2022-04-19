@@ -7,7 +7,7 @@
  * @FilePath: /sherly-vue3/src/layout/Sidebar/components/LogoBox.vue
 -->
 <template>
-  <div class="logo-warpper">
+  <div class="logo-wrapper">
     <img
       style="width: 32px; height: 32px"
       src="../../../assets/sherlyLogo.jpg"
@@ -17,12 +17,11 @@
 
 <script>
 export default {
-  setup() {
-  },
+  setup() {},
 };
 </script>
 <style lang="scss" scoped>
-.logo-warpper {
+.logo-wrapper {
   padding: 24px 0;
   color: #fff;
   font-weight: 500;

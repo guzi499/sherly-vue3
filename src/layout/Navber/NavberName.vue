@@ -1,13 +1,13 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-04-02 00:18:37
+ * @LastEditTime: 2022-04-19 11:16:39
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
 -->
 <template>
-  <div class="Navber-warpper">
+  <div class="Navber-wrapper">
     <div style="font-size: 1.25rem" class="header_left">
       <el-row>
         <expand
@@ -54,7 +54,7 @@ import { reactive, toRefs, ref } from "vue";
 import Config from "@/config";
 export default {
   setup() {
-    const config = ref(Config)
+    const config = ref(Config);
     /**控制头部按钮的切换 */
     const datas = reactive({
       isShow: 0,
@@ -75,11 +75,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.Navber-warpper {
+.Navber-wrapper {
+  width: 100%;
   padding: 0.5rem;
-  border: 0.0625rem solid #ccc;
+  background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 1px 4px #00152914;
+  overflow: hidden;
 }
 </style>
