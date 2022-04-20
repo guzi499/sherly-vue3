@@ -6,7 +6,7 @@
  * @Description: 入口文件
  * @FilePath: /sherly-vue3/src/main.js
  */
-import { createApp } from "vue";
+import {createApp} from "vue";
 import App from "./App.vue";
 import store from "@/store/index";
 import ElementPlus from "element-plus";
@@ -24,7 +24,7 @@ app.use(store);
 
 app.use(ElementPlus);
 for (const name in ElIcons) {
-  app.component(name, ElIcons[name]);
+    app.component(name, ElIcons[name]);
 }
 
 app.use(router);

@@ -3,7 +3,7 @@
  * @Date: 2022-04-18 09:52:49
  * @LastEditTime: 2022-04-19 11:23:13
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/userPage.vue
 -->
 <template>
@@ -56,6 +56,15 @@
       <el-table-column prop="name" label="操作" width="180" />
     </el-table>
     <!-- 分页 - 暂时不写 -->
+    <!-- <el-pagination
+      v-model:currentPage="currentPage4"
+      v-model:page-size="pageSize4"
+      :page-sizes="[100, 200, 300, 400]"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="400"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    /> -->
   </div>
 </template>
 
