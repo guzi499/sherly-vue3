@@ -15,8 +15,35 @@
   }
   &-content {
     width: calc(100vw - 200px);
+    min-width: 1000px;
     display: flex;
     flex-direction: column;
     min-height: 100%;
   }
+}
+.sherly-page-wrapper {
+  padding: 16px;
+}
+.sherly-table-box {
+  padding: 0 16px;
+}
+
+.sherly-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 20px;
+  .sherly-operate-box {
+  }
+}
+
+.sherly-pagination-box {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 12px;
+}
+
+.sherlytable-header {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 12px 0;
 }
