@@ -1,13 +1,13 @@
 import request from "@/utils/request";
 
 /**获取公共菜单下拉框 */
-export function getMenuList(data) {
-  return request({
-    url: "/generic/basic/menu",
-    method: "get",
-    data: data,
-  });
-}
+// export function getMenuList(data) {
+//   return request({
+//     url: "/generic/basic/menu",
+//     method: "get",
+//     data: data,
+//   });
+// }
 
 /**新增菜单 */
 export function addMenu(data) {

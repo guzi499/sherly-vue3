@@ -128,7 +128,8 @@
 import {ElMessage, ElMessageBox} from "element-plus";
 import {reactive, ref, onMounted, getCurrentInstance} from "vue";
 import server from "@/api/router";
-import {getMenuList, addMenu, delMenu, updateMenu} from "@/api/system/menu";
+import {addMenu, delMenu, updateMenu} from "@/api/system/menu";
+import {getMenuList} from '@/api/general.js'
 
 export default {
   setup() {
