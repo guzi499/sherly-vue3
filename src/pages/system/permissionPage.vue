@@ -23,14 +23,17 @@
     <el-table
       :data="tableData"
       style="width: 100%; margin-bottom: 20px"
-      row-key="id"
+      row-key="menuId"
       border
       default-expand-all
       class="table"
+      lazy
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column
-        prop="permissionName"
+        prop="menuName"
         label="权限名称"
+        sortable
         width="402"
         align="center"
       />
@@ -58,18 +61,32 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model="dialogFormVisible" title="权限表单" center>
+    <el-dialog
+      v-model="dialogFormVisible"
+      title="权限表单"
+      center
+      width="700px"
+    >
       <el-form :model="form">
-        <el-form-item label="权限名称：" :label-width="200">
+        <el-form-item label="权限名称：" :label-width="100">
           <el-input v-model="form.permissionName" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="描述：" :label-width="200">
+        <el-form-item label="描述：" :label-width="100">
           <el-input v-model="form.description" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="父级权限：" :label-width="200">
-          <el-select v-model="form.parentId" placeholder="请选择">
-            <el-option label="一级" value="shanghai" />
-            <el-option label="二级" value="beijing" />
+        <el-form-item label="父级权限：" :label-width="100">
+          <el-select
+            v-model="form.parentId"
+            placeholder="请选择"
+            style="width: 550px;"
+          >
+            <el-option hidden :label="treeData" :value="treeData"></el-option>
+            <el-tree
+              :data="permissionList"
+              :props="defaultProps"
+              :expand-on-click-node="false"
+              @node-click="nodeOnclick"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -101,17 +118,20 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
+import { ElMessageBox } from 'element-plus'
 import { Search, Refresh, Plus } from '@element-plus/icons-vue'
+import server from '@/api/router'
+// import { getPermissionTree } from '@/api/system/permission'
 const input = ref('')
-const tableData = reactive([
-  {
-    // permissionId: '0', // 权限id
-    createTime: '2020', // 创建时间
-    description: '描述', // 描述
-    permissionName: '哈哈' // 权限名称
-  }
-])
+const tableData = reactive([])
+// {
+//   permissionId: '', // 权限id
+//   createTime: '2020', // 创建时间
+//   description: '描述', // 描述
+//   permissionName: '哈哈' // 权限名称
+// }
+
 const dialogFormVisible = ref(false)
 const form = reactive({
   permissionName: '',
@@ -119,6 +139,24 @@ const form = reactive({
   parentId: ''
 })
 const tips = ref(false)
+const permissionList = ref([])
+const defaultProps = {
+  children: 'children',
+  label: 'menuName'
+}
+const handleClose = () => {
+  ElMessageBox.confirm('确定要放弃当前编辑内容吗?')
+    .then(() => {
+      tips.value = false
+    })
+    .catch(() => {
+      // catch error
+    })
+}
+
+onMounted(() => {
+  getPermissionList()
+})
 
 // 方法;;
 // 编辑，新增
@@ -129,9 +167,16 @@ const handleClick = (row, $index) => {
 // 删除
 const handleDelect = (row, $index) => {
   console.log(row, $index)
-  // console.log('这是删除')
   tips.value = true
   delConfirm()
+}
+// 获取菜单树
+const getPermissionList = () => {
+  server.getMenu().then(res => {
+    console.log(res, 111)
+    permissionList.value = res
+    tableData.value = res
+  })
 }
 
 // 搜索
@@ -169,6 +214,9 @@ const delConfirm = () => {
   }
   .table {
     margin-top: 50px;
+  }
+  ::v-deep .el-select {
+    width: 550px;
   }
 }
 </style>
