@@ -1,13 +1,13 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:26:42
- * @LastEditTime: 2022-04-07 22:01:00
+ * @LastEditTime: 2022-04-19 11:16:18
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
 -->
 <template>
-  <div class="TagsView-warpper">
+  <div class="TagsView-wrapper">
     <el-dropdown trigger="contextmenu">
       <el-scrollbar class="scrollbar_inner">
         <p class="scrollbar-demo-item">
@@ -40,12 +40,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.TagsView-warpper {
+.TagsView-wrapper {
+  width: 100%;
   padding: 8px;
-  border: 1px solid #ccc;
   line-height: 100%;
-  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 #0000001f, 0 0 3px 0 #0000000a;
+  border-bottom: 1px solid #d8dce5;
   .scrollbar-demo-item {
+    cursor: pointer;
     i {
       font-style: normal;
       font-size: 0.5rem;

@@ -7,7 +7,7 @@
  * @FilePath: /sherly-vue3/src/layout/Sidebar/components/SidebarItem.vue
 -->
 <template>
-  <div class="item-warpper">111</div>
+  <div class="item-wrapper">111</div>
 </template>
 
 <script>
@@ -19,7 +19,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.logo-warpper {
+.logo-wrapper {
   padding: 24px 0;
   color: #fff;
   font-weight: 500;

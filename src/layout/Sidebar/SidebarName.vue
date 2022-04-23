@@ -7,7 +7,7 @@
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
 -->
 <template>
-  <div class="sidebar-warpper">
+  <div class="sidebar-wrapper">
     <Logo />
     <div class="menu-box">
       <el-menu
@@ -148,7 +148,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.sidebar-warpper {
+.sidebar-wrapper {
   height: 100vh;
   background: #334154;
   text-align: center;
