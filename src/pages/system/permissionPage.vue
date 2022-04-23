@@ -66,6 +66,7 @@
       title="权限表单"
       center
       width="700px"
+      @close="handleDialogClose"
     >
       <el-form :model="form">
         <el-form-item label="权限名称：" :label-width="100">
@@ -76,6 +77,7 @@
         </el-form-item>
         <el-form-item label="父级权限：" :label-width="100">
           <el-select
+            ref="treeRef"
             v-model="form.parentId"
             placeholder="请选择"
             style="width: 550px;"
@@ -122,25 +124,28 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { Search, Refresh, Plus } from '@element-plus/icons-vue'
-// import server from '@/api/router'
+
 import {
   getPermissionTree,
   addPermission,
+  updatePermission,
   delPermission,
   getPermissionSelect
 } from '@/api/system/permission'
 const selectName = ref('')
 let tableData = ref([])
-
+const { proxy } = getCurrentInstance()
 const dialogFormVisible = ref(false)
-const form = reactive({
+
+const form = ref({
   permissionName: '',
   description: '',
   parentId: ''
 })
+
 const tips = ref(false)
 const permissionList = ref([])
 const defaultProps = {
@@ -156,19 +161,50 @@ const handleClose = () => {
     .catch(() => {})
 }
 
+function getFilterData (list, keyword) {
+  const arr = []
+  function getDataList (list, keyword) {
+    list.forEach(item => {
+      if (item.permissionName.indexOf(keyword) == -1) {
+        if (item.children) {
+          getDataList(item.children, keyword)
+        }
+      } else {
+        arr.push(item)
+      }
+    })
+  }
+  getDataList(list, keyword)
+  return arr
+}
+
+// 搜索
+const searchBtn = () => {
+  getPermissionTree().then(res => {
+    // console.log(res)
+    tableData.value = res
+    tableData.value = getFilterData(tableData.value, selectName.value)
+  })
+}
+
+// 修改的对象
+const selected = ref({})
 // 方法;;
 // 编辑，新增
 const handleClick = row => {
+  console.log(row)
+  selected.value = row
   dialogFormVisible.value = true
   if (row.permissionId) {
-    form.permissionName = row.permissionName
-    form.description = row.description
-    form.parentId = row.parentId
-    form.parentName = row.parentName
+    console.log(row)
+    form.value.permissionName = row.permissionName
+    form.value.description = row.description
+    form.value.parentId = row.parentId
+    // form.value.parentName = row.parentName
   } else {
-    form.permissionName = ''
-    form.description = ''
-    form.parentId = ''
+    form.value.permissionName = ''
+    form.value.description = ''
+    form.value.parentId = ''
   }
 }
 let deleteId = ref('')
@@ -178,45 +214,48 @@ const handleDelect = (row, $index) => {
   tips.value = true
   deleteId.value = row.permissionId
 }
+getPermissionSelect().then(res => {
+  permissionList.value = res
+  console.log(res)
+})
 // 获取菜单树
-const getPermissionList = () => {
-  getPermissionSelect().then(res => {
-    permissionList.value = res
-    console.log(res)
-  })
-}
+const getPermissionList = () => {}
 const nodeOnclick = e => {
   treeDatas.value = e.permissionName
-  form.parentId = e.permissionId
-  // proxy.$refs.selectTree.blur()
+  form.value.parentId = e.permissionId
+  proxy.$refs.treeRef.blur()
 }
 
 getPermissionTree().then(res => {
-  // console.log(res)
   tableData.value = res
 })
-
-// 搜索
-const searchBtn = () => {
-  getPermissionTree({
-    permissionName: selectName.value
-  }).then(res => {
-    // console.log(res)
-    tableData = res
-  })
-}
 
 // 重置
 const resetBtn = () => {
   selectName.value = ''
-  getPermissionTree()
+  getPermissionTree().then(res => {
+    tableData.value = res
+  })
 }
 
 // 提交表单
 const confirm = () => {
-  addPermission(form).then(() => {
-    getPermissionList()
-  })
+  if (Object.keys(selected.value).length) {
+    console.log(selected.value)
+    updatePermission({
+      ...selected.value,
+      ...form.value
+    })
+      .then()
+      .finally(() => {
+        selected.value = ''
+      })
+  } else {
+    addPermission(form).then(() => {
+      getPermissionList()
+    })
+  }
+
   dialogFormVisible.value = false
 }
 
@@ -233,6 +272,17 @@ const delConfirm = () => {
       message: '删除成功'
     })
   })
+}
+
+// 关闭弹窗的回调函数
+const handleDialogClose = () => {
+  form.value = {
+    permissionName: '',
+    description: '',
+    parentId: '',
+    parentName: ''
+  }
+  treeDatas.value = ''
 }
 </script>
 
