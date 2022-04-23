@@ -1,10 +1,20 @@
 import request from '@/utils/request'
 
 // 获取权限树
-export function getPermissionTree () {
+export function getPermissionTree (data) {
   return request({
     url: 'permission/list/tree',
-    method: 'get'
+    method: 'get',
+    query: data
+  })
+}
+
+// 权限下拉框
+export function getPermissionSelect (data) {
+  return request({
+    url: 'generic/basic/permission',
+    method: 'get',
+    data: data
   })
 }
 
@@ -27,9 +37,9 @@ export function updatePermission (data) {
 }
 
 // 删除权限
-export function delPermission (menuId) {
+export function delPermission (permissionId) {
   return request({
-    url: '/permission/remove/one?menuId=' + menuId,
+    url: '/permission/remove/one?permissionId=' + permissionId,
     method: 'delete'
   })
 }

@@ -3,7 +3,7 @@
     <el-row type="flex" class="search">
       <el-col :span="1.5" class="searchName">权限名称：</el-col>
       <el-col :span="5">
-        <el-input v-model="input" placeholder="请输入权限名称" />
+        <el-input v-model="selectName" placeholder="请输入权限名称" />
       </el-col>
       <el-col :span="1.2" class="btn">
         <el-button type="primary" :icon="Search" @click="searchBtn"
@@ -23,7 +23,7 @@
     <el-table
       :data="tableData"
       style="width: 100%; margin-bottom: 20px"
-      row-key="menuId"
+      row-key="permissionId"
       border
       default-expand-all
       class="table"
@@ -31,11 +31,11 @@
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column
-        prop="menuName"
+        prop="permissionName"
         label="权限名称"
         sortable
         width="402"
-        align="center"
+        align="left"
       />
       <el-table-column
         prop="description"
@@ -80,7 +80,11 @@
             placeholder="请选择"
             style="width: 550px;"
           >
-            <el-option hidden :label="treeData" :value="treeData"></el-option>
+            <el-option
+              hidden
+              :label="treeDatas"
+              :value="form.parentId"
+            ></el-option>
             <el-tree
               :data="permissionList"
               :props="defaultProps"
@@ -118,19 +122,18 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
-import { ElMessageBox } from 'element-plus'
+import { reactive, ref } from 'vue'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import { Search, Refresh, Plus } from '@element-plus/icons-vue'
-import server from '@/api/router'
-// import { getPermissionTree } from '@/api/system/permission'
-const input = ref('')
-const tableData = reactive([])
-// {
-//   permissionId: '', // 权限id
-//   createTime: '2020', // 创建时间
-//   description: '描述', // 描述
-//   permissionName: '哈哈' // 权限名称
-// }
+// import server from '@/api/router'
+import {
+  getPermissionTree,
+  addPermission,
+  delPermission,
+  getPermissionSelect
+} from '@/api/system/permission'
+const selectName = ref('')
+let tableData = ref([])
 
 const dialogFormVisible = ref(false)
 const form = reactive({
@@ -142,57 +145,94 @@ const tips = ref(false)
 const permissionList = ref([])
 const defaultProps = {
   children: 'children',
-  label: 'menuName'
+  label: 'permissionName'
 }
+const treeDatas = ref('')
 const handleClose = () => {
   ElMessageBox.confirm('确定要放弃当前编辑内容吗?')
     .then(() => {
       tips.value = false
     })
-    .catch(() => {
-      // catch error
-    })
+    .catch(() => {})
 }
-
-onMounted(() => {
-  getPermissionList()
-})
 
 // 方法;;
 // 编辑，新增
-const handleClick = (row, $index) => {
-  console.log(row, $index)
+const handleClick = row => {
   dialogFormVisible.value = true
+  if (row.permissionId) {
+    form.permissionName = row.permissionName
+    form.description = row.description
+    form.parentId = row.parentId
+    form.parentName = row.parentName
+  } else {
+    form.permissionName = ''
+    form.description = ''
+    form.parentId = ''
+  }
 }
+let deleteId = ref('')
 // 删除
 const handleDelect = (row, $index) => {
   console.log(row, $index)
   tips.value = true
-  delConfirm()
+  deleteId.value = row.permissionId
 }
 // 获取菜单树
 const getPermissionList = () => {
-  server.getMenu().then(res => {
-    console.log(res, 111)
+  getPermissionSelect().then(res => {
     permissionList.value = res
-    tableData.value = res
+    console.log(res)
+  })
+}
+const nodeOnclick = e => {
+  treeDatas.value = e.permissionName
+  form.parentId = e.permissionId
+  // proxy.$refs.selectTree.blur()
+}
+
+getPermissionTree().then(res => {
+  // console.log(res)
+  tableData.value = res
+})
+
+// 搜索
+const searchBtn = () => {
+  getPermissionTree({
+    permissionName: selectName.value
+  }).then(res => {
+    // console.log(res)
+    tableData = res
   })
 }
 
-// 搜索
-const searchBtn = () => {}
-
 // 重置
-const resetBtn = () => {}
+const resetBtn = () => {
+  selectName.value = ''
+  getPermissionTree()
+}
 
 // 提交表单
 const confirm = () => {
+  addPermission(form).then(() => {
+    getPermissionList()
+  })
   dialogFormVisible.value = false
 }
 
 // 删除确认
 const delConfirm = () => {
-  console.log('删除成功')
+  console.log(deleteId.value)
+  delPermission(deleteId.value).then(() => {
+    getPermissionTree().then(res => {
+      tableData.value = res
+    })
+    tips.value = false
+    ElMessage({
+      type: 'info',
+      message: '删除成功'
+    })
+  })
 }
 </script>
 
