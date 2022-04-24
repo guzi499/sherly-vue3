@@ -50,11 +50,11 @@
         align="center"
       />
       <el-table-column prop="date" label="操作" width="350" align="center">
-        <template #default="{ row, $index }">
-          <el-button type="text" size="small" @click="handleClick(row, $index)"
+        <template #default="{ row }">
+          <el-button type="text" size="small" @click="handleClick(row)"
             >修改</el-button
           >
-          <el-button type="text" size="small" @click="handleDelect(row, $index)"
+          <el-button type="text" size="small" @click="handleDelect(row)"
             >删除</el-button
           >
         </template>
@@ -65,15 +65,23 @@
       v-model="dialogFormVisible"
       title="权限表单"
       center
-      width="700px"
+      width="600px"
       @close="handleDialogClose"
     >
       <el-form :model="form">
         <el-form-item label="权限名称：" :label-width="100">
-          <el-input v-model="form.permissionName" autocomplete="off" />
+          <el-input
+            v-model="form.permissionName"
+            placeholder="请输入"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="描述：" :label-width="100">
-          <el-input v-model="form.description" autocomplete="off" />
+          <el-input
+            v-model="form.description"
+            placeholder="请输入"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="父级权限：" :label-width="100">
           <el-select
@@ -181,7 +189,6 @@ function getFilterData (list, keyword) {
 // 搜索
 const searchBtn = () => {
   getPermissionTree().then(res => {
-    // console.log(res)
     tableData.value = res
     tableData.value = getFilterData(tableData.value, selectName.value)
   })
@@ -192,11 +199,9 @@ const selected = ref({})
 // 方法;;
 // 编辑，新增
 const handleClick = row => {
-  console.log(row)
   selected.value = row
   dialogFormVisible.value = true
   if (row.permissionId) {
-    console.log(row)
     form.value.permissionName = row.permissionName
     form.value.description = row.description
     form.value.parentId = row.parentId
@@ -209,14 +214,12 @@ const handleClick = row => {
 }
 let deleteId = ref('')
 // 删除
-const handleDelect = (row, $index) => {
-  console.log(row, $index)
+const handleDelect = row => {
   tips.value = true
   deleteId.value = row.permissionId
 }
 getPermissionSelect().then(res => {
   permissionList.value = res
-  console.log(res)
 })
 // 获取菜单树
 const getPermissionList = () => {}
@@ -241,7 +244,6 @@ const resetBtn = () => {
 // 提交表单
 const confirm = () => {
   if (Object.keys(selected.value).length) {
-    console.log(selected.value)
     updatePermission({
       ...selected.value,
       ...form.value
@@ -261,7 +263,6 @@ const confirm = () => {
 
 // 删除确认
 const delConfirm = () => {
-  console.log(deleteId.value)
   delPermission(deleteId.value).then(() => {
     getPermissionTree().then(res => {
       tableData.value = res

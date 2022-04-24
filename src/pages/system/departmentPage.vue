@@ -1,9 +1,9 @@
 <template>
-  <div class="departmentPage">
+  <div class="permissionPage">
     <el-row type="flex" class="search">
-      <el-col :span="1.5" class="searchName">部门名称：</el-col>
+      <el-col :span="1.5" class="searchName">权限名称：</el-col>
       <el-col :span="5">
-        <el-input v-model="input" placeholder="请输入部门名称" />
+        <el-input v-model="selectName" placeholder="请输入部门名称" />
       </el-col>
       <el-col :span="1.2" class="btn">
         <el-button type="primary" :icon="Search" @click="searchBtn"
@@ -23,55 +23,90 @@
     <el-table
       :data="tableData"
       style="width: 100%; margin-bottom: 20px"
-      row-key="id"
+      row-key="permissionId"
       border
       default-expand-all
       class="table"
+      lazy
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column
-        prop="departmentName"
+        prop="permissionName"
         label="部门名称"
+        sortable
         width="300"
-        align="center"
+        align="left"
       />
       <el-table-column
         prop="description"
         label="描述"
-        width="502"
+        width="380"
         align="center"
       />
-      <el-table-column prop="sort" label="排序" width="100" align="center" />
+      <el-table-column
+        prop="description"
+        label="排序"
+        width="150"
+        align="center"
+      />
       <el-table-column
         prop="createTime"
         label="创建时间"
         width="300"
         align="center"
       />
-      <el-table-column prop="date" label="操作" width="300" align="center">
-        <template #default="{ row, $index }">
-          <el-button type="text" size="small" @click="handleClick(row, $index)"
+      <el-table-column prop="date" label="操作" width="350" align="center">
+        <template #default="{ row }">
+          <el-button type="text" size="small" @click="handleClick(row)"
             >修改</el-button
           >
-          <el-button type="text" size="small" @click="handleDelect(row, $index)"
+          <el-button type="text" size="small" @click="handleDelect(row)"
             >删除</el-button
           >
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 表单 -->
-    <el-dialog v-model="dialogFormVisible" title="部门表单" center>
+    <el-dialog
+      v-model="dialogFormVisible"
+      title="权限表单"
+      center
+      width="600px"
+      @close="handleDialogClose"
+    >
       <el-form :model="form">
-        <el-form-item label="部门名称：" :label-width="200">
-          <el-input v-model="form.permissionName" autocomplete="off" />
+        <el-form-item label="部门名称：" :label-width="100">
+          <el-input
+            v-model="form.permissionName"
+            placeholder="请输入"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="描述：" :label-width="200">
-          <el-input v-model="form.description" autocomplete="off" />
+        <el-form-item label="描述：" :label-width="100">
+          <el-input
+            v-model="form.description"
+            placeholder="请输入"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="父级部门：" :label-width="200">
-          <el-select v-model="form.parentId" placeholder="请选择">
-            <el-option label="一级" value="shanghai" />
-            <el-option label="二级" value="beijing" />
+        <el-form-item label="父级部门：" :label-width="100">
+          <el-select
+            ref="treeRef"
+            v-model="form.parentId"
+            placeholder="请选择"
+            style="width: 550px;"
+          >
+            <el-option
+              hidden
+              :label="treeDatas"
+              :value="form.parentId"
+            ></el-option>
+            <el-tree
+              :data="departmentList"
+              :props="defaultProps"
+              :expand-on-click-node="false"
+              @node-click="nodeOnclick"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -103,58 +138,162 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
-import { Search, Refresh, Plus } from "@element-plus/icons-vue";
-const input = ref("");
-const tableData = reactive([
-  {
-    // parentId: '0', // id
-    createTime: "2020", // 创建时间
-    description: "描述", // 描述
-    departmentName: "研发部", // 部门名称
-    sort: "1", // 排序
-  },
-]);
-const dialogFormVisible = ref(false);
-const form = reactive({
-  permissionName: "",
-  description: "",
-  parentId: "",
-});
-const tips = ref(false);
+import { ref, getCurrentInstance } from 'vue'
+import { ElMessageBox, ElMessage } from 'element-plus'
+import { Search, Refresh, Plus } from '@element-plus/icons-vue'
+import { getDepartmentList } from '@/api/general'
+import {
+  addDepartment,
+  updateDepartment,
+  delDepartment,
+  getDepartmentTree
+} from '@/api/system/department'
+const selectName = ref('')
+let tableData = ref([])
+const { proxy } = getCurrentInstance()
+const dialogFormVisible = ref(false)
 
+const form = ref({
+  departmentName: '',
+  description: '',
+  parentId: ''
+})
+
+const tips = ref(false)
+const departmentList = ref([])
+const defaultProps = {
+  children: 'children',
+  label: 'departmentName'
+}
+const treeDatas = ref('')
+const handleClose = () => {
+  ElMessageBox.confirm('确定要放弃当前编辑内容吗?')
+    .then(() => {
+      tips.value = false
+    })
+    .catch(() => {})
+}
+
+function getFilterData (list, keyword) {
+  const arr = []
+  function getDataList (list, keyword) {
+    list.forEach(item => {
+      if (item.departmentName.indexOf(keyword) == -1) {
+        if (item.children) {
+          getDataList(item.children, keyword)
+        }
+      } else {
+        arr.push(item)
+      }
+    })
+  }
+  getDataList(list, keyword)
+  return arr
+}
+
+// 搜索
+const searchBtn = () => {
+  getDepartmentTree().then(res => {
+    tableData.value = res
+    tableData.value = getFilterData(tableData.value, selectName.value)
+  })
+}
+
+// 修改的对象
+const selected = ref({})
 // 方法;;
 // 编辑，新增
-const handleClick = (row, $index) => {
-  console.log(row, $index);
-  dialogFormVisible.value = true;
-};
+const handleClick = row => {
+  selected.value = row
+  dialogFormVisible.value = true
+  if (row.permissionId) {
+    form.value.departmentName = row.departmentName
+    form.value.description = row.description
+    form.value.parentId = row.parentId
+    // form.value.departmentId = row.departmentId
+  } else {
+    form.value.departmentName = ''
+    form.value.description = ''
+    form.value.parentId = ''
+  }
+}
+let deleteId = ref('')
 // 删除
-const handleDelect = (row, $index) => {
-  console.log(row, $index);
-  tips.value = true;
-  delConfirm();
+const handleDelect = row => {
+  tips.value = true
+  deleteId.value = row.departmentId
+}
+getDepartmentList().then(res => {
+  departmentList.value = res
+})
+// 获取菜单树
+const getPermissionList = () => {}
+const nodeOnclick = e => {
+  treeDatas.value = e.permissionName
+  form.value.parentId = e.permissionId
+  proxy.$refs.treeRef.blur()
+}
 
-  // console.log('这是删除')
-};
-// 提交表单
-const confirm = () => {
-  dialogFormVisible.value = false;
-};
-// 搜索
-const searchBtn = () => {};
+getDepartmentList().then(res => {
+  tableData.value = res
+})
 
 // 重置
-const resetBtn = () => {};
+const resetBtn = () => {
+  selectName.value = ''
+  getDepartmentList().then(res => {
+    tableData.value = res
+  })
+}
+
+// 提交表单
+const confirm = () => {
+  if (Object.keys(selected.value).length) {
+    updateDepartment({
+      ...selected.value,
+      ...form.value
+    })
+      .then()
+      .finally(() => {
+        selected.value = ''
+      })
+  } else {
+    addDepartment(form).then(() => {
+      getPermissionList()
+    })
+  }
+
+  dialogFormVisible.value = false
+}
 
 // 删除确认
 const delConfirm = () => {
-  console.log("删除成功");
-};
+  delDepartment(deleteId.value).then(() => {
+    getDepartmentList().then(res => {
+      tableData.value = res
+    })
+    tips.value = false
+    ElMessage({
+      type: 'info',
+      message: '删除成功'
+    })
+  })
+}
+
+// 关闭弹窗的回调函数
+const handleDialogClose = () => {
+  form.value = {
+    permissionName: '',
+    description: '',
+    parentId: '',
+    parentName: ''
+  }
+  treeDatas.value = ''
+}
 </script>
 
 <style lang="scss" scope>
-.departmentPage {
+.permissionPage {
   padding: 30px 100px;
   box-sizing: border-box;
   .search {
@@ -171,6 +310,9 @@ const delConfirm = () => {
   }
   .table {
     margin-top: 50px;
+  }
+  ::v-deep .el-select {
+    width: 550px;
   }
 }
 </style>
