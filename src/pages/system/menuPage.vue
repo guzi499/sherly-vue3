@@ -5,7 +5,7 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="菜单名称:">
-            <el-input v-model="queryparms.menuName"/>
+            <el-input v-model="queryparms.menuName" />
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -18,47 +18,47 @@
     <el-row :gutter="5" type="flex" justify="end">
       <el-col :span="1.5">
         <el-button type="primary" plain size="small" @click="handleEdit('1')"
-        >新增
+          >新增
         </el-button>
       </el-col>
     </el-row>
     <!-- 表格菜单 -->
     <el-table
-        :data="menuList"
-        style="width: 100%; margin-bottom: 20px"
-        row-key="menuId"
-        lazy
-        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+      :data="menuList"
+      style="width: 100%; margin-bottom: 20px"
+      row-key="menuId"
+      lazy
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column
-          label="菜单名称"
-          prop="menuName"
-          sortable
-          width="230"
-          align="center"
+        label="菜单名称"
+        prop="menuName"
+        sortable
+        width="230"
+        align="center"
       />
       <el-table-column
-          label="菜单路径"
-          prop="link"
-          width="230"
-          align="center"
+        label="菜单路径"
+        prop="link"
+        width="230"
+        align="center"
       />
-      <el-table-column label="图标" prop="icon" width="150" align="center"/>
-      <el-table-column label="排序" prop="sort" width="150" align="center"/>
-      <el-table-column label="创建时间" prop="currentDate" align="center"/>
+      <el-table-column label="图标" prop="icon" width="150" align="center" />
+      <el-table-column label="排序" prop="sort" width="150" align="center" />
+      <el-table-column label="创建时间" prop="currentDate" align="center" />
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
           <el-button
-              type="primary"
-              size="small"
-              @click="handleEdit('2', scope.$index, scope.row)"
-          >修改
+            type="primary"
+            size="small"
+            @click="handleEdit('2', scope.$index, scope.row)"
+            >修改
           </el-button>
           <el-button
-              size="small"
-              type="danger"
-              @click="handleDelete('2', scope.$index, scope.row)"
-          >删除
+            size="small"
+            type="danger"
+            @click="handleDelete('2', scope.$index, scope.row)"
+            >删除
           </el-button>
         </template>
       </el-table-column>
@@ -67,40 +67,40 @@
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
       <el-form :model="form">
         <el-form-item
-            label="父级菜单"
-            :label-width="formLabelWidth"
-            prop="parentId"
+          label="父级菜单"
+          :label-width="formLabelWidth"
+          prop="parentId"
         >
           <el-select
-              ref="selectTree"
-              v-model="form.parentId"
-              placeholder="请选择"
+            ref="selectTree"
+            v-model="form.parentId"
+            placeholder="请选择"
           >
             <el-option
-                hidden
-                :value="form.parentId"
-                :label="treeDatas"
+              hidden
+              :value="form.parentId"
+              :label="treeDatas"
             ></el-option>
             <el-tree
-                :data="menuListSelect"
-                :props="defaultProps"
-                :expand-on-click-node="false"
-                @node-click="nodeOnclick"
+              :data="menuListSelect"
+              :props="defaultProps"
+              :expand-on-click-node="false"
+              @node-click="nodeOnclick"
             />
             <!--            <el-tree-select v-model="menuId" :data="menuListSelect" />-->
           </el-select>
         </el-form-item>
         <el-form-item
-            label="菜单名称"
-            :label-width="formLabelWidth"
-            prop="menuName"
+          label="菜单名称"
+          :label-width="formLabelWidth"
+          prop="menuName"
         >
           <el-input v-model="form.menuName"></el-input>
         </el-form-item>
         <el-form-item
-            label="菜单路径"
-            :label-width="formLabelWidth"
-            prop="link"
+          label="菜单路径"
+          :label-width="formLabelWidth"
+          prop="link"
         >
           <el-input v-model="form.link"></el-input>
         </el-form-item>
@@ -109,10 +109,10 @@
         </el-form-item>
         <el-form-item label="排序" :label-width="formLabelWidth" prop="sort">
           <el-input-number
-              v-model="form.sort"
-              :min="1"
-              controls-position="right"
-              size="large"
+            v-model="form.sort"
+            :min="1"
+            controls-position="right"
+            size="large"
           />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth">
@@ -125,15 +125,15 @@
 </template>
 
 <script>
-import {ElMessage, ElMessageBox} from "element-plus";
-import {reactive, ref, onMounted, getCurrentInstance} from "vue";
-import server from "@/api/router";
-import {addMenu, delMenu, updateMenu} from "@/api/system/menu";
-import {getMenuList} from '@/api/general.js'
+import { ElMessage, ElMessageBox } from "element-plus";
+import { reactive, ref, onMounted, getCurrentInstance } from "vue";
+import { getMenu } from "@/api/system/menu";
+import { addMenu, delMenu, updateMenu } from "@/api/system/menu";
+import { getMenuList } from "@/api/general.js";
 
 export default {
   setup() {
-    const {proxy} = getCurrentInstance();
+    const { proxy } = getCurrentInstance();
     console.log(proxy);
     // 菜单查询条件
     const queryparms = reactive({
@@ -159,12 +159,12 @@ export default {
     // 查询菜单列表
     const getList = (value) => {
       loading.value = true;
-      server.getMenu(value).then((res) => {
+      getMenu(value).then((res) => {
         console.log(res);
         menuList.value = res;
         loading.value = false;
       });
-      getMenuListFn()
+      getMenuListFn();
     };
 
     // 查询菜单下拉框数据
@@ -173,7 +173,7 @@ export default {
     const getMenuListFn = () => {
       getMenuList().then((res) => {
         menuListSelect.value = res;
-        console.log(menuListSelect.value)
+        console.log(menuListSelect.value);
       });
     };
 
@@ -193,14 +193,14 @@ export default {
     };
     // 重置表单
     const reset = () => {
-      (form.parentId = "");
-      (form.icon = "");
-      (form.link = "");
-      (form.menuId = "");
-      (form.menuName = "");
-      (form.sort = "");
+      form.parentId = "";
+      form.icon = "";
+      form.link = "";
+      form.menuId = "";
+      form.menuName = "";
+      form.sort = "";
       // (treeData.value = "");
-      (treeDatas.value = "");
+      treeDatas.value = "";
     };
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
@@ -227,27 +227,27 @@ export default {
         form.parentId = data.parentId;
         console.log(menuList.value);
         forEachMenuList(menuList.value);
-        (form.icon = data.icon);
-        (form.link = data.link);
-        (form.menuId = data.menuId);
-        (form.menuName = data.menuName);
-        (form.sort = data.sort);
+        form.icon = data.icon;
+        form.link = data.link;
+        form.menuId = data.menuId;
+        form.menuName = data.menuName;
+        form.sort = data.sort;
       }
     };
     // 处理树形数据回显
     const forEachMenuList = (data) => {
-      data.forEach(item => {
-        console.log(item)
+      data.forEach((item) => {
+        console.log(item);
         if (form.parentId === 0) {
-          return treeDatas.value = '主目录'
+          return (treeDatas.value = "主目录");
         }
         if (form.parentId === item.menuId) {
-          return treeDatas.value = item.menuName
+          return (treeDatas.value = item.menuName);
         } else if (item.children.length >= 1) {
-          forEachMenuList(item.children)
+          forEachMenuList(item.children);
         }
-      })
-    }
+      });
+    };
     // 点击删除按钮
     const handleDelete = (type, index, data) => {
       if (type === "2") {
@@ -256,25 +256,25 @@ export default {
           cancelButtonText: "取消",
           type: "warning",
         })
-            .then(() => {
-              delMenu(data.menuId)
-                  .then(() => {
-                    ElMessage({
-                      type: "success",
-                      message: "删除成功",
-                    });
-                    getList();
-                  })
-                  .catch((err) => {
-                    return err;
-                  });
-            })
-            .catch(() => {
-              ElMessage({
-                type: "info",
-                message: "取消删除操作",
+          .then(() => {
+            delMenu(data.menuId)
+              .then(() => {
+                ElMessage({
+                  type: "success",
+                  message: "删除成功",
+                });
+                getList();
+              })
+              .catch((err) => {
+                return err;
               });
+          })
+          .catch(() => {
+            ElMessage({
+              type: "info",
+              message: "取消删除操作",
             });
+          });
       }
     };
     // 点击确定按钮
@@ -284,31 +284,31 @@ export default {
         console.log("调用新增接口");
         delete form.menuId;
         addMenu(form)
-            .then(() => {
-              getList();
-              reset();
-            })
-            .catch(() => {
-              console.log("新增失败");
-            })
-            .finally(() => {
-              dialogFormVisible.value = false;
-            });
+          .then(() => {
+            getList();
+            reset();
+          })
+          .catch(() => {
+            console.log("新增失败");
+          })
+          .finally(() => {
+            dialogFormVisible.value = false;
+          });
       }
       // 修改
       if (dialogType.value === "2") {
         console.log("调用修改接口");
         updateMenu(form)
-            .then(() => {
-              getList();
-            })
-            .catch(() => {
-              console.log("修改失败");
-            })
-            .finally(() => {
-              reset();
-              dialogFormVisible.value = false;
-            });
+          .then(() => {
+            getList();
+          })
+          .catch(() => {
+            console.log("修改失败");
+          })
+          .finally(() => {
+            reset();
+            dialogFormVisible.value = false;
+          });
       }
     };
     // 点击取消按钮

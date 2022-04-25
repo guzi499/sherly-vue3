@@ -1,3 +1,11 @@
+/*
+ * @Author: lihaoyu
+ * @Date: 2022-04-21 22:50:32
+ * @LastEditTime: 2022-04-25 22:37:18
+ * @LastEditors: lihaoyu
+ * @Description:
+ * @FilePath: /sherly-vue3/src/api/system/menu.js
+ */
 import request from "@/utils/request";
 
 /**获取公共菜单下拉框 */
@@ -8,6 +16,15 @@ import request from "@/utils/request";
 //     data: data,
 //   });
 // }
+
+/**菜单列表 */
+export function getMenu(data) {
+  return request({
+    url: "/menu/list/tree",
+    method: "post",
+    data,
+  });
+}
 
 /**新增菜单 */
 export function addMenu(data) {

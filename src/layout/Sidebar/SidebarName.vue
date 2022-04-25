@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-04-13 00:35:07
+ * @LastEditTime: 2022-04-25 22:39:20
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -45,17 +45,14 @@
   </div>
 </template>
 <script>
-// import Item from "./components/SidebarItem.vue";
 import Logo from "./components/LogoBox.vue";
 import { useStore } from "vuex";
-// import server from "@/api/router";
 import { onMounted, watch, computed, ref, reactive, toRaw } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
   components: {
     Logo,
-    // Item,
   },
   setup() {
     onMounted(() => {

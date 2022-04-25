@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-04-14 22:16:14
+ * @LastEditTime: 2022-04-25 22:37:08
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -11,7 +11,7 @@ import { ElNotification } from "element-plus";
 import Cookies from "js-cookie";
 import Config from "@/config";
 import store from "@/store";
-import server from "@/api/router";
+import { getMenu } from "@/api/system/menu";
 import Layout from "@/layout/layoutBox.vue";
 
 router.beforeEach((to, from, next) => {
@@ -41,7 +41,7 @@ router.beforeEach((to, from, next) => {
 });
 
 const loadRouter = (to, next) => {
-  return server.getMenu().then((res) => {
+  return getMenu().then((res) => {
     const MenuList = res;
     console.log("获取菜单信息", MenuList);
     addRoute(formatRouter(MenuList));

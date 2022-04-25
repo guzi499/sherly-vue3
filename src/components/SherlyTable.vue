@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-21 00:12:17
- * @LastEditTime: 2022-04-21 11:31:15
+ * @LastEditTime: 2022-04-24 22:22:45
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/components/SherlyTable.vue
@@ -10,16 +10,16 @@
   <div class="sherlytable-header">
     <slot name="header"></slot>
   </div>
-  <el-table v-bind="$attrs" :data="_tableData.result">
+  <el-table v-bind="$attrs" :data="tableData">
     <slot name="table"></slot>
   </el-table>
   <div class="sherly-pagination-box" v-if="showPagination">
     <el-pagination
       background
-      layout="prev,pager,next,jumper"
-      :total="_tableData.total"
-      :current-page="_tableData.current"
-      :page-size="_tableData.size"
+      layout="total,prev,pager,next,sizes,jumper"
+      :total="total"
+      :current-page="current"
+      :page-size="size"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       @prev-click="handlePrevClick"
@@ -28,25 +28,30 @@
   </div>
 </template>
 <script>
-import { computed } from "vue-demi";
 export default {
   props: {
     tableData: {
-      type: Object,
-      default: () => ({}),
+      type: Array,
+      default: () => [],
     },
     showPagination: {
       type: Boolean,
       default: false,
     },
+    paginationTotal: {
+      type: Number,
+      default: 0,
+    },
+    paginationCurrent: {
+      type: Number,
+      default: 1,
+    },
+    paginationSize: {
+      type: Number,
+      default: 10,
+    },
   },
   setup(props, context) {
-    const _tableData = computed(() => {
-      return Object.assign(
-        { result: [], size: 10, total: 0, current: 1 },
-        props.tableData
-      );
-    });
     const handleSizeChange = (e) => {
       context.emit("handleCurrentChange", e);
     };
@@ -61,7 +66,6 @@ export default {
     };
 
     return {
-      _tableData,
       handleSizeChange,
       handleCurrentChange,
       handlePrevClick,
