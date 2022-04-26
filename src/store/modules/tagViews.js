@@ -1,3 +1,11 @@
+/*
+ * @Author: lihaoyu
+ * @Date: 2022-04-09 12:00:36
+ * @LastEditTime: 2022-04-26 16:26:01
+ * @LastEditors: lihaoyu
+ * @Description:
+ * @FilePath: /sherly-vue3/src/store/modules/tagViews.js
+ */
 import Cookies from "js-cookie";
 const state = {
   /**全局路由元 title 信息 */
@@ -10,7 +18,7 @@ const mutations = {
   },
   SETROUTEPATH(state, data) {
     state.routePath.push({ toPath: data });
-  },    
+  },
 };
 const actions = {
   setTitle({ commit }) {
@@ -18,7 +26,6 @@ const actions = {
     commit("SETTITLE", data);
   },
   setRoutePath({ commit }) {
-    console.log();
     const data = Cookies.get("routePath");
     commit("SETROUTEPATH", data);
   },

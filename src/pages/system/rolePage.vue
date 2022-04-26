@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-09 11:49:55
- * @LastEditTime: 2022-04-26 00:40:42
+ * @LastEditTime: 2022-04-26 17:48:06
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/pages/system/rolePage.vue
@@ -23,6 +23,7 @@
       style="width: 100%"
       showPagination
       @handleCurrentChange="handleCurrentChange"
+      @handleSizeChange="handleSizeChange"
       :pagination-total="tableData.total"
       :pagination-current="tableData.current"
       :pagination-size="tableData.size"
@@ -77,15 +78,33 @@
         <el-tab-pane label="菜单权限" name="menu"
           ><div class="tree-box">
             <el-tree
-              :data="menu"
+              :data="menuTree"
               show-checkbox
               node-key="menuId"
-              :props="defaultProps"
+              :props="{
+                children: 'children',
+                label: 'menuName',
+              }"
+              default-expand-all
               :default-checked-keys="roleForm.menuIds"
-              @check-change="handleTreeCheckChange"
+              @check-change="handleMenuTreeCheckChange"
             /></div
         ></el-tab-pane>
-        <el-tab-pane label="接口权限" name="permission">Config</el-tab-pane>
+        <el-tab-pane label="接口权限" name="permission"
+          ><div class="tree-box">
+            <el-tree
+              :data="permissionTree"
+              show-checkbox
+              node-key="permissionId"
+              :props="{
+                children: 'children',
+                label: 'permissionName',
+              }"
+              default-expand-all
+              :default-checked-keys="roleForm.permissionIds"
+              @check-change="handlePermissionTreeCheckChange"
+            /></div
+        ></el-tab-pane>
       </el-tabs>
       <template #footer>
         <span class="dialog-footer">
@@ -108,6 +127,7 @@ import {
   getOneRole,
 } from "@/api/system/role";
 import { getMenu } from "@/api/system/menu";
+import { getPermissionTree } from "@/api/system/permission";
 import SherlyTable from "@/components/SherlyTable.vue";
 
 export default {
@@ -115,16 +135,12 @@ export default {
   setup() {
     const resetFormData = ref(null);
     const ruleFormRef = ref(null);
-
     const tableData = reactive({});
-    let dialogVisible = ref(false);
-    const menu = reactive([]);
+    const dialogVisible = ref(false);
+    const menuTree = reactive([]);
+    const permissionTree = reactive([]);
     const isEdit = ref(false);
     const activeName = ref("menu");
-    const defaultProps = {
-      children: "children",
-      label: "menuName",
-    };
     const rules = {
       roleName: [
         {
@@ -144,48 +160,85 @@ export default {
       current: 1,
       size: 10,
     });
+    // 初始化角色详情数据
     const initRoleForm = () => {
       return {
         description: "",
         menuIds: [],
-        permissionsIds: [],
+        permissionIds: [],
         roleName: "",
         roleId: null,
       };
     };
+    // 角色详情数据响应式
     let roleForm = reactive(initRoleForm());
+    // 重置角色详情数据
     const resetRoleForm = () => {
       Object.assign(roleForm, initRoleForm());
     };
+
     onMounted(() => {
       handleGetRoleLists();
-      handleGetMenu();
+      handleGetMenuTree();
+      handleGetPermissionTree();
     });
+
+    // 获取角色列表
     const handleGetRoleLists = async () => {
       const data = await getRoleLists(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
     };
-    const handleGetMenu = async () => {
+
+    // 获取菜单树
+    const handleGetMenuTree = async () => {
       const data = await getMenu();
       data.forEach((i) => {
-        menu.push(i);
+        menuTree.push(i);
       });
     };
+
+    // 获取权限树
+    const handleGetPermissionTree = async () => {
+      const data = await getPermissionTree();
+      data.forEach((i) => {
+        permissionTree.push(i);
+      });
+      console.log(permissionTree);
+    };
+
+    // 修改当前分页页码
     const handleCurrentChange = (e) => {
+      tableData.current = e;
       form.current = e;
-      getRoleLists(form);
+      handleGetRoleLists(form);
     };
+
+    // 修改当前每页数量
+    const handleSizeChange = (e) => {
+      tableData.size = e;
+      form.size = e;
+      handleGetRoleLists(form);
+    };
+
+    // 搜索
     const handleSearch = () => {
-      getRoleLists(form);
+      handleGetRoleLists(form);
     };
+
+    // 重置搜素
     const handleReset = () => {
       resetFormData.value.resetFields();
     };
+
+    // 添加角色
     const handleaddRole = () => {
+      isEdit.value = false;
       dialogVisible.value = true;
     };
+
+    // 编辑角色
     const handleEdit = async ({ roleId }) => {
       const data = await getOneRole(roleId);
       Object.keys(data).forEach((i) => {
@@ -194,6 +247,8 @@ export default {
       isEdit.value = true;
       dialogVisible.value = true;
     };
+
+    // 删除角色
     const handleDelete = ({ roleId }) => {
       delRole(roleId).then(() => {
         ElMessage({
@@ -203,12 +258,9 @@ export default {
         handleGetRoleLists();
       });
     };
-    const handleCancel = () => {
-      resetRoleForm();
-      dialogVisible.value = false;
-    };
 
-    const handleTreeCheckChange = (data, checked) => {
+    // 修改菜单树选中
+    const handleMenuTreeCheckChange = (data, checked) => {
       if (checked) {
         roleForm.menuIds.push(toRaw(data).menuId);
       } else {
@@ -221,13 +273,30 @@ export default {
         });
       }
     };
+
+    // 修改权限树选中
+    const handlePermissionTreeCheckChange = (data, checked) => {
+      console.log(data);
+      if (checked) {
+        roleForm.permissionIds.push(toRaw(data).permissionId);
+      } else {
+        const permissionIds = roleForm.permissionIds.filter(
+          (i) => i !== toRaw(data).permissionId
+        );
+        roleForm.permissionIds.length = 0;
+        permissionIds.forEach((i) => {
+          roleForm.permissionIds.push(i);
+        });
+      }
+    };
+
+    // 确定
     const handleConfirm = () => {
       ruleFormRef.value.validate((valid) => {
         if (valid) {
           if (roleForm.roleId) {
             updateRole(roleForm).then(() => {
               dialogVisible.value = false;
-              ruleFormRef.value.resetFields();
               ElMessage({
                 message: "修改角色成功",
                 type: "success",
@@ -237,7 +306,6 @@ export default {
           } else {
             addRole(roleForm).then(() => {
               dialogVisible.value = false;
-              ruleFormRef.value.resetFields();
               ElMessage({
                 message: "添加角色成功",
                 type: "success",
@@ -249,18 +317,25 @@ export default {
         }
       });
     };
+
+    // 取消
+    const handleCancel = () => {
+      resetRoleForm();
+      dialogVisible.value = false;
+    };
+
     return {
       form,
       rules,
       activeName,
-      defaultProps,
       resetFormData,
       ruleFormRef,
       tableData,
       roleForm,
       dialogVisible,
       isEdit,
-      menu,
+      menuTree,
+      permissionTree,
       handleSearch,
       handleReset,
       handleEdit,
@@ -270,7 +345,9 @@ export default {
       handleCurrentChange,
       handleGetRoleLists,
       handleCancel,
-      handleTreeCheckChange,
+      handleMenuTreeCheckChange,
+      handlePermissionTreeCheckChange,
+      handleSizeChange,
     };
   },
 };

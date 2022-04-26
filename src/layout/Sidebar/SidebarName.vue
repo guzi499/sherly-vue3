@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-04-25 22:39:20
+ * @LastEditTime: 2022-04-26 18:19:04
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -28,17 +28,34 @@
             <el-icon><location /></el-icon>
             <span>{{ item_1.menuName }}</span>
           </template>
-          <el-menu-item-group>
-            <el-menu-item
-              v-for="item_2 in item_1.children"
-              :key="item_2.index"
-              :index="item_2.index"
-              ><template #title>
-                <el-icon><location /></el-icon>
-                <span>{{ item_2.menuName }}</span>
-              </template></el-menu-item
+          <template v-for="item_2 in item_1.children" :key="item_2.index">
+            <template v-if="item_2.children.length === 0">
+              <el-menu-item :index="item_2.index">
+                <template #title>
+                  <el-icon><location /></el-icon>
+                  <span>{{ item_2.menuName }}</span>
+                </template>
+              </el-menu-item>
+            </template>
+            <template v-else>
+              <el-sub-menu :index="item_2.index">
+                <template #title>
+                  <el-icon><location /></el-icon>
+                  <span>{{ item_2.menuName }}</span>
+                </template>
+                <el-menu-item
+                  v-for="item_3 in item_2.children"
+                  :key="item_3.index"
+                  :index="item_3.index"
+                >
+                  <template #title>
+                    <el-icon><location /></el-icon>
+                    <span>{{ item_3.menuName }}</span>
+                  </template></el-menu-item
+                >
+              </el-sub-menu></template
             >
-          </el-menu-item-group>
+          </template>
         </el-sub-menu>
       </el-menu>
     </div>
@@ -74,8 +91,8 @@ export default {
     const formatMenu = (tree) => {
       const menu = [];
       tree.forEach((i, index) => {
-        i.children = formatMenuchildren(i.children, index);
         const temp = Object.assign(i, { index: `${index + 1}` });
+        i.children = formatMenuchildren(i.children, temp.index);
         menu.push(temp);
       });
       return menu;
@@ -84,10 +101,10 @@ export default {
     const formatMenuchildren = (children, index) => {
       const _children = [];
       children.forEach((i, _index) => {
-        i.children = formatMenuchildren(i.children, index);
         const _temp = Object.assign(i, {
-          index: `${index + 1}-${_index + 1}`,
+          index: `${index}-${_index + 1}`,
         });
+        i.children = formatMenuchildren(i.children, _temp.index);
         _children.push(_temp);
       });
       return _children;
@@ -97,13 +114,13 @@ export default {
       Tree,
       (newVal) => {
         menu = formatMenu(toRaw(newVal));
+        console.log(menu);
       },
       { immediate: true, deep: true }
     );
 
     const handleNodeClick = (data) => {
       if (data.link) {
-        console.log(data.link);
         router.push({ path: data.link });
       }
     };

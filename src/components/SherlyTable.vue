@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-21 00:12:17
- * @LastEditTime: 2022-04-24 22:22:45
+ * @LastEditTime: 2022-04-26 15:46:04
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/components/SherlyTable.vue
@@ -16,10 +16,10 @@
   <div class="sherly-pagination-box" v-if="showPagination">
     <el-pagination
       background
-      layout="total,prev,pager,next,sizes,jumper"
-      :total="total"
-      :current-page="current"
-      :page-size="size"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="paginationTotal"
+      :current-page="paginationCurrent"
+      :page-size="paginationSize"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       @prev-click="handlePrevClick"
@@ -53,7 +53,7 @@ export default {
   },
   setup(props, context) {
     const handleSizeChange = (e) => {
-      context.emit("handleCurrentChange", e);
+      context.emit("handleSizeChange", e);
     };
     const handleCurrentChange = (e) => {
       context.emit("handleCurrentChange", e);

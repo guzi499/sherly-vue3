@@ -43,7 +43,6 @@ router.beforeEach((to, from, next) => {
 const loadRouter = (to, next) => {
   return getMenu().then((res) => {
     const MenuList = res;
-    console.log("获取菜单信息", MenuList);
     addRoute(formatRouter(MenuList));
     // 判断去跳转的路由是否注册
     if (!router.getRoutes().find((i) => i.path === to.path)) {
@@ -90,9 +89,7 @@ const filterchildren = (children, currentMenu) => {
   return _children;
 };
 const addRoute = (formatRouter) => {
-  console.log(formatRouter);
   formatRouter.forEach((i) => {
     router.addRoute(i);
   });
-  console.log(router.getRoutes());
 };
