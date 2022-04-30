@@ -3,9 +3,9 @@
     <!-- 菜单搜索框 -->
     <el-form>
       <el-row>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="菜单名称:">
-            <el-input v-model="queryparms.menuName" />
+            <el-input v-model="queryparms.menuName" clearable />
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -125,60 +125,97 @@
 </template>
 
 <script>
-import { ElMessage, ElMessageBox } from "element-plus";
-import { reactive, ref, onMounted, getCurrentInstance } from "vue";
-import { getMenu } from "@/api/system/menu";
-import { addMenu, delMenu, updateMenu } from "@/api/system/menu";
-import { getMenuList } from "@/api/general.js";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {reactive, ref, toRefs, onMounted, getCurrentInstance} from "vue";
+import {getMenu} from "@/api/system/menu";
+import {addMenu, delMenu, updateMenu} from "@/api/system/menu";
+import {getMenuList} from "@/api/general.js";
 
 export default {
   setup() {
-    const { proxy } = getCurrentInstance();
+    const {proxy} = getCurrentInstance();
     console.log(proxy);
-    // 菜单查询条件
-    const queryparms = reactive({
-      menuName: "",
-    });
-    // 根据查询条件搜索
-    const handleQuery = () => {
-      console.log("搜索");
-    };
-    const resetFn = () => {
-      queryparms.menuName = "";
-      getList();
-    };
-    // 判断弹框类型
-    const dialogType = ref("1");
     onMounted(() => {
-      getList();
+      getList(data.queryparms);
       getMenuListFn();
     });
+
+    const data = reactive({
+      // 菜单查询条件
+      queryparms: {
+        pageNum: 1,
+        pageSize: 10,
+        menuName: "",
+      }
+    });
+
+    // 根据查询条件搜索
+    const handleQuery = () => {
+      getList(data.queryparms)
+    };
+
+    // 处理展示数据
+    const handleTreeData = (list, value) => {
+      console.log(list, value)
+      let arr = []
+
+      const handleData = (list, value) => {
+        list.forEach(item => {
+          // 判断当前层级是否存在符合条件的字段, 如果没有， 则判断该项是否存在children
+          if (item.menuName.indexOf(value) == -1) {
+            // 若存在children,则重新调用
+            if (item.children.length > 0) {
+              handleData(item.children, value)
+            }
+          } else {
+            arr.push(item)
+          }
+        })
+      }
+      handleData(list, value)
+      console.log(arr)
+      return arr
+    }
+
+    // 重置搜索框
+    const resetFn = () => {
+      data.queryparms = {
+        pageSize: 1,
+        pageNum: 10
+      };
+      getList(data.queryparms);
+    };
+
+
     const loading = ref(true);
-    // 获取路由信息
+
+    // 查询菜单列表信息
     const menuList = ref([]);
-    // 查询菜单列表
     const getList = (value) => {
       loading.value = true;
       getMenu(value).then((res) => {
-        console.log(res);
         menuList.value = res;
         loading.value = false;
+        if (value.menuName) {
+          menuList.value = handleTreeData(menuList.value, value.menuName)
+        }
       });
       getMenuListFn();
     };
 
-    // 查询菜单下拉框数据
+    // 查询菜单下拉框列表信息
     const menuListSelect = ref([]);
-    // 获取菜单下拉框数据
     const getMenuListFn = () => {
       getMenuList().then((res) => {
         menuListSelect.value = res;
-        console.log(menuListSelect.value);
       });
     };
 
+    // 判断弹框类型 - 新增/修改
+    const dialogType = ref("1");
     // 控制弹框是否显示
     const dialogFormVisible = ref(false);
+    // 统一弹框宽度
     const formLabelWidth = "140px";
     // 弹框标题
     const dialogTitle = ref("菜单");
@@ -225,7 +262,6 @@ export default {
         dialogTitle.value = "修改菜单";
         // treeData.value = data.parentId;
         form.parentId = data.parentId;
-        console.log(menuList.value);
         forEachMenuList(menuList.value);
         form.icon = data.icon;
         form.link = data.link;
@@ -237,7 +273,6 @@ export default {
     // 处理树形数据回显
     const forEachMenuList = (data) => {
       data.forEach((item) => {
-        console.log(item);
         if (form.parentId === 0) {
           return (treeDatas.value = "主目录");
         }
@@ -263,7 +298,7 @@ export default {
                   type: "success",
                   message: "删除成功",
                 });
-                getList();
+                getList(data.queryparms);
               })
               .catch((err) => {
                 return err;
@@ -285,7 +320,7 @@ export default {
         delete form.menuId;
         addMenu(form)
           .then(() => {
-            getList();
+            getList(data.queryparms);
             reset();
           })
           .catch(() => {
@@ -300,7 +335,7 @@ export default {
         console.log("调用修改接口");
         updateMenu(form)
           .then(() => {
-            getList();
+            getList(data.queryparms);
           })
           .catch(() => {
             console.log("修改失败");
@@ -319,7 +354,7 @@ export default {
     };
     return {
       menuList,
-      queryparms,
+      ...toRefs(data),
       handleQuery,
       resetFn,
       handleEdit,
