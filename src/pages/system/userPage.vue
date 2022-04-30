@@ -9,33 +9,50 @@
 <template>
   <div class="user_container">
     <!-- 查询条件 -->
-    <el-form :model="queryparms">
+    <el-form :model="queryParms">
       <el-row>
         <el-form-item label="手机号: " style="margin-left: 20px">
           <el-input
-              v-model="queryparms.phone"
+              v-model="queryParms.phone"
               placeholder="请输入手机号"
           ></el-input>
         </el-form-item>
         <el-form-item label="姓名: " style="margin-left: 20px">
           <el-input
-              v-model="queryparms.realName"
+              v-model="queryParms.realName"
               placeholder="请输入姓名"
           ></el-input>
         </el-form-item>
         <el-form-item label="昵称: " style="margin-left: 20px">
           <el-input
-              v-model="queryparms.nickname"
+              v-model="queryParms.nickname"
               placeholder="请输入昵称"
           ></el-input>
         </el-form-item>
         <el-form-item label="部门: " style="margin-left: 20px">
-          <el-cascader :options="options" clearable/>
-          <!--          <TreeSelect v-model="queryparms" :data="data" multiple show-checkbox/>-->
+          <!--          <el-select-->
+          <!--              ref="selectTree"-->
+          <!--              v-model="queryParms.parentId"-->
+          <!--              placeholder="请选择"-->
+          <!--          >-->
+          <!--            <el-option-->
+          <!--                hidden-->
+          <!--                :value="queryParms.parentId"-->
+          <!--                :label="treeDatas"-->
+          <!--            ></el-option>-->
+          <!--            <el-tree-->
+          <!--                :data="DepartmentList"-->
+          <!--                :props="defaultProps"-->
+          <!--                :expand-on-click-node="false"-->
+          <!--                @node-click="nodeOnclick"-->
+          <!--            />-->
+          <!--          </el-select>-->
+          <TreeSelect ref="selectTree" :treeList=DepartmentList :defaultProps="defaultProps"
+                      @treeSelectList="treeSelectList"></TreeSelect>
         </el-form-item>
         <el-form-item style="margin-left: 20px">
-          <el-button type="primary">搜索</el-button>
-          <el-button>重置</el-button>
+          <el-button type="primary" @click="handleQuery">搜索</el-button>
+          <el-button @click="resetFn">重置</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -84,8 +101,8 @@
     <!-- 分页 -->
     <el-pagination
         style="margin-top: 20px"
-        v-model:currentPage="page.current"
-        v-model:page-size="page.size"
+        v-model:currentPage="queryParms.pageNum"
+        v-model:page-size="queryParms.pageSize"
         :page-sizes="[10, 20, 30, 40]"
         :small="small"
         :disabled="disabled"
@@ -123,24 +140,6 @@
             :label-width="formLabelWidth"
             prop="phone"
         >
-          <el-select
-              ref="selectTree"
-              v-model="form.departmentId"
-              placeholder="请选择"
-          >
-            <el-option
-                hidden
-                :value="form.departmentId"
-                :label="treeDatas"
-            ></el-option>
-            <el-tree
-                :data="DepartmentList"
-                :props="defaultProps"
-                :expand-on-click-node="false"
-                @node-click="nodeOnclick"
-            />
-            <!--            <el-tree-select v-model="menuId" :data="menuListSelect" />-->
-          </el-select>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth" prop="roleIds">
           <el-input v-model="form.roleIds"></el-input>
@@ -155,34 +154,60 @@
 </template>
 
 <script>
-import {getCurrentInstance, ref, reactive, onMounted} from "vue";
+import {getCurrentInstance, ref, reactive, toRefs, onMounted} from "vue";
 import {getDepartmentList} from '@/api/general.js'
 import {pageUser} from '@/api/system/user.js'
 
 export default {
   setup() {
-    const proxy = getCurrentInstance();
+    const {proxy} = getCurrentInstance();
     console.log(proxy);
     onMounted(() => {
       getDepartmentListFn()
-      getList(page)
+      getList(data.queryParms)
     })
-    // 查询条件
-    const queryparms = reactive({
-      phone: "",
-      realName: "",
-      nickname: "",
 
-    });
+    const data = reactive(
+        {
+          // 查询条件
+          queryParms: {
+            pageNum: 1,
+            pageSize: 10
+          },
+          // 部门下拉框配置项
+          defaultProps: {
+            children: "children",
+            label: "departmentName",
+          },
+        }
+    );
+
+    // 搜索按钮
+    const handleQuery = () => {
+      console.log(data.queryParms)
+    }
+
+    // 重置按钮
+    const resetFn = () => {
+      data.queryParms = {
+        pageNum: 1,
+        pageSize: 10
+      }
+      console.log(data.queryParms)
+      proxy.$refs.selectTree.treeSelectData = {}
+      getList(data.queryParms)
+    }
+    // const treeDatas = ref('')
+    // 选中弹框中的树形数据
+    const treeSelectList = (e) => {
+      console.log(e)
+      data.queryParms.parentId = e.parentId;
+      // treeDatas.value = e.departmentName;
+    }
+
 
     // 分页数据
-    const page = reactive({
-      current: 1,
-      size: 10
-    })
     const total = ref(400)
-    // const currentPage = ref(1)
-    // const pageSize = ref(10)
     const small = ref(false)
     const background = ref(false)
     const disabled = ref(false)
@@ -196,21 +221,19 @@ export default {
     // 定义表格数据
     const tableData = ref([])
     // 获取用户信息列表
-    const getList = (page) => {
-      pageUser(page).then(res => {
+    const getList = (data) => {
+      pageUser(data).then(res => {
         tableData.value = res.result
-        page.size = res.size
-        page.current = res.current
         total.value = res.total
       })
     }
 
     // 公共部门下拉框
-    const DepartmentList = reactive([])
+    const DepartmentList = ref([])
     // 获取公共部门下拉框数据
     const getDepartmentListFn = () => {
       getDepartmentList().then(res => {
-        console.log('部门下拉框数据 === ', res, DepartmentList.value)
+        console.log('部门下拉框数据 === ', res)
         DepartmentList.value = res
 
       })
@@ -267,9 +290,8 @@ export default {
     };
 
     return {
-      queryparms,
+      ...toRefs(data),
       total,
-      page,
       small,
       background,
       disabled,
@@ -285,7 +307,10 @@ export default {
       handleOk,
       handleCancle,
       handleEdit,
-      handleDelete
+      handleDelete,
+      treeSelectList,
+      handleQuery,
+      resetFn
     };
   },
 };

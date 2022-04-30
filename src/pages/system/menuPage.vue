@@ -145,7 +145,6 @@ export default {
       queryparms: {
         pageNum: 1,
         pageSize: 10,
-        menuName: "",
       }
     });
 
@@ -223,35 +222,29 @@ export default {
     // const treeData = ref(null);
     const treeDatas = ref("");
     // 弹框新增 / 修改弹框绑定数据
-    const form = reactive({});
+    const form = ref({});
     const defaultProps = {
       children: "children",
       label: "menuName",
     };
     // 重置表单
     const reset = () => {
-      form.parentId = "";
-      form.icon = "";
-      form.link = "";
-      form.menuId = "";
-      form.menuName = "";
-      form.sort = "";
-      // (treeData.value = "");
+      form.value = {}
       treeDatas.value = "";
     };
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
       console.log(e);
-      form.parentId = e.menuId;
+      form.value.parentId = e.menuId;
       // treeData.value = e.menuId;
       treeDatas.value = e.menuName;
       proxy.$refs.selectTree.blur();
     };
     // 点击修改 - 新增按钮
     const handleEdit = (type, index, data) => {
+      reset();
       dialogFormVisible.value = true;
       if (type === "1") {
-        reset();
         dialogType.value = type;
         console.log("新增 === ", type, index, data);
         dialogTitle.value = "新增菜单";
@@ -260,26 +253,23 @@ export default {
         dialogType.value = type;
         console.log("修改 === ", type, index, data);
         dialogTitle.value = "修改菜单";
-        // treeData.value = data.parentId;
-        form.parentId = data.parentId;
-        forEachMenuList(menuList.value);
-        form.icon = data.icon;
-        form.link = data.link;
-        form.menuId = data.menuId;
-        form.menuName = data.menuName;
-        form.sort = data.sort;
+        forEachMenuList(data);
+        form.value = data
       }
     };
     // 处理树形数据回显
     const forEachMenuList = (data) => {
-      data.forEach((item) => {
-        if (form.parentId === 0) {
+      console.log(data)
+      menuList.value.forEach((item) => {
+        console.log(item)
+        if (data.parentId === 0) {
           return (treeDatas.value = "主目录");
         }
-        if (form.parentId === item.menuId) {
-          return (treeDatas.value = item.menuName);
-        } else if (item.children.length >= 1) {
-          forEachMenuList(item.children);
+        if (data.parentId !== 0) {
+          console.log(item)
+          if (item.menuId === data.parentId) {
+            return (treeDatas.value = item.menuName);
+          }
         }
       });
     };
@@ -317,23 +307,23 @@ export default {
       // 新增
       if (dialogType.value === "1") {
         console.log("调用新增接口");
-        delete form.menuId;
-        addMenu(form)
-          .then(() => {
-            getList(data.queryparms);
-            reset();
-          })
-          .catch(() => {
-            console.log("新增失败");
-          })
-          .finally(() => {
-            dialogFormVisible.value = false;
-          });
+        // delete form.value.menuId;
+        addMenu(form.value)
+            .then(() => {
+              getList(data.queryparms);
+            })
+            .catch(() => {
+              console.log("新增失败");
+            })
+            .finally(() => {
+              reset();
+              dialogFormVisible.value = false;
+            });
       }
       // 修改
       if (dialogType.value === "2") {
         console.log("调用修改接口");
-        updateMenu(form)
+        updateMenu(form.value)
           .then(() => {
             getList(data.queryparms);
           })

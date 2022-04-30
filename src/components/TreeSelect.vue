@@ -1,34 +1,49 @@
 <template>
   <div>
-<!--    <el-select-->
-<!--        ref="selectTree"-->
-<!--        v-model="form.parentId"-->
-<!--        placeholder="请选择"-->
-<!--    >-->
-<!--      <el-option-->
-<!--          hidden-->
-<!--          :value="form.parentId"-->
-<!--          :label="treeDatas"-->
-<!--      ></el-option>-->
-<!--      <el-tree-->
-<!--          :data="menuListSelect"-->
-<!--          :props="defaultProps"-->
-<!--          :expand-on-click-node="false"-->
-<!--          @node-click="nodeOnclick"-->
-<!--      />-->
-<!--    </el-select>-->
+    <el-select
+        ref="selectTree"
+        v-model="treeSelectData.parentId"
+        placeholder="请选择"
+    >
+      <el-option
+          hidden
+          :value="treeSelectData.parentId"
+          :label="treeSelectData.treeDatas"
+      ></el-option>
+      <el-tree
+          :data="treeList"
+          :props="defaultProps"
+          :expand-on-click-node="false"
+          @node-click="nodeOnclick"
+      />
+    </el-select>
   </div>
 </template>
 
 <script>
+import {reactive, toRefs, getCurrentInstance} from 'vue'
 export default {
-  name: "TreeSelect",
-  setup() {
-    // // 选中弹框中的树形数据
-    // const nodeOnclick = (e) => {
-    //   console.log(e);
-    // };
-    // return {nodeOnclick}
+  props: {
+    treeList: Array,
+    defaultProps: Object,
+  },
+  setup(props, {emit}) {
+    const {proxy} = getCurrentInstance();
+    const data = reactive({
+      treeSelectData:{
+        parentId: null,
+        treeDatas: ''
+      }
+    })
+    console.log('props === ', props)
+    const nodeOnclick = (e) => {
+      console.log(e)
+      data.treeSelectData.parentId = e.parentId;
+      data.treeSelectData.treeDatas = e.departmentName;
+      emit('treeSelectList', e)
+      proxy.$refs.selectTree.blur();
+    };
+    return {...toRefs(data), nodeOnclick}
   }
 }
 </script>
