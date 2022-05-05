@@ -99,6 +99,9 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
+    <!--    <Pagination v-model:pageNum="queryParms.pageNum" v-model:pageSize="queryParms.pageSize"-->
+    <!--                v-show="total >= 1"-->
+    <!--                :total="total" @getList="getList"></Pagination>-->
     <el-pagination
         style="margin-top: 20px"
         v-model:currentPage="queryParms.pageNum"
@@ -106,8 +109,8 @@
         :page-sizes="[10, 20, 30, 40]"
         :small="small"
         :disabled="disabled"
-        :background="background"
         layout="total, sizes, prev, pager, next, jumper"
+        v-show="total >= 1"
         :total="total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -210,13 +213,13 @@ export default {
     const total = ref(400)
     const small = ref(false)
     const background = ref(false)
-    const disabled = ref(false)
     const handleSizeChange = (val) => {
       console.log(`每页${val} 条`)
     }
     const handleCurrentChange = (val) => {
       console.log(`当前页: ${val}`)
     }
+    const disabled = ref(false)
 
     // 定义表格数据
     const tableData = ref([])
@@ -295,8 +298,6 @@ export default {
       small,
       background,
       disabled,
-      handleSizeChange,
-      handleCurrentChange,
       tableData,
       DepartmentList,
       handleChange,
@@ -310,7 +311,9 @@ export default {
       handleDelete,
       treeSelectList,
       handleQuery,
-      resetFn
+      resetFn,
+      handleSizeChange,
+      handleCurrentChange
     };
   },
 };
