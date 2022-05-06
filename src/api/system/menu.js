@@ -1,21 +1,21 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-21 22:50:32
- * @LastEditTime: 2022-04-25 22:37:18
+ * @LastEditTime: 2022-05-06 21:43:14
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/api/system/menu.js
  */
 import request from "@/utils/request";
 
-/**获取公共菜单下拉框 */
-// export function getMenuList(data) {
-//   return request({
-//     url: "/generic/basic/menu",
-//     method: "get",
-//     data: data,
-//   });
-// }
+/**获取当前用户菜单 */
+export function getMenuList(data) {
+  return request({
+    url: "/generic/basic/menu",
+    method: "get",
+    data: data,
+  });
+}
 
 /**菜单列表 */
 export function getMenu(data) {

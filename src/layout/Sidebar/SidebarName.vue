@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-04-26 18:19:04
+ * @LastEditTime: 2022-05-07 00:39:57
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -114,7 +114,6 @@ export default {
       Tree,
       (newVal) => {
         menu = formatMenu(toRaw(newVal));
-        console.log(menu);
       },
       { immediate: true, deep: true }
     );

@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-04-15 15:36:51
+ * @LastEditTime: 2022-05-06 22:49:26
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -25,6 +25,9 @@ axiosLnstance.interceptors.request.use(
     config.headers["Content-Type"] = "application/json";
     if (localStorage.getItem("token")) {
       config.headers["token"] = localStorage.getItem("token");
+    }
+    if (config.url === "/login") {
+      config.headers["token"] = null;
     }
     return config;
   },

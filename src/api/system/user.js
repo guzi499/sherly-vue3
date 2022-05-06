@@ -1,3 +1,11 @@
+/*
+ * @Author: lihaoyu
+ * @Date: 2022-04-18 09:52:49
+ * @LastEditTime: 2022-05-06 22:33:03
+ * @LastEditors: lihaoyu
+ * @Description:
+ * @FilePath: /sherly-vue3/src/api/system/user.js
+ */
 import request from "@/utils/request";
 
 /**获取用户详情 */

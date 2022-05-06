@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-04-25 22:37:08
+ * @LastEditTime: 2022-05-07 00:30:45
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -11,7 +11,7 @@ import { ElNotification } from "element-plus";
 import Cookies from "js-cookie";
 import Config from "@/config";
 import store from "@/store";
-import { getMenu } from "@/api/system/menu";
+import { getDasicData } from "@/api/system/generic";
 import Layout from "@/layout/layoutBox.vue";
 
 router.beforeEach((to, from, next) => {
@@ -41,8 +41,9 @@ router.beforeEach((to, from, next) => {
 });
 
 const loadRouter = (to, next) => {
-  return getMenu().then((res) => {
-    const MenuList = res;
+  return getDasicData({ token: localStorage.getItem("token") }).then((res) => {
+    store.dispatch("user/setUserInfo", res);
+    const MenuList = res.basicMenuInfoVO;
     addRoute(formatRouter(MenuList));
     // 判断去跳转的路由是否注册
     if (!router.getRoutes().find((i) => i.path === to.path)) {
