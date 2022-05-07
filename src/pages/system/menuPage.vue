@@ -35,7 +35,6 @@
         prop="menuName"
         sortable
         width="230"
-        align="center"
       />
       <el-table-column
         label="菜单路径"
