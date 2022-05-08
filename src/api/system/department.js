@@ -1,36 +1,44 @@
-import request from '@/utils/request'
+/*
+ * @Author: lihaoyu
+ * @Date: 2022-04-21 22:50:32
+ * @LastEditTime: 2022-05-06 21:43:14
+ * @LastEditors: lihaoyu
+ * @Description:
+ * @FilePath: /sherly-vue3/src/api/system/menu.js
+ */
+import request from "@/utils/request";
 
-// 获取部门树
-export function getDepartmentTree (data) {
+/**查询部门树 */
+export function getDepartmentListTree(query) {
   return request({
-    url: '/department/list/tree',
-    method: 'get',
-    query: data
-  })
+    url: "/department/list/tree",
+    method: "get",
+    params: query
+  });
 }
 
-// 新增部门
-export function addDepartment (data) {
+/**部门新增 */
+export function addDepartment(data) {
   return request({
-    url: '/department/save/one',
-    method: 'post',
-    data: data
-  })
+    url: "/department/save/one",
+    method: "post",
+    data: data,
+  });
 }
 
-// 修改部门
-export function updateDepartment (data) {
+// 修改菜单
+export function updateDepartment(data) {
   return request({
-    url: '/department/update/one',
-    method: 'put',
-    data: data
-  })
+    url: "/department/update/one",
+    method: "put",
+    data: data,
+  });
 }
 
-// 删除部门
-export function delDepartment (departmentId) {
+// 删除菜单
+export function delDepartment(departmentId) {
   return request({
-    url: '/department/remove/one?departmentId=' + departmentId,
-    method: 'delete'
-  })
+    url: "/department/remove/one?menuId=" + departmentId,
+    method: "delete",
+  });
 }

@@ -5,7 +5,7 @@
       <el-row>
         <el-col :span="7">
           <el-form-item label="菜单名称:">
-            <el-input v-model="queryparms.menuName" clearable />
+            <el-input v-model="data.queryParams.menuName" clearable/>
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -54,10 +54,10 @@
             >修改
           </el-button>
           <el-button
-            size="small"
-            type="danger"
-            @click="handleDelete('2', scope.$index, scope.row)"
-            >删除
+              size="small"
+              type="danger"
+              @click="handleDelete('2', scope.$index, scope.row)"
+          >删除
           </el-button>
         </template>
       </el-table-column>
@@ -66,25 +66,25 @@
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
       <el-form :model="form">
         <el-form-item
-          label="父级菜单"
-          :label-width="formLabelWidth"
-          prop="parentId"
+            label="父级菜单"
+            :label-width="formLabelWidth"
+            prop="parentId"
         >
           <el-select
-            ref="selectTree"
-            v-model="form.parentId"
-            placeholder="请选择"
+              ref="selectTree"
+              v-model="form.parentId"
+              placeholder="请选择"
           >
             <el-option
-              hidden
-              :value="form.parentId"
-              :label="treeDatas"
+                hidden
+                :value="form.parentId"
+                :label="treeDatas"
             ></el-option>
             <el-tree
-              :data="menuListSelect"
-              :props="defaultProps"
-              :expand-on-click-node="false"
-              @node-click="nodeOnclick"
+                :data="menuListSelect"
+                :props="defaultProps"
+                :expand-on-click-node="false"
+                @node-click="nodeOnclick"
             />
             <!--            <el-tree-select v-model="menuId" :data="menuListSelect" />-->
           </el-select>
@@ -125,7 +125,7 @@
 
 <script>
 import {ElMessage, ElMessageBox} from "element-plus";
-import {reactive, ref, toRefs, onMounted, getCurrentInstance} from "vue";
+import {reactive, ref, onMounted, getCurrentInstance} from "vue";
 import {getMenu} from "@/api/system/menu";
 import {addMenu, delMenu, updateMenu} from "@/api/system/menu";
 import {getMenuList} from "@/api/general.js";
@@ -135,13 +135,13 @@ export default {
     const {proxy} = getCurrentInstance();
     console.log(proxy);
     onMounted(() => {
-      getList(data.queryparms);
+      getList(data.queryParams);
       getMenuListFn();
     });
 
     const data = reactive({
       // 菜单查询条件
-      queryparms: {
+      queryParams: {
         pageNum: 1,
         pageSize: 10,
       }
@@ -149,7 +149,7 @@ export default {
 
     // 根据查询条件搜索
     const handleQuery = () => {
-      getList(data.queryparms)
+      getList(data.queryParams)
     };
 
     // 处理展示数据
@@ -177,11 +177,11 @@ export default {
 
     // 重置搜索框
     const resetFn = () => {
-      data.queryparms = {
+      data.queryParams = {
         pageSize: 1,
         pageNum: 10
       };
-      getList(data.queryparms);
+      getList(data.queryParams);
     };
 
 
@@ -287,7 +287,7 @@ export default {
                   type: "success",
                   message: "删除成功",
                 });
-                getList(data.queryparms);
+                getList(data.queryParams);
               })
               .catch((err) => {
                 return err;
@@ -309,7 +309,7 @@ export default {
         // delete form.value.menuId;
         addMenu(form.value)
             .then(() => {
-              getList(data.queryparms);
+              getList(data.queryParams);
             })
             .catch(() => {
               console.log("新增失败");
@@ -324,7 +324,7 @@ export default {
         console.log("调用修改接口");
         updateMenu(form.value)
           .then(() => {
-            getList(data.queryparms);
+            getList(data.queryParams);
           })
           .catch(() => {
             console.log("修改失败");
@@ -343,7 +343,7 @@ export default {
     };
     return {
       menuList,
-      ...toRefs(data),
+      data,
       handleQuery,
       resetFn,
       handleEdit,

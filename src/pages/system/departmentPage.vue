@@ -1,318 +1,379 @@
 <template>
-  <div class="permissionPage">
-    <el-row type="flex" class="search">
-      <el-col :span="1.5" class="searchName">权限名称：</el-col>
-      <el-col :span="5">
-        <el-input v-model="selectName" placeholder="请输入部门名称" />
-      </el-col>
-      <el-col :span="1.2" class="btn">
-        <el-button type="primary" :icon="Search" @click="searchBtn"
-          >搜索</el-button
-        >
-      </el-col>
-      <el-col :span="1.2" class="btn">
-        <el-button :icon="Refresh" @click="resetBtn">重置</el-button>
-      </el-col>
-      <el-col :span="1.2" class="btn">
-        <el-button type="primary" :icon="Plus" @click="handleClick('')"
-          >新增</el-button
-        >
+  <div class="menu-container">
+    <!-- 菜单搜索框 -->
+    <el-form>
+      <el-row>
+        <el-col :span="7">
+          <el-form-item label="部门名称:">
+            <el-input v-model="data.queryParams.departmentName" clearable/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="primary" @click="handleQuery">搜索</el-button>
+          <el-button @click="resetFn">重置</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
+    <!-- 操作按钮 -->
+    <el-row :gutter="5" type="flex" justify="end">
+      <el-col :span="1.5">
+        <el-button type="primary" plain size="small" @click="handleEdit('1')"
+        >新增
+        </el-button>
       </el-col>
     </el-row>
-
+    <!-- 表格菜单 -->
     <el-table
-      :data="tableData"
-      style="width: 100%; margin-bottom: 20px"
-      row-key="permissionId"
-      border
-      default-expand-all
-      class="table"
-      lazy
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        :data="departmentList"
+        style="width: 100%; margin-bottom: 20px"
+        row-key="departmentId"
+        lazy
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column
-        prop="permissionName"
-        label="部门名称"
-        sortable
-        width="300"
-        align="left"
+          label="部门名称"
+          prop="departmentName"
+          sortable
       />
       <el-table-column
-        prop="description"
-        label="描述"
-        width="380"
-        align="center"
+          label="描述"
+          prop="description"
+          width="230"
+          align="center"
       />
-      <el-table-column
-        prop="description"
-        label="排序"
-        width="150"
-        align="center"
-      />
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-        width="300"
-        align="center"
-      />
-      <el-table-column prop="date" label="操作" width="350" align="center">
-        <template #default="{ row }">
-          <el-button type="text" size="small" @click="handleClick(row)"
-            >修改</el-button
-          >
-          <el-button type="text" size="small" @click="handleDelect(row)"
-            >删除</el-button
-          >
+      <el-table-column label="排序" prop="sort" width="150" align="center"/>
+      <el-table-column label="创建时间" prop="createTime" align="center"/>
+      <el-table-column label="操作" align="center" width="250">
+        <template #default="scope">
+          <el-button
+              type="primary"
+              size="small"
+              @click="handleEdit('2', scope.$index, scope.row)"
+          >修改
+          </el-button>
+          <el-button
+              size="small"
+              type="danger"
+              @click="handleDelete('2', scope.$index, scope.row)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <el-dialog
-      v-model="dialogFormVisible"
-      title="权限表单"
-      center
-      width="600px"
-      @close="handleDialogClose"
-    >
+    <!-- 新增 / 编辑 弹框 -->
+    <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
       <el-form :model="form">
-        <el-form-item label="部门名称：" :label-width="100">
-          <el-input
-            v-model="form.permissionName"
-            placeholder="请输入"
-            autocomplete="off"
-          />
-        </el-form-item>
-        <el-form-item label="描述：" :label-width="100">
-          <el-input
-            v-model="form.description"
-            placeholder="请输入"
-            autocomplete="off"
-          />
-        </el-form-item>
-        <el-form-item label="父级部门：" :label-width="100">
+        <el-form-item
+            label="父级部门"
+            :label-width="formLabelWidth"
+            prop="parentId"
+        >
           <el-select
-            ref="treeRef"
-            v-model="form.parentId"
-            placeholder="请选择"
-            style="width: 550px;"
+              ref="selectTree"
+              v-model="form.parentId"
+              placeholder="请选择"
           >
             <el-option
-              hidden
-              :label="treeDatas"
-              :value="form.parentId"
+                hidden
+                :value="form.parentId"
+                :label="treeDatas"
             ></el-option>
             <el-tree
-              :data="departmentList"
-              :props="defaultProps"
-              :expand-on-click-node="false"
-              @node-click="nodeOnclick"
+                :data="departmentListSelect"
+                :props="defaultProps"
+                :expand-on-click-node="false"
+                @node-click="nodeOnclick"
             />
           </el-select>
         </el-form-item>
+        <el-form-item
+            label="部门名称"
+            :label-width="formLabelWidth"
+            prop="departmentName"
+        >
+          <el-input v-model="form.departmentName"></el-input>
+        </el-form-item>
+        <el-form-item
+            label="描述"
+            :label-width="formLabelWidth"
+            prop="description"
+        >
+          <el-input v-model="form.description"></el-input>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth">
+          <el-button @click="handleCancle">取消</el-button>
+          <el-button type="primary" @click="handleOk">确定</el-button>
+        </el-form-item>
       </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="confirm">确定</el-button>
-        </span>
-      </template>
-    </el-dialog>
-
-    <!-- 提示框 -->
-    <el-dialog
-      v-model="tips"
-      title="提示"
-      width="30%"
-      :before-close="handleClose"
-      center
-    >
-      <span>确定要删除本条数据吗？</span>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="tips = false">取消</el-button>
-          <el-button type="primary" @click="delConfirm">确定</el-button>
-        </span>
-      </template>
     </el-dialog>
   </div>
 </template>
 
-<script setup>
-import { ref, getCurrentInstance } from 'vue'
-import { ElMessageBox, ElMessage } from 'element-plus'
-import { Search, Refresh, Plus } from '@element-plus/icons-vue'
-import { getDepartmentList } from '@/api/general'
-import {
-  addDepartment,
-  updateDepartment,
-  delDepartment,
-  getDepartmentTree
-} from '@/api/system/department'
-const selectName = ref('')
-let tableData = ref([])
-const { proxy } = getCurrentInstance()
-const dialogFormVisible = ref(false)
+<script>
+import {ElMessage, ElMessageBox} from "element-plus";
+import {reactive, ref, onMounted, getCurrentInstance} from "vue";
+import {getDepartmentListTree, addDepartment, delDepartment, updateDepartment} from "@/api/system/department";
+import {getDepartmentList} from "@/api/general.js";
 
-const form = ref({
-  departmentName: '',
-  description: '',
-  parentId: ''
-})
+export default {
+  setup() {
+    const {proxy} = getCurrentInstance();
+    console.log(proxy);
+    onMounted(() => {
+      getList(data.queryParams);
+      getDepartmentListFn();
+    });
 
-const tips = ref(false)
-const departmentList = ref([])
-const defaultProps = {
-  children: 'children',
-  label: 'departmentName'
-}
-const treeDatas = ref('')
-const handleClose = () => {
-  ElMessageBox.confirm('确定要放弃当前编辑内容吗?')
-    .then(() => {
-      tips.value = false
-    })
-    .catch(() => {})
-}
-
-function getFilterData (list, keyword) {
-  const arr = []
-  function getDataList (list, keyword) {
-    list.forEach(item => {
-      if (item.departmentName.indexOf(keyword) == -1) {
-        if (item.children) {
-          getDataList(item.children, keyword)
-        }
-      } else {
-        arr.push(item)
+    const data = reactive({
+      // 部门查询条件
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
       }
-    })
-  }
-  getDataList(list, keyword)
-  return arr
-}
+    });
 
-// 搜索
-const searchBtn = () => {
-  getDepartmentTree().then(res => {
-    tableData.value = res
-    tableData.value = getFilterData(tableData.value, selectName.value)
-  })
-}
+    // 根据查询条件搜索
+    const handleQuery = () => {
+      getList(data.queryParams)
+    };
 
-// 修改的对象
-const selected = ref({})
-// 方法;;
-// 编辑，新增
-const handleClick = row => {
-  selected.value = row
-  dialogFormVisible.value = true
-  if (row.permissionId) {
-    form.value.departmentName = row.departmentName
-    form.value.description = row.description
-    form.value.parentId = row.parentId
-    // form.value.departmentId = row.departmentId
-  } else {
-    form.value.departmentName = ''
-    form.value.description = ''
-    form.value.parentId = ''
-  }
-}
-let deleteId = ref('')
-// 删除
-const handleDelect = row => {
-  tips.value = true
-  deleteId.value = row.departmentId
-}
-getDepartmentList().then(res => {
-  departmentList.value = res
-})
-// 获取菜单树
-const getPermissionList = () => {}
-const nodeOnclick = e => {
-  treeDatas.value = e.permissionName
-  form.value.parentId = e.permissionId
-  proxy.$refs.treeRef.blur()
-}
+    // 处理展示数据
+    const handleTreeData = (list, value) => {
+      console.log(list, value)
+      let arr = []
+      const handleData = (list, value) => {
+        list.forEach(item => {
+          // 判断当前层级是否存在符合条件的字段, 如果没有， 则判断该项是否存在children
+          if (item.departmentName.indexOf(value) == -1) {
+            // 若存在children,则重新调用
+            if (item.children.length > 0) {
+              handleData(item.children, value)
+            }
+          } else {
+            arr.push(item)
+          }
+        })
+      }
+      handleData(list, value)
+      console.log(arr)
+      return arr
+    }
 
-getDepartmentList().then(res => {
-  tableData.value = res
-})
+    // 重置搜索框
+    const resetFn = () => {
+      data.queryParams = {
+        pageSize: 1,
+        pageNum: 10
+      };
+      getList(data.queryParams);
+    };
 
-// 重置
-const resetBtn = () => {
-  selectName.value = ''
-  getDepartmentList().then(res => {
-    tableData.value = res
-  })
-}
 
-// 提交表单
-const confirm = () => {
-  if (Object.keys(selected.value).length) {
-    updateDepartment({
-      ...selected.value,
-      ...form.value
-    })
-      .then()
-      .finally(() => {
-        selected.value = ''
-      })
-  } else {
-    addDepartment(form).then(() => {
-      getPermissionList()
-    })
-  }
+    const loading = ref(true);
 
-  dialogFormVisible.value = false
-}
+    // 查询部门列表信息
+    const departmentList = ref([]);
+    const getList = (value) => {
+      loading.value = true;
+      getDepartmentListTree(value).then((res) => {
+        departmentList.value = res;
+        loading.value = false;
+        if (value.departmentName) {
+          console.log(value.departmentName)
+          departmentList.value = handleTreeData(departmentList.value, value.departmentName)
+        }
+      });
+      getDepartmentListFn();
+    };
 
-// 删除确认
-const delConfirm = () => {
-  delDepartment(deleteId.value).then(() => {
-    getDepartmentList().then(res => {
-      tableData.value = res
-    })
-    tips.value = false
-    ElMessage({
-      type: 'info',
-      message: '删除成功'
-    })
-  })
-}
+    // 查询部门下拉框列表信息
+    const departmentListSelect = ref([]);
+    const getDepartmentListFn = () => {
+      getDepartmentList().then((res) => {
+        departmentListSelect.value = res;
+      });
+    };
 
-// 关闭弹窗的回调函数
-const handleDialogClose = () => {
-  form.value = {
-    permissionName: '',
-    description: '',
-    parentId: '',
-    parentName: ''
-  }
-  treeDatas.value = ''
-}
+    // 判断弹框类型 - 新增/修改
+    const dialogType = ref("1");
+    // 控制弹框是否显示
+    const dialogFormVisible = ref(false);
+    // 统一弹框宽度
+    const formLabelWidth = "140px";
+    // 弹框标题
+    const dialogTitle = ref("菜单");
+    // 选中回显的数据
+    // const treeData = ref(null);
+    const treeDatas = ref("");
+    // 弹框新增 / 修改弹框绑定数据
+    const form = ref({});
+    const defaultProps = {
+      children: "children",
+      label: "departmentName",
+    };
+    // 重置表单
+    const reset = () => {
+      form.value = {}
+      treeDatas.value = "";
+    };
+    // 选中弹框中的树形数据
+    const nodeOnclick = (e) => {
+      console.log(e);
+      form.value.parentId = e.departmentId;
+      // treeData.value = e.menuId;
+      treeDatas.value = e.departmentName;
+      proxy.$refs.selectTree.blur();
+    };
+    // 点击修改 - 新增按钮
+    const handleEdit = (type, index, data) => {
+      reset();
+      dialogFormVisible.value = true;
+      if (type === "1") {
+        dialogType.value = type;
+        console.log("新增 === ", type, index, data);
+        dialogTitle.value = "部门新增";
+      }
+      if (type === "2") {
+        dialogType.value = type;
+        console.log("修改 === ", type, index, data);
+        forEachDepartmentList(departmentList.value, data);
+        dialogTitle.value = "部门更新";
+        form.value = data
+      }
+    };
+    // 处理树形数据回显
+    const forEachDepartmentList = (list, data) => {
+      list.forEach((item) => {
+        console.log("item === ", item, "data === ", data)
+        if (data.parentId === 0) {
+          return (treeDatas.value = "总部");
+        } else {
+          const _obj = JSON.parse(JSON.stringify(item))
+          console.log(_obj.departmentId)
+          if (_obj.departmentId === data.parentId) {
+            return (treeDatas.value = _obj.departmentName);
+          } else {
+            console.log(_obj)
+            if (_obj.children) {
+              forEachDepartmentList(_obj.children, data)
+            }
+          }
+        }
+      });
+    };
+
+    // 点击删除按钮
+    const handleDelete = (type, index, data) => {
+      if (type === "2") {
+        ElMessageBox.confirm("确定删除本条数据？", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+            .then(() => {
+              delDepartment(data.departmentId)
+                  .then(() => {
+                    ElMessage({
+                      type: "success",
+                      message: "删除成功",
+                    });
+                    getList(data.queryParams);
+                  })
+                  .catch((err) => {
+                    return err;
+                  });
+            })
+            .catch(() => {
+              ElMessage({
+                type: "info",
+                message: "取消删除操作",
+              });
+            });
+      }
+    };
+    // 点击确定按钮
+    const handleOk = () => {
+      // 新增
+      if (dialogType.value === "1") {
+        console.log("调用新增接口");
+        addDepartment(form.value)
+            .then(() => {
+              getList(data.queryParams);
+            })
+            .catch(() => {
+              console.log("新增失败");
+            })
+            .finally(() => {
+              reset();
+              dialogFormVisible.value = false;
+            });
+      }
+      // 修改
+      if (dialogType.value === "2") {
+        console.log("调用修改接口");
+        updateDepartment(form.value)
+            .then(() => {
+              getList(data.queryParams);
+            })
+            .catch(() => {
+              console.log("修改失败");
+            })
+            .finally(() => {
+              reset();
+              dialogFormVisible.value = false;
+            });
+      }
+    };
+    // 点击取消按钮
+    const handleCancle = () => {
+      reset();
+      console.log("重置后的表单", form);
+      dialogFormVisible.value = false;
+    };
+    return {
+      departmentList,
+      data,
+      handleQuery,
+      resetFn,
+      handleEdit,
+      handleDelete,
+      dialogFormVisible,
+      dialogTitle,
+      formLabelWidth,
+      form,
+      defaultProps,
+      nodeOnclick,
+      treeDatas,
+      handleOk,
+      handleCancle,
+      departmentListSelect,
+    };
+  },
+};
 </script>
 
-<style lang="scss" scope>
-.permissionPage {
-  padding: 30px 100px;
-  box-sizing: border-box;
-  .search {
-    margin-top: 20px;
-    .searchName {
-      align-self: center;
-    }
-    .btn {
-      margin-left: 10px;
-    }
-    .btn:last-child {
-      margin-left: auto;
-    }
-  }
-  .table {
-    margin-top: 50px;
-  }
-  ::v-deep .el-select {
-    width: 550px;
-  }
+<style lang="scss" scoped>
+.menu-container {
+  padding: 16px;
+}
+
+.el-row {
+  margin: 0.5rem;
+}
+
+.el-button--text {
+  margin-right: 15px;
+}
+
+.el-select {
+  width: 300px;
+}
+
+.el-input {
+  width: 300px;
+}
+
+.dialog-footer button:first-child {
+  margin-right: 10px;
 }
 </style>

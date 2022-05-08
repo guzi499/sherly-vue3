@@ -8,14 +8,14 @@
  */
 import request from "@/utils/request";
 
-/**获取当前用户菜单 */
-export function getMenuList(data) {
-  return request({
-    url: "/generic/basic/menu",
-    method: "get",
-    data: data,
-  });
-}
+/**获取当前用户菜单下拉框 */
+// export function getMenuList(data) {
+//   return request({
+//     url: "/generic/basic/menu",
+//     method: "get",
+//     data: data,
+//   });
+// }
 
 /**菜单列表 */
 export function getMenu(data) {
