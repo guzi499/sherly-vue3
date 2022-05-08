@@ -44,7 +44,7 @@
       />
       <el-table-column label="图标" prop="icon" width="150" align="center" />
       <el-table-column label="排序" prop="sort" width="150" align="center" />
-      <el-table-column label="创建时间" prop="currentDate" align="center" />
+      <el-table-column label="创建时间" prop="createTime" align="center" />
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
           <el-button
@@ -252,22 +252,26 @@ export default {
         dialogType.value = type;
         console.log("修改 === ", type, index, data);
         dialogTitle.value = "修改菜单";
-        forEachMenuList(data);
+        forEachMenuList(menuList.value, data);
         form.value = data
       }
     };
     // 处理树形数据回显
-    const forEachMenuList = (data) => {
+    const forEachMenuList = (list, data) => {
       console.log(data)
-      menuList.value.forEach((item) => {
+      list.forEach((item) => {
         console.log(item)
         if (data.parentId === 0) {
           return (treeDatas.value = "主目录");
-        }
-        if (data.parentId !== 0) {
-          console.log(item)
-          if (item.menuId === data.parentId) {
-            return (treeDatas.value = item.menuName);
+        } else {
+          const _obj = JSON.parse(JSON.stringify(item))
+          if (_obj.menuId === data.parentId) {
+            return (treeDatas.value = _obj.menuName);
+          } else {
+            console.log(_obj)
+            if (_obj.children) {
+              forEachMenuList(_obj.children, data)
+            }
           }
         }
       });
