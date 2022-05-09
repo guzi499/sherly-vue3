@@ -100,6 +100,18 @@
         >
           <el-input v-model="form.description"></el-input>
         </el-form-item>
+        <el-form-item
+            label="排序"
+            :label-width="formLabelWidth"
+            prop="description"
+        >
+          <el-input-number
+              v-model="form.sort"
+              :min="1"
+              controls-position="right"
+              size="large"
+          />
+        </el-form-item>
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="handleCancle">取消</el-button>
           <el-button type="primary" @click="handleOk">确定</el-button>
