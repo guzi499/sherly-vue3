@@ -62,7 +62,7 @@
     </el-table>
     <!-- 新增 / 编辑 弹框 -->
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
-      <el-form :model="form">
+      <el-form :model="form" :rules="formRules" ref="ruleFormRef">
         <el-form-item
             label="父级部门"
             :label-width="formLabelWidth"
@@ -103,7 +103,7 @@
         <el-form-item
             label="排序"
             :label-width="formLabelWidth"
-            prop="description"
+            prop="sort"
         >
           <el-input-number
               v-model="form.sort"
@@ -126,7 +126,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {reactive, ref, onMounted, getCurrentInstance} from "vue";
 import {getDepartmentListTree, addDepartment, delDepartment, updateDepartment} from "@/api/system/department";
 import {getDepartmentList} from "@/api/general.js";
-
+// import type { FormInstance, FormRules } from 'element-plus'
 export default {
   setup() {
     const {proxy} = getCurrentInstance();
@@ -143,6 +143,30 @@ export default {
         pageSize: 10,
       }
     });
+
+    // 添加表单验证
+    // const ruleFormRef = ref<FormInstance>()
+    // const formRrules = reactive<FormRules>({
+    //   parentId: [
+    //     {required: true, message: '请选择父级部门', trigger: 'change'},
+    //     {min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur'},
+    //   ],
+    //   departmentName: [
+    //     {
+    //       required: true,
+    //       message: 'Please select Activity zone',
+    //       trigger: 'change',
+    //     },
+    //   ],
+    //   sort: [
+    //     {
+    //       type: 'date',
+    //       required: true,
+    //       message: 'Please pick a date',
+    //       trigger: 'change',
+    //     },
+    //   ]
+    // })
 
     // 根据查询条件搜索
     const handleQuery = () => {

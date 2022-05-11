@@ -65,6 +65,13 @@
     <!-- 新增 / 编辑 弹框 -->
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
       <el-form :model="form">
+        <el-form-item :label-width="formLabelWidth" prop="menuType" label="菜单类型">
+          <el-radio-group v-model="form.menuType">
+            <el-radio :label="1">目录</el-radio>
+            <el-radio :label="2">菜单</el-radio>
+            <el-radio :label="3">按钮</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item
             label="父级菜单"
             :label-width="formLabelWidth"
@@ -136,7 +143,7 @@ export default {
     console.log(proxy);
     onMounted(() => {
       getList(data.queryParams);
-      getMenuListFn();
+      // getMenuListFn();
     });
 
     const data = reactive({
@@ -154,7 +161,7 @@ export default {
 
     // 处理展示数据
     const handleTreeData = (list, value) => {
-      console.log(list, value)
+      // console.log(list, value)
       let arr = []
 
       const handleData = (list, value) => {
@@ -171,7 +178,7 @@ export default {
         })
       }
       handleData(list, value)
-      console.log(arr)
+      // console.log(arr)
       return arr
     }
 
@@ -244,6 +251,8 @@ export default {
       reset();
       dialogFormVisible.value = true;
       if (type === "1") {
+        form.value.parentId = 0
+        treeDatas.value = '主目录'
         dialogType.value = type;
         console.log("新增 === ", type, index, data);
         dialogTitle.value = "新增菜单";
@@ -258,9 +267,9 @@ export default {
     };
     // 处理树形数据回显
     const forEachMenuList = (list, data) => {
-      console.log(data)
+      // console.log(data)
       list.forEach((item) => {
-        console.log(item)
+        // console.log(item)
         if (data.parentId === 0) {
           return (treeDatas.value = "主目录");
         } else {
@@ -268,7 +277,7 @@ export default {
           if (_obj.menuId === data.parentId) {
             return (treeDatas.value = _obj.menuName);
           } else {
-            console.log(_obj)
+            // console.log(_obj)
             if (_obj.children) {
               forEachMenuList(_obj.children, data)
             }
@@ -342,7 +351,7 @@ export default {
     // 点击取消按钮
     const handleCancle = () => {
       reset();
-      console.log("重置后的表单", form);
+      // console.log("重置后的表单", form);
       dialogFormVisible.value = false;
     };
     return {
