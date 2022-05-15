@@ -9,7 +9,7 @@
 import request from "@/utils/request";
 
 /**获取当前用户菜单 */
-export function getDasicData(data) {
+export function getBasicData(data) {
   return request({
     url: "/generic/basic/data",
     method: "get",

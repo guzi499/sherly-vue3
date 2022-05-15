@@ -67,8 +67,12 @@
       <el-table-column prop="phone" label="手机号" width="180"/>
       <el-table-column prop="realName" label="姓名" width="180"/>
       <el-table-column prop="nickname" label="昵称" width="180"/>
-      <el-table-column prop="gender" label="性别" width="180"/>
-      <el-table-column prop="departmentId" label="部门" width="180"/>
+      <el-table-column prop="gender" label="性别" width="180">
+        <template #default="scope">
+          <span>{{ scope.row.gender === 1 ? '男' : '女' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="departmentName" label="部门" width="180"/>
       <el-table-column prop="enable" label="禁用状态" width="180">
         <template #default="scope">
           <el-switch
@@ -188,14 +192,20 @@ export default {
     // 搜索按钮
     const handleQuery = () => {
       console.log(data.queryParms)
+      getList(data.queryParms)
     }
 
-    // 重置按钮
-    const resetFn = () => {
+    // 重置
+    const reset = () => {
       data.queryParms = {
         pageNum: 1,
         pageSize: 10
       }
+    }
+
+    // 重置按钮
+    const resetFn = () => {
+      reset()
       console.log(data.queryParms)
       proxy.$refs.selectTree.treeSelectData = {}
       getList(data.queryParms)

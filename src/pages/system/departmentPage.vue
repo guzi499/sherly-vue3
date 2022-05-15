@@ -128,6 +128,7 @@ import {getDepartmentListTree, addDepartment, delDepartment, updateDepartment} f
 import {getDepartmentList} from "@/api/general.js";
 // import type { FormInstance, FormRules } from 'element-plus'
 export default {
+  name: 'departmentPage',
   setup() {
     const {proxy} = getCurrentInstance();
     console.log(proxy);

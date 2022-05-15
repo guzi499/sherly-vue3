@@ -1,14 +1,4 @@
 import request from '@/utils/request'
-
-/**获取登录基本信息 */
-export function getLoginInfo(query) {
-  return request({
-    url: '/generic/basic/data',
-    method: 'get',
-    params: query
-  })
-}
-
 /**获取公共菜单下拉框 */
 export function getMenuList(data) {
   return request({

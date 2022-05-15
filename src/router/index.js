@@ -11,14 +11,18 @@ import { ElNotification } from "element-plus";
 import Cookies from "js-cookie";
 import Config from "@/config";
 import store from "@/store";
-import { getDasicData } from "@/api/system/generic";
+import {getBasicData} from "@/api/system/generic";
 import Layout from "@/layout/layoutBox.vue";
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title + " - " + Config.systemName;
     document.path = to.path;
-    Cookies.set("metaTitle", document.title);
+    const data = to.meta.title + " - " + to.path
+
+    // Cookies.set("metaTitle", document.title);
+    // Cookies.set("routePath", document.path);
+    Cookies.set("metaTitle", data);
     Cookies.set("routePath", document.path);
     store.dispatch("setTitle");
     store.dispatch("setRoutePath");
@@ -41,9 +45,11 @@ router.beforeEach((to, from, next) => {
 });
 
 const loadRouter = (to, next) => {
-  return getDasicData({ token: localStorage.getItem("token") }).then((res) => {
+  return getBasicData({token: localStorage.getItem("token")}).then((res) => {
     store.dispatch("user/setUserInfo", res);
     const MenuList = res.basicMenuInfoVO;
+    const userInfo = res.basicUserInfoVO; // 存储登录用户的真实名称
+    Cookies.set('userInfo', JSON.stringify(userInfo))
     addRoute(formatRouter(MenuList));
     // 判断去跳转的路由是否注册
     if (!router.getRoutes().find((i) => i.path === to.path)) {

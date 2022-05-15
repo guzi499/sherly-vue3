@@ -17,6 +17,12 @@ export default {
       data,
     });
   },
+  logout() {
+    return request({
+      url: "/logout",
+      method: "get",
+    });
+  },
   getSetting(data) {
     return request({
       url: "/seting",

@@ -3,17 +3,19 @@
  * @Date: 2022-04-01 23:26:42
  * @LastEditTime: 2022-04-19 11:16:18
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
 -->
 <template>
   <div class="TagsView-wrapper">
     <el-dropdown trigger="contextmenu">
-      <el-scrollbar class="scrollbar_inner">
-        <p class="scrollbar-demo-item">
-          <i>首页</i>
-          <i class="close" @click="handleCloseRoute">x</i>
-        </p>
+      <el-scrollbar>
+        <div class="scrollbar-flex-content">
+          <p v-for="item in metaTitle" :key="item" class="scrollbar-demo-item">
+            <a :href="(item.title).split('-')[1]">{{ (item.title).split('-')[0] }}</a>
+            <a href="javascript:;" class="close" @click="handleCloseRoute">x</a>
+          </p>
+        </div>
       </el-scrollbar>
       <template #dropdown>
         <el-dropdown-menu>
@@ -29,17 +31,30 @@
   </div>
 </template>
 <script>
+import {useStore} from 'vuex'
+import Cookies from 'js-cookie'
+
 export default {
   setup() {
+    const store = useStore()
+    const metaTitle = (store.state.tagViews.metaTitle)
+    console.log(metaTitle[0].title.split('-'))
     // 点击关闭存储的路由
     const handleCloseRoute = () => {
       console.log("关闭");
+      // 点击关闭时清除浏览器缓存信息
+      Cookies.remove("metaTitle")
+      location.reload()
     };
-    return { handleCloseRoute };
+    return {handleCloseRoute, metaTitle};
   },
 };
 </script>
 <style lang="scss" scoped>
+a {
+  text-decoration: none;
+}
+
 .TagsView-wrapper {
   width: 100%;
   padding: 8px;
@@ -47,30 +62,23 @@ export default {
   background: #fff;
   box-shadow: 0 1px 3px 0 #0000001f, 0 0 3px 0 #0000000a;
   border-bottom: 1px solid #d8dce5;
+
+  .scrollbar-flex-content {
+    display: flex;
+  }
+
   .scrollbar-demo-item {
-    cursor: pointer;
-    i {
-      font-style: normal;
-      font-size: 0.5rem;
-    }
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    width: 4rem;
-    height: 1.3rem;
-    margin: 0.1rem;
-    border-radius: 0.3rem;
-    background-color: #8cc5ff;
-    .close {
-      width: 1rem;
-      height: 1rem;
-      text-align: center;
-      line-height: 1rem;
-    }
-    .close:hover {
-      font-size: 1rem;
-    }
+    width: 90px;
+    height: 30px;
+    margin: 10px;
+    text-align: center;
+    border-radius: 4px;
+    background: var(--el-color-danger-light-9);
+    color: var(--el-color-danger);
   }
 }
 </style>

@@ -3,7 +3,7 @@
  * @Date: 2022-04-01 23:17:57
  * @LastEditTime: 2022-04-19 11:16:39
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
 -->
 <template>
@@ -26,13 +26,13 @@
     <div class="header_right">
       <el-row>
         <el-avatar
-          :size="sizeList"
-          :src="circleUrl"
-          style="margin-right: 0.5rem"
+            size="small"
+            :src="userInfo.avatar"
+            style="margin-right: 0.5rem"
         />
         <el-dropdown style="margin: auto 0">
           <span class="el-dropdown-link">
-            个人中心
+            {{ userInfo.realName }}
             <el-icon class="el-icon--right">
               <arrow-down />
             </el-icon>
@@ -40,8 +40,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>个人中心</el-dropdown-item>
-              <el-dropdown-item>修改资料</el-dropdown-item>
-              <el-dropdown-item>退出登录</el-dropdown-item>
+              <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -50,11 +49,23 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs, ref } from "vue";
+import {reactive, ref} from "vue";
 import Config from "@/config";
+import {useRouter} from "vue-router"
+import {useStore} from "vuex"
+import Cookies from "js-cookie";
+import server from '@/api/login.js'
+
 export default {
   setup() {
+    /**用户姓名 */
+    const userInfo = JSON.parse(Cookies.get('userInfo')) || ""
+    console.log(userInfo)
+
     const config = ref(Config);
+    const router = useRouter()
+    const Store = useStore()
+    console.log(Store.state.router.menuList)
     /**控制头部按钮的切换 */
     const datas = reactive({
       isShow: 0,
@@ -63,14 +74,19 @@ export default {
       datas.isShow == 0 ? (datas.isShow = 1) : (datas.isShow = 0);
     };
 
-    /**头像 */
-    const state = reactive({
-      circleUrl:
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      sizeList: "small",
-    });
-    const { circleUrl, sizeList } = toRefs(state);
-    return { datas, handleSide, circleUrl, sizeList, config };
+
+    // 退出登录
+    const logout = () => {
+      server.logout().then(() => {
+        Cookies.remove('phone')
+        Cookies.remove('metaTitle')
+        Cookies.remove('userInfo')
+        Cookies.remove('routePath')
+        Cookies.remove('password')
+        router.push('/login')
+      })
+    }
+    return {datas, handleSide, config, userInfo, logout};
   },
 };
 </script>

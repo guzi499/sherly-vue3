@@ -10,7 +10,7 @@
   <div class="sherly-page">
     <div class="login-layout">
       <div class="login-layout-left">
-        <img src="../../assets/sherlyLogo.jpg" alt="" />
+        <img src="../../assets/sherly-logo.png" alt="" />
       </div>
       <div class="login-layout-dividing" />
       <div class="login-layout-right">

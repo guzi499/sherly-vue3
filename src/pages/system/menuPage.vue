@@ -138,6 +138,7 @@ import {addMenu, delMenu, updateMenu} from "@/api/system/menu";
 import {getMenuList} from "@/api/general.js";
 
 export default {
+  name: 'departmentPage',
   setup() {
     const {proxy} = getCurrentInstance();
     console.log(proxy);

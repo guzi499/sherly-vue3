@@ -3,7 +3,7 @@
  * @Date: 2022-04-09 11:49:55
  * @LastEditTime: 2022-04-26 17:48:06
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/rolePage.vue
 -->
 <template>
@@ -127,7 +127,6 @@ import {
   getOneRole,
 } from "@/api/system/role";
 import { getMenu } from "@/api/system/menu";
-import { getPermissionTree } from "@/api/system/permission";
 import SherlyTable from "@/components/SherlyTable.vue";
 
 export default {
@@ -180,7 +179,6 @@ export default {
     onMounted(() => {
       handleGetRoleLists();
       handleGetMenuTree();
-      handleGetPermissionTree();
     });
 
     // 获取角色列表
@@ -197,15 +195,6 @@ export default {
       data.forEach((i) => {
         menuTree.push(i);
       });
-    };
-
-    // 获取权限树
-    const handleGetPermissionTree = async () => {
-      const data = await getPermissionTree();
-      data.forEach((i) => {
-        permissionTree.push(i);
-      });
-      console.log(permissionTree);
     };
 
     // 修改当前分页页码
