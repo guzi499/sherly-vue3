@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-09 11:49:55
- * @LastEditTime: 2022-04-26 17:48:06
+ * @LastEditTime: 2022-05-23 00:07:12
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/rolePage.vue
@@ -88,21 +88,6 @@
               default-expand-all
               :default-checked-keys="roleForm.menuIds"
               @check-change="handleMenuTreeCheckChange"
-            /></div
-        ></el-tab-pane>
-        <el-tab-pane label="接口权限" name="permission"
-          ><div class="tree-box">
-            <el-tree
-              :data="permissionTree"
-              show-checkbox
-              node-key="permissionId"
-              :props="{
-                children: 'children',
-                label: 'permissionName',
-              }"
-              default-expand-all
-              :default-checked-keys="roleForm.permissionIds"
-              @check-change="handlePermissionTreeCheckChange"
             /></div
         ></el-tab-pane>
       </el-tabs>
@@ -219,6 +204,7 @@ export default {
     // 重置搜素
     const handleReset = () => {
       resetFormData.value.resetFields();
+      handleGetRoleLists();
     };
 
     // 添加角色

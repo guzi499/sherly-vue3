@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-04-15 16:06:53
+ * @LastEditTime: 2022-05-23 00:08:48
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/login/loginPage.vue
@@ -17,20 +17,6 @@
         <div class="login-layout-right-title">登录</div>
         <div class="login-layout-right-formbox">
           <el-form :model="loginForm">
-<!--            <el-form-item>-->
-<!--              <el-input-->
-<!--                class="login-layout-right-input"-->
-<!--                v-model="loginForm.tenantCode"-->
-<!--                placeholder="请输入租户账号"-->
-<!--                clearable-->
-<!--              >-->
-<!--                <template #prefix>-->
-<!--                  <el-icon class="input-prefix-icon" color="#000">-->
-<!--                    <key />-->
-<!--                  </el-icon>-->
-<!--                </template>-->
-<!--              </el-input>-->
-<!--            </el-form-item>-->
             <el-form-item>
               <el-input
                 class="login-layout-right-input"
@@ -88,7 +74,6 @@ import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import server from "@/api/login";
 import Cookies from "js-cookie";
-import Config from "@/config";
 
 export default {
   setup() {
@@ -96,37 +81,19 @@ export default {
     let loginForm = reactive({
       phone: "",
       password: "",
-      // rememberMe: false,
-      // tenantCode: "",
-      // uuid: "",
     });
     onMounted(() => {
       getCookie();
     });
     const login = () => {
       server.login(loginForm).then((res) => {
-        Cookies.set("phone", loginForm.phone, {
-          expires: Config.passCookieExpires,
-        });
-        Cookies.set("password", loginForm.password, {
-          expires: Config.passCookieExpires,
-        });
-        // Cookies.set("tenantCode", loginForm.tenantCode, {
-        //   expires: Config.passCookieExpires,
-        // });
         localStorage.setItem("token", res.token);
         router.push({ path: "/home" });
       });
     };
     const getCookie = () => {
       const phone = Cookies.get("phone");
-      // let password = Cookies.get("password");
-      // const tenantCode = Cookies.get("tenantCode");
       loginForm.phone = phone === undefined ? loginForm.phone : phone;
-      // loginForm.password =
-      //   password === undefined ? loginForm.password : password;
-      // loginForm.tenantCode =
-      //   tenantCode === undefined ? loginForm.tenantCode : tenantCode;
     };
     return { loginForm, login, getCookie };
   },

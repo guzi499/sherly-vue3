@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-05-06 22:49:26
+ * @LastEditTime: 2022-05-23 00:10:11
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -10,7 +10,7 @@
 import axios from "axios";
 import Config from "@/config";
 import { ElNotification } from "element-plus";
-const axiosLnstance = axios.create({
+const axiosInstance = axios.create({
   timeout: Config.timeout,
   baseURL:
     process.env.NODE_ENV === "production"
@@ -19,7 +19,7 @@ const axiosLnstance = axios.create({
 });
 
 // 添加请求拦截器
-axiosLnstance.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
     config.headers["Content-Type"] = "application/json";
@@ -44,7 +44,7 @@ axiosLnstance.interceptors.request.use(
 );
 
 // 添加响应拦截器
-axiosLnstance.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
     // 对响应数据做点什么
     if (response.status === 200 && response.data.code === "000000") {
@@ -71,4 +71,4 @@ axiosLnstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-export default axiosLnstance;
+export default axiosInstance;
