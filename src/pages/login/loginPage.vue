@@ -10,23 +10,25 @@
   <div class="sherly-page">
     <div class="login-layout">
       <div class="login-layout-left">
-        <img src="../../assets/sherly-logo.png" alt="" />
+        <!--        <img src="../../assets/sherly-logo.png" alt="" />-->
+        <img src="../../assets/sherly-logo-simple.png" alt=""/>
       </div>
-      <div class="login-layout-dividing" />
+<!--      <div class="login-layout-dividing" />-->
       <div class="login-layout-right">
-        <div class="login-layout-right-title">登录</div>
+        <div class="login-layout-right-title">账号密码登录</div>
         <div class="login-layout-right-formbox">
-          <el-form :model="loginForm">
+          <el-form :model="loginForm" class="login-layout-right-formbox-elForm">
             <el-form-item>
               <el-input
-                class="login-layout-right-input"
-                v-model="loginForm.phone"
-                placeholder="请输入手机号"
-                clearable
+                  class="login-layout-right-input"
+                  v-model="loginForm.phone"
+                  placeholder="请输入手机号"
+                  clearable
+                  @keyup.enter="login()"
               >
                 <template #prefix>
                   <el-icon class="input-prefix-icon" color="#000">
-                    <avatar />
+                    <avatar/>
                   </el-icon>
                 </template>
               </el-input>
@@ -39,6 +41,7 @@
                 type="password"
                 show-password
                 clearable
+                @keyup.enter="login()"
               >
                 <template #prefix>
                   <el-icon class="input-prefix-icon" color="#000"
@@ -60,11 +63,15 @@
                 </template>
               </el-input>
             </el-form-item> -->
+            <el-form-item>
+              <el-button class="login-layout-right-button" @click="login()"
+              >登录
+              </el-button
+              >
+            </el-form-item>
           </el-form>
         </div>
-        <el-button class="login-layout-right-button" @click="login()"
-          >登录</el-button
-        >
+
       </div>
     </div>
   </div>
@@ -102,7 +109,9 @@ export default {
 
 <style lang="scss" scoped>
 .sherly-page {
-  background: #459cc0;
+  //background: #459cc0;
+  background: url("@/assets/images/bg_img.png");
+  background-size: 100% 100%;
 }
 .login-layout {
   position: fixed;
@@ -110,32 +119,39 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
   box-shadow: var(--el-box-shadow-lighter);
-  width: 800px;
+  width: 900px;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 2fr 1fr;
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  padding: 12rpx;
+
   &-left {
-    width: 400px;
+    background: url("@/assets/images/bg_img.png");
+    background-size: 100% 100%;
+    width: 100%;
     height: 380px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     img {
-      width: 100%;
-      height: 100%;
+      width: 400px;
+      //height: 100%;
       display: block;
     }
   }
-  &-dividing {
-    width: 1px;
-    background: #ddd;
-    margin: 12px;
-  }
+  //&-dividing {
+  //  width: 1px;
+  //  background: #ddd;
+  //  margin: 12px 0;
+  //}
   &-right {
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding: 24px 0;
+    padding: 24px 12px;
     &/deep/ .el-input__inner {
       box-shadow: none;
       border-radius: 0;
@@ -144,12 +160,20 @@ export default {
     &-title {
       font-weight: 500;
       text-align: center;
-      font-size: 36px;
-      line-height: 36px;
+      font-size: 24px;
+      line-height: 24px;
       margin-bottom: 24px;
     }
     &-formbox {
       flex: 1;
+
+      &-elForm {
+        width: 100%;
+        height: 70%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
     }
     &-input {
       width: 280px;

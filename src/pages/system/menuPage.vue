@@ -31,26 +31,32 @@
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column
-        label="菜单名称"
-        prop="menuName"
-        sortable
-        width="230"
+          label="菜单名称"
+          prop="menuName"
+          sortable
+          width="230"
       />
       <el-table-column
-        label="菜单路径"
-        prop="link"
-        width="230"
-        align="center"
+          label="菜单路径"
+          prop="link"
+          width="230"
+          align="center"
       />
-      <el-table-column label="图标" prop="icon" width="150" align="center" />
-      <el-table-column label="排序" prop="sort" width="150" align="center" />
-      <el-table-column label="创建时间" prop="createTime" align="center" />
+      <el-table-column
+          label="权限"
+          prop="permission"
+          width="230"
+          align="center"
+      />
+      <el-table-column label="图标" prop="icon" width="150" align="center"/>
+      <el-table-column label="排序" prop="sort" width="150" align="center"/>
+      <el-table-column label="创建时间" prop="createTime" align="center"/>
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
           <el-button
-            type="primary"
-            size="small"
-            @click="handleEdit('2', scope.$index, scope.row)"
+              type="primary"
+              size="small"
+              @click="handleEdit('2', scope.$index, scope.row)"
             >修改
           </el-button>
           <el-button
@@ -97,30 +103,40 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="菜单名称"
-          :label-width="formLabelWidth"
-          prop="menuName"
+            label="菜单名称"
+            :label-width="formLabelWidth"
+            prop="menuName"
         >
           <el-input v-model="form.menuName"></el-input>
         </el-form-item>
         <el-form-item
-          label="菜单路径"
-          :label-width="formLabelWidth"
-          prop="link"
+            label="权限"
+            :label-width="formLabelWidth"
+            prop="permission"
+            v-if="form.menuType !== 1"
+        >
+          <el-input v-model="form.permission"></el-input>
+        </el-form-item>
+        <el-form-item
+            label="菜单路径"
+            :label-width="formLabelWidth"
+            prop="link"
+            v-if="form.menuType == 2"
         >
           <el-input v-model="form.link"></el-input>
         </el-form-item>
-        <el-form-item label="图标" :label-width="formLabelWidth" prop="icon">
+        <el-form-item label="图标" :label-width="formLabelWidth" prop="icon" v-if="form.menuType !== 3">
           <el-input v-model="form.icon"></el-input>
         </el-form-item>
         <el-form-item label="排序" :label-width="formLabelWidth" prop="sort">
           <el-input-number
-            v-model="form.sort"
-            :min="1"
-            controls-position="right"
-            size="large"
+              v-model="form.sort"
+              :min="1"
+              controls-position="right"
+              size="large"
           />
         </el-form-item>
+
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="handleCancle">取消</el-button>
           <el-button type="primary" @click="handleOk">确定</el-button>
@@ -138,7 +154,7 @@ import {addMenu, delMenu, updateMenu} from "@/api/system/menu";
 import {getMenuList} from "@/api/general.js";
 
 export default {
-  name: 'departmentPage',
+  name: 'menuPage',
   setup() {
     const {proxy} = getCurrentInstance();
     console.log(proxy);
@@ -252,6 +268,7 @@ export default {
       reset();
       dialogFormVisible.value = true;
       if (type === "1") {
+        form.value.menuType = 1
         form.value.parentId = 0
         treeDatas.value = '主目录'
         dialogType.value = type;
