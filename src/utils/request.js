@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-05-23 00:10:11
+ * @LastEditTime: 2022-05-29 00:11:55
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -22,7 +22,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
-    config.headers["Content-Type"] = "application/json";
+    config.headers["Content-Type"] = config.responseType || "application/json";
     if (localStorage.getItem("token")) {
       config.headers["token"] = localStorage.getItem("token");
     }
