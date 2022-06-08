@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-18 09:52:49
- * @LastEditTime: 2022-05-06 22:33:03
+ * @LastEditTime: 2022-06-08 23:26:27
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/api/system/user.js
@@ -57,5 +57,14 @@ export function pageUser(data) {
     url: "/user/list/page",
     method: "get",
     data: data,
+  });
+}
+
+/**用户导出 */
+export function exportUser() {
+  return request({
+    url: "/user/list/export",
+    method: "get",
+    responseType: "blob",
   });
 }
