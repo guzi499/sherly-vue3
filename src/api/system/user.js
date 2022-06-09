@@ -34,7 +34,7 @@ export function updataUser(data) {
   });
 }
 
-// 删除菜单
+// 用户删除
 export function delMenu(userId) {
   return request({
     url: "/user/remove/one?userId=" + userId,
@@ -56,7 +56,7 @@ export function pageUser(data) {
   return request({
     url: "/user/list/page",
     method: "get",
-    data: data,
+    params: data,
   });
 }
 
