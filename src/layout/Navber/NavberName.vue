@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-04-19 11:16:39
+ * @LastEditTime: 2022-06-12 19:52:07
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
@@ -26,9 +26,9 @@
     <div class="header_right">
       <el-row>
         <el-avatar
-            size="small"
-            :src="userInfo.avatar"
-            style="margin-right: 0.5rem"
+          size="small"
+          :src="userInfo.avatar"
+          style="margin-right: 0.5rem"
         />
         <el-dropdown style="margin: auto 0">
           <span class="el-dropdown-link">
@@ -49,23 +49,18 @@
   </div>
 </template>
 <script>
-import {reactive, ref} from "vue";
+import { reactive, ref } from "vue";
 import Config from "@/config";
-import {useRouter} from "vue-router"
-import {useStore} from "vuex"
+import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
-import server from '@/api/login.js'
+import server from "@/api/login.js";
 
 export default {
   setup() {
     /**用户姓名 */
-    const userInfo = JSON.parse(Cookies.get('userInfo')) || ""
-    console.log(userInfo)
-
+    const userInfo = JSON.parse(Cookies.get("userInfo")) || "";
     const config = ref(Config);
-    const router = useRouter()
-    const Store = useStore()
-    console.log(Store.state.router.menuList)
+    const router = useRouter();
     /**控制头部按钮的切换 */
     const datas = reactive({
       isShow: 0,
@@ -74,19 +69,18 @@ export default {
       datas.isShow == 0 ? (datas.isShow = 1) : (datas.isShow = 0);
     };
 
-
     // 退出登录
     const logout = () => {
       server.logout().then(() => {
-        Cookies.remove('phone')
-        Cookies.remove('metaTitle')
-        Cookies.remove('userInfo')
-        Cookies.remove('routePath')
-        Cookies.remove('password')
-        router.push('/login')
-      })
-    }
-    return {datas, handleSide, config, userInfo, logout};
+        Cookies.remove("phone");
+        Cookies.remove("metaTitle");
+        Cookies.remove("userInfo");
+        Cookies.remove("routePath");
+        Cookies.remove("password");
+        router.push("/login");
+      });
+    };
+    return { datas, handleSide, config, userInfo, logout };
   },
 };
 </script>

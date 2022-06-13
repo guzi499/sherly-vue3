@@ -1,53 +1,57 @@
+<!--
+ * @Author: lihaoyu
+ * @Date: 2022-05-06 21:29:37
+ * @LastEditTime: 2022-06-14 01:34:30
+ * @LastEditors: lihaoyu
+ * @Description: 
+ * @FilePath: /sherly-vue3/src/components/TreeSelect.vue
+-->
 <template>
   <div>
     <el-select
-        ref="selectTree"
-        v-model="treeSelectData.parentId"
-        placeholder="请选择"
+      ref="selectTree"
+      v-model="treeSelectData.parentId"
+      placeholder="请选择"
     >
       <el-option
-          hidden
-          :value="treeSelectData.parentId"
-          :label="treeSelectData.treeDatas"
+        hidden
+        :value="treeSelectData.parentId"
+        :label="treeSelectData.treeDatas"
       ></el-option>
       <el-tree
-          :data="treeList"
-          :props="defaultProps"
-          :expand-on-click-node="false"
-          @node-click="nodeOnclick"
+        :data="treeList"
+        :props="defaultProps"
+        :expand-on-click-node="false"
+        @node-click="nodeOnclick"
       />
     </el-select>
   </div>
 </template>
 
 <script>
-import {reactive, toRefs, getCurrentInstance} from 'vue'
+import { reactive, toRefs, getCurrentInstance } from "vue";
 export default {
   props: {
     treeList: Array,
     defaultProps: Object,
   },
-  setup(props, {emit}) {
-    const {proxy} = getCurrentInstance();
+  setup(props, { emit }) {
+    const { proxy } = getCurrentInstance();
     const data = reactive({
-      treeSelectData:{
+      treeSelectData: {
         parentId: null,
-        treeDatas: ''
-      }
-    })
-    console.log('props === ', props)
+        treeDatas: "",
+      },
+    });
     const nodeOnclick = (e) => {
-      console.log(e)
       data.treeSelectData.parentId = e.parentId;
       data.treeSelectData.treeDatas = e.departmentName;
-      emit('treeSelectList', e)
+      emit("treeSelectList", e);
       proxy.$refs.selectTree.blur();
     };
-    return {...toRefs(data), nodeOnclick}
-  }
-}
+    return { ...toRefs(data), nodeOnclick };
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

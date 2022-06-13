@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-05-07 00:30:45
+ * @LastEditTime: 2022-06-14 01:33:54
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -11,21 +11,15 @@ import { ElNotification } from "element-plus";
 import Cookies from "js-cookie";
 import Config from "@/config";
 import store from "@/store";
-import {getBasicData} from "@/api/system/generic";
+import { getBasicData } from "@/api/system/generic";
 import Layout from "@/layout/layoutBox.vue";
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title + " - " + Config.systemName;
-    document.path = to.path;
-    const data = to.meta.title + " - " + to.path
-
-    // Cookies.set("metaTitle", document.title);
-    // Cookies.set("routePath", document.path);
+    const data = to.meta.title + " - " + to.path;
     Cookies.set("metaTitle", data);
-    Cookies.set("routePath", document.path);
     store.dispatch("setTitle");
-    store.dispatch("setRoutePath");
   }
 
   //登录页面时不加载动态菜单
@@ -45,11 +39,11 @@ router.beforeEach((to, from, next) => {
 });
 
 const loadRouter = (to, next) => {
-  return getBasicData({token: localStorage.getItem("token")}).then((res) => {
+  return getBasicData({ token: localStorage.getItem("token") }).then((res) => {
     store.dispatch("user/setUserInfo", res);
     const MenuList = res.basicMenuInfoVO;
     const userInfo = res.basicUserInfoVO; // 存储登录用户的真实名称
-    Cookies.set('userInfo', JSON.stringify(userInfo))
+    Cookies.set("userInfo", JSON.stringify(userInfo));
     addRoute(formatRouter(MenuList));
     // 判断去跳转的路由是否注册
     if (!router.getRoutes().find((i) => i.path === to.path)) {

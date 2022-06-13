@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-09 11:49:55
- * @LastEditTime: 2022-05-23 00:07:12
+ * @LastEditTime: 2022-06-14 01:36:15
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/rolePage.vue
@@ -251,7 +251,6 @@ export default {
 
     // 修改权限树选中
     const handlePermissionTreeCheckChange = (data, checked) => {
-      console.log(data);
       if (checked) {
         roleForm.permissionIds.push(toRaw(data).permissionId);
       } else {
