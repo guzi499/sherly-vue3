@@ -43,11 +43,10 @@ export function delMenu(userId) {
 }
 
 /**用户禁用 - 解禁 */
-export function disableUser(data) {
+export function disableUser(userId, enable) {
   return request({
-    url: "/user/ban/one",
-    method: "put",
-    data: data,
+    url: `/user/ban/one?userId=${userId}&&enable=${enable}`,
+    method: "put"
   });
 }
 
