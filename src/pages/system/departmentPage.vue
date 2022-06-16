@@ -24,6 +24,7 @@
       style="width: 100%; margin-bottom: 20px"
       row-key="departmentId"
       lazy
+      :default-expand-all="true"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column label="部门名称" prop="departmentName"/>

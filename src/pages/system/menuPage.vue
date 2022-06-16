@@ -24,6 +24,7 @@
       style="width: 100%; margin-bottom: 20px"
       row-key="menuId"
       lazy
+      :default-expand-all="true"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column label="菜单名称" prop="menuName" sortable width="230" />
