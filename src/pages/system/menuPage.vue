@@ -58,11 +58,11 @@
     </el-table>
     <!-- 新增 / 编辑 弹框 -->
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
-      <el-form :model="form">
+      <el-form :model="form" :rules="rules" ref="ruleForm">
         <el-form-item
-          :label-width="formLabelWidth"
-          prop="menuType"
-          label="菜单类型"
+            :label-width="formLabelWidth"
+            prop="menuType"
+            label="菜单类型"
         >
           <el-radio-group v-model="form.menuType">
             <el-radio :label="1">目录</el-radio>
@@ -136,7 +136,7 @@
 
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="handleCancle">取消</el-button>
-          <el-button type="primary" @click="handleOk">确定</el-button>
+          <el-button type="primary" @click="handleOk('ruleForm')">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -219,6 +219,31 @@ export default {
       getMenuListFn();
     };
 
+    // 弹框添加校验效果
+    const rules = {
+      menuType: [
+        {required: true, message: '请选择菜单类型', trigger: 'change'}
+      ],
+      parentId: [
+        {required: true, message: '请选择父级菜单', trigger: 'change'}
+      ],
+      menuName: [
+        {required: true, message: '请输入菜单名称', trigger: 'blur'}
+      ],
+      // permission: [
+      //   { required: true, message: '请输入权限标识', trigger: 'blur' }
+      // ],
+      link: [
+        {required: true, message: '请输入菜单路径', trigger: 'blur'}
+      ],
+      // icon: [
+      //   { required: true, message: '请选择活动资源', trigger: 'change' }
+      // ],
+      sort: [
+        {required: true, message: '请输入排序', trigger: 'blur'}
+      ]
+    }
+
     // 查询菜单下拉框列表信息
     const menuListSelect = ref([]);
     const getMenuListFn = () => {
@@ -239,7 +264,9 @@ export default {
     // const treeData = ref(null);
     const treeDatas = ref("");
     // 弹框新增 / 修改弹框绑定数据
-    const form = ref({});
+    const form = ref({
+
+    });
     const defaultProps = {
       children: "children",
       label: "menuName",
@@ -248,6 +275,9 @@ export default {
     const reset = () => {
       form.value = {};
       treeDatas.value = "";
+      setTimeout(() => {
+        proxy.$refs.ruleForm.resetFields()
+      }, 50)
     };
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
@@ -259,7 +289,6 @@ export default {
     // 点击修改 - 新增按钮
     const handleEdit = (type, index, data) => {
       reset();
-      dialogFormVisible.value = true;
       if (type === "1") {
         form.value.menuType = 1;
         form.value.parentId = 0;
@@ -273,6 +302,7 @@ export default {
         forEachMenuList(menuList.value, data);
         form.value = data;
       }
+      dialogFormVisible.value = true;
     };
     // 处理树形数据回显
     const forEachMenuList = (list, data) => {
@@ -312,40 +342,51 @@ export default {
                 return err;
               });
           })
-          .catch(() => {
-            ElMessage({
-              type: "info",
-              message: "取消删除操作",
+            .catch(() => {
+              ElMessage({
+                type: "info",
+                message: "取消删除操作",
+              });
             });
-          });
       }
     };
     // 点击确定按钮
-    const handleOk = () => {
-      // 新增
-      if (dialogType.value === "1") {
-        addMenu(form.value)
-          .then(() => {
-            getList(data.queryParams);
-          })
-          .catch(() => {})
-          .finally(() => {
-            reset();
-            dialogFormVisible.value = false;
-          });
-      }
-      // 修改
-      if (dialogType.value === "2") {
-        updateMenu(form.value)
-          .then(() => {
-            getList(data.queryParams);
-          })
-          .catch(() => {})
-          .finally(() => {
-            reset();
-            dialogFormVisible.value = false;
-          });
-      }
+    const handleOk = (formName) => {
+      proxy.$refs[formName].validate((valid) => {
+        if (valid) {
+          // 新增
+          if (dialogType.value === "1") {
+            addMenu(form.value)
+                .then(() => {
+                  getList(data.queryParams);
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                  reset();
+                  dialogFormVisible.value = false;
+                });
+          }
+          // 修改
+          if (dialogType.value === "2") {
+            updateMenu(form.value)
+                .then(() => {
+                  getList(data.queryParams);
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                  reset();
+                  dialogFormVisible.value = false;
+                });
+          }
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+
+
     };
     // 点击取消按钮
     const handleCancle = () => {
@@ -370,6 +411,7 @@ export default {
       handleOk,
       handleCancle,
       menuListSelect,
+      rules
     };
   },
 };
