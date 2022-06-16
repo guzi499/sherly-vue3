@@ -215,7 +215,8 @@ import {
   updataUser,
   addUser,
   delMenu,
-  disableUser
+  disableUser,
+  getUserId
 } from "@/api/system/user.js";
 import { ElMessage, ElMessageBox } from "element-plus";
 
@@ -251,6 +252,7 @@ export default {
 
     // 搜索按钮
     const handleQuery = () => {
+      data.queryParams.current = 1
       getList();
     };
 
@@ -269,6 +271,10 @@ export default {
         parentId: null,
         treeDatas: ""
       };
+      // proxy.$refs.ruleForm.resetFields();
+     setTimeout(() => {
+       proxy.$refs.ruleForm.resetFields()
+     }, 50)
     };
 
     // 重置按钮
@@ -353,13 +359,18 @@ export default {
       console.log('新增 / 修改', data)
       resetform();
       type1.value = type;
-      dialogFormVisible.value = true;
       if (type === "1") {
         dialogTitle.value = "用户新增";
+        dialogFormVisible.value = true;
       }
       if (type === "2") {
         dialogTitle.value = "用户更新";
-        form.value = data;
+        getUserId(data.userId).then((res) => {
+          form.value = res;
+          form.value.departmentName = data.departmentName
+          dialogFormVisible.value = true;
+        })
+
       }
     };
 
@@ -399,7 +410,11 @@ export default {
       // ],
       phone: [
         { required: true, message: '请输入手机号码', trigger: 'blur' },
-        { min: 11, max: 11, message: '长度在 11 个字符', trigger: 'blur' }
+        { min: 11, max: 11, message: '请输入11位手机号码', trigger: 'blur' },
+        {
+          pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+          message: "请输入正确的手机号码",
+        }
       ],
       realName: [
         {required: true, message: '请输入姓名', trigger: 'blur'}
