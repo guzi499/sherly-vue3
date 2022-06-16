@@ -1,23 +1,19 @@
 <template>
   <div class="menu-container">
     <!-- 菜单搜索框 -->
-    <el-form>
-      <el-row>
-        <el-col :span="7">
-          <el-form-item label="菜单名称:">
-            <el-input v-model="data.queryParams.menuName" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-button type="primary" @click="handleQuery">搜索</el-button>
-          <el-button @click="resetFn">重置</el-button>
-        </el-col>
-      </el-row>
+    <el-form :model="data.queryParams" :inline="true">
+      <el-form-item label="菜单名称:">
+        <el-input v-model="data.queryParams.menuName" clearable/>
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="Search" type="primary" @click="handleSearch">搜索</el-button>
+        <el-button icon="Refresh" @click="handleReset">重置</el-button>
+      </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end">
       <el-col :span="1.5">
-        <el-button type="primary" plain size="small" @click="handleEdit('1')"
+        <el-button type="success" plain size="small" @click="handleEdit('1')"
           >新增
         </el-button>
       </el-col>
@@ -48,18 +44,14 @@
       <el-table-column label="创建时间" prop="createTime" align="center" />
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
-          <el-button
-            type="primary"
-            size="small"
-            @click="handleEdit('2', scope.$index, scope.row)"
-            >修改
-          </el-button>
-          <el-button
-            size="small"
-            type="danger"
-            @click="handleDelete('2', scope.$index, scope.row)"
-            >删除
-          </el-button>
+          <a href="javascript:;" title="修改">
+            <Edit style="width: 1em; height: 1em; margin-right: 8px"
+                  @click="handleEdit('2', scope.$index, scope.row)"/>
+          </a>
+          <a href="javascript:;" title="删除">
+            <Delete style="width: 1em; height: 1em; margin-right: 8px"
+                    @click="handleDelete('2', scope.$index, scope.row)"/>
+          </a>
         </template>
       </el-table-column>
     </el-table>
@@ -175,7 +167,8 @@ export default {
     });
 
     // 根据查询条件搜索
-    const handleQuery = () => {
+    const handleSearch = () => {
+      data.queryParams.pageNum = 1
       getList(data.queryParams);
     };
 
@@ -201,7 +194,7 @@ export default {
     };
 
     // 重置搜索框
-    const resetFn = () => {
+    const handleReset = () => {
       data.queryParams = {
         pageSize: 1,
         pageNum: 10,
@@ -361,8 +354,8 @@ export default {
     return {
       menuList,
       data,
-      handleQuery,
-      resetFn,
+      handleSearch,
+      handleReset,
       handleEdit,
       handleDelete,
       dialogFormVisible,
@@ -382,6 +375,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a {
+  color: #000;
+  &:hover {
+    color: rgb(9, 130, 217);
+  }
+}
 .menu-container {
   padding: 16px;
 }

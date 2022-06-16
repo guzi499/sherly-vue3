@@ -3,7 +3,7 @@
  * @Date: 2022-05-22 20:52:14
  * @LastEditTime: 2022-05-23 00:07:37
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/tenantPage.vue
 -->
 <template>
@@ -16,8 +16,8 @@
         <el-input v-model="form.tenantName" />
       </el-form-item>
       <div class="sherly-operate-box">
-        <el-button type="primary" @click="handleSearch">搜索</el-button>
-        <el-button @click="handleReset">重置</el-button>
+        <el-button icon="Search" type="primary" @click="handleSearch">搜索</el-button>
+        <el-button icon="Refresh" @click="handleReset">重置</el-button>
       </div>
     </el-form>
     <SherlyTable
@@ -31,28 +31,33 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="primary" @click="handleaddTenant" size="small"
-          >新增</el-button
+        <el-button type="success" plain @click="handleaddTenant" size="small"
+        >新增
+        </el-button
         >
       </template>
       <template #table>
-        <el-table-column prop="tenantCode" label="租户代码" width="120" />
-        <el-table-column prop="tenantName" label="租户名称" width="120" />
-        <el-table-column prop="contactUser" label="联系人" width="180" />
-        <el-table-column prop="contactPhone" label="联系电话" width="180" />
-        <el-table-column prop="expireTime" label="过期时间" width="220" />
-        <el-table-column prop="userLimit" label="用户上限" width="220" />
-        <el-table-column fixed="right" label="操作" min-width="150">
+        <el-table-column prop="tenantCode" label="租户代码" width="120" align="center" />
+        <el-table-column prop="tenantName" label="租户名称" width="120" align="center" />
+        <el-table-column prop="contactUser" label="联系人" width="180" align="center" />
+        <el-table-column prop="contactPhone" label="联系电话" width="180" align="center" />
+        <el-table-column prop="expireTime" label="过期时间" width="220" align="center" />
+        <el-table-column prop="userLimit" label="用户上限" width="220" align="center" />
+        <el-table-column fixed="right" label="操作" min-width="150" align="center">
           <template #default="scope">
-            <el-button type="text" @click="handleEdit(scope.row)"
-              >修改</el-button
-            >
+            <a href="javascript:;" title="修改">
+              <Edit style="width: 1em; height: 1em; margin-right: 8px"
+                    @click="handleEdit(scope.row)"/>
+            </a>
             <el-popconfirm
-              title="确定删除本条数据?"
-              @confirm="handleDelete(scope.row)"
+                title="确定删除本条数据?"
+                @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-button type="text">删除</el-button>
+                <!--                <el-button type="text">删除</el-button>-->
+                <a href="javascript:;" title="删除">
+                  <Delete style="width: 1em; height: 1em; margin-right: 8px"/>
+                </a>
               </template>
             </el-popconfirm>
           </template>
@@ -272,3 +277,12 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+a {
+  color: #000;
+
+  &:hover {
+    color: rgb(9, 130, 217);
+  }
+}
+</style>

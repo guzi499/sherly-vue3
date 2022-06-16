@@ -10,64 +10,66 @@
   <div class="user_container">
     <!-- 查询条件 -->
     <el-form :model="queryParams" :inline="true">
-      <el-form-item label="手机号: " style="margin-left: 20px">
+      <el-form-item label="手机号: ">
         <el-input
             v-model="queryParams.phone"
             placeholder="请输入手机号"
         ></el-input>
       </el-form-item>
-      <el-form-item label="姓名: " style="margin-left: 20px">
+      <el-form-item label="姓名: ">
         <el-input
             v-model="queryParams.realName"
             placeholder="请输入姓名"
         ></el-input>
       </el-form-item>
-      <el-form-item label="昵称: " style="margin-left: 20px">
+      <el-form-item label="昵称: ">
         <el-input
             v-model="queryParams.nickname"
             placeholder="请输入昵称"
         ></el-input>
       </el-form-item>
-        <el-form-item label="部门: " style="margin-left: 20px">
-          <!--          <el-select-->
-          <!--              ref="selectTree"-->
-          <!--              v-model="queryParams.parentId"-->
-          <!--              placeholder="请选择"-->
-          <!--          >-->
-          <!--            <el-option-->
-          <!--                hidden-->
-          <!--                :value="queryParams.parentId"-->
-          <!--                :label="treeDatas"-->
-          <!--            ></el-option>-->
-          <!--            <el-tree-->
-          <!--                :data="DepartmentList"-->
-          <!--                :props="defaultProps"-->
-          <!--                :expand-on-click-node="false"-->
-          <!--                @node-click="nodeOnclick"-->
-          <!--            />-->
-          <!--          </el-select>-->
-          <TreeSelect
+      <el-form-item label="部门: ">
+        <!--          <el-select-->
+        <!--              ref="selectTree"-->
+        <!--              v-model="queryParams.parentId"-->
+        <!--              placeholder="请选择"-->
+        <!--          >-->
+        <!--            <el-option-->
+        <!--                hidden-->
+        <!--                :value="queryParams.parentId"-->
+        <!--                :label="treeDatas"-->
+        <!--            ></el-option>-->
+        <!--            <el-tree-->
+        <!--                :data="DepartmentList"-->
+        <!--                :props="defaultProps"-->
+        <!--                :expand-on-click-node="false"-->
+        <!--                @node-click="nodeOnclick"-->
+        <!--            />-->
+        <!--          </el-select>-->
+        <TreeSelect
             ref="selectTree"
             :treeList="DepartmentList"
             :defaultProps="defaultProps"
             @treeSelectList="treeSelectList"
-          ></TreeSelect>
-        </el-form-item>
-        <el-form-item style="margin-left: 20px">
-          <el-button type="primary" @click="handleQuery">搜索</el-button>
-          <el-button @click="resetFn">重置</el-button>
-        </el-form-item>
+        ></TreeSelect>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
+        <el-button icon="Refresh" @click="handleReset">重置</el-button>
+      </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
       <el-col :span="1.5">
-        <el-button type="primary" plain size="small" @click="handlexport()"
-          >导出</el-button
+        <el-button type="warning" plain size="small" @click="handlexport()"
+        >导出
+        </el-button
         >
       </el-col>
       <el-col :span="1.5">
-        <el-button type="primary" plain size="small" @click="handleEdit('1')"
-          >新增</el-button
+        <el-button type="success" plain size="small" @click="handleEdit('1')"
+        >新增
+        </el-button
         >
       </el-col>
     </el-row>
@@ -96,18 +98,14 @@
       <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
       <el-table-column prop="name" label="操作" width="180" align="center">
         <template #default="scope">
-          <el-button
-              type="primary"
-              size="small"
-              @click="handleEdit('2', scope.$index, scope.row)"
-          >修改
-          </el-button>
-          <el-button
-              size="small"
-              type="danger"
-              @click="handleDelete('2', scope.$index, scope.row)"
-          >删除
-          </el-button>
+          <a href="javascript:;" title="修改">
+            <Edit style="width: 1em; height: 1em; margin-right: 8px"
+                  @click="handleEdit('2', scope.$index, scope.row)"/>
+          </a>
+          <a href="javascript:;" title="删除">
+            <Delete style="width: 1em; height: 1em; margin-right: 8px"
+                    @click="handleDelete('2', scope.$index, scope.row)"/>
+          </a>
         </template>
       </el-table-column>
     </el-table>
@@ -251,7 +249,7 @@ export default {
     });
 
     // 搜索按钮
-    const handleQuery = () => {
+    const handleSearch = () => {
       data.queryParams.current = 1
       getList();
     };
@@ -278,7 +276,7 @@ export default {
     };
 
     // 重置按钮
-    const resetFn = () => {
+    const handleReset = () => {
       reset();
       proxy.$refs.selectTree.treeSelectData = {
         parentId: null,
@@ -536,8 +534,8 @@ export default {
       handleEdit,
       handleDelete,
       treeSelectList,
-      handleQuery,
-      resetFn,
+      handleSearch,
+      handleReset,
       handleSizeChange,
       handleCurrentChange,
       handlexport,
@@ -548,6 +546,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a {
+  color: #000;
+
+  &:hover {
+    color: rgb(9, 130, 217);
+  }
+}
+
 .user_container {
   padding: 16px;
 }

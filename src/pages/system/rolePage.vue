@@ -13,8 +13,8 @@
         <el-input v-model="form.roleName" />
       </el-form-item>
       <div class="sherly-operate-box">
-        <el-button type="primary" @click="handleSearch">搜索</el-button>
-        <el-button @click="handleReset">重置</el-button>
+        <el-button icon="Search" type="primary" @click="handleSearch">搜索</el-button>
+        <el-button icon="Refresh" @click="handleReset">重置</el-button>
       </div>
     </el-form>
 
@@ -29,25 +29,33 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="primary" @click="handleaddRole" size="small"
-          >新增</el-button
+        <el-button type="success" plain @click="handleaddRole" size="small"
+        >新增
+        </el-button
         >
       </template>
       <template #table>
-        <el-table-column prop="roleName" label="角色名称" width="180" />
-        <el-table-column prop="description" label="描述" />
-        <el-table-column prop="createTime" label="创建时间" />
-        <el-table-column fixed="right" label="操作" width="180">
+        <el-table-column prop="roleName" label="角色名称" width="180" align="center" />
+        <el-table-column prop="description" label="描述" align="center" />
+        <el-table-column prop="createTime" label="创建时间" align="center" />
+        <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
-            <el-button type="text" @click="handleEdit(scope.row)"
-              >修改</el-button
-            >
+            <a href="javascript:;" title="修改">
+              <Edit style="width: 1em; height: 1em; margin-right: 8px"
+                    @click="handleEdit(scope.row)"/>
+            </a>
+            <!--            <el-button type="text" @click="handleEdit(scope.row)"-->
+            <!--              >修改</el-button-->
+            <!--            >-->
             <el-popconfirm
-              title="确定删除本条数据?"
-              @confirm="handleDelete(scope.row)"
+                title="确定删除本条数据?"
+                @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-button type="text">删除</el-button>
+                <!--                <el-button type="text">删除</el-button>-->
+                <a href="javascript:;" title="删除">
+                  <Delete style="width: 1em; height: 1em; margin-right: 8px"/>
+                </a>
               </template>
             </el-popconfirm>
           </template>
@@ -327,6 +335,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+a {
+  color: #000;
+
+  &:hover {
+    color: rgb(9, 130, 217);
+  }
+}
+
 .tree-box {
   height: 180px;
   overflow: scroll;
