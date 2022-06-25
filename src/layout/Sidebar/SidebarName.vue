@@ -190,6 +190,7 @@ export default {
   text-align: center;
   width: 200px;
   overflow: hidden;
+  transition: all 0.2s;
   .menu-box {
     height: calc(100vh - 80px);
     width: 220px;
