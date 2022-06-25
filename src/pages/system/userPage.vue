@@ -76,15 +76,15 @@
     <!-- 用户表格 -->
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="phone" label="手机号" width="180" align="center"/>
-      <el-table-column prop="realName" label="姓名" width="180" align="center"/>
-      <el-table-column prop="nickname" label="昵称" width="180" align="center"/>
-      <el-table-column prop="gender" label="性别" width="180" align="center">
+      <el-table-column prop="realName" label="姓名" align="center"/>
+      <el-table-column prop="nickname" label="昵称" align="center"/>
+      <el-table-column prop="gender" label="性别" align="center">
         <template #default="scope">
           <span>{{ scope.row.gender === 1 ? "男" : "女" }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="departmentName" label="部门" width="180" align="center"/>
-      <el-table-column prop="enable" label="禁用状态" width="180" align="center">
+      <el-table-column prop="departmentName" label="部门" align="center"/>
+      <el-table-column prop="enable" label="禁用状态" align="center">
         <template #default="scope">
           <el-switch
               v-model="scope.row.enable"
