@@ -12,6 +12,7 @@
       ref="selectTree"
       v-model="treeSelectData.parentId"
       placeholder="请选择"
+      clearable
     >
       <el-option
         hidden
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, getCurrentInstance } from "vue";
+import { reactive, toRefs, getCurrentInstance, watch } from "vue";
 export default {
   props: {
     treeList: Array,
@@ -49,6 +50,16 @@ export default {
       emit("treeSelectList", e);
       proxy.$refs.selectTree.blur();
     };
+
+    watch(
+        () => data.treeSelectData.parentId,
+        (val) => {
+          // console.log(val, typeof(val))
+          if(val === '') {
+            data.treeSelectData.treeDatas = ''
+          }
+        }
+    )
     return { ...toRefs(data), nodeOnclick };
   },
 };

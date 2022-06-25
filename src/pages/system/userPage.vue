@@ -12,18 +12,21 @@
     <el-form :model="queryParams" :inline="true">
       <el-form-item label="手机号: ">
         <el-input
+            clearable
             v-model="queryParams.phone"
             placeholder="请输入手机号"
         ></el-input>
       </el-form-item>
       <el-form-item label="姓名: ">
         <el-input
+            clearable
             v-model="queryParams.realName"
             placeholder="请输入姓名"
         ></el-input>
       </el-form-item>
       <el-form-item label="昵称: ">
         <el-input
+            clearable
             v-model="queryParams.nickname"
             placeholder="请输入昵称"
         ></el-input>
