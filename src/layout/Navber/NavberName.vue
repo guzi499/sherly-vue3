@@ -11,16 +11,10 @@
     <div style="font-size: 1.25rem" class="header_left">
       <el-radio-group v-model="isCollapse" style="margin-bottom: 20px" @change="handleLogo">
         <el-radio-button :label="true" v-if="isCollapse == false">
-          <expand
-              style="width: 1em; height: 1em; margin-right: 0.5rem"
-              @click="handleSide"
-          />
+          <expand style="width: 1em; height: 1em" />
         </el-radio-button>
         <el-radio-button :label="false" v-if="isCollapse == true">
-          <fold
-              style="width: 1em; height: 1em; margin-right: 0.5rem"
-              @click="handleSide"
-          />
+          <fold style="width: 1em; height: 1em" />
         </el-radio-button>
         <div style="font-size: 1rem">{{ config.systemName }}</div>
         -->
@@ -65,7 +59,7 @@
   </div>
 </template>
 <script>
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import Config from "@/config";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
@@ -73,6 +67,7 @@ import server from "@/api/login.js";
 
 export default {
   setup(props, {emit}) {
+    /**控制头部按钮的切换 */
     const isCollapse = ref(false);
     console.log(isCollapse.value)
     const handleLogo = (val) => {
@@ -83,13 +78,6 @@ export default {
     const userInfo = JSON.parse(Cookies.get("userInfo")) || "";
     const config = ref(Config);
     const router = useRouter();
-    /**控制头部按钮的切换 */
-    const datas = reactive({
-      isShow: 0,
-    });
-    const handleSide = () => {
-      datas.isShow == 0 ? (datas.isShow = 1) : (datas.isShow = 0);
-    };
 
     // 退出登录
     const logout = () => {
@@ -102,7 +90,7 @@ export default {
         router.push("/login");
       });
     };
-    return {isCollapse, handleLogo, datas, handleSide, config, userInfo, logout};
+    return {isCollapse, handleLogo, config, userInfo, logout};
   },
 };
 </script>
@@ -120,5 +108,10 @@ export default {
   align-items: center;
   box-shadow: 0 1px 4px #00152914;
   overflow: hidden;
+}
+
+::v-deep .el-radio-button__inner {
+  border: none!important;
+  font-size: 24px;
 }
 </style>
