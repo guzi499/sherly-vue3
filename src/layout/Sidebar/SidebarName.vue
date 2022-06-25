@@ -7,25 +7,30 @@
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
 -->
 <template>
-  <div class="sidebar-wrapper">
-    <Logo />
+<!--  <div class="sidebar-wrapper" ref="sideBar" :style="'width:'+ isShow ? 64 + 'px' : 200 + 'px'">-->
+  <div class="sidebar-wrapper" ref="sideBar" :style="'width:' + width + 'px'">
+    <Logo :isShow="isShow"/>
     <div class="menu-box">
       <el-menu
-        class="el-menu-vertical-demo"
-        :collapse="isCollapse"
-        @open="handleOpen"
-        @close="handleClose"
-        @select="handleselect"
-        background-color="#334154"
-        text-color="#fff"
+          class="el-menu-vertical-demo"
+          :collapse="isShow"
+          :collapse-transition="false"
+          @open="handleOpen"
+          @close="handleClose"
+          @select="handleselect"
+          background-color="#334154"
+          text-color="#fff"
+          style="border-right: 0"
       >
         <el-sub-menu
-          v-for="item_1 in menu"
-          :key="item_1.index"
-          :index="item_1.index"
+            v-for="item_1 in menu"
+            :key="item_1.index"
+            :index="item_1.index"
         >
           <template #title>
-            <el-icon><location /></el-icon>
+            <el-icon>
+              <location/>
+            </el-icon>
             <span>{{ item_1.menuName }}</span>
           </template>
           <template v-for="item_2 in item_1.children" :key="item_2.index">
@@ -63,18 +68,29 @@
 </template>
 <script>
 import Logo from "./components/LogoBox.vue";
-import { useStore } from "vuex";
-import { onMounted, watch, computed, ref, reactive, toRaw } from "vue";
-import { useRouter } from "vue-router";
+import {useStore} from "vuex";
+import {onMounted, watch, computed, ref, reactive, toRaw, toRefs, getCurrentInstance} from "vue";
+import {useRouter} from "vue-router";
 
 export default {
   components: {
     Logo,
   },
-  setup() {
+  props: {
+    isShow: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup(props) {
+    const {proxy} = getCurrentInstance();
+    console.log(proxy.$refs.sideBar)
     onMounted(() => {
       //
     });
+
+    const {isShow} = toRefs(props)
+    console.log(isShow)
 
     const Store = useStore();
 
@@ -111,12 +127,20 @@ export default {
     };
 
     watch(
-      Tree,
-      (newVal) => {
-        menu = formatMenu(toRaw(newVal));
-      },
-      { immediate: true, deep: true }
+        Tree,
+        (newVal) => {
+          menu = formatMenu(toRaw(newVal));
+        },
+        {immediate: true, deep: true}
     );
+
+    const width = ref(200)
+    watch(
+        () => props.isShow,
+        (val) => {
+          val ? width.value = 64 : width.value = 200
+        }
+    )
 
     const handleNodeClick = (data) => {
       if (data.link) {
@@ -125,11 +149,11 @@ export default {
     };
 
     const handleOpen = (key, keyPath) => {
-      console.log(key, keyPath);
+      console.log('open', key, keyPath);
     };
 
     const handleClose = (key, keyPath) => {
-      console.log(key, keyPath);
+      console.log('close', key, keyPath);
     };
 
     const handleselect = (index) => {
@@ -156,6 +180,7 @@ export default {
       handleClose,
       handleOpen,
       handleselect,
+      width
     };
   },
 };
@@ -170,7 +195,7 @@ export default {
   .menu-box {
     height: calc(100vh - 80px);
     width: 220px;
-    overflow: scroll;
+    //overflow: scroll;
   }
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {

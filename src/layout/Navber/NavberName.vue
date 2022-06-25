@@ -9,19 +9,35 @@
 <template>
   <div class="Navber-wrapper">
     <div style="font-size: 1.25rem" class="header_left">
-      <el-row>
-        <expand
-          style="width: 1em; height: 1em; margin-right: 0.5rem"
-          v-if="datas.isShow == 1"
-          @click="handleSide"
-        />
-        <fold
-          style="width: 1em; height: 1em; margin-right: 0.5rem"
-          v-if="datas.isShow == 0"
-          @click="handleSide"
-        />
+      <el-radio-group v-model="isCollapse" style="margin-bottom: 20px" @change="handleLogo">
+        <el-radio-button :label="true" v-if="isCollapse == false">
+          <expand
+              style="width: 1em; height: 1em; margin-right: 0.5rem"
+              @click="handleSide"
+          />
+        </el-radio-button>
+        <el-radio-button :label="false" v-if="isCollapse == true">
+          <fold
+              style="width: 1em; height: 1em; margin-right: 0.5rem"
+              @click="handleSide"
+          />
+        </el-radio-button>
         <div style="font-size: 1rem">{{ config.systemName }}</div>
-      </el-row>
+        -->
+      </el-radio-group>
+      <!--      <el-row>-->
+      <!--        <expand-->
+      <!--            style="width: 1em; height: 1em; margin-right: 0.5rem"-->
+      <!--            v-if="datas.isShow == 1"-->
+      <!--            @click="handleSide"-->
+      <!--        />-->
+      <!--        <fold-->
+      <!--            style="width: 1em; height: 1em; margin-right: 0.5rem"-->
+      <!--            v-if="datas.isShow == 0"-->
+      <!--            @click="handleSide"-->
+      <!--        />-->
+      <!--        <div style="font-size: 1rem">{{ config.systemName }}</div>-->
+      <!--      </el-row>-->
     </div>
     <div class="header_right">
       <el-row>
@@ -56,7 +72,13 @@ import Cookies from "js-cookie";
 import server from "@/api/login.js";
 
 export default {
-  setup() {
+  setup(props, {emit}) {
+    const isCollapse = ref(false);
+    console.log(isCollapse.value)
+    const handleLogo = (val) => {
+      console.log(val)
+      emit('isCollapse', val)
+    }
     /**用户姓名 */
     const userInfo = JSON.parse(Cookies.get("userInfo")) || "";
     const config = ref(Config);
@@ -80,11 +102,15 @@ export default {
         router.push("/login");
       });
     };
-    return { datas, handleSide, config, userInfo, logout };
+    return {isCollapse, handleLogo, datas, handleSide, config, userInfo, logout};
   },
 };
 </script>
 <style lang="scss" scoped>
+.header_left {
+  display: flex;
+}
+
 .Navber-wrapper {
   width: 100%;
   padding: 0.5rem;
