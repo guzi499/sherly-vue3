@@ -11,10 +11,10 @@
     <div style="font-size: 1.25rem" class="header_left">
       <el-radio-group v-model="isCollapse" @change="handleLogo">
         <el-radio-button :label="true" v-if="isCollapse == false">
-          <expand style="width: 1em; height: 1em" />
+          <fold style="width: 1em; height: 1em" />
         </el-radio-button>
         <el-radio-button :label="false" v-if="isCollapse == true">
-          <fold style="width: 1em; height: 1em" />
+          <expand style="width: 1em; height: 1em" />
         </el-radio-button>
         <div style="font-size: 1rem">{{ config.systemName }}</div>
         -->
