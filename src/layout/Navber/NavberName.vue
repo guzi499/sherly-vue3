@@ -9,7 +9,7 @@
 <template>
   <div class="Navber-wrapper">
     <div style="font-size: 1.25rem" class="header_left">
-      <el-radio-group v-model="isCollapse" style="margin-bottom: 20px" @change="handleLogo">
+      <el-radio-group v-model="isCollapse" @change="handleLogo">
         <el-radio-button :label="true" v-if="isCollapse == false">
           <expand style="width: 1em; height: 1em" />
         </el-radio-button>
@@ -69,9 +69,7 @@ export default {
   setup(props, {emit}) {
     /**控制头部按钮的切换 */
     const isCollapse = ref(false);
-    console.log(isCollapse.value)
     const handleLogo = (val) => {
-      console.log(val)
       emit('isCollapse', val)
     }
     /**用户姓名 */

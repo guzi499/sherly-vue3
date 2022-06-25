@@ -35,7 +35,6 @@ export default {
   setup() {
     const isShow = ref(false)
     const isCollapse = (val) => {
-      console.log(val)
       isShow.value = val
     }
     const width = ref(200)

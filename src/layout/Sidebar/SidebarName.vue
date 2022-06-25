@@ -69,7 +69,7 @@
 <script>
 import Logo from "./components/LogoBox.vue";
 import {useStore} from "vuex";
-import {onMounted, watch, computed, ref, reactive, toRaw, toRefs, getCurrentInstance} from "vue";
+import {onMounted, watch, computed, ref, reactive, toRaw, toRefs} from "vue";
 import {useRouter} from "vue-router";
 
 export default {
@@ -83,8 +83,6 @@ export default {
     }
   },
   setup(props) {
-    const {proxy} = getCurrentInstance();
-    console.log(proxy.$refs.sideBar)
     onMounted(() => {
       //
     });
