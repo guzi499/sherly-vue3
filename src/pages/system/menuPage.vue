@@ -24,7 +24,6 @@
       style="width: 100%; margin-bottom: 20px"
       row-key="menuId"
       lazy
-      :default-expand-all="true"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column label="菜单名称" prop="menuName" sortable width="230" />
@@ -79,6 +78,7 @@
             ref="selectTree"
             v-model="form.parentId"
             placeholder="请选择"
+            :disabled="form.menuType === 1"
           >
             <el-option
               hidden
@@ -265,7 +265,7 @@ export default {
     const treeDatas = ref("");
     // 弹框新增 / 修改弹框绑定数据
     const form = ref({
-
+      menuType: 1
     });
     const defaultProps = {
       children: "children",
@@ -288,9 +288,9 @@ export default {
     };
     // 点击修改 - 新增按钮
     const handleEdit = (type, index, data) => {
-      reset();
       if (type === "1") {
-        form.value.menuType = 1;
+        reset();
+          form.value.menuType = 1;
         form.value.parentId = 0;
         treeDatas.value = "主目录";
         dialogType.value = type;
