@@ -112,10 +112,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 分页 -->
-    <!--    <Pagination v-model:current="queryParams.current" v-model:size="queryParams.size"-->
-    <!--                v-show="total >= 1"-->
-    <!--                :total="total" @getList="getList"></Pagination>-->
     <el-pagination
       style="margin-top: 20px"
       v-model:currentPage="queryParams.current"
@@ -132,7 +128,10 @@
     <!--    新增 / 修改弹框-->
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="40%">
       <el-form :model="form" :rules="formRules" ref="ruleForm" style="padding-right: 60px">
-        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
+        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone" v-if="type1 === '1' ">
+          <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone1" v-if="type1 === '2' ">
           <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
         </el-form-item>
         <el-form-item
