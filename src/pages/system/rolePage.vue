@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-09 11:49:55
- * @LastEditTime: 2022-06-14 01:36:15
+ * @LastEditTime: 2022-06-28 23:59:38
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/rolePage.vue
@@ -9,11 +9,13 @@
 <template>
   <div class="sherly-page-wrapper">
     <el-form ref="resetFormData" :model="form" class="sherly-form">
-      <el-form-item label="用户名称" prop="roleName">
+      <el-form-item label="角色名称" prop="roleName">
         <el-input v-model="form.roleName" />
       </el-form-item>
       <div class="sherly-operate-box">
-        <el-button icon="Search" type="primary" @click="handleSearch">搜索</el-button>
+        <el-button icon="Search" type="primary" @click="handleSearch">
+          搜索
+        </el-button>
         <el-button icon="Refresh" @click="handleReset">重置</el-button>
       </div>
     </el-form>
@@ -30,37 +32,37 @@
     >
       <template #header>
         <el-button type="success" plain @click="handleaddRole" size="small"
-        >新增
-        </el-button
-        >
+          >新增
+        </el-button>
       </template>
       <template #table>
-        <el-table-column prop="roleName" label="角色名称" width="180" align="center" />
+        <el-table-column
+          prop="roleName"
+          label="角色名称"
+          width="180"
+          align="center" />
         <el-table-column prop="description" label="描述" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
             <a href="javascript:;" title="修改">
-              <Edit style="width: 1em; height: 1em; margin-right: 8px"
-                    @click="handleEdit(scope.row)"/>
+              <Edit
+                style="width: 1em; height: 1em; margin-right: 8px"
+                @click="handleEdit(scope.row)"
+              />
             </a>
-            <!--            <el-button type="text" @click="handleEdit(scope.row)"-->
-            <!--              >修改</el-button-->
-            <!--            >-->
             <el-popconfirm
-                title="确定删除本条数据?"
-                @confirm="handleDelete(scope.row)"
+              title="确定删除本条数据?"
+              @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <!--                <el-button type="text">删除</el-button>-->
                 <a href="javascript:;" title="删除">
-                  <Delete style="width: 1em; height: 1em; margin-right: 8px"/>
+                  <Delete style="width: 1em; height: 1em; margin-right: 8px" />
                 </a>
               </template>
             </el-popconfirm>
-          </template>
-        </el-table-column></template
-      >
+          </template> </el-table-column
+      ></template>
     </SherlyTable>
     <el-dialog
       v-model="dialogVisible"

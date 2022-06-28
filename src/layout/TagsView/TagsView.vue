@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:26:42
- * @LastEditTime: 2022-06-14 01:18:30
+ * @LastEditTime: 2022-06-28 23:59:16
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
@@ -18,21 +18,19 @@
           @click="navigation(item.fullPath)"
           @contextmenu.prevent="openMenu($event, item)"
         >
-          {{ item.meta?.title || "为命名" }}
-          <template v-if="item.path !== '/home'">
-            <img
-              v-if="!isCurrentRouter(item)"
-              src="@/assets/images/close.png"
-              class="close"
-              @click.stop="handleCloseRoute(item)"
-            />
-            <img
-              v-if="isCurrentRouter(item)"
-              src="@/assets/images/closeActive.png"
-              class="close"
-              @click.stop="handleCloseRoute(item)"
-            />
-          </template>
+          {{ item.meta?.title || "未命名" }}
+          <img
+            v-if="!isCurrentRouter(item)"
+            src="@/assets/images/close.png"
+            class="close"
+            @click.stop="handleCloseRoute(item)"
+          />
+          <img
+            v-if="isCurrentRouter(item)"
+            src="@/assets/images/closeActive.png"
+            class="close"
+            @click.stop="handleCloseRoute(item)"
+          />
         </div>
       </div>
     </el-scrollbar>
