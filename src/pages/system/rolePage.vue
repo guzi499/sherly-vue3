@@ -10,7 +10,7 @@
   <div class="sherly-page-wrapper">
     <el-form ref="resetFormData" :model="form" class="sherly-form">
       <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="form.roleName" />
+        <el-input v-model="form.roleName" clearable/>
       </el-form-item>
       <div class="sherly-operate-box">
         <el-button icon="Search" type="primary" @click="handleSearch">
