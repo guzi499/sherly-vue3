@@ -49,7 +49,7 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item @click="handleGoPersonal('/personal')">个人中心</el-dropdown-item>
               <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -88,7 +88,13 @@ export default {
         router.push("/login");
       });
     };
-    return {isCollapse, handleLogo, config, userInfo, logout};
+
+    // 跳转到个人中心
+    const handleGoPersonal = (path) => {
+      console.log(path)
+      router.push({ path });
+    }
+    return {isCollapse, handleLogo, config, userInfo, logout, handleGoPersonal};
   },
 };
 </script>

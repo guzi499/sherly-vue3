@@ -10,6 +10,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "@/pages/login/loginPage.vue";
 import Layout from "@/layout/layoutBox.vue";
 import Home from "@/pages/system/homePage.vue";
+import Personal from "@/pages/system/personalPage.vue"
 
 const routes = [
   {
@@ -26,15 +27,27 @@ const routes = [
   {
     path: "/home",
     component: Layout,
-    meta: { title: "首页" },
+    hidden: false,
+    // meta: {title: "首页"},
     children: [
       {
         path: "/home",
         component: Home,
-        meta: { title: "首页" },
+        meta: {title: "首页"},
       },
     ],
   },
+  {
+    path: "/",
+    component: Layout,
+    children: [
+      {
+        path: "/personal",
+        component: Personal,
+        meta: {title: "个人中心"},
+      },
+    ],
+  }
 ];
 const router = createRouter({
   history: createWebHistory(),
