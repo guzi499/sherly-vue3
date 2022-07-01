@@ -64,8 +64,8 @@
               </el-input>
             </el-form-item> -->
             <el-form-item>
-              <el-button class="login-layout-right-button" @click="login()"
-              >登录
+              <el-button class="login-layout-right-button" @click="login()" style="width: 60%; margin: 0 auto"
+              >登 录
               </el-button
               >
             </el-form-item>
@@ -148,9 +148,7 @@ export default {
   //  margin: 12px 0;
   //}
   &-right {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+
     padding: 24px 12px;
     &/deep/ .el-input__inner {
       box-shadow: none;
@@ -160,12 +158,16 @@ export default {
     &-title {
       font-weight: 500;
       text-align: center;
-      font-size: 24px;
+      font-size: 20px;
       line-height: 24px;
       margin-bottom: 24px;
     }
     &-formbox {
       flex: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
 
       &-elForm {
         width: 100%;
@@ -180,9 +182,6 @@ export default {
       .input-prefix-icon {
         margin: auto;
       }
-    }
-    &-button {
-      width: 280px;
     }
   }
 }
