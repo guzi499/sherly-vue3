@@ -1,6 +1,6 @@
 <template>
   <div>
-      个人中心
+      个人中心111111
   </div>
 </template>
 
