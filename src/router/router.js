@@ -10,7 +10,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "@/pages/login/loginPage.vue";
 import Layout from "@/layout/layoutBox.vue";
 import Home from "@/pages/system/homePage.vue";
-import Personal from "@/pages/system/personalPage.vue"
+import Personal from "@/pages/system/personal"
 
 const routes = [
   {

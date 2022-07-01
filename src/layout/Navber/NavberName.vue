@@ -91,8 +91,7 @@ export default {
 
     // 跳转到个人中心
     const handleGoPersonal = (path) => {
-      console.log(path)
-      router.push({ path });
+      router.push({ path, query: {userId: userInfo.userId} });
     }
     return {isCollapse, handleLogo, config, userInfo, logout, handleGoPersonal};
   },
