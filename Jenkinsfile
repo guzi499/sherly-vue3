@@ -8,7 +8,11 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'npm install'
+                sh 'node -v'
+                sh 'npm install -g yarn -registry=https://registry.npm.taobao.org'
+                sh 'yarn -v'
+                sh 'yarn install --pure-lockfile'
+                sh 'yarn run build
             }
         }
     }
