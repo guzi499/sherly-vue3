@@ -85,6 +85,7 @@ export default {
         Cookies.remove("userInfo");
         Cookies.remove("routePath");
         Cookies.remove("password");
+        localStorage.removeItem("token");
         router.push("/login");
       });
     };

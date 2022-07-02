@@ -1,82 +1,142 @@
 <template>
   <div class="box-userInfo">
-    <el-form :model="curUserInfo" style="margin-bottom: 24px">
-      <el-form-item>
-        <strong slot="label" class="icon">
+    <ul>
+      <li>
+        <strong class="icon">
           <i class="iconfont icon-nicheng"></i>
-           昵称：
+          昵称：
         </strong>
         <span>{{ curUserInfo.nickname }}</span>
-      </el-form-item>
-      <el-form-item>
-        <strong slot="label" class="icon">
+      </li>
+      <li>
+        <strong class="icon">
           <i class="iconfont icon-zuoxixingming"></i>
-           姓名：
+          姓名：
         </strong>
         <span>{{ curUserInfo.realName }}</span>
-      </el-form-item>
-      <el-form-item>
-        <strong slot="label" class="icon">
+      </li>
+      <li>
+        <strong class="icon">
           <i class="iconfont icon-xingbie"></i>
-           性别：
+          性别：
         </strong>
         <span>{{ curUserInfo.genderStr }}</span>
-      </el-form-item>
-      <el-form-item>
-        <strong slot="label" class="icon">
+      </li>
+      <li>
+        <strong class="icon">
           <i class="iconfont icon-shoujihao"></i>
-           手机号：
+          手机号：
         </strong>
         <span>{{ curUserInfo.phone }}</span>
-      </el-form-item>
-      <el-form-item>
-        <strong slot="label" class="icon">
+      </li>
+      <li>
+        <strong class="icon">
           <i class="iconfont icon-youxiang"></i>
-           邮箱：
+          邮箱：
         </strong>
         <span>{{ curUserInfo.email }}</span>
-      </el-form-item>
-      <el-form-item>
-        <strong slot="label" class="icon">
+      </li>
+      <li>
+        <strong class="icon">
           <i class="iconfont icon-jiaoseguanlizuhu"></i>
-           租户：
+          租户：
         </strong>
         <span>{{ curUserInfo.tenantName }}</span>
-      </el-form-item>
-      <el-form-item>
-        <strong slot="label" class="icon">
+      </li>
+      <li>
+        <strong class="icon">
           <i class="iconfont icon-bumen"></i>
-           部门：
+          部门：
         </strong>
         <span>{{ curUserInfo.departmentName }}</span>
-      </el-form-item>
-      <el-form-item>
-        <strong slot="label" class="icon">
+      </li>
+      <li>
+        <strong class="icon">
           <i class="iconfont icon-jiaose"></i>
-           角色：
+          角色：
         </strong>
         <span>
-          <text v-for="(item, index) in curUserInfo.roleNames">{{ item + '、 ' }}</text>
+          <text v-for="(item, index) in curUserInfo.roleNames" :key="index">{{ item + '、 ' }}</text>
         </span>
-      </el-form-item>
-      <el-form-item>
-        <strong slot="label" class="icon">
-          <i class="iconfont icon-nicheng"></i>
-           创建时间：
+      </li>
+      <li>
+        <strong class="icon">
+          <i class="iconfont icon-chuangjianshijian"></i>
+          创建时间：
         </strong>
         <span>{{ curUserInfo.createTime }}</span>
-      </el-form-item>
-    </el-form>
+      </li>
+    </ul>
     <el-row class="btn">
       <el-col :push="5">
-        <el-button type="primary" plain>编辑用户</el-button>
-        <el-button type="warning" plain>修改密码</el-button>
+        <el-button type="primary" plain @click="handleEdit(curUserInfo)">编辑用户</el-button>
+        <el-button type="warning" plain @click="handlePwd">修改密码</el-button>
       </el-col>
     </el-row>
+    <!--添加编辑用户弹框-->
+    <el-dialog v-model="EditDialogVisible" title="信息编辑" width="25%" center>
+      <el-form :model="formEdit" label-width="60px">
+        <el-form-item label="手机号">
+          <el-input v-model="formEdit.phone" disabled/>
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input v-model="formEdit.nickname"/>
+        </el-form-item>
+        <el-form-item label="姓名">
+          <el-input v-model="formEdit.realName" disabled/>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-radio-group v-model="formEdit.gender">
+            <el-radio :label="1">男</el-radio>
+            <el-radio :label="0">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="formEdit.email"/>
+        </el-form-item>
+        <el-form-item label="部门">
+          <el-input v-model="formEdit.departmentName" disabled/>
+        </el-form-item>
+        <el-form-item label="角色">
+          <el-input v-model="formEdit.roleNames" disabled/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="EditDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleOk">确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+    <!--添加修改密码弹框-->
+    <el-dialog v-model="PwdDialogVisible" title="修改密码" width="25%" center>
+      <el-form :model="formPwd" label-width="80px" ref="ruleFormRef" :rules="rules">
+        <el-form-item label="旧密码" prop="oldPassword">
+          <el-input type="password" v-model="formPwd.oldPassword" style="text-align: right" show-password></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input v-model="formPwd.newPassword" show-password/>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="rePassword">
+          <el-input v-model="formPwd.rePassword" show-password/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="PwdDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="handlePwdOk('ruleFormRef')">确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import {ref, reactive, getCurrentInstance} from 'vue'
+import {updateSelf, updatePassword} from '@/api/system/personal.js'
+import {ElMessage} from "element-plus";
+import {useRouter} from 'vue-router'
+import Cookies from "js-cookie";
 
 export default {
   name: "UserInfo",
@@ -86,7 +146,108 @@ export default {
       require: true
     }
   },
-  setup() {
+  setup(props, {emit}) {
+    const {proxy} = getCurrentInstance();
+    const router = useRouter()
+    // 添加编辑弹框是否可见
+    const EditDialogVisible = ref(false)
+    // 添加编辑弹框 - 表单数据
+    const formEdit = ref()
+    // 重置编辑用户表单
+    const reset = () => {
+      formEdit.value = {}
+    }
+    // 编辑用户 按钮
+    const handleEdit = (userInfo) => {
+      reset()
+      formEdit.value = userInfo
+      EditDialogVisible.value = true
+    }
+    // 编辑用户 - 确定按钮
+    const handleOk = () => {
+      // console.log(formEdit.value)
+      updateSelf(formEdit.value).then(() => {
+        ElMessage({
+          showClose: true,
+          message: '更新用户信息成功',
+          type: 'success',
+        })
+      })
+      // 初始化数据
+      emit('getList')
+      EditDialogVisible.value = false
+    }
+
+    // 添加修改密码弹框是否可见
+    const PwdDialogVisible = ref(false)
+    // 添加修改密码弹框 - 表单数据
+    const formPwd = ref()
+    // 密码表单校验
+    const rules = reactive({
+      oldPassword: [
+        {required: true, message: '旧密码不能为空', trigger: 'blur'}
+      ],
+      newPassword: [
+        {required: true, message: '新密码不能为空', trigger: 'blur'}
+      ],
+      rePassword: [
+        {required: true, message: '确认密码不能为空', trigger: 'blur'}
+      ],
+    })
+    // 重置修改密码表单
+    const resetPwd = () => {
+      formPwd.value = {}
+      setTimeout(() => {
+        proxy.$refs.ruleFormRef.resetFields()
+      }, 50)
+    }
+    // 修改密码 按钮
+    const handlePwd = () => {
+      resetPwd()
+      PwdDialogVisible.value = true
+    }
+    // 修改密码 - 确定按钮
+    const handlePwdOk = (formName) => {
+      proxy.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log(formPwd.value.newPassword, formPwd.value.rePassword)
+          if (formPwd.value.newPassword === formPwd.value.rePassword) {
+            updatePassword(formPwd.value).then(() => {
+              ElMessage({
+                showClose: true,
+                message: '密码修改成功',
+                type: 'success',
+              })
+              // 初始化数据
+              // emit('getList')
+              PwdDialogVisible.value = false
+              setTimeout(() => {
+                proxy.$alert('token过期，请重新登录！', '警告', {
+                  confirmButtonText: '好的',
+                  callback: () => {
+                    Cookies.remove("metaTitle");
+                    Cookies.remove("routePath");
+                    localStorage.removeItem("token");
+                    router.push("/login");
+                  }
+                });
+              }, 1000)
+            })
+          } else {
+            ElMessage({
+              showClose: true,
+              message: '两次密码输入不一致，请重新输入！',
+              type: 'error',
+            })
+          }
+        } else {
+          // console.log('error submit!!');
+          return false;
+        }
+      });
+    }
+
+    return {EditDialogVisible, PwdDialogVisible, formEdit, formPwd, rules, handleEdit, handlePwd, handleOk, handlePwdOk}
   }
 }
 </script>
@@ -96,25 +257,36 @@ export default {
   padding: 0 12px;
 }
 
-::v-deep .el-form-item {
-  margin-bottom: 4px;
-  border-bottom: 1px solid #efefef;
-}
+ul {
+  margin: 32px 0;
+  padding: 0;
 
-::v-deep .el-form-item__content {
-  display: flex;
-  justify-content: space-between;
-  .icon {
-    width: 30%;
+  li {
+    margin-bottom: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid #efefef;
     display: flex;
-    align-items: center;
-    i{
-      margin-right: 4px;
+    justify-content: space-between;
+
+    .icon {
+      width: 40%;
+      display: flex;
+      align-items: center;
+
+      i {
+        margin-right: 4px;
+      }
+    }
+
+    span {
+      width: 60%;
+      text-align: right;
     }
   }
-  span {
-    width: 70%;
-  }
+}
+
+::v-deep .el-dialog__body {
+  padding: 24px 40px;
 }
 
 

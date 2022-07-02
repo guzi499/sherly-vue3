@@ -42,7 +42,12 @@ const actions = {
             currentRoute.fullPath.split("?")[0] === i.fullPath.split("?")[0]
         ).length === 0
       ) {
-        commit("ADDROUTEPATH", currentRoute);
+        console.log(routePath, currentRoute)
+        if(currentRoute.fullPath === "/login") {
+          return
+        } else {
+          commit("ADDROUTEPATH", currentRoute);
+        }
       }
     }
   },

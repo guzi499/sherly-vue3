@@ -23,6 +23,9 @@ import "@/assets/style/index.scss";
 import TreeSelect from "@/components/TreeSelect.vue";
 // 自定义分页组件
 import Pagination from "@/components/PaginationEl.vue";
+
+// 引入矢量图标
+import '@/assets/style/font-icon/iconfont.css'
 const app = createApp(App);
 
 app.use(store);

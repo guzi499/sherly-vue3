@@ -2,7 +2,7 @@
   <div class="personal_container">
     <el-card class="info" :header="title.header1">
       <Avatar :avatar="curUserInfo.avatar"/>
-      <UserInfo :curUserInfo="curUserInfo"/>
+      <UserInfo :curUserInfo="curUserInfo" @getList="getList"/>
     </el-card>
     <el-card class="operator" :header="title.header2">
 
@@ -44,7 +44,7 @@ export default {
     }
     getList()
 
-    return {title, userId, curUserInfo};
+    return {title, userId, curUserInfo, getList};
   },
 };
 </script>
