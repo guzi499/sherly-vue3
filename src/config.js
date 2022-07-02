@@ -17,5 +17,5 @@ export default {
   passCookieExpires: 1,
 
   //系统名称
-  systemName: "sherly 管理系统",
+  systemName: "sherly 后台管理系统",
 };
