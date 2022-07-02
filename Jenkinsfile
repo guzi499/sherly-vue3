@@ -12,7 +12,7 @@ pipeline {
                 sh 'npm install -g yarn'
                 sh 'yarn -v'
                 sh 'yarn'
-                sh 'yarn run build'
+                sh 'yarn build'
             }
         }
     }
