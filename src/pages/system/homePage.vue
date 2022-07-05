@@ -7,5 +7,5 @@
  * @FilePath: /sherly-vue3/src/pages/system/homePage.vue
 -->
 <template>
-  <div class="sherly-page-wrapper">欢迎使用sherly 后台管理系统</div>
+  <div class="sherly-page-wrapper">欢迎使用-sherly-后台管理系统</div>
 </template>
