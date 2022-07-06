@@ -77,11 +77,13 @@ const formatRouter = (MenuList) => {
 const filterchildren = (children, currentMenu) => {
   const _children = [];
   children.forEach((i) => {
+    console.log(currentMenu.link,i.link)
     _children.push({
       path: i.link,
       component: () =>
         require.ensure([], (require) =>
-          require(`@/pages${currentMenu.link}${i.link}Page`)
+          // require(`@/pages${currentMenu.link}${i.link}Page`)
+          require(`@/pages${i.link}`)
         ),
       meta: { title: i.menuName },
       children: filterchildren(i.children, i),

@@ -3,8 +3,10 @@ import request from "@/utils/request";
 /**用户个人中心 */
 export function getSelf(params) {
     return request({
-        url: "/user/get/self?userId=" + params,
-        method: "get"
+        // url: "/user/get/self?userId=" + params,
+        url: "/user/get/self",
+        method: "get",
+        params
     });
 }
 

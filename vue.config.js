@@ -11,8 +11,8 @@ module.exports = defineConfig({
   transpileDependencies: true,
   lintOnSave:false,
   devServer: {
-    // proxy: "http://101.34.169.185",
-    proxy: "http://192.168.16.215:8888",
+    proxy: "http://101.34.169.185",
+    // proxy: "http://192.168.16.215:8888",
   },
   publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
 });
