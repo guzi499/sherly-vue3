@@ -137,6 +137,7 @@ export default {
               message: '邮箱配置更新成功',
               type: 'success',
             })
+            getEmailOneFn()
           })
         } else {
           return false;
@@ -183,7 +184,7 @@ export default {
           })
           ary.value.map(item => {
             return options.value.push({
-              value: query + item,
+              value: query.split('@')[0] + item,
               label: query.split('@')[0] + item
             })
           })

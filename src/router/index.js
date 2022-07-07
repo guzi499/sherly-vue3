@@ -83,7 +83,8 @@ const filterchildren = (children, currentMenu) => {
       component: () =>
         require.ensure([], (require) =>
           // require(`@/pages${currentMenu.link}${i.link}Page`)
-          require(`@/pages${i.link}`)
+          require(`@/pages${i.link}Page`)
+          // require(`@/pages${i.link}`)
         ),
       meta: { title: i.menuName },
       children: filterchildren(i.children, i),
