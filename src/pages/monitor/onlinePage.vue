@@ -3,7 +3,7 @@
  * @Date: 2022-05-22 20:52:14
  * @LastEditTime: 2022-05-28 23:32:38
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/pages/monitor/onlinePage.vue
 -->
 <template>
@@ -29,7 +29,7 @@
     >
       <template #table>
         <el-table-column prop="phone" label="手机号" width="180" />
-        <el-table-column prop="nickname" label="姓名" width="180" />
+        <el-table-column prop="realName" label="姓名" width="180" />
         <el-table-column prop="address" label="登录地点" width="120" />
         <el-table-column prop="browser" label="浏览器" width="120" />
         <el-table-column prop="os" label="设备" width="220" />
