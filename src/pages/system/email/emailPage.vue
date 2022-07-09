@@ -121,7 +121,6 @@ export default {
     })
     const getEmailOneFn = () => {
       getEmailOne().then((res) => {
-        console.log(res)
         form1.value = res
       })
     }
@@ -130,7 +129,7 @@ export default {
     const handleUpdata = (formName) => {
       proxy.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('验证通过', form1.value)
+          // console.log('验证通过', form1.value)
           saveOrUpdateEmail(form1.value).then(() => {
             ElMessage({
               showClose: true,
@@ -200,7 +199,7 @@ export default {
     const handleSend = (formName) => {
       proxy.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('验证通过', form2.value)
+          // console.log('验证通过', form2.value)
           sendEmail(form2.value).then(() => {
             ElMessage({
               showClose: true,
@@ -226,7 +225,10 @@ export default {
       }, 1500)
     })
     const toolbarConfig = {}
-    const editorConfig = {placeholder: '请输入内容...'}
+    const editorConfig = {
+      placeholder: '请输入内容...',
+      MENU_CONF: {}
+    }
     // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
       const editor = editorRef.value
@@ -236,6 +238,42 @@ export default {
     const handleCreated = (editor) => {
       editorRef.value = editor // 记录 editor 实例，重要！
     }
+    editorConfig.MENU_CONF['uploadImage'] = {
+      // 自定义上传
+      async customUpload(file) {
+        // file 即选中的文件
+        filesToBase64(file)
+      },
+
+      // 小于该值就插入 base64 格式（而不上传），默认为 0
+      base64LimitSize: 1000 * 1024 // 1M
+    }
+
+    // 图片转base64
+    const filesToBase64 = (file) => {
+        return new Promise(function (resolve, reject) {
+          const reader = new FileReader()
+          let imgResult = ''
+          reader.readAsDataURL(file)
+          reader.onload = function () {
+            imgResult = reader.result  // base64格式的图片
+          }
+          reader.onerror = function (error) {
+            reject(error)
+          }
+          reader.onloadend = function () {
+            ElMessage({
+              showClose: true,
+              message: '图片上传失败，请重新选择图片上传！',
+              type: 'error',
+            })
+            resolve(imgResult)
+          }
+        })
+    }
+
+
+
     watch(valueHtml, (val) => {
       val === '<p><br></p>' ? form2.value.content = '' : form2.value.content = val
     })
