@@ -1,16 +1,20 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:38
- * @LastEditTime: 2022-06-14 01:35:46
+ * @LastEditTime: 2022-07-10 00:28:16
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/layout/AppMain/AppMain.vue
 -->
 <template>
   <div class="AppMain-wrapper">
-    <transition :name="transitionName">
-      <router-view />
-    </transition>
+    <div class="AppMain-wrapper-content">
+      <div class="AppMain-wrapper-page">
+        <transition :name="transitionName">
+          <router-view />
+        </transition>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -43,10 +47,26 @@ export default {
 </script>
 <style lang="scss" scoped>
 .AppMain-wrapper {
+  height: 0;
   flex: 1;
-  margin: 12px;
-  background: #fff;
-  border-radius: 8px;
+  position: relative;
+  padding: 12px;
+
+  .AppMain-wrapper-content {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 12px;
+    bottom: 12px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .AppMain-wrapper-page {
+      max-height: 100%;
+      overflow: scroll;
+    }
+  }
 }
 .slide-right-enter-active,
 .slide-right-leave-active,

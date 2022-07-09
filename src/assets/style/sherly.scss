@@ -10,6 +10,7 @@
   background: #f0f2f5;
   display: flex;
   align-items: flex-start;
+  overflow: hidden;
   &-Sidebar {
     width: 200px;
   }
@@ -23,6 +24,7 @@
 }
 .sherly-page-wrapper {
   padding: 16px;
+  overflow: auto;
 }
 .sherly-table-box {
   padding: 0 16px;
