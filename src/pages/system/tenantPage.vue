@@ -21,6 +21,7 @@
       </div>
     </el-form>
     <SherlyTable
+        :loading="loading"
       :tableData="tableData.result"
       style="width: 100%"
       showPagination
@@ -131,6 +132,7 @@ import { ElMessage } from "element-plus";
 export default {
   components: { SherlyTable },
   setup() {
+    const loading = ref(false)
     let form = reactive({
       tenantName: "",
       tenantCode: "",
@@ -169,10 +171,14 @@ export default {
 
     // 获取列表
     const getList = async () => {
+      loading.value = true
       const data = await getTenant(form);
       Object.keys(data).forEach((i) => {
         tableData[i] = data[i];
       });
+      setTimeout(() => {
+        loading.value = false
+      }, 100)
     };
 
     // 搜索
@@ -273,6 +279,7 @@ export default {
       handleDelete,
       handleCancel,
       handleConfirm,
+      loading
     };
   },
 };

@@ -77,7 +77,7 @@
       </el-col>
     </el-row>
     <!-- 用户表格 -->
-    <el-table :data="tableData" style="width: 100%">
+    <el-table v-loading="loading" :data="tableData" style="width: 100%">
       <el-table-column prop="phone" label="手机号" width="180" align="center"/>
       <el-table-column prop="realName" label="姓名" align="center"/>
       <el-table-column prop="nickname" label="昵称" align="center"/>
@@ -223,6 +223,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   setup() {
     const { proxy } = getCurrentInstance();
+    const loading = ref(false)
     onMounted(() => {
       getDepartmentListFn();
       getList();
@@ -312,9 +313,13 @@ export default {
     const tableData = ref([]);
     // 获取用户信息列表
     const getList = () => {
+      loading.value = true
       pageUser(data.queryParams).then((res) => {
         tableData.value = res.result;
         total.value = res.total;
+        setTimeout(() => {
+          loading.value = false
+        }, 100)
       });
     };
 
@@ -516,6 +521,7 @@ export default {
     };
 
     return {
+      loading,
       formRules,
       type1,
       ...toRefs(data),

@@ -22,6 +22,7 @@
 
     <SherlyTable
       :tableData="tableData.result"
+      :loading="loading"
       style="width: 100%"
       showPagination
       @handleCurrentChange="handleCurrentChange"
@@ -127,6 +128,7 @@ import SherlyTable from "@/components/SherlyTable.vue";
 export default {
   components: { SherlyTable },
   setup() {
+    const loading = ref(false)
     const resetFormData = ref(null);
     const ruleFormRef = ref(null);
     const tableData = reactive({});
@@ -178,9 +180,13 @@ export default {
 
     // 获取角色列表
     const handleGetRoleLists = async () => {
+      loading.value = true
       const data = await getRoleLists(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
+        setTimeout(() => {
+          loading.value = false
+        }, 100)
       });
     };
 
@@ -332,6 +338,7 @@ export default {
       handleMenuTreeCheckChange,
       handlePermissionTreeCheckChange,
       handleSizeChange,
+      loading
     };
   },
 };

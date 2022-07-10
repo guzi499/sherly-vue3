@@ -20,6 +20,7 @@
     </el-row>
     <!-- 表格菜单 -->
     <el-table
+        v-loading = loading
       :data="departmentList"
       style="width: 100%; margin-bottom: 20px"
       row-key="departmentId"
@@ -120,6 +121,7 @@ import { getDepartmentList } from "@/api/general.js";
 export default {
   name: "departmentPage",
   setup() {
+    const loading = ref(false)
     const { proxy } = getCurrentInstance();
     onMounted(() => {
       getList(data.queryParams);
@@ -192,21 +194,21 @@ export default {
       getList(data.queryParams);
     };
 
-    const loading = ref(true);
-
     // 查询部门列表信息
     const departmentList = ref([]);
     const getList = (value) => {
       loading.value = true;
       getDepartmentListTree(value).then((res) => {
         departmentList.value = res;
-        loading.value = false;
         if (value.departmentName) {
           departmentList.value = handleTreeData(
             departmentList.value,
             value.departmentName
           );
         }
+        setTimeout(() => {
+          loading.value = false;
+        }, 100)
       });
       getDepartmentListFn();
     };
@@ -359,6 +361,7 @@ export default {
       handleOk,
       handleCancle,
       departmentListSelect,
+      loading
     };
   },
 };
