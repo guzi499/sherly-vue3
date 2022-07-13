@@ -11,7 +11,7 @@ import request from "@/utils/request";
 /**查询部门树 */
 export function getDepartmentListTree(query) {
   return request({
-    url: "/department/list/tree",
+    url: "/department/list_tree",
     method: "get",
     params: query
   });
@@ -20,7 +20,7 @@ export function getDepartmentListTree(query) {
 /**部门新增 */
 export function addDepartment(data) {
   return request({
-    url: "/department/save/one",
+    url: "/department/save_one",
     method: "post",
     data: data,
   });
@@ -29,7 +29,7 @@ export function addDepartment(data) {
 // 修改菜单
 export function updateDepartment(data) {
   return request({
-    url: "/department/update/one",
+    url: "/department/update_one",
     method: "put",
     data: data,
   });
@@ -38,7 +38,7 @@ export function updateDepartment(data) {
 // 删除菜单
 export function delDepartment(departmentId) {
   return request({
-    url: "/department/remove/one?departmentId=" + departmentId,
+    url: "/department/remove_one?departmentId=" + departmentId,
     method: "delete",
   });
 }

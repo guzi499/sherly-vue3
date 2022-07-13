@@ -4,7 +4,7 @@ import request from "@/utils/request";
 export function getSelf(params) {
     return request({
         // url: "/user/get/self?userId=" + params,
-        url: "/user/get/self",
+        url: "/user_self/get_self",
         method: "get",
         params
     });
@@ -13,7 +13,7 @@ export function getSelf(params) {
 /**用户更新头像 */
 export function updateAvatar(data) {
     return request({
-        url: `/user/update/avatar`,
+        url: `/user_self/update_avatar`,
         method: "put",
         data,
     });
@@ -22,7 +22,7 @@ export function updateAvatar(data) {
 /**用户修改密码 */
 export function updatePassword(data) {
     return request({
-        url: `/user/update/password`,
+        url: `/user_self/update_password`,
         method: "put",
         data,
     });
@@ -31,7 +31,7 @@ export function updatePassword(data) {
 /**用户个人中心更新 */
 export function updateSelf(data) {
     return request({
-        url: `/user/update/self`,
+        url: `/user_self/update_self`,
         method: "put",
         data,
     });

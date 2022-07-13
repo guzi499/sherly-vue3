@@ -3,7 +3,7 @@ import request from "@/utils/request";
 /**邮箱配置详情 */
 export function getEmailOne(params) {
     return request({
-        url: "/email/get/one",
+        url: "/email/get_one",
         method: "get",
         params
     });
@@ -12,7 +12,7 @@ export function getEmailOne(params) {
 /**邮件配置保存或修改 */
 export function saveOrUpdateEmail(data) {
     return request({
-        url: `/email/saveOrUpdate/one`,
+        url: `/email/save_or_update`,
         method: "post",
         data,
     });

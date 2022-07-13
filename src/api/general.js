@@ -17,15 +17,6 @@ export function getDepartmentList (data) {
   })
 }
 
-/**获取公共权限下拉框 */
-export function getPermissionList (data) {
-  return request({
-    url: '/generic/basic/permission',
-    method: 'get',
-    data: data
-  })
-}
-
 /**获取公共角色下拉框 */
 export function getRoleList (data) {
   return request({

@@ -11,7 +11,7 @@ import request from "@/utils/request";
 /**获取用户详情 */
 export function getUserId(userId) {
   return request({
-    url: "/user/get/one?userId=" + userId,
+    url: "/user/get_one?userId=" + userId,
     method: "get",
   });
 }
@@ -19,7 +19,7 @@ export function getUserId(userId) {
 /**用户新增 */
 export function addUser(data) {
   return request({
-    url: "/user/save/one",
+    url: "/user/save_one",
     method: "post",
     data: data,
   });
@@ -28,7 +28,7 @@ export function addUser(data) {
 /**用户更新 */
 export function updataUser(data) {
   return request({
-    url: "/user/update/one",
+    url: "/user/update_one",
     method: "put",
     data: data,
   });
@@ -37,7 +37,7 @@ export function updataUser(data) {
 // 用户删除
 export function delMenu(userId) {
   return request({
-    url: "/user/remove/one?userId=" + userId,
+    url: "/user/remove_one?userId=" + userId,
     method: "delete",
   });
 }
@@ -45,7 +45,7 @@ export function delMenu(userId) {
 /**用户禁用 - 解禁 */
 export function disableUser(userId, enable) {
   return request({
-    url: `/user/ban/one?userId=${userId}&&enable=${enable}`,
+    url: `/user/ban_one?userId=${userId}&&enable=${enable}`,
     method: "put"
   });
 }
@@ -53,7 +53,7 @@ export function disableUser(userId, enable) {
 /**用户分页 */
 export function pageUser(data) {
   return request({
-    url: "/user/list/page",
+    url: "/user/list_page",
     method: "get",
     params: data,
   });
@@ -62,7 +62,7 @@ export function pageUser(data) {
 /**用户导出 */
 export function exportUser() {
   return request({
-    url: "/user/list/export",
+    url: "/user/list_export",
     method: "get",
     responseType: "blob",
   });

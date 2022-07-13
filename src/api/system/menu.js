@@ -8,20 +8,11 @@
  */
 import request from "@/utils/request";
 
-/**获取当前用户菜单下拉框 */
-// export function getMenuList(data) {
-//   return request({
-//     url: "/generic/basic/menu",
-//     method: "get",
-//     data: data,
-//   });
-// }
-
 /**菜单列表 */
 export function getMenu(data) {
   return request({
-    url: "/menu/list/tree",
-    method: "post",
+    url: "/menu/list_tree",
+    method: "get",
     data,
   });
 }
@@ -29,7 +20,7 @@ export function getMenu(data) {
 /**新增菜单 */
 export function addMenu(data) {
   return request({
-    url: "/menu/save/one",
+    url: "/menu/save_one",
     method: "post",
     data: data,
   });
@@ -38,7 +29,7 @@ export function addMenu(data) {
 // 修改菜单
 export function updateMenu(data) {
   return request({
-    url: "/menu/update/one",
+    url: "/menu/update_one",
     method: "put",
     data: data,
   });
@@ -47,7 +38,7 @@ export function updateMenu(data) {
 // 删除菜单
 export function delMenu(menuId) {
   return request({
-    url: "/menu/remove/one?menuId=" + menuId,
+    url: "/menu/remove_one?menuId=" + menuId,
     method: "delete",
   });
 }

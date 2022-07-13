@@ -12,7 +12,7 @@ import request from "@/utils/request";
 /**获取角色列表 */
 export function getRoleLists(params) {
   return request({
-    url: "/role/list/page",
+    url: "/role/list_page",
     method: "get",
     params,
   });
@@ -21,7 +21,7 @@ export function getRoleLists(params) {
 /**获取角色详情 */
 export function getOneRole(roleId) {
   return request({
-    url: `/role/get/one?roleId=${roleId}`,
+    url: `/role/get_one?roleId=${roleId}`,
     method: "get",
   });
 }
@@ -29,7 +29,7 @@ export function getOneRole(roleId) {
 /**新增角色 */
 export function addRole(data) {
   return request({
-    url: "/role/save/one",
+    url: "/role/save_one",
     method: "post",
     data,
   });
@@ -38,7 +38,7 @@ export function addRole(data) {
 /**删除角色 */
 export function delRole(roleId) {
   return request({
-    url: `/role/remove/one?roleId=${roleId}`,
+    url: `/role/remove_one?roleId=${roleId}`,
     method: "delete",
   });
 }
@@ -46,7 +46,7 @@ export function delRole(roleId) {
 /**更新角色 */
 export function updateRole(data) {
   return request({
-    url: `/role/update/one`,
+    url: `/role/update_one`,
     method: "put",
     data,
   });
