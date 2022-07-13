@@ -95,6 +95,7 @@
                     <el-button type="primary">发送邮件</el-button>
                   </template>
                 </el-popconfirm>
+                <el-button type="info" @click="handleReset">内容重置</el-button>
               </el-col>
             </el-row>
           </el-form-item>
@@ -216,7 +217,6 @@ export default {
 
     }
 
-
     // 发送邮件按钮
     const handleSend = (formName) => {
       proxy.$refs[formName].validate((valid) => {
@@ -239,6 +239,13 @@ export default {
           return false;
         }
       })
+    }
+
+    // 内容重置
+    const handleReset = () => {
+      form2.value.subject = ''
+      // form2.value.content = ''
+      valueHtml.value = '<p></p>'
     }
 
     // 富文本编辑器 ---------------------------------
@@ -316,6 +323,7 @@ export default {
       rules2,
       handleUpdata,
       handleSend,
+      handleReset,
       editorRef,
       valueHtml,
       mode: 'default', // 或 'simple'
