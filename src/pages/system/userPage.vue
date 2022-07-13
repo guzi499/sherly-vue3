@@ -77,7 +77,7 @@
       </el-col>
     </el-row>
     <!-- 用户表格 -->
-    <el-table :data="tableData" style="width: 100%">
+    <el-table v-loading="loading" :data="tableData" style="width: 100%">
       <el-table-column prop="phone" label="手机号" width="180" align="center"/>
       <el-table-column prop="realName" label="姓名" align="center"/>
       <el-table-column prop="nickname" label="昵称" align="center"/>
@@ -208,7 +208,8 @@
 
 <script>
 import { getCurrentInstance, ref, reactive, toRefs, onMounted } from "vue";
-import { getDepartmentList, getRoleList } from "@/api/general.js";
+import { listAll } from "@/api/system/role.js";
+import { getDepartmentListTree } from "@/api/system/department.js";
 import {
   pageUser,
   exportUser,
@@ -223,6 +224,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   setup() {
     const { proxy } = getCurrentInstance();
+    const loading = ref(false)
     onMounted(() => {
       getDepartmentListFn();
       getList();
@@ -232,7 +234,7 @@ export default {
     // 获取角色下拉款数据
     const rolesOptions = ref([]);
     const getRoleListFn = () => {
-      getRoleList().then((res) => {
+      listAll().then((res) => {
         rolesOptions.value = res;
       });
     };
@@ -312,9 +314,13 @@ export default {
     const tableData = ref([]);
     // 获取用户信息列表
     const getList = () => {
+      loading.value = true
       pageUser(data.queryParams).then((res) => {
         tableData.value = res.result;
         total.value = res.total;
+        setTimeout(() => {
+          loading.value = false
+        }, 100)
       });
     };
 
@@ -322,7 +328,7 @@ export default {
     const DepartmentList = ref([]);
     // 获取公共部门下拉框数据
     const getDepartmentListFn = () => {
-      getDepartmentList().then((res) => {
+      getDepartmentListTree().then((res) => {
         DepartmentList.value = res;
       });
     };
@@ -516,6 +522,7 @@ export default {
     };
 
     return {
+      loading,
       formRules,
       type1,
       ...toRefs(data),

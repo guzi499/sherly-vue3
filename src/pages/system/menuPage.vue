@@ -20,6 +20,7 @@
     </el-row>
     <!-- 表格菜单 -->
     <el-table
+        v-loading="loading"
       :data="menuList"
       style="width: 100%; margin-bottom: 20px"
       row-key="menuId"
@@ -148,12 +149,12 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { reactive, ref, onMounted, getCurrentInstance } from "vue";
 import { getMenu } from "@/api/system/menu";
 import { addMenu, delMenu, updateMenu } from "@/api/system/menu";
-import { getMenuList } from "@/api/general.js";
 
 export default {
   name: "menuPage",
   setup() {
     const { proxy } = getCurrentInstance();
+    const loading = ref(false)
     onMounted(() => {
       getList(data.queryParams);
       // getMenuListFn();
@@ -203,18 +204,18 @@ export default {
       getList(data.queryParams);
     };
 
-    const loading = ref(true);
-
     // 查询菜单列表信息
     const menuList = ref([]);
     const getList = (value) => {
       loading.value = true;
       getMenu(value).then((res) => {
         menuList.value = res;
-        loading.value = false;
         if (value.menuName) {
           menuList.value = handleTreeData(menuList.value, value.menuName);
         }
+        setTimeout(() => {
+          loading.value = false;
+        }, 100)
       });
       getMenuListFn();
     };
@@ -247,7 +248,7 @@ export default {
     // 查询菜单下拉框列表信息
     const menuListSelect = ref([]);
     const getMenuListFn = () => {
-      getMenuList().then((res) => {
+      getMenu().then((res) => {
         menuListSelect.value = res;
       });
     };
@@ -411,7 +412,8 @@ export default {
       handleOk,
       handleCancle,
       menuListSelect,
-      rules
+      rules,
+      loading
     };
   },
 };

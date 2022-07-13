@@ -11,7 +11,7 @@ import request from "@/utils/request";
 /**获取租户列表 */
 export function getTenant(params) {
   return request({
-    url: "/tenant/list/page",
+    url: "/tenant/list_page",
     method: "get",
     params,
   });
@@ -20,7 +20,7 @@ export function getTenant(params) {
 /**新增租户 */
 export function addTenant(data) {
   return request({
-    url: "/tenant/save/one",
+    url: "/tenant/save_one",
     method: "post",
     data,
   });
@@ -29,7 +29,7 @@ export function addTenant(data) {
 /**删除租户 */
 export function delTenant(id) {
   return request({
-    url: `/tenant/remove/one?id=${id}`,
+    url: `/tenant/remove_one?id=${id}`,
     method: "delete",
   });
 }
@@ -37,7 +37,7 @@ export function delTenant(id) {
 /**更新租户 */
 export function updateTenant(data) {
   return request({
-    url: `/tenant/update/one`,
+    url: `/tenant/update_one`,
     method: "put",
     data,
   });

@@ -11,25 +11,7 @@ import request from "@/utils/request";
 /**获取当前用户菜单 */
 export function getBasicData(data) {
   return request({
-    url: "/generic/basic/data",
-    method: "get",
-    data: data,
-  });
-}
-
-/**获取当前用户菜单下拉框 */
-export function getMenuList(data) {
-  return request({
-    url: "/generic/basic/menu",
-    method: "get",
-    data: data,
-  });
-}
-
-/**获取当前部门下拉框 */
-export function getDepartmentList(data) {
-  return request({
-    url: "/generic/basic/department",
+    url: "/generic/basic_data",
     method: "get",
     data: data,
   });

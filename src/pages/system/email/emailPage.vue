@@ -27,7 +27,18 @@
           <el-form-item>
             <el-row>
               <el-col>
-                <el-button type="primary" @click="handleUpdata('ruleFormRef1')">更新配置</el-button>
+                <el-popconfirm
+                    confirm-button-text="是"
+                    cancel-button-text="否"
+                    :icon="InfoFilled"
+                    icon-color="#626AEF"
+                    title="此操作将更新配置，是否继续？"
+                    @confirm="handleUpdata('ruleFormRef1')"
+                >
+                  <template #reference>
+                    <el-button type="primary">更新配置</el-button>
+                  </template>
+                </el-popconfirm>
               </el-col>
             </el-row>
           </el-form-item>
@@ -72,7 +83,19 @@
           <el-form-item>
             <el-row>
               <el-col>
-                <el-button type="primary" @click="handleSend('ruleFormRef2')">发送邮件</el-button>
+                <el-popconfirm
+                    confirm-button-text="是"
+                    cancel-button-text="否"
+                    :icon="InfoFilled"
+                    icon-color="#626AEF"
+                    title="是否确定发送？"
+                    @confirm="handleSend('ruleFormRef2')"
+                >
+                  <template #reference>
+                    <el-button type="primary">发送邮件</el-button>
+                  </template>
+                </el-popconfirm>
+                <el-button type="info" @click="handleReset">内容重置</el-button>
               </el-col>
             </el-row>
           </el-form-item>
@@ -84,7 +107,7 @@
 <script>
 import {getCurrentInstance, reactive, ref, onBeforeUnmount, shallowRef, onMounted, watch} from 'vue'
 import {getEmailOne, saveOrUpdateEmail, sendEmail} from '@/api/system/email.js'
-import {ElMessage} from "element-plus";
+import {ElMessage, ElLoading} from "element-plus";
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 
@@ -194,11 +217,15 @@ export default {
 
     }
 
-
-    // 邮箱配置 - 更新配置按钮
+    // 发送邮件按钮
     const handleSend = (formName) => {
       proxy.$refs[formName].validate((valid) => {
         if (valid) {
+          loading.value = ElLoading.service({
+            lock: true,
+            text: 'Loading',
+            background: 'rgba(0, 0, 0, 0.7)',
+          })
           // console.log('验证通过', form2.value)
           sendEmail(form2.value).then(() => {
             ElMessage({
@@ -206,11 +233,19 @@ export default {
               message: '邮件发送成功',
               type: 'success',
             })
+            loading.value.close()
           })
         } else {
           return false;
         }
       })
+    }
+
+    // 内容重置
+    const handleReset = () => {
+      form2.value.subject = ''
+      // form2.value.content = ''
+      valueHtml.value = '<p></p>'
     }
 
     // 富文本编辑器 ---------------------------------
@@ -288,6 +323,7 @@ export default {
       rules2,
       handleUpdata,
       handleSend,
+      handleReset,
       editorRef,
       valueHtml,
       mode: 'default', // 或 'simple'

@@ -11,7 +11,7 @@ import request from "@/utils/request";
 /**获取租户列表 */
 export function getOnline(params) {
   return request({
-    url: `/user/online/list?`,
+    url: `/user_online/list?`,
     method: "get",
     params,
   });
@@ -20,7 +20,7 @@ export function getOnline(params) {
 /**删除租户 */
 export function delOnline(params) {
   return request({
-    url: `/user/online/force/quit`,
+    url: `/user_online/force_quit`,
     method: "delete",
     params,
   });

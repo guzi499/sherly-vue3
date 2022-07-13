@@ -23,11 +23,4 @@ export default {
       method: "get",
     });
   },
-  getSetting(data) {
-    return request({
-      url: "/seting",
-      method: "post",
-      data,
-    });
-  },
 };

@@ -3,14 +3,14 @@
  * @Date: 2022-04-21 00:12:17
  * @LastEditTime: 2022-04-26 15:46:04
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/components/SherlyTable.vue
 -->
 <template>
   <div class="sherlytable-header">
     <slot name="header"></slot>
   </div>
-  <el-table v-bind="$attrs" :data="tableData">
+  <el-table v-bind="$attrs" :data="tableData" v-loading="loading">
     <slot name="table"></slot>
   </el-table>
   <div class="sherly-pagination-box" v-if="showPagination">
@@ -50,6 +50,10 @@ export default {
       type: Number,
       default: 10,
     },
+    loading: {
+      type: Boolean,
+      default: false
+    }
   },
   setup(props, context) {
     const handleSizeChange = (e) => {
