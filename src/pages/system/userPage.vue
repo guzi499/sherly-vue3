@@ -208,7 +208,8 @@
 
 <script>
 import { getCurrentInstance, ref, reactive, toRefs, onMounted } from "vue";
-import { getDepartmentList, getRoleList } from "@/api/general.js";
+import { listAll } from "@/api/system/role.js";
+import { getDepartmentListTree } from "@/api/system/department.js";
 import {
   pageUser,
   exportUser,
@@ -233,7 +234,7 @@ export default {
     // 获取角色下拉款数据
     const rolesOptions = ref([]);
     const getRoleListFn = () => {
-      getRoleList().then((res) => {
+      listAll().then((res) => {
         rolesOptions.value = res;
       });
     };
@@ -327,7 +328,7 @@ export default {
     const DepartmentList = ref([]);
     // 获取公共部门下拉框数据
     const getDepartmentListFn = () => {
-      getDepartmentList().then((res) => {
+      getDepartmentListTree().then((res) => {
         DepartmentList.value = res;
       });
     };

@@ -116,7 +116,6 @@ import {
   delDepartment,
   updateDepartment,
 } from "@/api/system/department";
-import { getDepartmentList } from "@/api/general.js";
 // import type { FormInstance, FormRules } from 'element-plus'
 export default {
   name: "departmentPage",
@@ -216,7 +215,7 @@ export default {
     // 查询部门下拉框列表信息
     const departmentListSelect = ref([]);
     const getDepartmentListFn = () => {
-      getDepartmentList().then((res) => {
+      getDepartmentListTree().then((res) => {
         departmentListSelect.value = res;
       });
     };

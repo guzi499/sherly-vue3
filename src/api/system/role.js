@@ -51,3 +51,12 @@ export function updateRole(data) {
     data,
   });
 }
+
+/**获取角色查询 */
+export function listAll(params) {
+  return request({
+    url: "/role/list_all",
+    method: "get",
+    params,
+  });
+}

@@ -11,7 +11,7 @@ import request from "@/utils/request";
 /**获取当前用户菜单 */
 export function getBasicData(data) {
   return request({
-    url: "/generic/basic/data",
+    url: "/generic/basic_data",
     method: "get",
     data: data,
   });

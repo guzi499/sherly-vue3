@@ -149,7 +149,6 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { reactive, ref, onMounted, getCurrentInstance } from "vue";
 import { getMenu } from "@/api/system/menu";
 import { addMenu, delMenu, updateMenu } from "@/api/system/menu";
-import { getMenuList } from "@/api/general.js";
 
 export default {
   name: "menuPage",
@@ -249,7 +248,7 @@ export default {
     // 查询菜单下拉框列表信息
     const menuListSelect = ref([]);
     const getMenuListFn = () => {
-      getMenuList().then((res) => {
+      getMenu().then((res) => {
         menuListSelect.value = res;
       });
     };
