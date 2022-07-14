@@ -3,7 +3,7 @@
  * @Date: 2022-04-01 23:17:38
  * @LastEditTime: 2022-07-10 00:28:16
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/layout/AppMain/AppMain.vue
 -->
 <template>
@@ -64,7 +64,7 @@ export default {
 
     .AppMain-wrapper-page {
       max-height: 100%;
-      overflow: scroll;
+      overflow: auto;
     }
   }
 }

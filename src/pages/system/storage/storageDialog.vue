@@ -3,7 +3,7 @@
  * @Date: 2022-07-08 23:40:21
  * @LastEditTime: 2022-07-13 23:58:35
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/storage/storageDialog.vue
 -->
 <template>
@@ -146,28 +146,28 @@ export default {
               {
                 required: true,
                 message: "请输入配置名称",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             type: [
               {
                 required: true,
                 message: "请选择存储类型",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             "config.bucket": [
               {
                 required: true,
                 message: "请输入存储桶",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             "config.domainName": [
               {
                 required: true,
                 message: "请输入访问域名",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
           };
@@ -177,56 +177,56 @@ export default {
               {
                 required: true,
                 message: "请输入配置名称",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             type: [
               {
                 required: true,
                 message: "请选择存储类型",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             "config.bucket": [
               {
                 required: true,
                 message: "请输入存储桶",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             "config.domainName": [
               {
                 required: true,
                 message: "请输入访问域名",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             "config.endpoint": [
               {
                 required: true,
                 message: "请输入上传地址",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             "config.accessKey": [
               {
                 required: true,
                 message: "请输入访问Key",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             "config.accessSecret": [
               {
                 required: true,
                 message: "请输入访问Secret",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
             "config.region": [
               {
                 required: true,
                 message: "请输入访问地区",
-                trigger: "change",
+                trigger: "blur",
               },
             ],
           };
