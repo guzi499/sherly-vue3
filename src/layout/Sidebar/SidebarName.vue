@@ -12,6 +12,7 @@
     <Logo :isShow="isShow"/>
     <div class="menu-box">
       <el-menu
+          unique-opened
           class="el-menu-vertical-demo"
           :collapse="isShow"
           :collapse-transition="false"
