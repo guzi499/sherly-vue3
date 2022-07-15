@@ -158,6 +158,10 @@ export default {
   background: transparent;
 }
 
+li {
+  height: 30px;
+}
+
 .el_row {
   display: flex;
   justify-content: center;
