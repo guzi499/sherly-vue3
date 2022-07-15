@@ -23,6 +23,8 @@ import "@/assets/style/index.scss";
 import TreeSelect from "@/components/TreeSelect.vue";
 // 自定义分页组件
 import Pagination from "@/components/PaginationEl.vue";
+// 自定义穿梭框组件
+import TransferName from '@/pages/system/email/components/TransferName.vue'
 
 // 引入矢量图标
 import '@/assets/style/font-icon/iconfont.css'
@@ -35,6 +37,7 @@ app.component("TreeSelect", TreeSelect);
 
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Pagination", Pagination);
+app.component("TransferName", TransferName);
 
 app.use(ElementPlus);
 for (const name in ElIcons) {

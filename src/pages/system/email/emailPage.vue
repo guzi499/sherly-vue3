@@ -56,12 +56,11 @@
             <el-input v-model="form2.subject" style="width: 600px" placeholder="请输入邮件标题" />
           </el-form-item>
           <el-form-item label="收件用户" prop="tos">
-            <!--            <el-input v-model="form2.tos" style="width: 380px"/>-->
-            <el-select
-                style="width: 600px" v-model="form2.tos" multiple filterable allow-create default-first-option
-                remote reserve-keyword :loading="loading" :remote-method="remoteMethod" placeholder="请输入收件人邮箱" clearable>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
+            <el-input v-model="form2.tos" style="width: 600px" placeholder="点击选择收件人" @click="handleClickInput"
+                      clearable/>
+            <el-button type="primary" size="small" style="margin-left: 8px" v-show="form2.tos.length>0"
+                       @click="handleReChoose">重新选择
+            </el-button>
           </el-form-item>
           <el-form-item label="邮件正文" prop="content">
             <div style="border: 1px solid #ccc">
@@ -102,6 +101,10 @@
         </el-form>
       </el-tab-pane>
     </el-tabs>
+    <el-dialog v-model="dialogVisible" title="选择收件人" width="45%" center>
+      <RecipientName ref="recipientName" v-model:dialogVisible="dialogVisible"
+                     v-model:users="form2.tos"></RecipientName>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -110,9 +113,10 @@ import {getEmailOne, saveOrUpdateEmail, sendEmail} from '@/api/system/email.js'
 import {ElMessage, ElLoading} from "element-plus";
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
+import RecipientName from './components/RecipientName.vue'
 
 export default {
-  components: {Editor, Toolbar},
+  components: {Editor, Toolbar, RecipientName},
   setup() {
     const {proxy} = getCurrentInstance()
     const loading = ref(false)
@@ -167,54 +171,39 @@ export default {
       })
     }
 
-    //
     // 发送邮件 - 表单数据
-    const form2 = ref({})
+    const form2 = reactive({
+      tos: [], // 	收件人邮箱
+      content: '', //	正文
+      subject: '' //	主题
+    })
+    // 重置表单
+    const resetForm2 = () => {
+      form2.content = ''
+      form2.subject = ''
+    }
     // 邮箱配置 - 表单数据校验
     const rules2 = reactive({
       subject: [
         {required: true, message: '请输入邮件标题', trigger: 'blur'}
       ],
       tos: [
-        {required: true, message: '请输入收件人邮箱', trigger: 'blur'}
+        {required: true, message: '未选择收件人', trigger: 'change'}
       ],
       content: [
         {required: true, message: '请输入邮件正文', trigger: 'blur'}
       ],
     })
-    const options = ref([])
-    const suffix = reactive(['@qq.com', '@163.com', '@gmail.com', '@126.com', '@yeah.net', '@vip.163.com',
-      '@wo.cn', '@188.com', '@aliyun.com', '@vip.sina.com', '@sina.com', '@sina.cn', '@sohu.com'])
-    const remoteMethod = (query) => {
-      if (query != '') {
-        loading.value = true
-        // 如果输入的没有@符
-        if (query.indexOf('@') < 0) {
-          options.value = []
-          for (let i = 0; i < suffix.length; i++) {
-            options.value.push({
-              value: query + suffix[i],
-              label: query + suffix[i]
-            })
-          }
-          loading.value = false
-        } else {
-          options.value = []
-          let ary = ref([])
-          ary.value = suffix.filter(item => {
-            return item.indexOf(query.split('@')[1]) > 0
-          })
-          ary.value.map(item => {
-            return options.value.push({
-              value: query.split('@')[0] + item,
-              label: query.split('@')[0] + item
-            })
-          })
-        }
-      } else {
-        options.value = []
-      }
 
+    const dialogVisible = ref(false)
+    // 点击选择收件人
+    const handleClickInput = () => {
+      dialogVisible.value = true
+    }
+
+    const handleReChoose = () => {
+      form2.tos = []
+      dialogVisible.value = true
     }
 
     // 发送邮件按钮
@@ -226,13 +215,17 @@ export default {
             text: 'Loading',
             background: 'rgba(0, 0, 0, 0.7)',
           })
-          // console.log('验证通过', form2.value)
-          sendEmail(form2.value).then(() => {
+          form2.tos = form2.tos.map(item => {
+            return item.split('|')[1]
+          })
+          console.log('验证通过', form2)
+          sendEmail(form2).then(() => {
             ElMessage({
               showClose: true,
               message: '邮件发送成功',
               type: 'success',
             })
+            resetForm2()
             loading.value.close()
           })
         } else {
@@ -243,8 +236,9 @@ export default {
 
     // 内容重置
     const handleReset = () => {
-      form2.value.subject = ''
-      // form2.value.content = ''
+      resetForm2()
+      // form2.subject = ''
+      // form2.content = ''
       valueHtml.value = '<p></p>'
     }
 
@@ -310,7 +304,7 @@ export default {
 
 
     watch(valueHtml, (val) => {
-      val === '<p><br></p>' ? form2.value.content = '' : form2.value.content = val
+      val === '<p><br></p>' ? form2.content = '' : form2.content = val
     })
 
 
@@ -322,6 +316,9 @@ export default {
       rules1,
       rules2,
       handleUpdata,
+      handleClickInput,
+      handleReChoose,
+      dialogVisible,
       handleSend,
       handleReset,
       editorRef,
@@ -330,9 +327,6 @@ export default {
       toolbarConfig,
       editorConfig,
       handleCreated,
-      remoteMethod,
-      options
-
     }
   }
 }

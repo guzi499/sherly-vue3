@@ -57,6 +57,6 @@ export function listAll(params) {
   return request({
     url: "/role/list_all",
     method: "get",
-    params,
+    data: params,
   });
 }

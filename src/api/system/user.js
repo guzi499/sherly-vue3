@@ -67,3 +67,12 @@ export function exportUser() {
     responseType: "blob",
   });
 }
+
+/**用户查询 */
+export function getUserList_all(data) {
+  return request({
+    url: "/user/list_all",
+    method: "get",
+    params: data
+  });
+}
