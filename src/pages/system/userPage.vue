@@ -126,7 +126,7 @@
       @current-change="handleCurrentChange"
     />
     <!--    新增 / 修改弹框-->
-    <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="40%">
+    <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="40%" >
       <el-form :model="form" :rules="formRules" ref="ruleForm" style="padding-right: 60px">
         <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone" v-if="type1 === '1' ">
           <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
@@ -266,19 +266,6 @@ export default {
       };
     };
 
-    // 重置弹出框表单
-    const resetform = () => {
-      form.value = {};
-      proxy.$refs.selectTree.treeSelectData = {
-        parentId: null,
-        treeDatas: ""
-      };
-      // proxy.$refs.ruleForm.resetFields();
-     setTimeout(() => {
-       proxy.$refs.ruleForm.resetFields()
-     }, 50)
-    };
-
     // 重置按钮
     const handleReset = () => {
       reset();
@@ -358,22 +345,33 @@ export default {
     const dialogTitle = ref("用户");
     // 弹框新增 / 修改弹框绑定数据
     const form = ref({});
+    // 重置弹出框表单
+    const resetForm = () => {
+      form.value = {};
+      proxy.$refs.selectTree.treeSelectData = {
+        parentId: null,
+        treeDatas: ""
+      };
+    };
 
     const type1 = ref("");
     // 新增 / 修改按钮
     const handleEdit = (type, index, data) => {
-      console.log('新增 / 修改', data)
-      resetform();
+      resetForm()
       type1.value = type;
       if (type === "1") {
         dialogTitle.value = "用户新增";
         dialogFormVisible.value = true;
+        proxy.$nextTick(() => {
+          resetForm()
+          proxy.$refs.ruleForm.resetFields()
+        })
       }
       if (type === "2") {
         dialogTitle.value = "用户更新";
         getUserId(data.userId).then((res) => {
           form.value = res;
-          form.value.departmentName = data.departmentName
+          form.value.departmentName = data.departmentName0
           dialogFormVisible.value = true;
         })
 
@@ -386,28 +384,6 @@ export default {
       form.value.departmentName = e.departmentName;
       proxy.$refs.selectTree1.blur();
     };
-
-    // 自定义校验手机号
-    // const validatePass = (rule, value, callback) => {
-    //   const reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/g
-    //   if (!value) {
-    //     return callback(new Error('手机号不能为空'));
-    //   } else {
-    //     if (!Number(value)) {
-    //       callback(new Error('请输入数字值'));
-    //     }
-    //     else {
-    //       console.log(!reg.test(value))
-    //       if (!reg.test(value)) {
-    //         console.log(1111111)
-    //         callback(new Error('不合法手机号!!!'));
-    //       } else {
-    //         console.log(22222222)
-    //         callback();
-    //       }
-    //     }
-    //   }
-    // }
 
     // 表格添加校验效果
     const formRules = {
@@ -477,7 +453,6 @@ export default {
                 });
           }
         } else {
-          console.log('error submit!!');
           return false;
         }
       });
