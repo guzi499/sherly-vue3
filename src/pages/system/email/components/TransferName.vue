@@ -1,7 +1,7 @@
 <template>
   <el-row class="el_row">
     <!--    左侧穿梭框-->
-    <el-col class="el-col" :span="9">
+    <el-col class="el-col" :span="11">
       <ul class="left">
         <li v-for="item in list1" :key="item.userId" :hidden="activeName !== 'user'">
           <el-checkbox-group v-model="checked1" @change="handleCheckbox">
@@ -23,21 +23,23 @@
       </ul>
     </el-col>
     <!--    右侧穿梭框-->
-    <el-col class="el-col" :span="9">
+    <el-col class="el-col" :span="11">
       <ul class="right">
-        <li v-for="item in list2" :key="item.value" :hidden="activeName !== 'user'">
+        <li v-for="item in list2" :key="item.value">
           <el-checkbox-group v-model="checked2" @change="handleRightCheck">
-            <el-checkbox :label="item" size="large"/>
-          </el-checkbox-group>
-        </li>
-        <li v-for="item in list2" :key="item.userId" :hidden="activeName === 'user'">
-          <el-checkbox-group v-model="checked2" @change="handleRightCheck">
-            <el-checkbox :label="item.realName + (item.email === null ? '' : '|' +  item.email)" size="large"
-                         :disabled="item.email === null "/>
+            <el-checkbox :label="item" size="large" :disabled="!item.split('|')[1]" :checked="item.split('|')[1]"/>
           </el-checkbox-group>
         </li>
       </ul>
     </el-col>
+  </el-row>
+  <el-row justify="end" style="padding: 20px 20px 0 20px">
+    <el-button type="danger" @click="handleReset">
+      清空
+    </el-button>
+    <el-button type="primary" @click="handleOk">
+      确定
+    </el-button>
   </el-row>
 </template>
 
@@ -69,6 +71,10 @@ export default {
       default: () => {
         []
       }
+    },
+    dialogVisible: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, {emit}) {
@@ -84,7 +90,10 @@ export default {
       }
       if (activeName.value === 'role') {
         const res = await getUserList_all({roleIds: val.join(',')})
-        val.length === 0 ? emit('update:list2', []) : emit('update:list2', res)
+        const ary = res.map((item) => {
+          return item.realName + (item.email === null ? '' : '|' + item.email)
+        })
+        val.length === 0 ? emit('update:list2', []) : emit('update:list2', ary)
       }
       if (activeName.value === 'department') {
         departmentIds.value = []
@@ -92,15 +101,30 @@ export default {
           departmentIds.value.push(item.departmentId)
         })
         const res = await getUserList_all({departmentIds: (departmentIds.value).join(',')})
-        departmentIds.value.length === 0 ? emit('update:list2', []) : emit('update:list2', res)
+        const ary = res.map((item) => {
+          return item.realName + (item.email === null ? '' : '|' + item.email)
+        })
+        departmentIds.value.length === 0 ? emit('update:list2', []) : emit('update:list2', ary)
       }
-      if(!val.length) {
+      if (!val.length) {
         emit('sonUsers', [])
       }
     }
     // 右边复选框选中
     const handleRightCheck = (val) => {
-      emit('sonUsers', val)
+      console.log(val)
+      // emit('sonUsers', val)
+    }
+
+    const handleOk = () => {
+      emit('sonUsers', checked2.value)
+      emit('dialogVisible', false)
+    }
+
+    const handleReset = () => {
+      console.log(checked2.value)
+      checked2.value = []
+      emit('update:list2', [])
     }
 
     const defaultProps = {
@@ -109,7 +133,7 @@ export default {
     }
 
     watch(list2, (val) => {
-      if(val.length === 0) {
+      if (val.length === 0) {
         checked1.value = []
         checked2.value = []
       }
@@ -122,7 +146,10 @@ export default {
       checked2,
       handleCheckbox,
       handleRightCheck,
-      defaultProps
+      defaultProps,
+      handleOk,
+      handleReset
+
     }
   }
 }
