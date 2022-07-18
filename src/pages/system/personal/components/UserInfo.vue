@@ -189,9 +189,9 @@ export default {
           type: "success",
         });
       });
+      EditDialogVisible.value = false;
       // 初始化数据
       emit("getList");
-      EditDialogVisible.value = false;
     };
 
     // 添加修改密码弹框是否可见

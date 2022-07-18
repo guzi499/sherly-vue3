@@ -32,23 +32,6 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="部门: ">
-        <!--          <el-select-->
-        <!--              ref="selectTree"-->
-        <!--              v-model="queryParams.parentId"-->
-        <!--              placeholder="请选择"-->
-        <!--          >-->
-        <!--            <el-option-->
-        <!--                hidden-->
-        <!--                :value="queryParams.parentId"-->
-        <!--                :label="treeDatas"-->
-        <!--            ></el-option>-->
-        <!--            <el-tree-->
-        <!--                :data="DepartmentList"-->
-        <!--                :props="defaultProps"-->
-        <!--                :expand-on-click-node="false"-->
-        <!--                @node-click="nodeOnclick"-->
-        <!--            />-->
-        <!--          </el-select>-->
         <TreeSelect
             ref="selectTree"
             :treeList="DepartmentList"
@@ -101,14 +84,8 @@
       <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
       <el-table-column prop="name" label="操作" width="180" align="center">
         <template #default="scope">
-          <a href="javascript:;" title="修改">
-            <Edit style="width: 1em; height: 1em; margin-right: 8px"
-                  @click="handleEdit('2', scope.$index, scope.row)"/>
-          </a>
-          <a href="javascript:;" title="删除">
-            <Delete style="width: 1em; height: 1em; margin-right: 8px"
-                    @click="handleDelete('2', scope.$index, scope.row)"/>
-          </a>
+          <el-button type="text" @click="handleEdit('2', scope.$index, scope.row)">修改</el-button>
+          <el-button class="delete" type="text" @click="handleDelete('2', scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
