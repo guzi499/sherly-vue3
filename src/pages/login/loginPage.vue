@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-05-23 00:08:48
+ * @LastEditTime: 2022-07-15 22:50:19
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/login/loginPage.vue
@@ -11,24 +11,24 @@
     <div class="login-layout">
       <div class="login-layout-left">
         <!--        <img src="../../assets/sherly-logo.png" alt="" />-->
-        <img src="../../assets/sherly-logo-simple.png" alt=""/>
+        <img src="../../assets/sherly-logo-simple.png" alt="" />
       </div>
-<!--      <div class="login-layout-dividing" />-->
+      <!--      <div class="login-layout-dividing" />-->
       <div class="login-layout-right">
         <div class="login-layout-right-title">账号密码登录</div>
         <div class="login-layout-right-formbox">
           <el-form :model="loginForm" class="login-layout-right-formbox-elForm">
             <el-form-item>
               <el-input
-                  class="login-layout-right-input"
-                  v-model="loginForm.phone"
-                  placeholder="请输入手机号"
-                  clearable
-                  @keyup.enter="login()"
+                class="login-layout-right-input"
+                v-model="loginForm.phone"
+                placeholder="请输入手机号"
+                clearable
+                @keyup.enter="login()"
               >
                 <template #prefix>
                   <el-icon class="input-prefix-icon" color="#000">
-                    <avatar/>
+                    <avatar />
                   </el-icon>
                 </template>
               </el-input>
@@ -64,14 +64,15 @@
               </el-input>
             </el-form-item> -->
             <el-form-item>
-              <el-button class="login-layout-right-button" @click="login()" style="width: 60%; margin: 0 auto"
-              >登 录
-              </el-button
-              >
+              <el-button
+                class="login-layout-right-button"
+                @click="login()"
+                style="width: 60%; margin: 0 auto"
+                >登 录
+              </el-button>
             </el-form-item>
           </el-form>
         </div>
-
       </div>
     </div>
   </div>
@@ -148,7 +149,6 @@ export default {
   //  margin: 12px 0;
   //}
   &-right {
-
     padding: 24px 12px;
     &/deep/ .el-input__inner {
       box-shadow: none;

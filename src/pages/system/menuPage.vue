@@ -3,10 +3,12 @@
     <!-- 菜单搜索框 -->
     <el-form :model="data.queryParams" :inline="true">
       <el-form-item label="菜单名称:">
-        <el-input v-model="data.queryParams.menuName" clearable/>
+        <el-input v-model="data.queryParams.menuName" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button icon="Search" type="primary" @click="handleSearch">搜索</el-button>
+        <el-button icon="Search" type="primary" @click="handleSearch"
+          >搜索</el-button
+        >
         <el-button icon="Refresh" @click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>
@@ -20,7 +22,7 @@
     </el-row>
     <!-- 表格菜单 -->
     <el-table
-        v-loading="loading"
+      v-loading="loading"
       :data="menuList"
       style="width: 100%; margin-bottom: 20px"
       row-key="menuId"
@@ -46,12 +48,16 @@
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
           <a href="javascript:;" title="修改">
-            <Edit style="width: 1em; height: 1em; margin-right: 8px"
-                  @click="handleEdit('2', scope.$index, scope.row)"/>
+            <Edit
+              style="width: 1em; height: 1em; margin-right: 8px"
+              @click="handleEdit('2', scope.$index, scope.row)"
+            />
           </a>
           <a href="javascript:;" title="删除">
-            <Delete style="width: 1em; height: 1em; margin-right: 8px"
-                    @click="handleDelete('2', scope.$index, scope.row)"/>
+            <Delete
+              style="width: 1em; height: 1em; margin-right: 8px"
+              @click="handleDelete('2', scope.$index, scope.row)"
+            />
           </a>
         </template>
       </el-table-column>
@@ -60,9 +66,9 @@
     <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
       <el-form :model="form" :rules="rules" ref="ruleForm">
         <el-form-item
-            :label-width="formLabelWidth"
-            prop="menuType"
-            label="菜单类型"
+          :label-width="formLabelWidth"
+          prop="menuType"
+          label="菜单类型"
         >
           <el-radio-group v-model="form.menuType">
             <el-radio :label="1">目录</el-radio>
@@ -119,6 +125,14 @@
           <el-input v-model="form.link"></el-input>
         </el-form-item>
         <el-form-item
+          label="组件路径"
+          :label-width="formLabelWidth"
+          prop="path"
+          v-if="form.menuType == 2"
+        >
+          <el-input v-model="form.path"></el-input>
+        </el-form-item>
+        <el-form-item
           label="图标"
           :label-width="formLabelWidth"
           prop="icon"
@@ -137,7 +151,9 @@
 
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="handleCancle">取消</el-button>
-          <el-button type="primary" @click="handleOk('ruleForm')">确定</el-button>
+          <el-button type="primary" @click="handleOk('ruleForm')"
+            >确定</el-button
+          >
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -154,7 +170,7 @@ export default {
   name: "menuPage",
   setup() {
     const { proxy } = getCurrentInstance();
-    const loading = ref(false)
+    const loading = ref(false);
     onMounted(() => {
       getList(data.queryParams);
       // getMenuListFn();
@@ -170,7 +186,7 @@ export default {
 
     // 根据查询条件搜索
     const handleSearch = () => {
-      data.queryParams.pageNum = 1
+      data.queryParams.pageNum = 1;
       getList(data.queryParams);
     };
 
@@ -215,7 +231,7 @@ export default {
         }
         setTimeout(() => {
           loading.value = false;
-        }, 100)
+        }, 100);
       });
       getMenuListFn();
     };
@@ -223,27 +239,23 @@ export default {
     // 弹框添加校验效果
     const rules = {
       menuType: [
-        {required: true, message: '请选择菜单类型', trigger: 'change'}
+        { required: true, message: "请选择菜单类型", trigger: "change" },
       ],
       parentId: [
-        {required: true, message: '请选择父级菜单', trigger: 'change'}
+        { required: true, message: "请选择父级菜单", trigger: "change" },
       ],
       menuName: [
-        {required: true, message: '请输入菜单名称', trigger: 'blur'}
+        { required: true, message: "请输入菜单名称", trigger: "blur" },
       ],
       // permission: [
       //   { required: true, message: '请输入权限标识', trigger: 'blur' }
       // ],
-      link: [
-        {required: true, message: '请输入菜单路径', trigger: 'blur'}
+      link: [{ required: true, message: "请输入菜单路径", trigger: "blur" }],
+      icpathon: [
+        { required: true, message: "请选择组件路径", trigger: "change" },
       ],
-      // icon: [
-      //   { required: true, message: '请选择活动资源', trigger: 'change' }
-      // ],
-      sort: [
-        {required: true, message: '请输入排序', trigger: 'blur'}
-      ]
-    }
+      sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
+    };
 
     // 查询菜单下拉框列表信息
     const menuListSelect = ref([]);
@@ -266,7 +278,7 @@ export default {
     const treeDatas = ref("");
     // 弹框新增 / 修改弹框绑定数据
     const form = ref({
-      menuType: 1
+      menuType: 1,
     });
     const defaultProps = {
       children: "children",
@@ -277,8 +289,8 @@ export default {
       form.value = {};
       treeDatas.value = "";
       setTimeout(() => {
-        proxy.$refs.ruleForm.resetFields()
-      }, 50)
+        proxy.$refs.ruleForm.resetFields();
+      }, 50);
     };
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
@@ -291,7 +303,7 @@ export default {
     const handleEdit = (type, index, data) => {
       if (type === "1") {
         reset();
-          form.value.menuType = 1;
+        form.value.menuType = 1;
         form.value.parentId = 0;
         treeDatas.value = "主目录";
         dialogType.value = type;
@@ -343,12 +355,12 @@ export default {
                 return err;
               });
           })
-            .catch(() => {
-              ElMessage({
-                type: "info",
-                message: "取消删除操作",
-              });
+          .catch(() => {
+            ElMessage({
+              type: "info",
+              message: "取消删除操作",
             });
+          });
       }
     };
     // 点击确定按钮
@@ -358,36 +370,32 @@ export default {
           // 新增
           if (dialogType.value === "1") {
             addMenu(form.value)
-                .then(() => {
-                  getList(data.queryParams);
-                })
-                .catch(() => {
-                })
-                .finally(() => {
-                  reset();
-                  dialogFormVisible.value = false;
-                });
+              .then(() => {
+                getList(data.queryParams);
+              })
+              .catch(() => {})
+              .finally(() => {
+                reset();
+                dialogFormVisible.value = false;
+              });
           }
           // 修改
           if (dialogType.value === "2") {
             updateMenu(form.value)
-                .then(() => {
-                  getList(data.queryParams);
-                })
-                .catch(() => {
-                })
-                .finally(() => {
-                  reset();
-                  dialogFormVisible.value = false;
-                });
+              .then(() => {
+                getList(data.queryParams);
+              })
+              .catch(() => {})
+              .finally(() => {
+                reset();
+                dialogFormVisible.value = false;
+              });
           }
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
       });
-
-
     };
     // 点击取消按钮
     const handleCancle = () => {
@@ -413,7 +421,7 @@ export default {
       handleCancle,
       menuListSelect,
       rules,
-      loading
+      loading,
     };
   },
 };

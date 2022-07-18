@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-06-12 19:52:07
+ * @LastEditTime: 2022-07-15 22:50:15
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
@@ -49,7 +49,9 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="handleGoPersonal('/personal')">个人中心</el-dropdown-item>
+              <el-dropdown-item @click="handleGoPersonal('/personal')"
+                >个人中心</el-dropdown-item
+              >
               <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -64,15 +66,17 @@ import Config from "@/config";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
 import server from "@/api/login.js";
+import store from "@/store";
 
 export default {
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     /**控制头部按钮的切换 */
     const isCollapse = ref(false);
     const handleLogo = (val) => {
-      emit('isCollapse', val)
-    }
+      emit("isCollapse", val);
+    };
     /**用户姓名 */
+    console.log(Cookies.get("userInfo"));
     const userInfo = JSON.parse(Cookies.get("userInfo")) || "";
     const config = ref(Config);
     const router = useRouter();
@@ -86,15 +90,23 @@ export default {
         Cookies.remove("routePath");
         Cookies.remove("password");
         localStorage.removeItem("token");
+        store.dispatch("router/loadMenus", true);
         router.push("/login");
       });
     };
 
     // 跳转到个人中心
     const handleGoPersonal = (path) => {
-      router.push({ path, query: {userId: userInfo.userId} });
-    }
-    return {isCollapse, handleLogo, config, userInfo, logout, handleGoPersonal};
+      router.push({ path, query: { userId: userInfo.userId } });
+    };
+    return {
+      isCollapse,
+      handleLogo,
+      config,
+      userInfo,
+      logout,
+      handleGoPersonal,
+    };
   },
 };
 </script>
@@ -114,8 +126,8 @@ export default {
   overflow: hidden;
 }
 
-::v-deep .el-radio-button__inner {
-  border: none!important;
+:deep .el-radio-button__inner {
+  border: none !important;
   font-size: 24px;
 }
 </style>

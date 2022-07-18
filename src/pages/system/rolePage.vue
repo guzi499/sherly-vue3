@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-09 11:49:55
- * @LastEditTime: 2022-06-28 23:59:38
+ * @LastEditTime: 2022-07-09 22:55:55
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/rolePage.vue
@@ -10,7 +10,7 @@
   <div class="sherly-page-wrapper">
     <el-form ref="resetFormData" :model="form" class="sherly-form">
       <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="form.roleName" clearable/>
+        <el-input v-model="form.roleName" clearable />
       </el-form-item>
       <div class="sherly-operate-box">
         <el-button icon="Search" type="primary" @click="handleSearch">
@@ -86,8 +86,8 @@
         </el-form-item>
       </el-form>
       <el-tabs v-model="activeName" v-if="roleForm.roleId">
-        <el-tab-pane label="菜单权限" name="menu"
-          ><div class="tree-box">
+        <el-tab-pane label="菜单权限" name="menu">
+          <div class="tree-box">
             <el-tree
               :data="menuTree"
               show-checkbox
@@ -99,8 +99,9 @@
               default-expand-all
               :default-checked-keys="roleForm.menuIds"
               @check-change="handleMenuTreeCheckChange"
-            /></div
-        ></el-tab-pane>
+            />
+          </div>
+        </el-tab-pane>
       </el-tabs>
       <template #footer>
         <span class="dialog-footer">
@@ -265,21 +266,6 @@ export default {
       }
     };
 
-    // 修改权限树选中
-    const handlePermissionTreeCheckChange = (data, checked) => {
-      if (checked) {
-        roleForm.permissionIds.push(toRaw(data).permissionId);
-      } else {
-        const permissionIds = roleForm.permissionIds.filter(
-          (i) => i !== toRaw(data).permissionId
-        );
-        roleForm.permissionIds.length = 0;
-        permissionIds.forEach((i) => {
-          roleForm.permissionIds.push(i);
-        });
-      }
-    };
-
     // 确定
     const handleConfirm = () => {
       ruleFormRef.value.validate((valid) => {
@@ -336,7 +322,6 @@ export default {
       handleGetRoleLists,
       handleCancel,
       handleMenuTreeCheckChange,
-      handlePermissionTreeCheckChange,
       handleSizeChange,
       loading
     };
