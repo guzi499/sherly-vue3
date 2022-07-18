@@ -3,15 +3,15 @@
   <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
     <el-tab-pane label="用户" name="user" :disabled="list2.length > 0">
       <TransferName ref="transferName" :activeName="activeName" :users="users" @sonUsers="handleUsers"
-                    :list1="list1" v-model:list2="list2"></TransferName>
+                    :list1="list1" v-model:list2="list2" @dialogVisible="handleDialogVisible"></TransferName>
     </el-tab-pane>
     <el-tab-pane label="角色" name="role" :disabled="list2.length > 0">
       <TransferName ref="transferName" :activeName="activeName" :users="users" @sonUsers="handleUsers"
-                    :list1="list1" v-model:list2="list2"></TransferName>
+                    :list1="list1" v-model:list2="list2" @dialogVisible="handleDialogVisible"></TransferName>
     </el-tab-pane>
     <el-tab-pane label="部门" name="department" :disabled="list2.length > 0">
       <TransferName ref="transferName" :activeName="activeName" :users="users" @sonUsers="handleUsers"
-                    :list1="list1" v-model:list2="list2"></TransferName>
+                    :list1="list1" v-model:list2="list2" @dialogVisible="handleDialogVisible"></TransferName>
     </el-tab-pane>
   </el-tabs>
   <!--  </el-dialog>-->
@@ -69,6 +69,9 @@ export default {
     const handleUsers = (val) => {
       emit('update:users', val)
     }
+    const handleDialogVisible = (val) => {
+      emit('update:dialogVisible', val)
+    }
     watch(dialogVisible, (val) => {
       if (val) {
         if(!users.value.length) {
@@ -86,7 +89,8 @@ export default {
       isDisabled,
       handleUsers,
       getList,
-      transferName
+      transferName,
+      handleDialogVisible
     }
   }
 }
