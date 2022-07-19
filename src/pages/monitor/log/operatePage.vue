@@ -1,20 +1,214 @@
 <template>
-  <div>
-    <el-button type="danger">
-      清空日志
-    </el-button>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="Date" width="180" />
-      <el-table-column prop="name" label="Name" width="180" />
-      <el-table-column prop="address" label="Address" />
-    </el-table>
+  <div class="operate_container">
+    <SherlyTable
+        :tableData="tableData.result"
+        :loading="loading"
+        style="width: 100%"
+        showPagination
+        @handleCurrentChange="handleCurrentChange"
+        @handleSizeChange="handleSizeChange"
+        :pagination-total="tableData.total"
+        :pagination-current="tableData.current"
+        :pagination-size="tableData.size"
+    >
+      <template #header>
+        <el-popconfirm
+            confirm-button-text="是"
+            cancel-button-text="否"
+            :icon="InfoFilled"
+            icon-color="#626AEF"
+            title="确认清空所有日志?"
+            @confirm="handleEmpty"
+        >
+          <template #reference>
+            <el-button type="danger" size="small"> 清空日志</el-button>
+          </template>
+        </el-popconfirm>
+
+      </template>
+      <template #table>
+        <el-table-column prop="logId" label="日志id" width="100" align="center">
+          <template #default="scope">
+            <a class="link_style" href="javascript:;" @click="handleLogId(scope.row.logId)">{{ scope.row.logId }}</a>
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" label="日志类型" width="180" align="center" show-overflow-tooltip/>
+        <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip/>
+        <el-table-column prop="requestMethod" label="请求方式" align="center"/>
+        <el-table-column prop="uri" label="请求uri" align="center" show-overflow-tooltip width="180px"/>
+        <el-table-column prop="ip" label="请求ip" align="center" show-overflow-tooltip/>
+        <el-table-column prop="os" label="请求设备" align="center" show-overflow-tooltip width="180px"/>
+        <el-table-column prop="address" label="请求地址" align="center" show-overflow-tooltip/>
+        <el-table-column prop="browser" label="请求浏览器" align="center" show-overflow-tooltip/>
+        <el-table-column prop="duration" label="耗时" align="center"/>
+        <el-table-column prop="createTime" label="操作时间" align="center" width="180"/>
+      </template>
+    </SherlyTable>
+    <!--查看日志详情-->
+    <el-dialog
+        v-model="dialogVisible"
+        title="日志详情"
+        width="40%"
+        center
+    >
+      <el-row>
+        <el-col :span="12">
+          <label>日志id：</label>
+          <input type="text" :value="formInfo.logId"/>
+        </el-col>
+        <el-col :span="12">
+          <label>日志类型：</label>
+          <input type="text" :value="formInfo.type"/>
+        </el-col>
+        <el-col :span="12">
+          <label>描述：</label>
+          <input type="text" :value="formInfo.description"/>
+        </el-col>
+        <el-col :span="12">
+          <label>	异常描述：</label>
+          <input type="text" :value="formInfo.exception"/>
+        </el-col>
+        <el-col :span="12">
+          <label>请求方式：</label>
+          <input type="text" :value="formInfo.requestMethod"/>
+        </el-col>
+        <el-col :span="12">
+          <label>请求uri：</label>
+          <input type="text" :value="formInfo.uri" :title="formInfo.uri"/>
+        </el-col>
+        <el-col :span="12">
+          <label>请求参数：</label>
+          <input type="text" :value="formInfo.requestParams" :title="formInfo.requestParams"/>
+        </el-col>
+        <el-col :span="12">
+          <label>请求ip：</label>
+          <input type="text" :value="formInfo.ip"/>
+        </el-col>
+        <el-col :span="12">
+          <label>请求设备：</label>
+          <input type="text" :value="formInfo.os" :title="formInfo.os"/>
+        </el-col>
+        <el-col :span="12">
+          <label>请求地址：</label>
+          <input type="text" :value="formInfo.address"/>
+        </el-col>
+        <el-col :span="12">
+          <label>请求浏览器：</label>
+          <input type="text" :value="formInfo.browser"/>
+        </el-col>
+        <el-col :span="12">
+          <label>耗时：</label>
+          <input type="text" :value="formInfo.duration"/>
+        </el-col>
+
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-export default {}
+import {reactive, ref, onMounted} from "vue";
+import {getOperationList, delLog, getOperationOne} from '@/api/system/operate.js'
+import SherlyTable from "@/components/SherlyTable";
+import {ElMessage} from "element-plus";
+import {InfoFilled} from '@element-plus/icons-vue'
+
+export default {
+  components: {SherlyTable},
+  setup() {
+    const loading = ref(false)
+    const tableData = reactive({});
+    const queryParams = reactive({
+      current: 1,
+      size: 10,
+    })
+    /* 查看日志详情数据 */
+    const dialogVisible = ref(false)
+    const formInfo = ref({})
+
+    onMounted(() => {
+      getList()
+    });
+
+    /* 获取操作日志分页数据 */
+    const getList = async () => {
+      const data = await getOperationList(queryParams)
+      Object.keys(data).forEach((key) => {
+        tableData[key] = data[key];
+        setTimeout(() => {
+          loading.value = false
+        }, 100)
+      });
+    }
+
+    /* 清空日志 */
+    const handleEmpty = () => {
+      formInfo.value = {}
+      delLog().then(() => {
+        ElMessage({
+          message: "清除成功",
+          type: "success",
+        });
+        queryParams.current = 1
+        getList()
+      })
+    }
+
+    /* 查看日志详情 */
+    const handleLogId = async (logId) => {
+      const data = await getOperationOne(logId)
+      formInfo.value = data
+      dialogVisible.value = true
+    }
+
+    /* 修改当前分页页码 */
+    const handleCurrentChange = (e) => {
+      tableData.current = e;
+      queryParams.current = e;
+      getList();
+    };
+
+    /* 修改当前每页数量 */
+    const handleSizeChange = (e) => {
+      tableData.size = e;
+      queryParams.size = e;
+      getList();
+    };
+
+    return {
+      loading,
+      tableData,
+      handleCurrentChange,
+      handleSizeChange,
+      handleEmpty,
+      InfoFilled,
+      handleLogId,
+      dialogVisible,
+      formInfo
+    }
+  }
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.operate_container {
+  padding: 16px;
+}
+input {
+  border: none;
+  border-bottom: 1px solid #000;
+  outline: none; // 聚焦时去掉边框
+  padding: 0 4px;
+}
 
+::v-deep .el-col {
+  margin: 10px 0;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+  padding: 0 4px;
+  text-align: right;
+}
 </style>
