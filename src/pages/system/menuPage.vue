@@ -51,7 +51,7 @@
       </el-table-column>
     </el-table>
     <!-- 新增 / 编辑 弹框 -->
-    <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
+    <el-dialog v-if="dialogFormVisible"  v-model="dialogFormVisible" :title="dialogTitle" width="600px">
       <el-form :model="form" :rules="rules" ref="ruleForm">
         <el-form-item
             :label-width="formLabelWidth"
@@ -285,7 +285,7 @@ export default {
     const handleEdit = (type, index, data) => {
       if (type === "1") {
         reset();
-          form.value.menuType = 1;
+        form.value.menuType = 1;
         form.value.parentId = 0;
         treeDatas.value = "主目录";
         dialogType.value = type;
@@ -297,6 +297,7 @@ export default {
         forEachMenuList(menuList.value, data);
         form.value = data;
       }
+      console.log(form.value)
       dialogFormVisible.value = true;
     };
     // 处理树形数据回显
