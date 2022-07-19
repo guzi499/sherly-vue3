@@ -27,7 +27,7 @@
       lazy
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
-      <el-table-column label="菜单名称" prop="menuName" sortable width="230" />
+      <el-table-column label="菜单名称" prop="menuName" width="230" />
       <el-table-column
         label="菜单路径"
         prop="link"
