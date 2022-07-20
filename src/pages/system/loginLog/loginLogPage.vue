@@ -1,5 +1,5 @@
 <template>
-  <div>异常日志</div>
+  <div>登录日志</div>
 </template>
 
 <script>

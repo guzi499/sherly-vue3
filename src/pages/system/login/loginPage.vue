@@ -11,7 +11,7 @@
     <div class="login-layout">
       <div class="login-layout-left">
         <!--        <img src="../../assets/sherly-logo.png" alt="" />-->
-        <img src="../../assets/sherly-logo-simple.png" alt="" />
+        <img src="../../../assets/sherly-logo-simple.png" alt="" />
       </div>
       <!--      <div class="login-layout-dividing" />-->
       <div class="login-layout-right">
