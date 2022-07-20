@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-06-14 01:33:54
+ * @LastEditTime: 2022-07-13 23:42:31
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -77,13 +77,15 @@ const formatRouter = (MenuList) => {
 const filterchildren = (children, currentMenu) => {
   const _children = [];
   children.forEach((i) => {
-    console.log(currentMenu.link,i.link)
+    console.log(currentMenu.link, i.link);
     _children.push({
       path: i.link,
       component: () =>
-        require.ensure([], (require) =>
-          // require(`@/pages${currentMenu.link}${i.link}Page`)
-          require(`@/pages${i.link}Page`)
+        require.ensure(
+          [],
+          (require) =>
+            // require(`@/pages${currentMenu.link}${i.link}Page`)
+            require(`@/pages${i.path || i.link}Page`)
           // require(`@/pages${i.link}`)
         ),
       meta: { title: i.menuName },
