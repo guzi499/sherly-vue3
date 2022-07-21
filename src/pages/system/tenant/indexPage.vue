@@ -1,10 +1,10 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-05-22 20:52:14
- * @LastEditTime: 2022-07-08 23:31:53
+ * @LastEditTime: 2022-07-21 23:41:57
  * @LastEditors: lihaoyu
  * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/tenantPage.vue
+ * @FilePath: /sherly-vue3/src/pages/system/tenant/indexPage.vue
 -->
 <template>
   <div class="sherly-page-wrapper">
@@ -23,7 +23,7 @@
       </div>
     </el-form>
     <SherlyTable
-        :loading="loading"
+      :loading="loading"
       :tableData="tableData.result"
       style="width: 100%"
       showPagination
@@ -43,32 +43,38 @@
           prop="tenantCode"
           label="租户代码"
           width="120"
-          align="center" />
+          align="center"
+        />
         <el-table-column
           prop="tenantName"
           label="租户名称"
           width="120"
-          align="center" />
+          align="center"
+        />
         <el-table-column
           prop="contactUser"
           label="联系人"
           width="180"
-          align="center" />
+          align="center"
+        />
         <el-table-column
           prop="contactPhone"
           label="联系电话"
           width="180"
-          align="center" />
+          align="center"
+        />
         <el-table-column
           prop="expireTime"
           label="过期时间"
           width="220"
-          align="center" />
+          align="center"
+        />
         <el-table-column
           prop="userLimit"
           label="用户上限"
           width="220"
-          align="center" />
+          align="center"
+        />
         <el-table-column
           fixed="right"
           label="操作"
@@ -76,10 +82,12 @@
           align="center"
         >
           <template #default="scope">
-            <el-button type="text" @click="handleEdit(scope.row)">修改</el-button>
+            <el-button type="text" @click="handleEdit(scope.row)"
+              >修改</el-button
+            >
             <el-popconfirm
-                title="确定删除本条数据?"
-                @confirm="handleDelete(scope.row)"
+              title="确定删除本条数据?"
+              @confirm="handleDelete(scope.row)"
             >
               <template #reference>
                 <el-button type="text" class="delete">删除</el-button>
@@ -156,7 +164,7 @@ import { ElMessage } from "element-plus";
 export default {
   components: { SherlyTable },
   setup() {
-    const loading = ref(false)
+    const loading = ref(false);
     let form = reactive({
       tenantName: "",
       tenantCode: "",
@@ -195,14 +203,14 @@ export default {
 
     // 获取列表
     const getList = async () => {
-      loading.value = true
+      loading.value = true;
       const data = await getTenant(form);
       Object.keys(data).forEach((i) => {
         tableData[i] = data[i];
       });
       setTimeout(() => {
-        loading.value = false
-      }, 100)
+        loading.value = false;
+      }, 100);
     };
 
     // 搜索
@@ -303,7 +311,7 @@ export default {
       handleDelete,
       handleCancel,
       handleConfirm,
-      loading
+      loading,
     };
   },
 };

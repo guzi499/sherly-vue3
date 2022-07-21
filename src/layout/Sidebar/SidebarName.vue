@@ -1,36 +1,36 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-05-07 00:39:57
+ * @LastEditTime: 2022-07-21 21:35:55
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
 -->
 <template>
-<!--  <div class="sidebar-wrapper" ref="sideBar" :style="'width:'+ isShow ? 64 + 'px' : 200 + 'px'">-->
+  <!--  <div class="sidebar-wrapper" ref="sideBar" :style="'width:'+ isShow ? 64 + 'px' : 200 + 'px'">-->
   <div class="sidebar-wrapper" ref="sideBar" :style="'width:' + width + 'px'">
-    <Logo :isShow="isShow"/>
+    <Logo :isShow="isShow" />
     <div class="menu-box">
       <el-menu
-          unique-opened
-          class="el-menu-vertical-demo"
-          :collapse="isShow"
-          :collapse-transition="false"
-          @open="handleOpen"
-          @close="handleClose"
-          @select="handleselect"
-          background-color="#334154"
-          text-color="#fff"
-          style="border-right: 0"
+        unique-opened
+        class="el-menu-vertical-demo"
+        :collapse="isShow"
+        :collapse-transition="false"
+        @open="handleOpen"
+        @close="handleClose"
+        @select="handleselect"
+        background-color="#334154"
+        text-color="#fff"
+        style="border-right: 0"
       >
         <el-sub-menu
-            v-for="item_1 in menu"
-            :key="item_1.index"
-            :index="item_1.index"
+          v-for="item_1 in menu"
+          :key="item_1.index"
+          :index="item_1.index"
         >
           <template #title>
             <el-icon>
-              <location/>
+              <location />
             </el-icon>
             <span>{{ item_1.menuName }}</span>
           </template>
@@ -69,9 +69,9 @@
 </template>
 <script>
 import Logo from "./components/LogoBox.vue";
-import {useStore} from "vuex";
-import {onMounted, watch, computed, ref, reactive, toRaw, toRefs} from "vue";
-import {useRouter} from "vue-router";
+import { useStore } from "vuex";
+import { onMounted, watch, computed, ref, reactive, toRaw, toRefs } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
@@ -80,16 +80,16 @@ export default {
   props: {
     isShow: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup(props) {
     onMounted(() => {
       //
     });
 
-    const {isShow} = toRefs(props)
-    console.log(isShow)
+    const { isShow } = toRefs(props);
+    console.log(isShow);
 
     const Store = useStore();
 
@@ -126,20 +126,20 @@ export default {
     };
 
     watch(
-        Tree,
-        (newVal) => {
-          menu = formatMenu(toRaw(newVal));
-        },
-        {immediate: true, deep: true}
+      Tree,
+      (newVal) => {
+        menu = formatMenu(toRaw(newVal));
+      },
+      { immediate: true, deep: true }
     );
 
-    const width = ref(200)
+    const width = ref(200);
     watch(
-        () => props.isShow,
-        (val) => {
-          val ? width.value = 64 : width.value = 200
-        }
-    )
+      () => props.isShow,
+      (val) => {
+        val ? (width.value = 64) : (width.value = 200);
+      }
+    );
 
     const handleNodeClick = (data) => {
       if (data.link) {
@@ -148,15 +148,16 @@ export default {
     };
 
     const handleOpen = (key, keyPath) => {
-      console.log('open', key, keyPath);
+      console.log("open", key, keyPath);
     };
 
     const handleClose = (key, keyPath) => {
-      console.log('close', key, keyPath);
+      console.log("close", key, keyPath);
     };
 
     const handleselect = (index) => {
-      const path = "/"+findPath(index, menu);
+      const path = "/" + findPath(index, menu);
+      console.log("path", path);
       router.push({ path });
     };
 
@@ -179,7 +180,7 @@ export default {
       handleClose,
       handleOpen,
       handleselect,
-      width
+      width,
     };
   },
 };

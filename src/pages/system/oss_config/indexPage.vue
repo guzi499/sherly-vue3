@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sherly-page-wrapper">
     <SherlyTable
       :tableData="tableData.result"
       style="width: 100%"
@@ -68,15 +68,15 @@
 
 <script>
 import SherlyTable from "@/components/SherlyTable.vue";
-import StorageDialog from "./storageDialog";
+import StorageDialog from "./oss_config_dialog";
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import {
-  getStorageList,
-  deleteStorage,
-  getStorageDetail,
-  enableStorage,
-} from "@/api/system/storage";
+  getOssConfigList,
+  deleteOssConfig,
+  getOssDetail,
+  enableOss,
+} from "@/api/system/oss";
 
 export default {
   components: { SherlyTable, StorageDialog },
@@ -96,7 +96,7 @@ export default {
     });
 
     const handlestorageLists = async () => {
-      const data = await getStorageList(form);
+      const data = await getOssConfigList(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -124,7 +124,7 @@ export default {
 
     // 删除
     const handleDelete = async (e) => {
-      await deleteStorage(e.configId);
+      await deleteOssConfig(e.configId);
       ElMessage({
         message: "删除成功！",
         type: "success",
@@ -134,7 +134,7 @@ export default {
 
     // 编辑
     const handleEdit = async (configId) => {
-      const result = await getStorageDetail(configId);
+      const result = await getOssDetail(configId);
       Object.keys(result).forEach((key) => {
         StorageDialog.value.form[key] = result[key];
       });
@@ -144,7 +144,7 @@ export default {
 
     // 启用
     const handleEnable = async (configId) => {
-      await enableStorage(configId);
+      await enableOss(configId);
       handlestorageLists();
     };
 
