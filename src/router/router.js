@@ -7,10 +7,10 @@
  * @FilePath: /sherly-vue3/src/router/router.js
  */
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "@/pages/system/login/loginPage.vue";
+import Login from "@/pages/system/login/indexPage.vue";
 import Layout from "@/layout/layoutBox.vue";
-import Home from "@/pages/system/home/homePage.vue";
-import Personal from "@/pages/system/personal/selfPage.vue"
+import Home from "@/pages/system/home/indexPage.vue";
+import Personal from "@/pages/system/user_self/indexPage.vue"
 
 const routes = [
   {

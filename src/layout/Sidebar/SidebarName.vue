@@ -156,7 +156,7 @@ export default {
     };
 
     const handleselect = (index) => {
-      const path = findPath(index, menu);
+      const path = "/"+findPath(index, menu);
       router.push({ path });
     };
 

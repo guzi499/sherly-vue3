@@ -66,7 +66,7 @@ const formatRouter = (MenuList) => {
   const _router = [];
   MenuList.forEach((i) => {
     _router.push({
-      path: i.link,
+      path: i.link||"",
       component: Layout,
       meta: { title: i.menuName },
       children: filterchildren(i.children, i),
@@ -76,22 +76,24 @@ const formatRouter = (MenuList) => {
 };
 const filterchildren = (children, currentMenu) => {
   const _children = [];
+  if(children&&children.length>0){
   children.forEach((i) => {
     console.log(currentMenu.link, i.link);
     _children.push({
-      path: i.link,
+      path: i.link||"",
       component: () =>
         require.ensure(
           [],
           (require) =>
             // require(`@/pages${currentMenu.link}${i.link}Page`)
-            require(`@/pages${i.path || i.link}Page`)
+            require(`@/pages/${i.link}Page`)
           // require(`@/pages${i.link}`)
         ),
       meta: { title: i.menuName },
       children: filterchildren(i.children, i),
     });
-  });
+  })
+  }
   return _children;
 };
 const addRoute = (formatRouter) => {
