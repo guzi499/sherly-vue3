@@ -1,11 +1,10 @@
 <template>
-  <div>
-    操作日志
-  </div>
+  <div>登录日志</div>
 </template>
 
 <script>
-export default {}
+export default {
+}
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:38
- * @LastEditTime: 2022-07-10 00:28:16
+ * @LastEditTime: 2022-07-21 23:58:25
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/AppMain/AppMain.vue
@@ -61,9 +61,10 @@ export default {
     background: #fff;
     border-radius: 8px;
     overflow: hidden;
+    padding: 12px;
 
     .AppMain-wrapper-page {
-      max-height: 100%;
+      height: 100%;
       overflow: auto;
     }
   }

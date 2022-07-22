@@ -27,3 +27,18 @@ div {
 li {
   list-style: none;
 }
+
+a {
+  text-decoration: none;
+}
+
+.delete {
+  color: red;
+}
+
+.link_style {
+  color: rgb(90, 152, 241);
+  &:hover {
+    border-bottom: 1px solid rgb(90, 152, 241);
+  }
+}

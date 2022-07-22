@@ -39,14 +39,8 @@
       <el-table-column label="创建时间" prop="createTime" align="center" />
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
-          <a href="javascript:;" title="修改">
-            <Edit style="width: 1em; height: 1em; margin-right: 8px"
-                  @click="handleEdit('2', scope.$index, scope.row)"/>
-          </a>
-          <a href="javascript:;" title="删除">
-            <Delete style="width: 1em; height: 1em; margin-right: 8px"
-                    @click="handleDelete('2', scope.$index, scope.row)"/>
-          </a>
+          <el-button type="text" @click="handleEdit('2', scope.$index, scope.row)">修改</el-button>
+          <el-button class="delete" type="text" @click="handleDelete('2', scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -134,30 +128,6 @@ export default {
         pageSize: 10,
       },
     });
-
-    // 添加表单验证
-    // const ruleFormRef = ref<FormInstance>()
-    // const formRrules = reactive<FormRules>({
-    //   parentId: [
-    //     {required: true, message: '请选择父级部门', trigger: 'change'},
-    //     {min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur'},
-    //   ],
-    //   departmentName: [
-    //     {
-    //       required: true,
-    //       message: 'Please select Activity zone',
-    //       trigger: 'change',
-    //     },
-    //   ],
-    //   sort: [
-    //     {
-    //       type: 'date',
-    //       required: true,
-    //       message: 'Please pick a date',
-    //       trigger: 'change',
-    //     },
-    //   ]
-    // })
 
     // 根据查询条件搜索
     const handleSearch = () => {

@@ -29,7 +29,7 @@
       lazy
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
-      <el-table-column label="菜单名称" prop="menuName" sortable width="230" />
+      <el-table-column label="菜单名称" prop="menuName" width="230" />
       <el-table-column
         label="菜单路径"
         prop="link"
@@ -47,23 +47,13 @@
       <el-table-column label="创建时间" prop="createTime" align="center" />
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
-          <a href="javascript:;" title="修改">
-            <Edit
-              style="width: 1em; height: 1em; margin-right: 8px"
-              @click="handleEdit('2', scope.$index, scope.row)"
-            />
-          </a>
-          <a href="javascript:;" title="删除">
-            <Delete
-              style="width: 1em; height: 1em; margin-right: 8px"
-              @click="handleDelete('2', scope.$index, scope.row)"
-            />
-          </a>
+          <el-button type="text" @click="handleEdit('2', scope.$index, scope.row)">修改</el-button>
+          <el-button class="delete" type="text" @click="handleDelete('2', scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 新增 / 编辑 弹框 -->
-    <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="600px">
+    <el-dialog v-if="dialogFormVisible"  v-model="dialogFormVisible" :title="dialogTitle" width="600px">
       <el-form :model="form" :rules="rules" ref="ruleForm">
         <el-form-item
           :label-width="formLabelWidth"
@@ -123,14 +113,6 @@
           v-if="form.menuType == 2"
         >
           <el-input v-model="form.link"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="组件路径"
-          :label-width="formLabelWidth"
-          prop="path"
-          v-if="form.menuType == 2"
-        >
-          <el-input v-model="form.path"></el-input>
         </el-form-item>
         <el-form-item
           label="图标"
@@ -251,9 +233,9 @@ export default {
       //   { required: true, message: '请输入权限标识', trigger: 'blur' }
       // ],
       link: [{ required: true, message: "请输入菜单路径", trigger: "blur" }],
-      icpathon: [
-        { required: true, message: "请选择组件路径", trigger: "change" },
-      ],
+      // icpathon: [
+      //   { required: true, message: "请选择组件路径", trigger: "change" },
+      // ],
       sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
     };
 
@@ -278,7 +260,7 @@ export default {
     const treeDatas = ref("");
     // 弹框新增 / 修改弹框绑定数据
     const form = ref({
-      menuType: 1,
+      menuType: 1
     });
     const defaultProps = {
       children: "children",
@@ -289,8 +271,8 @@ export default {
       form.value = {};
       treeDatas.value = "";
       setTimeout(() => {
-        proxy.$refs.ruleForm.resetFields();
-      }, 50);
+        proxy.$refs.ruleForm.resetFields()
+      }, 50)
     };
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
@@ -315,6 +297,7 @@ export default {
         forEachMenuList(menuList.value, data);
         form.value = data;
       }
+      console.log(form.value)
       dialogFormVisible.value = true;
     };
     // 处理树形数据回显
@@ -355,12 +338,12 @@ export default {
                 return err;
               });
           })
-          .catch(() => {
-            ElMessage({
-              type: "info",
-              message: "取消删除操作",
+            .catch(() => {
+              ElMessage({
+                type: "info",
+                message: "取消删除操作",
+              });
             });
-          });
       }
     };
     // 点击确定按钮
@@ -370,29 +353,31 @@ export default {
           // 新增
           if (dialogType.value === "1") {
             addMenu(form.value)
-              .then(() => {
-                getList(data.queryParams);
-              })
-              .catch(() => {})
-              .finally(() => {
-                reset();
-                dialogFormVisible.value = false;
-              });
+                .then(() => {
+                  getList(data.queryParams);
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                  reset();
+                  dialogFormVisible.value = false;
+                });
           }
           // 修改
           if (dialogType.value === "2") {
             updateMenu(form.value)
-              .then(() => {
-                getList(data.queryParams);
-              })
-              .catch(() => {})
-              .finally(() => {
-                reset();
-                dialogFormVisible.value = false;
-              });
+                .then(() => {
+                  getList(data.queryParams);
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                  reset();
+                  dialogFormVisible.value = false;
+                });
           }
         } else {
-          console.log("error submit!!");
+          console.log('error submit!!');
           return false;
         }
       });
@@ -421,7 +406,7 @@ export default {
       handleCancle,
       menuListSelect,
       rules,
-      loading,
+      loading
     };
   },
 };

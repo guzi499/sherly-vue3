@@ -1,17 +1,17 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-07-15 22:50:19
+ * @LastEditTime: 2022-07-21 23:29:08
  * @LastEditors: lihaoyu
  * @Description:
- * @FilePath: /sherly-vue3/src/pages/login/loginPage.vue
+ * @FilePath: /sherly-vue3/src/pages/system/login/indexPage.vue
 -->
 <template>
   <div class="sherly-page">
     <div class="login-layout">
       <div class="login-layout-left">
         <!--        <img src="../../assets/sherly-logo.png" alt="" />-->
-        <img src="../../assets/sherly-logo-simple.png" alt="" />
+        <img src="../../../assets/sherly-logo-simple.png" alt="" />
       </div>
       <!--      <div class="login-layout-dividing" />-->
       <div class="login-layout-right">
@@ -96,7 +96,7 @@ export default {
     const login = () => {
       server.login(loginForm).then((res) => {
         localStorage.setItem("token", res.token);
-        router.push({ path: "/home" });
+        router.replace({ path: "/home" });
       });
     };
     const getCookie = () => {

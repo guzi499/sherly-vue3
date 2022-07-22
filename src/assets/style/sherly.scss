@@ -23,9 +23,10 @@
   }
 }
 .sherly-page-wrapper {
-  padding: 16px;
+  padding: 12px;
   overflow: auto;
 }
+
 .sherly-table-box {
   padding: 0 16px;
 }
@@ -34,8 +35,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-column-gap: 20px;
-  .sherly-operate-box {
-  }
 }
 
 .sherly-pagination-box {

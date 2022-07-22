@@ -1,0 +1,164 @@
+<!--
+ * @Author: lihaoyu
+ * @Date: 2022-07-15 22:24:27
+ * @LastEditTime: 2022-07-21 23:17:33
+ * @LastEditors: lihaoyu
+ * @Description: 
+ * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
+-->
+<template>
+  <div class="sherly-page-wrapper">
+    <SherlyTable
+      :tableData="tableData.result"
+      style="width: 100%"
+      showPagination
+      @handleCurrentChange="handleCurrentChange"
+      @handleSizeChange="handleSizeChange"
+      :pagination-total="tableData.total"
+      :pagination-current="tableData.current"
+      :pagination-size="tableData.size"
+    >
+      <template #header>
+        <el-upload
+          v-model:file-list="fileList"
+          class="upload-demo"
+          :action="action"
+          :data="data"
+          multiple
+          :limit="3"
+          :before-upload="handBeforeUpload"
+        >
+          <el-button type="success" size="small">上传文件</el-button>
+        </el-upload>
+      </template>
+      <template #table>
+        <el-table-column
+          prop="fileId"
+          label="编号"
+          width="180"
+          align="center"
+        />
+        <el-table-column prop="path" label="相对路径" align="center" />
+        <el-table-column prop="fileType" label="文件类型" align="center" />
+        <el-table-column prop="size" label="文件大小" align="center">
+          <template #default="scope">
+            {{ formatFileSize(scope.row.size) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" label="创建时间" align="center" />
+        <el-table-column fixed="right" label="操作" width="180" align="center">
+          <template #default="scope">
+            <el-button type="text">复制地址</el-button>
+            <el-button type="text" @click="handleDownload(scope.row.configId)">
+              下载
+            </el-button>
+            <el-popconfirm
+              title="确定删除本条数据?"
+              @confirm="handleDelete(scope.row)"
+            >
+              <template #reference>
+                <el-button type="text" style="color: #f56c6c"> 删除 </el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </template>
+    </SherlyTable>
+  </div>
+</template>
+<script>
+import { reactive, onMounted } from "vue";
+import SherlyTable from "@/components/SherlyTable.vue";
+import { getOssList, deleteOss } from "@/api/system/oss";
+import { ElMessage } from "element-plus";
+
+export default {
+  components: { SherlyTable },
+  setup() {
+    let form = reactive({
+      current: 1,
+      size: 10,
+    });
+    const action = process.env.VUE_APP_URL + "/api/oss/upload_one";
+    const data = reactive({
+      token: localStorage.getItem("token"),
+      path: "",
+    });
+    const tableData = reactive({});
+
+    onMounted(() => {
+      handleOssLists();
+    });
+
+    const handleOssLists = async () => {
+      const data = await getOssList(form);
+      Object.keys(data).forEach((key) => {
+        tableData[key] = data[key];
+      });
+    };
+
+    const formatFileSize = (fileSize) => {
+      if (fileSize < 1024) {
+        return fileSize + "B";
+      } else if (fileSize < 1024 * 1024) {
+        let temp = fileSize / 1024;
+        temp = temp.toFixed(2);
+        return temp + "KB";
+      } else if (fileSize < 1024 * 1024 * 1024) {
+        var temp = fileSize / (1024 * 1024);
+        temp = temp.toFixed(2);
+        return temp + "MB";
+      } else {
+        let temp = fileSize / (1024 * 1024 * 1024);
+        temp = temp.toFixed(2);
+        return temp + "GB";
+      }
+    };
+
+    // 修改当前分页页码
+    const handleCurrentChange = (e) => {
+      tableData.current = e;
+      form.current = e;
+      handleOssLists();
+    };
+
+    // 修改当前每页数量
+    const handleSizeChange = (e) => {
+      tableData.size = e;
+      form.size = e;
+      handleOssLists();
+    };
+
+    // 删除
+    const handleDelete = async (e) => {
+      await deleteOss(e.configId);
+      ElMessage({
+        message: "删除成功！",
+        type: "success",
+      });
+      handleOssLists();
+    };
+
+    // 下载
+    const handleDownload = async () => {};
+
+    const handBeforeUpload = async (rawFile) => {
+      console.log("rawFile", rawFile);
+    };
+
+    return {
+      handleCurrentChange,
+      handleSizeChange,
+      handleDelete,
+      handleDownload,
+      handBeforeUpload,
+      formatFileSize,
+      tableData,
+      action,
+      data,
+    };
+  },
+};
+</script>
+
+<style scoped></style>

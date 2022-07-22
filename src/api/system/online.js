@@ -11,17 +11,16 @@ import request from "@/utils/request";
 /**获取租户列表 */
 export function getOnline(params) {
   return request({
-    url: `/user_online/list?`,
+    url: `/user_online/list_all?`,
     method: "get",
     params,
   });
 }
 
 /**删除租户 */
-export function delOnline(params) {
+export function delOnline(phone) {
   return request({
-    url: `/user_online/force_quit`,
-    method: "delete",
-    params,
+    url: `/user_online/force_quit?phone=${phone}`,
+    method: "get",
   });
 }

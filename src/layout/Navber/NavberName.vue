@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-07-15 22:50:15
+ * @LastEditTime: 2022-07-21 23:29:32
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
@@ -91,7 +91,8 @@ export default {
         Cookies.remove("password");
         localStorage.removeItem("token");
         store.dispatch("router/loadMenus", true);
-        router.push("/login");
+        router.replace("/login");
+        location.reload();
       });
     };
 

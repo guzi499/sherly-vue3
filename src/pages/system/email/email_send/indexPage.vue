@@ -1,9 +1,10 @@
 <template>
-  <div>异常日志</div>
+  <div>邮件发送</div>
 </template>
 
 <script>
 export default {
+  name: "indexPage"
 }
 </script>
 

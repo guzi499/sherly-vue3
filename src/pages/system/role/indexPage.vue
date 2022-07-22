@@ -46,20 +46,13 @@
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
-            <a href="javascript:;" title="修改">
-              <Edit
-                style="width: 1em; height: 1em; margin-right: 8px"
-                @click="handleEdit(scope.row)"
-              />
-            </a>
+            <el-button type="text" @click="handleEdit(scope.row)">修改</el-button>
             <el-popconfirm
               title="确定删除本条数据?"
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <a href="javascript:;" title="删除">
-                  <Delete style="width: 1em; height: 1em; margin-right: 8px" />
-                </a>
+                <el-button class="delete" type="text">删除</el-button>
               </template>
             </el-popconfirm>
           </template> </el-table-column

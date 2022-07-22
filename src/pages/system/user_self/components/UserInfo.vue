@@ -159,8 +159,8 @@ export default {
   props: {
     curUserInfo: {
       type: Object,
-      require: true,
-    },
+      require: true
+    }
   },
   setup(props, { emit }) {
     const { proxy } = getCurrentInstance();
@@ -190,78 +190,78 @@ export default {
         });
       });
       // 初始化数据
-      emit("getList");
-      EditDialogVisible.value = false;
-    };
+      emit('getList')
+      EditDialogVisible.value = false
+    }
 
     // 添加修改密码弹框是否可见
-    const PwdDialogVisible = ref(false);
+    const PwdDialogVisible = ref(false)
     // 添加修改密码弹框 - 表单数据
-    const formPwd = ref();
+    const formPwd = ref()
     // 密码表单校验
     const rules = reactive({
       oldPassword: [
-        { required: true, message: "旧密码不能为空", trigger: "blur" },
+        {required: true, message: '旧密码不能为空', trigger: 'blur'}
       ],
       newPassword: [
-        { required: true, message: "新密码不能为空", trigger: "blur" },
+        {required: true, message: '新密码不能为空', trigger: 'blur'}
       ],
       rePassword: [
-        { required: true, message: "确认密码不能为空", trigger: "blur" },
+        {required: true, message: '确认密码不能为空', trigger: 'blur'}
       ],
-    });
+    })
     // 重置修改密码表单
     const resetPwd = () => {
-      formPwd.value = {};
+      formPwd.value = {}
       setTimeout(() => {
-        proxy.$refs.ruleFormRef.resetFields();
-      }, 50);
-    };
+        proxy.$refs.ruleFormRef.resetFields()
+      }, 50)
+    }
     // 修改密码 按钮
     const handlePwd = () => {
-      resetPwd();
-      PwdDialogVisible.value = true;
-    };
+      resetPwd()
+      PwdDialogVisible.value = true
+    }
     // 修改密码 - 确定按钮
     const handlePwdOk = (formName) => {
       proxy.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(formPwd.value.newPassword, formPwd.value.rePassword);
+          console.log(formPwd.value.newPassword, formPwd.value.rePassword)
           if (formPwd.value.newPassword === formPwd.value.rePassword) {
             updatePassword(formPwd.value).then(() => {
               ElMessage({
                 showClose: true,
-                message: "密码修改成功",
-                type: "success",
-              });
+                message: '密码修改成功',
+                type: 'success',
+              })
               // 初始化数据
               // emit('getList')
-              PwdDialogVisible.value = false;
+              PwdDialogVisible.value = false
               setTimeout(() => {
-                proxy.$alert("token过期，请重新登录！", "警告", {
-                  confirmButtonText: "好的",
+                proxy.$alert('token过期，请重新登录！', '警告', {
+                  confirmButtonText: '好的',
                   callback: () => {
                     Cookies.remove("metaTitle");
                     Cookies.remove("routePath");
                     localStorage.removeItem("token");
                     router.push("/login");
-                  },
+                  }
                 });
-              }, 1000);
-            });
+              }, 1000)
+            })
           } else {
             ElMessage({
               showClose: true,
-              message: "两次密码输入不一致，请重新输入！",
-              type: "error",
-            });
+              message: '两次密码输入不一致，请重新输入！',
+              type: 'error',
+            })
           }
         } else {
           // console.log('error submit!!');
           return false;
         }
       });
-    };
+    }
 
     return {
       EditDialogVisible,
@@ -311,7 +311,7 @@ ul {
   }
 }
 
-:deep .el-dialog__body {
+::v-deep .el-dialog__body {
   padding: 24px 40px;
 }
 </style>

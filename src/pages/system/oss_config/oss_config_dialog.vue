@@ -1,10 +1,10 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-08 23:40:21
- * @LastEditTime: 2022-07-13 23:58:35
+ * @LastEditTime: 2022-07-21 23:10:38
  * @LastEditors: lihaoyu
  * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/storage/storageDialog.vue
+ * @FilePath: /sherly-vue3/src/pages/system/oss_config/oss_config_dialog.vue
 -->
 <template>
   <el-dialog
@@ -106,7 +106,7 @@
 
 <script>
 import { reactive, ref, watch } from "vue";
-import { saveStorage, upDataStorage } from "@/api/system/storage";
+import { saveOssConfig, upDataOss } from "@/api/system/oss";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -254,7 +254,7 @@ export default {
               "com.guzi.upr.storage.client.s3.S3OssClientConfig";
           }
           if (isEdit.value) {
-            upDataStorage(form).then(() => {
+            upDataOss(form).then(() => {
               ElMessage({
                 message: "修改成功！",
                 type: "success",
@@ -263,7 +263,7 @@ export default {
               dialogTableVisible.value = false;
             });
           } else {
-            saveStorage(form).then(() => {
+            saveOssConfig(form).then(() => {
               ElMessage({
                 message: "添加成功！",
                 type: "success",

@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-07-13 23:42:31
+ * @LastEditTime: 2022-07-21 22:23:45
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -66,7 +66,7 @@ const formatRouter = (MenuList) => {
   const _router = [];
   MenuList.forEach((i) => {
     _router.push({
-      path: i.link,
+      path: i.link || "",
       component: Layout,
       meta: { title: i.menuName },
       children: filterchildren(i.children, i),
@@ -74,23 +74,19 @@ const formatRouter = (MenuList) => {
   });
   return _router;
 };
-const filterchildren = (children, currentMenu) => {
-  const _children = [];
+const filterchildren = (children) => {
+  let _children = [];
   children.forEach((i) => {
-    console.log(currentMenu.link, i.link);
-    _children.push({
-      path: i.link,
-      component: () =>
-        require.ensure(
-          [],
-          (require) =>
-            // require(`@/pages${currentMenu.link}${i.link}Page`)
-            require(`@/pages${i.path || i.link}Page`)
-          // require(`@/pages${i.link}`)
-        ),
-      meta: { title: i.menuName },
-      children: filterchildren(i.children, i),
-    });
+    if (i.link) {
+      _children.push({
+        path: i.link,
+        component: () =>
+          require.ensure([], (require) => require(`@/pages/${i.link}Page`)),
+        meta: { title: i.menuName },
+      });
+    } else {
+      _children = _children.concat(filterchildren(i.children));
+    }
   });
   return _children;
 };
@@ -98,4 +94,5 @@ const addRoute = (formatRouter) => {
   formatRouter.forEach((i) => {
     router.addRoute(i);
   });
+  console.log(router.getRoutes());
 };
