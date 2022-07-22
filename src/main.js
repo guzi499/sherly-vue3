@@ -24,7 +24,7 @@ import TreeSelect from "@/components/TreeSelect.vue";
 // 自定义分页组件
 import Pagination from "@/components/PaginationEl.vue";
 // 自定义穿梭框组件
-import TransferName from '@/pages/system/email/components/TransferName.vue'
+import TransferName from '@/pages/system/email/email_config/components/TransferName.vue'
 
 // 引入矢量图标
 import '@/assets/style/font-icon/iconfont.css'

@@ -215,18 +215,26 @@ export default {
             text: 'Loading',
             background: 'rgba(0, 0, 0, 0.7)',
           })
-          form2.tos = form2.tos.map(item => {
-            return item.split('|')[1]
+          let _obj = form2
+          _obj.tos = _obj.tos.map(item => {
+            if(item.indexOf('|') == -1) {
+              return item
+            } else {
+              return item.split('|')[1]
+            }
           })
-          console.log('验证通过', form2)
-          sendEmail(form2).then(() => {
+          console.log('验证通过', _obj)
+          sendEmail(_obj).then(() => {
+            loading.value.close()
             ElMessage({
               showClose: true,
               message: '邮件发送成功',
               type: 'success',
             })
-            resetForm2()
-            loading.value.close()
+            // resetForm2()
+            handleReset()
+          }).catch(() => {
+            console.log('catch666666666666')
           })
         } else {
           return false;
@@ -237,8 +245,8 @@ export default {
     // 内容重置
     const handleReset = () => {
       resetForm2()
-      // form2.subject = ''
-      // form2.content = ''
+      form2.subject = ''
+      form2.content = ''
       valueHtml.value = '<p></p>'
     }
 
@@ -304,6 +312,7 @@ export default {
 
 
     watch(valueHtml, (val) => {
+      // console.log(val)
       val === '<p><br></p>' ? form2.content = '' : form2.content = val
     })
 
