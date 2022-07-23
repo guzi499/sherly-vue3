@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import { ref, reactive, getCurrentInstance } from "vue";
+import {ref, reactive, getCurrentInstance} from "vue";
 import { updateSelf, updatePassword } from "@/api/system/personal.js";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
@@ -168,7 +168,7 @@ export default {
     // 添加编辑弹框是否可见
     const EditDialogVisible = ref(false);
     // 添加编辑弹框 - 表单数据
-    const formEdit = ref();
+    const formEdit = ref({});
     // 重置编辑用户表单
     const reset = () => {
       formEdit.value = {};
@@ -176,7 +176,7 @@ export default {
     // 编辑用户 按钮
     const handleEdit = (userInfo) => {
       reset();
-      formEdit.value = userInfo;
+      formEdit.value = JSON.parse(JSON.stringify(userInfo));
       EditDialogVisible.value = true;
     };
     // 编辑用户 - 确定按钮
@@ -188,10 +188,12 @@ export default {
           message: "更新用户信息成功",
           type: "success",
         });
+      }).finally(() => {
+        // 初始化数据
+        emit('getList')
       });
-      // 初始化数据
-      emit('getList')
       EditDialogVisible.value = false
+
     }
 
     // 添加修改密码弹框是否可见
