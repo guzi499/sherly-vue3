@@ -7,38 +7,24 @@
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
 -->
 <template>
-  <div class="Navber-wrapper">
+  <div class="Navbar-wrapper">
     <div style="font-size: 1.25rem" class="header_left">
       <el-radio-group v-model="isCollapse" @change="handleLogo">
         <el-radio-button :label="true" v-if="isCollapse == false">
-          <fold style="width: 1em; height: 1em" />
+          <fold style="width: 1em; height: 1em"/>
         </el-radio-button>
         <el-radio-button :label="false" v-if="isCollapse == true">
-          <expand style="width: 1em; height: 1em" />
+          <expand style="width: 1em; height: 1em"/>
         </el-radio-button>
         <div style="font-size: 1rem">{{ config.systemName }}</div>
-        -->
       </el-radio-group>
-      <!--      <el-row>-->
-      <!--        <expand-->
-      <!--            style="width: 1em; height: 1em; margin-right: 0.5rem"-->
-      <!--            v-if="datas.isShow == 1"-->
-      <!--            @click="handleSide"-->
-      <!--        />-->
-      <!--        <fold-->
-      <!--            style="width: 1em; height: 1em; margin-right: 0.5rem"-->
-      <!--            v-if="datas.isShow == 0"-->
-      <!--            @click="handleSide"-->
-      <!--        />-->
-      <!--        <div style="font-size: 1rem">{{ config.systemName }}</div>-->
-      <!--      </el-row>-->
     </div>
     <div class="header_right">
       <el-row>
         <el-avatar
-          size="small"
-          :src="userInfo.avatar"
-          style="margin-right: 0.5rem"
+            size="small"
+            :src="userInfo.avatar"
+            style="margin-right: 0.5rem"
         />
         <el-dropdown style="margin: auto 0">
           <span class="el-dropdown-link">
@@ -70,18 +56,17 @@ import store from "@/store";
 
 export default {
   setup(props, { emit }) {
-    /**控制头部按钮的切换 */
+    /* 控制头部按钮的切换 */
     const isCollapse = ref(false);
     const handleLogo = (val) => {
       emit("isCollapse", val);
     };
-    /**用户姓名 */
-    console.log(Cookies.get("userInfo"));
+    /* 用户信息 */
     const userInfo = JSON.parse(Cookies.get("userInfo")) || "";
     const config = ref(Config);
     const router = useRouter();
 
-    // 退出登录
+    /* 退出登录 */
     const logout = () => {
       server.logout().then(() => {
         Cookies.remove("phone");
@@ -96,15 +81,15 @@ export default {
       });
     };
 
-    // 跳转到个人中心
+    /* 跳转到个人中心 */
     const handleGoPersonal = (path) => {
       router.push({ path, query: { userId: userInfo.userId } });
     };
     return {
       isCollapse,
-      handleLogo,
       config,
       userInfo,
+      handleLogo,
       logout,
       handleGoPersonal,
     };
@@ -116,7 +101,7 @@ export default {
   display: flex;
 }
 
-.Navber-wrapper {
+.Navbar-wrapper {
   width: 100%;
   padding: 0.5rem;
   background: #fff;
