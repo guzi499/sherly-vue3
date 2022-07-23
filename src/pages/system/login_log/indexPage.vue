@@ -29,12 +29,24 @@
       <template #table>
         <el-table-column prop="logId" label="日志id" width="100" align="center"></el-table-column>
         <el-table-column prop="username" label="登录账号" width="180" align="center" show-overflow-tooltip/>
-        <el-table-column prop="type" label="登录方式" align="center" show-overflow-tooltip/>
+        <el-table-column prop="type" label="登录方式" align="center" show-overflow-tooltip>
+          <template #default="scope">
+            <span v-for="item in loginType" :key="item.value" :hidden="scope.row.type !== item.value">
+              {{scope.row.type === item.value ? item.label : null}}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="browser" label="浏览器" align="center"/>
         <el-table-column prop="os" label="登陆设备" align="center" show-overflow-tooltip width="180px"/>
         <el-table-column prop="ip" label="登录ip" align="center" show-overflow-tooltip/>
         <el-table-column prop="address" label="登录地址" align="center" show-overflow-tooltip/>
-        <el-table-column prop="result" label="登录结果" align="center" show-overflow-tooltip/>
+        <el-table-column prop="result" label="登录结果" align="center" show-overflow-tooltip>
+          <template #default="scope">
+            <span v-for="item in loginResults" :key="item.value" :hidden="scope.row.result !== item.value">
+              {{scope.row.result === item.value ? item.label : null}}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="登录时间" align="center" width="180"/>
       </template>
     </SherlyTable>
@@ -58,6 +70,44 @@ export default {
       size: 10,
     })
 
+    /* 登陆结果枚举 */
+    const loginResults = reactive([
+      {
+        value: 0,
+        label: '成功'
+      },{
+        value: 1,
+        label: '账号或密码不正确'
+      },{
+        value: 2,
+        label: '用户禁用'
+      },{
+        value: 9,
+        label: '其他'
+      }
+    ])
+
+    /* 登陆方式枚举 */
+    const loginType = reactive([
+      {
+        value: 0,
+        label: '账号密码登录'
+      },{
+        value: 1,
+        label: '二维码登录'
+      },{
+        value: 2,
+        label: 'QQ登录'
+      },{
+        value: 3,
+        label: '微信登录'
+      },{
+        value: 4,
+        label: '支付宝登录'
+      }
+    ])
+
+    /* 组件挂载后... */
     onMounted(() => {
       getList()
     });
@@ -102,10 +152,12 @@ export default {
     return {
       loading,
       tableData,
+      InfoFilled,
+      loginResults,
+      loginType,
       handleCurrentChange,
       handleSizeChange,
-      handleEmpty,
-      InfoFilled
+      handleEmpty
     }
   }
 }
