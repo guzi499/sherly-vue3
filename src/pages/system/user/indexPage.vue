@@ -151,12 +151,6 @@
                 @node-click="nodeOnclick2"
             />
           </el-select>
-          <!--          <TreeSelect-->
-          <!--            ref="selectTree"-->
-          <!--            :treeList="DepartmentList"-->
-          <!--            :defaultProps="defaultProps"-->
-          <!--            @treeSelectList="treeSelectList"-->
-          <!--          ></TreeSelect>-->
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth" prop="roleIds">
           <el-select
@@ -347,7 +341,7 @@ export default {
         dialogTitle.value = "用户更新";
         getUserId(data.userId).then((res) => {
           form.value = res;
-          form.value.departmentName = data.departmentName0
+          form.value.departmentName = data.departmentName
           dialogFormVisible.value = true;
         })
 
@@ -363,9 +357,6 @@ export default {
 
     // 表格添加校验效果
     const formRules = {
-      // phone: [
-      //   {validator: validatePass, trigger: 'blur'}
-      // ],
       phone: [
         { required: true, message: '请输入手机号码', trigger: 'blur' },
         { min: 11, max: 11, message: '请输入11位手机号码', trigger: 'blur' },
