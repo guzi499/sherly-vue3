@@ -104,15 +104,15 @@ export default {
   font-weight: 600;
 }
 
-::v-deep .el-transfer__buttons {
+:deep(.el-transfer__buttons) {
   display: none;
 }
 
-::v-deep .el-transfer-panel {
+:deep(.el-transfer-panel) {
   margin: 0 8px;
 }
 
-::v-deep .el-transfer {
+:deep(.el-transfer) {
   display: flex;
   justify-content: center;
 }

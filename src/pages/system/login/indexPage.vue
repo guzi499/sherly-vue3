@@ -150,7 +150,7 @@ export default {
   //}
   &-right {
     padding: 24px 12px;
-    &/deep/ .el-input__inner {
+    &:deep(.el-input__inner) {
       box-shadow: none;
       border-radius: 0;
       border-bottom: 1px solid #eee;

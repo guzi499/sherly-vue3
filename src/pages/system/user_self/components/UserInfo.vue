@@ -313,7 +313,7 @@ ul {
   }
 }
 
-::v-deep .el-dialog__body {
+:deep(.el-dialog__body)  {
   padding: 24px 40px;
 }
 </style>

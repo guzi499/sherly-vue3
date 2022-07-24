@@ -201,7 +201,7 @@ input {
   padding: 0 4px;
 }
 
-::v-deep .el-col {
+:deep(.el-col)  {
   margin: 10px 0;
 }
 

@@ -112,7 +112,7 @@ export default {
   overflow: hidden;
 }
 
-:deep .el-radio-button__inner {
+:deep(.el-radio-button__inner) {
   border: none !important;
   font-size: 24px;
 }
