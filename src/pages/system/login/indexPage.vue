@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-07-21 23:29:08
+ * @LastEditTime: 2022-07-24 17:19:30
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/login/indexPage.vue
@@ -41,7 +41,7 @@
                 type="password"
                 show-password
                 clearable
-                @keyup.enter="login()"
+                @keyup.enter="handlelogin()"
               >
                 <template #prefix>
                   <el-icon class="input-prefix-icon" color="#000"
@@ -50,23 +50,10 @@
                 </template>
               </el-input>
             </el-form-item>
-            <!-- <el-form-item>
-              <el-input
-                class="login-layout-right-input"
-                v-model="loginForm.password"
-                placeholder="请输入密码"
-              >
-                <template #prefix>
-                  <el-icon class="input-prefix-icon" color="#000"
-                    ><unlock
-                  /></el-icon>
-                </template>
-              </el-input>
-            </el-form-item> -->
             <el-form-item>
               <el-button
                 class="login-layout-right-button"
-                @click="login()"
+                @click="handlelogin()"
                 style="width: 60%; margin: 0 auto"
                 >登 录
               </el-button>
@@ -80,7 +67,7 @@
 <script>
 import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import server from "@/api/login";
+import { login } from "@/api/system/login";
 import Cookies from "js-cookie";
 
 export default {
@@ -93,8 +80,8 @@ export default {
     onMounted(() => {
       getCookie();
     });
-    const login = () => {
-      server.login(loginForm).then((res) => {
+    const handlelogin = () => {
+      login(loginForm).then((res) => {
         localStorage.setItem("token", res.token);
         router.replace({ path: "/home" });
       });
@@ -103,7 +90,7 @@ export default {
       const phone = Cookies.get("phone");
       loginForm.phone = phone === undefined ? loginForm.phone : phone;
     };
-    return { loginForm, login, getCookie };
+    return { loginForm, handlelogin, getCookie };
   },
 };
 </script>

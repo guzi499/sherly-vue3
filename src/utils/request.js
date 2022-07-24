@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-06-08 23:26:17
+ * @LastEditTime: 2022-07-24 18:03:12
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -10,6 +10,8 @@
 import axios from "axios";
 import Config from "@/config";
 import { ElNotification } from "element-plus";
+// import { heartBzeat } from "@/api/system/generic";
+
 const axiosInstance = axios.create({
   timeout: Config.timeout,
   baseURL:

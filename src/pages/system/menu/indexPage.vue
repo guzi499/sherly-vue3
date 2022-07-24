@@ -42,18 +42,40 @@
         width="230"
         align="center"
       />
-      <el-table-column label="图标" prop="icon" width="150" align="center" />
+      <el-table-column label="图标" width="150" align="center">
+        <template #default="scope">
+          <span
+            class="icon iconfont"
+            :class="'icon-' + scope.row.icon"
+            v-if="scope.row.icon"
+          />
+        </template>
+      </el-table-column>
       <el-table-column label="排序" prop="sort" width="150" align="center" />
       <el-table-column label="创建时间" prop="createTime" align="center" />
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
-          <el-button type="text" @click="handleEdit('2', scope.$index, scope.row)">修改</el-button>
-          <el-button class="delete" type="text" @click="handleDelete('2', scope.$index, scope.row)">删除</el-button>
+          <el-button
+            type="text"
+            @click="handleEdit('2', scope.$index, scope.row)"
+            >修改</el-button
+          >
+          <el-button
+            class="delete"
+            type="text"
+            @click="handleDelete('2', scope.$index, scope.row)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
     <!-- 新增 / 编辑 弹框 -->
-    <el-dialog v-if="dialogFormVisible"  v-model="dialogFormVisible" :title="dialogTitle" width="600px">
+    <el-dialog
+      v-if="dialogFormVisible"
+      v-model="dialogFormVisible"
+      :title="dialogTitle"
+      width="600px"
+    >
       <el-form :model="form" :rules="rules" ref="ruleForm">
         <el-form-item
           :label-width="formLabelWidth"
@@ -77,18 +99,14 @@
             placeholder="请选择"
             :disabled="form.menuType === 1"
           >
-            <el-option
-              hidden
-              :value="form.parentId"
-              :label="treeDatas"
-            ></el-option>
+            <el-option hidden :value="form.parentId" :label="treeDatas">
+            </el-option>
             <el-tree
               :data="menuListSelect"
               :props="defaultProps"
               :expand-on-click-node="false"
               @node-click="nodeOnclick"
             />
-            <!--            <el-tree-select v-model="menuId" :data="menuListSelect" />-->
           </el-select>
         </el-form-item>
         <el-form-item
@@ -120,7 +138,42 @@
           prop="icon"
           v-if="form.menuType !== 3"
         >
-          <el-input v-model="form.icon"></el-input>
+          <el-popover
+            trigger="click"
+            width="500px"
+            :visible="iconPopoverVisible"
+          >
+            <template #reference>
+              <el-input
+                readonly
+                v-model="form.icon"
+                @click="openIconPopover"
+                @blur="closeIconPopover"
+              >
+                <template #prefix>
+                  <span
+                    class="icon iconfont"
+                    :class="'icon-' + form.icon"
+                    v-if="form.icon"
+                  />
+                </template>
+              </el-input>
+            </template>
+            <div class="icon_wrapper">
+              <div
+                class="icon_grid"
+                v-for="icon in iconfontList"
+                :key="icon.icon_id"
+                @click="handleSelectIcon(icon.font_class)"
+              >
+                <span
+                  class="icon iconfont"
+                  :class="'icon-' + icon.font_class"
+                />
+                {{ icon.font_class }}
+              </div>
+            </div>
+          </el-popover>
         </el-form-item>
         <el-form-item label="排序" :label-width="formLabelWidth" prop="sort">
           <el-input-number
@@ -147,15 +200,17 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { reactive, ref, onMounted, getCurrentInstance } from "vue";
 import { getMenu } from "@/api/system/menu";
 import { addMenu, delMenu, updateMenu } from "@/api/system/menu";
+import iconfont from "@/assets/style/font-icon/iconfont.json";
 
 export default {
   name: "menuPage",
   setup() {
     const { proxy } = getCurrentInstance();
     const loading = ref(false);
+    const iconfontList = iconfont.glyphs;
+    const iconPopoverVisible = ref(false);
     onMounted(() => {
       getList(data.queryParams);
-      // getMenuListFn();
     });
 
     const data = reactive({
@@ -232,9 +287,7 @@ export default {
       //   { required: true, message: '请输入权限标识', trigger: 'blur' }
       // ],
       link: [{ required: true, message: "请输入菜单路径", trigger: "blur" }],
-      // icpathon: [
-      //   { required: true, message: "请选择组件路径", trigger: "change" },
-      // ],
+      // icon: [{ required: true, message: "请选择菜单图标", trigger: "change" }],
       sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
     };
 
@@ -259,20 +312,22 @@ export default {
     const treeDatas = ref("");
     // 弹框新增 / 修改弹框绑定数据
     const form = ref({
-      menuType: 1
+      menuType: 1,
     });
     const defaultProps = {
       children: "children",
       label: "menuName",
     };
+
     // 重置表单
     const reset = () => {
       form.value = {};
       treeDatas.value = "";
       setTimeout(() => {
-        proxy.$refs.ruleForm.resetFields()
-      }, 50)
+        proxy.$refs.ruleForm.resetFields();
+      }, 50);
     };
+
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
       form.value.parentId = e.menuId;
@@ -280,6 +335,7 @@ export default {
       treeDatas.value = e.menuName;
       proxy.$refs.selectTree.blur();
     };
+
     // 点击修改 - 新增按钮
     const handleEdit = (type, index, data) => {
       if (type === "1") {
@@ -296,9 +352,10 @@ export default {
         forEachMenuList(menuList.value, data);
         form.value = JSON.parse(JSON.stringify(data));
       }
-      console.log(form.value)
+      console.log(form.value);
       dialogFormVisible.value = true;
     };
+
     // 处理树形数据回显
     const forEachMenuList = (list, data) => {
       list.forEach((item) => {
@@ -316,6 +373,7 @@ export default {
         }
       });
     };
+
     // 点击删除按钮
     const handleDelete = (type, index, data) => {
       if (type === "2") {
@@ -337,14 +395,15 @@ export default {
                 return err;
               });
           })
-            .catch(() => {
-              ElMessage({
-                type: "info",
-                message: "取消删除操作",
-              });
+          .catch(() => {
+            ElMessage({
+              type: "info",
+              message: "取消删除操作",
             });
+          });
       }
     };
+
     // 点击确定按钮
     const handleOk = (formName) => {
       proxy.$refs[formName].validate((valid) => {
@@ -352,40 +411,59 @@ export default {
           // 新增
           if (dialogType.value === "1") {
             addMenu(form.value)
-                .then(() => {
-                  getList(data.queryParams);
-                })
-                .catch(() => {
-                })
-                .finally(() => {
-                  reset();
-                  dialogFormVisible.value = false;
-                });
+              .then(() => {
+                getList(data.queryParams);
+              })
+              .catch(() => {})
+              .finally(() => {
+                reset();
+                dialogFormVisible.value = false;
+              });
           }
           // 修改
           if (dialogType.value === "2") {
             updateMenu(form.value)
-                .then(() => {
-                  getList(data.queryParams);
-                })
-                .catch(() => {
-                })
-                .finally(() => {
-                  reset();
-                  dialogFormVisible.value = false;
-                });
+              .then(() => {
+                getList(data.queryParams);
+              })
+              .catch(() => {})
+              .finally(() => {
+                reset();
+                dialogFormVisible.value = false;
+              });
           }
+          // setTimeout(() => {
+          //   location.reload();
+          // }, 1000);
         } else {
-          console.log('error submit!!');
+          console.log("error submit!!");
           return false;
         }
       });
     };
+
     // 点击取消按钮
     const handleCancle = () => {
       reset();
       dialogFormVisible.value = false;
     };
+
+    // 开启iconPopover显示状态
+    const openIconPopover = () => {
+      iconPopoverVisible.value = true;
+    };
+
+    // 关闭iconPopover显示状态
+    const closeIconPopover = () => {
+      iconPopoverVisible.value = false;
+    };
+
+    // 选中菜单icon图标
+    const handleSelectIcon = (icon) => {
+      form.value.icon = icon;
+      iconPopoverVisible.value = false;
+    };
+
     return {
       menuList,
       data,
@@ -393,19 +471,23 @@ export default {
       handleReset,
       handleEdit,
       handleDelete,
+      handleSelectIcon,
       dialogFormVisible,
       dialogTitle,
       formLabelWidth,
       form,
       defaultProps,
       nodeOnclick,
-      // treeData,
+      iconfontList,
       treeDatas,
       handleOk,
       handleCancle,
       menuListSelect,
       rules,
-      loading
+      loading,
+      iconPopoverVisible,
+      openIconPopover,
+      closeIconPopover,
     };
   },
 };
@@ -440,5 +522,14 @@ a {
 
 .dialog-footer button:first-child {
   margin-right: 10px;
+}
+.icon_wrapper {
+  width: 500px;
+  display: grid;
+  grid-template-columns: repeat(3, 33.3%);
+  grid-gap: 10px;
+  .icon_grid {
+    cursor: pointer;
+  }
 }
 </style>

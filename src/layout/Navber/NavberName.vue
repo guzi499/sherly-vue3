@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-07-21 23:29:32
+ * @LastEditTime: 2022-07-24 17:20:06
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
@@ -11,10 +11,10 @@
     <div style="font-size: 1.25rem" class="header_left">
       <el-radio-group v-model="isCollapse" @change="handleLogo">
         <el-radio-button :label="true" v-if="isCollapse == false">
-          <fold style="width: 1em; height: 1em"/>
+          <fold style="width: 1em; height: 1em" />
         </el-radio-button>
         <el-radio-button :label="false" v-if="isCollapse == true">
-          <expand style="width: 1em; height: 1em"/>
+          <expand style="width: 1em; height: 1em" />
         </el-radio-button>
         <div style="font-size: 1rem">{{ config.systemName }}</div>
       </el-radio-group>
@@ -22,9 +22,9 @@
     <div class="header_right">
       <el-row>
         <el-avatar
-            size="small"
-            :src="userInfo.avatar"
-            style="margin-right: 0.5rem"
+          size="small"
+          :src="userInfo.avatar"
+          style="margin-right: 0.5rem"
         />
         <el-dropdown style="margin: auto 0">
           <span class="el-dropdown-link">
@@ -38,7 +38,9 @@
               <el-dropdown-item @click="handleGoPersonal('/personal')"
                 >个人中心</el-dropdown-item
               >
-              <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item @click="handleLogout"
+                >退出登录</el-dropdown-item
+              >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -51,7 +53,7 @@ import { ref } from "vue";
 import Config from "@/config";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
-import server from "@/api/login.js";
+import { logout } from "@/api/system/login.js";
 import store from "@/store";
 
 export default {
@@ -67,8 +69,8 @@ export default {
     const router = useRouter();
 
     /* 退出登录 */
-    const logout = () => {
-      server.logout().then(() => {
+    const handleLogout = () => {
+      logout().then(() => {
         Cookies.remove("phone");
         Cookies.remove("metaTitle");
         Cookies.remove("userInfo");
@@ -90,7 +92,7 @@ export default {
       config,
       userInfo,
       handleLogo,
-      logout,
+      handleLogout,
       handleGoPersonal,
     };
   },
