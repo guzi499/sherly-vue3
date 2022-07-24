@@ -175,7 +175,6 @@ export default {
     // 处理展示数据
     const handleTreeData = (list, value) => {
       let arr = [];
-
       const handleData = (list, value) => {
         list.forEach((item) => {
           // 判断当前层级是否存在符合条件的字段, 如果没有， 则判断该项是否存在children
@@ -295,7 +294,7 @@ export default {
         dialogType.value = type;
         dialogTitle.value = "修改菜单";
         forEachMenuList(menuList.value, data);
-        form.value = data;
+        form.value = JSON.parse(JSON.stringify(data));
       }
       console.log(form.value)
       dialogFormVisible.value = true;

@@ -231,7 +231,7 @@ export default {
         dialogType.value = type;
         forEachDepartmentList(departmentList.value, data);
         dialogTitle.value = "部门更新";
-        form.value = data;
+        form.value = JSON.parse(JSON.stringify(data));
       }
     };
     // 处理树形数据回显
