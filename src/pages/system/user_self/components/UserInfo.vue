@@ -2,59 +2,59 @@
   <div class="box-userInfo">
     <ul>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-nicheng"></i>
           昵称：
-        </strong>
+        </span>
         <span>{{ curUserInfo.nickname }}</span>
       </li>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-zuoxixingming"></i>
           姓名：
-        </strong>
+        </span>
         <span>{{ curUserInfo.realName }}</span>
       </li>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-xingbie"></i>
           性别：
-        </strong>
+        </span>
         <span>{{ curUserInfo.genderStr }}</span>
       </li>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-shoujihao"></i>
           手机号：
-        </strong>
+        </span>
         <span>{{ curUserInfo.phone }}</span>
       </li>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-youxiang"></i>
           邮箱：
-        </strong>
+        </span>
         <span>{{ curUserInfo.email }}</span>
       </li>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-jiaoseguanlizuhu"></i>
           租户：
-        </strong>
+        </span>
         <span>{{ curUserInfo.tenantName }}</span>
       </li>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-bumen"></i>
           部门：
-        </strong>
+        </span>
         <span>{{ curUserInfo.departmentName }}</span>
       </li>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-jiaose"></i>
           角色：
-        </strong>
+        </span>
         <span>
           <text v-for="(item, index) in curUserInfo.roleNames" :key="index">{{
             item + "、 "
@@ -62,10 +62,10 @@
         </span>
       </li>
       <li>
-        <strong class="icon">
+        <span class="icon">
           <i class="iconfont icon-chuangjianshijian"></i>
           创建时间：
-        </strong>
+        </span>
         <span>{{ curUserInfo.createTime }}</span>
       </li>
     </ul>

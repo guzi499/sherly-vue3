@@ -48,59 +48,54 @@
     <el-dialog
         v-model="dialogVisible"
         title="日志详情"
-        width="40%"
+        width="30%"
         center
     >
       <el-row>
-        <el-col :span="12">
+        <el-col>
           <label>日志id：</label>
           <input type="text" :value="formInfo.logId"/>
         </el-col>
-        <el-col :span="12">
-          <label>日志类型：</label>
-          <input type="text" :value="formInfo.type"/>
-        </el-col>
-        <el-col :span="12">
+<!--        <el-col>-->
+<!--          <label>日志类型：</label>-->
+<!--          <input type="text" :value="formInfo.type"/>-->
+<!--        </el-col>-->
+        <el-col>
           <label>描述：</label>
           <input type="text" :value="formInfo.description"/>
         </el-col>
-        <el-col :span="12">
-          <label>	异常描述：</label>
-          <input type="text" :value="formInfo.exception"/>
-        </el-col>
-        <el-col :span="12">
+        <el-col>
           <label>请求方式：</label>
           <input type="text" :value="formInfo.requestMethod"/>
         </el-col>
-        <el-col :span="12">
+        <el-col>
           <label>请求uri：</label>
           <input type="text" :value="formInfo.uri" :title="formInfo.uri"/>
         </el-col>
-        <el-col :span="12">
+        <el-col>
           <label>请求参数：</label>
           <input type="text" :value="formInfo.requestParams" :title="formInfo.requestParams"/>
         </el-col>
-        <el-col :span="12">
+        <el-col>
           <label>请求ip：</label>
           <input type="text" :value="formInfo.ip"/>
         </el-col>
-        <el-col :span="12">
-          <label>请求设备：</label>
-          <input type="text" :value="formInfo.os" :title="formInfo.os"/>
-        </el-col>
-        <el-col :span="12">
+        <el-col>
           <label>请求地址：</label>
           <input type="text" :value="formInfo.address"/>
         </el-col>
-        <el-col :span="12">
+        <el-col>
           <label>请求浏览器：</label>
           <input type="text" :value="formInfo.browser"/>
         </el-col>
-        <el-col :span="12">
+        <el-col>
           <label>耗时：</label>
           <input type="text" :value="formInfo.duration"/>
         </el-col>
-
+        <el-col>
+          <label style="height: 100%">	异常详情：</label>
+          <textarea type="text" :value="formInfo.exception"/>
+        </el-col>
       </el-row>
     </el-dialog>
   </div>
@@ -194,21 +189,25 @@ export default {
 .operate_container {
   padding: 16px;
 }
-input {
-  border: none;
-  border-bottom: 1px solid #000;
-  outline: none; // 聚焦时去掉边框
-  padding: 0 4px;
-}
-
-:deep(.el-col)  {
-  margin: 10px 0;
-}
-
 label {
   display: inline-block;
   width: 100px;
   padding: 0 4px;
   text-align: right;
+}
+input {
+  border: none;
+  outline: none;
+  padding: 0 4px;
+}
+textarea {
+  width: 70%;
+  height: 100px;
+  vertical-align:top;
+  outline: none;
+}
+
+:deep(.el-col)  {
+  margin: 12px 0;
 }
 </style>
