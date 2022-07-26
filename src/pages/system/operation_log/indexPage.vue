@@ -24,14 +24,9 @@
             <el-button type="danger" size="small"> 清空日志</el-button>
           </template>
         </el-popconfirm>
-
       </template>
       <template #table>
-        <el-table-column prop="logId" label="日志id" width="100" align="center">
-          <template #default="scope">
-            <a class="link_style" href="javascript:;" @click="handleLogId(scope.row.logId)">{{ scope.row.logId }}</a>
-          </template>
-        </el-table-column>
+        <el-table-column prop="logId" label="日志id" width="100" align="center" />
         <el-table-column prop="type" label="日志类型" width="180" align="center" show-overflow-tooltip/>
         <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip/>
         <el-table-column prop="requestMethod" label="请求方式" align="center"/>
@@ -42,6 +37,11 @@
         <el-table-column prop="browser" label="请求浏览器" align="center" show-overflow-tooltip/>
         <el-table-column prop="duration" label="耗时" align="center"/>
         <el-table-column prop="createTime" label="操作时间" align="center" width="180"/>
+        <el-table-column prop="createTime" label="操作" align="center" width="100" fixed="right">
+          <template #default="scope">
+            <a class="link_style"  @click="handleLogId(scope.row.logId)">详情</a>
+          </template>
+        </el-table-column>
       </template>
     </SherlyTable>
     <!--查看日志详情-->
