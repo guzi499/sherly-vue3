@@ -53,7 +53,7 @@
       </el-table-column>
       <el-table-column label="排序" prop="sort" width="150" align="center" />
       <el-table-column label="创建时间" prop="createTime" align="center" />
-      <el-table-column label="操作" align="center" width="250">
+      <el-table-column label="操作" align="center" width="250" fixed="right">
         <template #default="scope">
           <el-button
             type="text"

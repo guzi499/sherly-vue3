@@ -63,10 +63,29 @@ export function getOssList(params) {
     params,
   });
 }
+
 /** 删除文件列表 */
 export function deleteOss(fileId) {
   return request({
     url: "oss/remove_one?fileId=" + fileId,
     method: "delete",
+  });
+}
+
+/** 获取文件下载地址 */
+export function getOssAccessUrl(path) {
+  return request({
+    url: "oss/access_url?path=" + path,
+    method: "get",
+  });
+}
+
+/** 文件下载 */
+export function downloadOss(params) {
+  return request({
+    url: "oss/download_one",
+    method: "get",
+    params,
+    responseType: "blob",
   });
 }

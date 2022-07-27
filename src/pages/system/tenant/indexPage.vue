@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-05-22 20:52:14
- * @LastEditTime: 2022-07-21 23:41:57
+ * @LastEditTime: 2022-07-27 23:51:03
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/tenant/indexPage.vue
@@ -82,9 +82,16 @@
           align="center"
         >
           <template #default="scope">
-            <el-button type="text" @click="handleEdit(scope.row)"
-              >修改</el-button
+            <el-button
+              type="text"
+              style="color: #67c23a"
+              @click="handleEditMenu(scope.row)"
             >
+              菜单配置
+            </el-button>
+            <el-button type="text" @click="handleEdit(scope.row)">
+              修改
+            </el-button>
             <el-popconfirm
               title="确定删除本条数据?"
               @confirm="handleDelete(scope.row)"
@@ -97,6 +104,22 @@
         </el-table-column></template
       >
     </SherlyTable>
+    <el-dialog v-model="dialogMenuVisible" title="租户菜单" width="480px">
+      <div class="tree-box">
+        <el-tree
+          :data="menuTree"
+          show-checkbox
+          node-key="menuId"
+          :props="{
+            children: 'children',
+            label: 'menuName',
+          }"
+          default-expand-all
+          :default-checked-keys="menuIds"
+          @check-change="handleMenuTreeCheckChange"
+        />
+      </div>
+    </el-dialog>
     <el-dialog
       v-model="dialogVisible"
       :title="isEdit ? '租户修改' : '租户新增'"
@@ -157,7 +180,9 @@ import {
   delTenant,
   updateTenant,
   addTenant,
+  updateTenantMenu,
 } from "@/api/system/tenant";
+import { getMenu } from "@/api/system/menu";
 import SherlyTable from "@/components/SherlyTable.vue";
 import { ElMessage } from "element-plus";
 
@@ -174,13 +199,18 @@ export default {
 
     onMounted(() => {
       getList();
+      handleGetMenuTree();
     });
 
     const resetFormData = ref(null);
     const tenantFormRef = ref(null);
     const tableData = reactive({});
+    const menuTree = reactive([]);
+    const menuIds = reactive([]);
+
     let isEdit = ref(false);
     let dialogVisible = ref(false);
+    let dialogMenuVisible = ref(false);
     // 初始化租户详情数据
     const inittenantForm = () => {
       return {
@@ -192,7 +222,13 @@ export default {
         userLimit: "",
       };
     };
-
+    // 获取菜单树
+    const handleGetMenuTree = async () => {
+      const data = await getMenu();
+      data.forEach((i) => {
+        menuTree.push(i);
+      });
+    };
     // 角色详情数据响应式
     let tenantForm = reactive(inittenantForm());
 
@@ -221,10 +257,14 @@ export default {
     // 重置
     const handleReset = () => {
       resetFormData.value.resetFields();
+      getList();
     };
 
     // 添加租户
-    const handleaddTenant = () => {};
+    const handleaddTenant = () => {
+      isEdit.value = false;
+      dialogVisible.value = true;
+    };
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
@@ -294,6 +334,19 @@ export default {
       });
     };
 
+    // 编辑租户菜单
+    const handleEditMenu = async () => {
+      dialogMenuVisible.value = true;
+    };
+
+    // 更新租户菜单
+    const handleUpMenu = async () => {
+      await updateTenantMenu();
+    };
+
+    // 修改租户菜单树
+    const handleMenuTreeCheckChange = () => {};
+
     return {
       form,
       tableData,
@@ -302,6 +355,7 @@ export default {
       tenantForm,
       isEdit,
       dialogVisible,
+      dialogMenuVisible,
       handleSearch,
       handleReset,
       handleaddTenant,
@@ -311,7 +365,12 @@ export default {
       handleDelete,
       handleCancel,
       handleConfirm,
+      handleUpMenu,
+      handleEditMenu,
+      handleMenuTreeCheckChange,
       loading,
+      menuTree,
+      menuIds,
     };
   },
 };
@@ -323,5 +382,9 @@ a {
   &:hover {
     color: rgb(9, 130, 217);
   }
+}
+.tree-box {
+  height: 180px;
+  overflow: scroll;
 }
 </style>

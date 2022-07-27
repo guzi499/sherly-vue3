@@ -1,14 +1,14 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-05-22 21:58:34
- * @LastEditTime: 2022-05-23 00:11:39
+ * @LastEditTime: 2022-07-27 23:18:58
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/api/system/tenant.js
  */
 import request from "@/utils/request";
 
-/**获取租户列表 */
+/** 获取租户列表 */
 export function getTenant(params) {
   return request({
     url: "/tenant/list_page",
@@ -17,7 +17,7 @@ export function getTenant(params) {
   });
 }
 
-/**新增租户 */
+/** 新增租户 */
 export function addTenant(data) {
   return request({
     url: "/tenant/save_one",
@@ -26,7 +26,7 @@ export function addTenant(data) {
   });
 }
 
-/**删除租户 */
+/** 删除租户 */
 export function delTenant(id) {
   return request({
     url: `/tenant/remove_one?id=${id}`,
@@ -34,10 +34,19 @@ export function delTenant(id) {
   });
 }
 
-/**更新租户 */
+/** 更新租户 */
 export function updateTenant(data) {
   return request({
     url: `/tenant/update_one`,
+    method: "put",
+    data,
+  });
+}
+
+/** 更新租户菜单 */
+export function updateTenantMenu(data) {
+  return request({
+    url: `/tenant/update_menu`,
     method: "put",
     data,
   });
