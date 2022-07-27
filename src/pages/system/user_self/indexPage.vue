@@ -1,7 +1,7 @@
 <template>
   <div class="personal_container">
     <el-card class="info" :header="title.header1">
-      <Avatar :avatar="curUserInfo.avatar"/>
+      <Avatar :avatar="curUserInfo.avatar" @getList="getList"/>
       <UserInfo :curUserInfo="curUserInfo" @getList="getList"/>
     </el-card>
     <el-card class="operator" :header="title.header2">
