@@ -32,12 +32,29 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="部门: ">
-        <TreeSelect
+        <el-select
+            multiple
             ref="selectTree"
-            :treeList="DepartmentList"
-            :defaultProps="defaultProps"
-            @treeSelectList="treeSelectList"
-        ></TreeSelect>
+            v-model="treeSelectData.treeDate"
+            placeholder="请选择"
+            clearable
+        >
+          <el-option
+              hidden
+              :value="treeSelectData.parentId"
+              :label="treeSelectData.treeDate"
+          ></el-option>
+          <el-tree
+              check-strictly
+              show-checkbox
+              highlight-current
+              :data="DepartmentList"
+              :props="defaultProps"
+              :expand-on-click-node="false"
+              :current-node-key="currentTreeList"
+              @check="nodeCheck"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
@@ -47,7 +64,7 @@
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
       <el-col :span="1.5">
-        <el-button type="warning" plain size="small" @click="handlexport()"
+        <el-button type="warning" plain size="small" @click="handleExport()"
         >导出
         </el-button
         >
@@ -214,7 +231,7 @@ export default {
       // 查询条件
       queryParams: {
         current: 1,
-        size: 10,
+        size: 10
       },
       // 部门下拉框配置项
       defaultProps: {
@@ -233,23 +250,16 @@ export default {
     const reset = () => {
       data.queryParams = {
         current: 1,
-        size: 10,
+        size: 10
       };
     };
 
     // 重置按钮
     const handleReset = () => {
       reset();
-      proxy.$refs.selectTree.treeSelectData = {
-        parentId: null,
-        treeDatas: ""
-      };
+      treeSelectData.parentId = []
+      treeSelectData.treeDate = []
       getList();
-    };
-
-    // 选中弹框中的树形数据
-    const treeSelectList = (e) => {
-      data.queryParams.departmentId = e.departmentId;
     };
 
     // 分页数据
@@ -319,10 +329,6 @@ export default {
     // 重置弹出框表单
     const resetForm = () => {
       form.value = {};
-      proxy.$refs.selectTree.treeSelectData = {
-        parentId: null,
-        treeDatas: ""
-      };
     };
 
     const type1 = ref("");
@@ -346,6 +352,23 @@ export default {
         })
 
       }
+    };
+
+    const currentTreeList = ref([])
+    const treeSelectData = reactive({
+      parentId: [],
+      treeDate: [],
+    });
+
+    const nodeCheck = (obj, data1) => {
+      currentTreeList.value = data1.checkedNodes
+      treeSelectData.parentId = data1.checkedNodes.map(item => {
+        return item.departmentId
+      })
+      treeSelectData.treeDate = data1.checkedNodes.map(item => {
+        return item.departmentName
+      })
+      data.queryParams.departmentIds = JSON.stringify(treeSelectData.parentId)
     };
 
     // 部门选择
@@ -459,7 +482,7 @@ export default {
     };
 
     // 用户导出
-    const handlexport = () => {
+    const handleExport = () => {
       exportUser();
     };
 
@@ -479,18 +502,20 @@ export default {
       formLabelWidth,
       dialogFormVisible,
       form,
+      treeSelectData,
+      nodeCheck,
       nodeOnclick2,
       handleOk,
       handleCancle,
       handleEdit,
       handleDelete,
-      treeSelectList,
       handleSearch,
       handleReset,
       handleSizeChange,
       handleCurrentChange,
-      handlexport,
+      handleExport,
       rolesOptions,
+      currentTreeList
     };
   },
 };
