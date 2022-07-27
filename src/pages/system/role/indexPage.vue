@@ -82,16 +82,17 @@
         <el-tab-pane label="菜单权限" name="menu">
           <div class="tree-box">
             <el-tree
-              :data="menuTree"
-              show-checkbox
-              node-key="menuId"
-              :props="{
+                check-strictly
+                :data="menuTree"
+                show-checkbox
+                node-key="menuId"
+                :props="{
                 children: 'children',
                 label: 'menuName',
               }"
-              default-expand-all
-              :default-checked-keys="roleForm.menuIds"
-              @check-change="handleMenuTreeCheckChange"
+                default-expand-all
+                :default-checked-keys="roleForm.menuIds"
+                @check-change="handleMenuTreeCheckChange"
             />
           </div>
         </el-tab-pane>
