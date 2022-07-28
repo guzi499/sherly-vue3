@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-07-24 18:03:12
+ * @LastEditTime: 2022-07-28 23:50:26
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -10,7 +10,7 @@
 import axios from "axios";
 import Config from "@/config";
 import { ElNotification } from "element-plus";
-// import { heartBzeat } from "@/api/system/generic";
+import { pickBy, identity, trim } from "lodash";
 
 const axiosInstance = axios.create({
   timeout: Config.timeout,
@@ -23,15 +23,25 @@ const axiosInstance = axios.create({
 // 添加请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
-    // 在发送请求之前做些什么
     config.headers["Content-Type"] = config.responseType || "application/json";
 
+    // 标头设置token
     if (localStorage.getItem("token")) {
       config.headers["token"] = localStorage.getItem("token");
     }
+
+    // 登录请求不应该设置token
     if (config.url === "/login") {
       config.headers["token"] = null;
     }
+    // get请求需要将params中blank的属性删除
+    if (config.method === "get" && config.params) {
+      Object.keys(config.params).forEach((i) => {
+        config.params[i] = trim(config.params[i]);
+      }),
+        (config.params = pickBy(config.params, identity));
+    }
+
     return config;
   },
   (error) => {
