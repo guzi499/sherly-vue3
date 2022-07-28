@@ -33,6 +33,7 @@
       </el-form-item>
       <el-form-item label="部门: ">
         <el-select
+            collapse-tags
             multiple
             ref="selectTree"
             v-model="treeSelectData.treeDate"
@@ -45,13 +46,13 @@
               :label="treeSelectData.treeDate"
           ></el-option>
           <el-tree
-              check-strictly
+              ref="checkTree"
+              node-key="departmentId"
               show-checkbox
               highlight-current
               :data="DepartmentList"
               :props="defaultProps"
-              :expand-on-click-node="false"
-              :current-node-key="currentTreeList"
+              expand-on-click-node
               @check="nodeCheck"
           />
         </el-select>
@@ -195,8 +196,8 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, reactive, toRefs, onMounted } from "vue";
-import { listAll } from "@/api/system/role.js";
+import {getCurrentInstance, ref, reactive, toRefs, onMounted, watch} from "vue";
+import {listAll} from "@/api/system/role.js";
 import { getDepartmentListTree } from "@/api/system/department.js";
 import {
   pageUser,
@@ -289,7 +290,7 @@ export default {
         setTimeout(() => {
           loading.value = false
         }, 100)
-      });
+      })
     };
 
     // 公共部门下拉框
@@ -350,25 +351,22 @@ export default {
           form.value.departmentName = data.departmentName
           dialogFormVisible.value = true;
         })
-
       }
     };
 
-    const currentTreeList = ref([])
     const treeSelectData = reactive({
       parentId: [],
       treeDate: [],
     });
 
     const nodeCheck = (obj, data1) => {
-      currentTreeList.value = data1.checkedNodes
       treeSelectData.parentId = data1.checkedNodes.map(item => {
         return item.departmentId
       })
       treeSelectData.treeDate = data1.checkedNodes.map(item => {
         return item.departmentName
       })
-      data.queryParams.departmentIds = JSON.stringify(treeSelectData.parentId)
+      data.queryParams.departmentIds = treeSelectData.parentId.join(',')
     };
 
     // 部门选择
@@ -486,6 +484,19 @@ export default {
       exportUser();
     };
 
+    watch(
+        () => treeSelectData.treeDate, (val) => {
+          console.log(val)
+          if (val.length === 0) {
+            console.log(val)
+            delete data.queryParams.departmentIds
+            proxy.$refs.checkTree.setCheckedKeys([]);
+          }
+        }, {
+          deep: true
+        }
+    );
+
     return {
       loading,
       formRules,
@@ -514,8 +525,7 @@ export default {
       handleSizeChange,
       handleCurrentChange,
       handleExport,
-      rolesOptions,
-      currentTreeList
+      rolesOptions
     };
   },
 };
