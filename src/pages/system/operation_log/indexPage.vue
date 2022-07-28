@@ -26,8 +26,12 @@
         </el-popconfirm>
       </template>
       <template #table>
-        <el-table-column prop="logId" label="日志id" width="100" align="center" />
-        <el-table-column prop="type" label="日志类型" width="180" align="center" show-overflow-tooltip/>
+        <el-table-column prop="logId" label="日志id" width="100" align="center"/>
+        <el-table-column prop="type" label="日志类型" width="180" align="center" show-overflow-tooltip>
+          <template #default="scope">
+            <el-tag>{{ scope.row.type === 1 ? '异常' : '正常' }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip/>
         <el-table-column prop="requestMethod" label="请求方式" align="center"/>
         <el-table-column prop="uri" label="请求uri" align="center" show-overflow-tooltip width="180px"/>
@@ -35,7 +39,11 @@
         <el-table-column prop="os" label="请求设备" align="center" show-overflow-tooltip width="180px"/>
         <el-table-column prop="address" label="请求地址" align="center" show-overflow-tooltip/>
         <el-table-column prop="browser" label="请求浏览器" align="center" show-overflow-tooltip/>
-        <el-table-column prop="duration" label="耗时" align="center"/>
+        <el-table-column prop="duration" label="耗时" align="center">
+          <template #default="scope">
+            <span>{{scope.row.duration + 'ms'}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="操作时间" align="center" width="180"/>
         <el-table-column prop="createTime" label="操作" align="center" width="100" fixed="right">
           <template #default="scope">
@@ -51,52 +59,21 @@
         width="30%"
         center
     >
-      <el-row>
-        <el-col>
-          <label>日志id：</label>
-          <input type="text" :value="formInfo.logId"/>
-        </el-col>
-<!--        <el-col>-->
-<!--          <label>日志类型：</label>-->
-<!--          <input type="text" :value="formInfo.type"/>-->
-<!--        </el-col>-->
-        <el-col>
-          <label>描述：</label>
-          <input type="text" :value="formInfo.description"/>
-        </el-col>
-        <el-col>
-          <label>请求方式：</label>
-          <input type="text" :value="formInfo.requestMethod"/>
-        </el-col>
-        <el-col>
-          <label>请求uri：</label>
-          <input type="text" :value="formInfo.uri" :title="formInfo.uri"/>
-        </el-col>
-        <el-col>
-          <label>请求参数：</label>
-          <input type="text" :value="formInfo.requestParams" :title="formInfo.requestParams"/>
-        </el-col>
-        <el-col>
-          <label>请求ip：</label>
-          <input type="text" :value="formInfo.ip"/>
-        </el-col>
-        <el-col>
-          <label>请求地址：</label>
-          <input type="text" :value="formInfo.address"/>
-        </el-col>
-        <el-col>
-          <label>请求浏览器：</label>
-          <input type="text" :value="formInfo.browser"/>
-        </el-col>
-        <el-col>
-          <label>耗时：</label>
-          <input type="text" :value="formInfo.duration"/>
-        </el-col>
-        <el-col>
-          <label style="height: 100%">	异常详情：</label>
-          <textarea type="text" :value="formInfo.exception"/>
-        </el-col>
-      </el-row>
+      <el-descriptions class="margin-top" :column="1">
+        <el-descriptions-item label="日志id:">{{ formInfo.logId }}</el-descriptions-item>
+        <el-descriptions-item label="日志类型:">
+          <el-tag size="small">{{ formInfo.type === 1 ? '异常' : '正常' }}</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="描述:">{{ formInfo.description }}</el-descriptions-item>
+        <el-descriptions-item label="请求方式:">{{ formInfo.requestMethod }}</el-descriptions-item>
+        <el-descriptions-item label="请求uri:">{{ formInfo.uri }}</el-descriptions-item>
+        <el-descriptions-item label="请求参数:">{{ formInfo.requestParams }}</el-descriptions-item>
+        <el-descriptions-item label="请求ip:">{{ formInfo.ip }}</el-descriptions-item>
+        <el-descriptions-item label="请求地址:">{{ formInfo.address }}</el-descriptions-item>
+        <el-descriptions-item label="请求浏览器:">{{ formInfo.browser }}</el-descriptions-item>
+        <el-descriptions-item label="耗时:">{{ formInfo.duration + 'ms' }}</el-descriptions-item>
+        <el-descriptions-item label="异常详情:">{{ formInfo.exception }}</el-descriptions-item>
+      </el-descriptions>
     </el-dialog>
   </div>
 </template>
