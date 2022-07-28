@@ -1,26 +1,28 @@
 <template>
   <div class="personal_container">
-    <el-card class="info" :header="title.header1">
-      <Avatar :avatar="curUserInfo.avatar" @getList="getList"/>
+      <el-card class="info" :header="title.header1">
+      <Avatar :avatar="curUserInfo.avatar"/>
       <UserInfo :curUserInfo="curUserInfo" @getList="getList"/>
     </el-card>
     <el-card class="operator" :header="title.header2">
-
+      <OperationLog :userId="userId"></OperationLog>
     </el-card>
   </div>
 </template>
 
 <script>
-import {ref, reactive, onMounted} from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import Avatar from './components/AvatarPic.vue'
 import UserInfo from './components/UserInfo.vue'
-import {getSelf} from '@/api/system/personal.js'
+import OperationLog from './components/OperationLog.vue'
+import { getSelf } from '@/api/system/personal.js'
 
 export default {
   components: {
     Avatar,
-    UserInfo
+    UserInfo,
+    OperationLog
   },
   setup() {
     onMounted(() => {
@@ -53,12 +55,11 @@ export default {
 .personal_container {
   padding: 12px;
   display: flex;
-
-
 }
 
 .info {
   width: 400px;
+  height: 700px;
   margin-right: 8px;
 }
 
