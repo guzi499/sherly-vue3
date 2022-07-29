@@ -18,7 +18,7 @@
           </el-checkbox-group>
         </li>
         <li :hidden="activeName !== 'department'">
-          <el-tree ref='tree' :data="list1" :props="defaultProps" show-checkbox @check-change="handleCheckbox"/>
+          <el-tree node-key="departmentId" check-strictly ref='tree' :data="list1" :props="defaultProps" show-checkbox @check-change="handleCheckbox"/>
         </li>
       </ul>
     </el-col>
@@ -125,6 +125,7 @@ export default {
       console.log(checked2.value)
       checked2.value = []
       emit('update:list2', [])
+      proxy.refs.tree.setCheckedKeys([]);
     }
 
     const defaultProps = {

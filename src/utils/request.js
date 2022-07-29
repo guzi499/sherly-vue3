@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-06-08 23:26:17
+ * @LastEditTime: 2022-07-28 23:50:26
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -10,6 +10,8 @@
 import axios from "axios";
 import Config from "@/config";
 import { ElNotification } from "element-plus";
+import { pickBy, identity, trim } from "lodash";
+
 const axiosInstance = axios.create({
   timeout: Config.timeout,
   baseURL:
@@ -21,15 +23,25 @@ const axiosInstance = axios.create({
 // 添加请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
-    // 在发送请求之前做些什么
     config.headers["Content-Type"] = config.responseType || "application/json";
 
+    // 标头设置token
     if (localStorage.getItem("token")) {
       config.headers["token"] = localStorage.getItem("token");
     }
+
+    // 登录请求不应该设置token
     if (config.url === "/login") {
       config.headers["token"] = null;
     }
+    // get请求需要将params中blank的属性删除
+    if (config.method === "get" && config.params) {
+      Object.keys(config.params).forEach((i) => {
+        config.params[i] = trim(config.params[i]);
+      }),
+        (config.params = pickBy(config.params, identity));
+    }
+
     return config;
   },
   (error) => {
@@ -48,7 +60,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     // 对响应数据做点什么
-    if (response.status === 200 && response.data.code === "000000") {
+    if (response.status === 200 && response.data.code === "000") {
       return response.data.data;
     } else if (
       response.status === 200 &&

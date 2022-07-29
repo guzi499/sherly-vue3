@@ -29,7 +29,7 @@
         <el-table-column prop="logId" label="日志id" width="100" align="center"/>
         <el-table-column prop="type" label="日志类型" width="180" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <el-tag>{{ scope.row.type === 1 ? '异常' : '正常' }}</el-tag>
+            <span>{{ scope.row.type === 1 ? '异常' : '正常' }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip/>
@@ -39,15 +39,11 @@
         <el-table-column prop="os" label="请求设备" align="center" show-overflow-tooltip width="180px"/>
         <el-table-column prop="address" label="请求地址" align="center" show-overflow-tooltip/>
         <el-table-column prop="browser" label="请求浏览器" align="center" show-overflow-tooltip/>
-        <el-table-column prop="duration" label="耗时" align="center">
-          <template #default="scope">
-            <span>{{scope.row.duration + 'ms'}}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="duration" label="耗时" align="center"/>
         <el-table-column prop="createTime" label="操作时间" align="center" width="180"/>
         <el-table-column prop="createTime" label="操作" align="center" width="100" fixed="right">
           <template #default="scope">
-            <a class="link_style"  @click="handleLogId(scope.row.logId)">详情</a>
+            <a class="link_style" @click="handleLogId(scope.row.logId)">详情</a>
           </template>
         </el-table-column>
       </template>
@@ -71,7 +67,7 @@
         <el-descriptions-item label="请求ip:">{{ formInfo.ip }}</el-descriptions-item>
         <el-descriptions-item label="请求地址:">{{ formInfo.address }}</el-descriptions-item>
         <el-descriptions-item label="请求浏览器:">{{ formInfo.browser }}</el-descriptions-item>
-        <el-descriptions-item label="耗时:">{{ formInfo.duration + 'ms' }}</el-descriptions-item>
+        <el-descriptions-item label="耗时:">{{ formInfo.duration }}</el-descriptions-item>
         <el-descriptions-item label="异常详情:">{{ formInfo.exception }}</el-descriptions-item>
       </el-descriptions>
     </el-dialog>
@@ -80,6 +76,7 @@
 
 <script>
 import {reactive, ref, onMounted} from "vue";
+import {useRoute} from "vue-router";
 import {getOperationList, delLog, getOperationOne} from '@/api/system/operate.js'
 import SherlyTable from "@/components/SherlyTable";
 import {ElMessage} from "element-plus";
@@ -90,9 +87,11 @@ export default {
   setup() {
     const loading = ref(false)
     const tableData = reactive({});
+    const route = useRoute()
     const queryParams = reactive({
       current: 1,
       size: 10,
+      userId: parseInt(route.query.userId)
     })
     /* 查看日志详情数据 */
     const dialogVisible = ref(false)
@@ -166,25 +165,28 @@ export default {
 .operate_container {
   padding: 16px;
 }
+
 label {
   display: inline-block;
   width: 100px;
   padding: 0 4px;
   text-align: right;
 }
+
 input {
   border: none;
   outline: none;
   padding: 0 4px;
 }
+
 textarea {
   width: 70%;
   height: 100px;
-  vertical-align:top;
+  vertical-align: top;
   outline: none;
 }
 
-:deep(.el-col)  {
+:deep(.el-col) {
   margin: 12px 0;
 }
 </style>

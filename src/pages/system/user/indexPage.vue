@@ -32,12 +32,30 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="部门: ">
-        <TreeSelect
+        <el-select
+            collapse-tags
+            multiple
             ref="selectTree"
-            :treeList="DepartmentList"
-            :defaultProps="defaultProps"
-            @treeSelectList="treeSelectList"
-        ></TreeSelect>
+            v-model="treeSelectData.treeDate"
+            placeholder="请选择"
+            clearable
+        >
+          <el-option
+              hidden
+              :value="treeSelectData.parentId"
+              :label="treeSelectData.treeDate"
+          ></el-option>
+          <el-tree
+              ref="checkTree"
+              node-key="departmentId"
+              show-checkbox
+              highlight-current
+              :data="DepartmentList"
+              :props="defaultProps"
+              expand-on-click-node
+              @check="nodeCheck"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
@@ -47,7 +65,7 @@
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
       <el-col :span="1.5">
-        <el-button type="warning" plain size="small" @click="handlexport()"
+        <el-button type="warning" plain size="small" @click="handleExport()"
         >导出
         </el-button
         >
@@ -151,12 +169,6 @@
                 @node-click="nodeOnclick2"
             />
           </el-select>
-          <!--          <TreeSelect-->
-          <!--            ref="selectTree"-->
-          <!--            :treeList="DepartmentList"-->
-          <!--            :defaultProps="defaultProps"-->
-          <!--            @treeSelectList="treeSelectList"-->
-          <!--          ></TreeSelect>-->
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth" prop="roleIds">
           <el-select
@@ -184,8 +196,8 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref, reactive, toRefs, onMounted } from "vue";
-import { listAll } from "@/api/system/role.js";
+import {getCurrentInstance, ref, reactive, toRefs, onMounted, watch} from "vue";
+import {listAll} from "@/api/system/role.js";
 import { getDepartmentListTree } from "@/api/system/department.js";
 import {
   pageUser,
@@ -220,7 +232,7 @@ export default {
       // 查询条件
       queryParams: {
         current: 1,
-        size: 10,
+        size: 10
       },
       // 部门下拉框配置项
       defaultProps: {
@@ -239,23 +251,16 @@ export default {
     const reset = () => {
       data.queryParams = {
         current: 1,
-        size: 10,
+        size: 10
       };
     };
 
     // 重置按钮
     const handleReset = () => {
       reset();
-      proxy.$refs.selectTree.treeSelectData = {
-        parentId: null,
-        treeDatas: ""
-      };
+      treeSelectData.parentId = []
+      treeSelectData.treeDate = []
       getList();
-    };
-
-    // 选中弹框中的树形数据
-    const treeSelectList = (e) => {
-      data.queryParams.departmentId = e.departmentId;
     };
 
     // 分页数据
@@ -285,7 +290,7 @@ export default {
         setTimeout(() => {
           loading.value = false
         }, 100)
-      });
+      })
     };
 
     // 公共部门下拉框
@@ -325,10 +330,6 @@ export default {
     // 重置弹出框表单
     const resetForm = () => {
       form.value = {};
-      proxy.$refs.selectTree.treeSelectData = {
-        parentId: null,
-        treeDatas: ""
-      };
     };
 
     const type1 = ref("");
@@ -347,11 +348,25 @@ export default {
         dialogTitle.value = "用户更新";
         getUserId(data.userId).then((res) => {
           form.value = res;
-          form.value.departmentName = data.departmentName0
+          form.value.departmentName = data.departmentName
           dialogFormVisible.value = true;
         })
-
       }
+    };
+
+    const treeSelectData = reactive({
+      parentId: [],
+      treeDate: [],
+    });
+
+    const nodeCheck = (obj, data1) => {
+      treeSelectData.parentId = data1.checkedNodes.map(item => {
+        return item.departmentId
+      })
+      treeSelectData.treeDate = data1.checkedNodes.map(item => {
+        return item.departmentName
+      })
+      data.queryParams.departmentIds = treeSelectData.parentId.join(',')
     };
 
     // 部门选择
@@ -363,9 +378,6 @@ export default {
 
     // 表格添加校验效果
     const formRules = {
-      // phone: [
-      //   {validator: validatePass, trigger: 'blur'}
-      // ],
       phone: [
         { required: true, message: '请输入手机号码', trigger: 'blur' },
         { min: 11, max: 11, message: '请输入11位手机号码', trigger: 'blur' },
@@ -468,9 +480,22 @@ export default {
     };
 
     // 用户导出
-    const handlexport = () => {
+    const handleExport = () => {
       exportUser();
     };
+
+    watch(
+        () => treeSelectData.treeDate, (val) => {
+          console.log(val)
+          if (val.length === 0) {
+            console.log(val)
+            delete data.queryParams.departmentIds
+            proxy.$refs.checkTree.setCheckedKeys([]);
+          }
+        }, {
+          deep: true
+        }
+    );
 
     return {
       loading,
@@ -488,18 +513,19 @@ export default {
       formLabelWidth,
       dialogFormVisible,
       form,
+      treeSelectData,
+      nodeCheck,
       nodeOnclick2,
       handleOk,
       handleCancle,
       handleEdit,
       handleDelete,
-      treeSelectList,
       handleSearch,
       handleReset,
       handleSizeChange,
       handleCurrentChange,
-      handlexport,
-      rolesOptions,
+      handleExport,
+      rolesOptions
     };
   },
 };

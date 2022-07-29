@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-07-21 23:17:33
+ * @LastEditTime: 2022-07-27 21:05:47
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
@@ -22,11 +22,14 @@
         <el-upload
           v-model:file-list="fileList"
           class="upload-demo"
+          :headers="{ token: data.token }"
           :action="action"
           :data="data"
           multiple
           :limit="3"
+          :on-success="handleOnSuccess"
           :before-upload="handBeforeUpload"
+          :show-file-list="false"
         >
           <el-button type="success" size="small">上传文件</el-button>
         </el-upload>
@@ -48,8 +51,10 @@
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
-            <el-button type="text">复制地址</el-button>
-            <el-button type="text" @click="handleDownload(scope.row.configId)">
+            <el-button type="text" @click="handleCopy(scope.row)"
+              >复制地址</el-button
+            >
+            <el-button type="text" @click="handleDownload(scope.row)">
               下载
             </el-button>
             <el-popconfirm
@@ -69,7 +74,12 @@
 <script>
 import { reactive, onMounted } from "vue";
 import SherlyTable from "@/components/SherlyTable.vue";
-import { getOssList, deleteOss } from "@/api/system/oss";
+import {
+  getOssList,
+  deleteOss,
+  getOssAccessUrl,
+  downloadOss,
+} from "@/api/system/oss";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -79,7 +89,7 @@ export default {
       current: 1,
       size: 10,
     });
-    const action = process.env.VUE_APP_URL + "/api/oss/upload_one";
+    const action = "/api/oss/upload_one";
     const data = reactive({
       token: localStorage.getItem("token"),
       path: "",
@@ -131,7 +141,7 @@ export default {
 
     // 删除
     const handleDelete = async (e) => {
-      await deleteOss(e.configId);
+      await deleteOss(e.fileId);
       ElMessage({
         message: "删除成功！",
         type: "success",
@@ -139,11 +149,40 @@ export default {
       handleOssLists();
     };
 
-    // 下载
-    const handleDownload = async () => {};
+    const handleDownload = async ({ path }) => {
+      const url = await downloadOss({ path });
+      const el = document.createElement("a");
+      el.style.display = "none";
+      el.setAttribute("target", "_blank");
+      path && el.setAttribute("download", path);
+      el.href = url;
+      document.body.appendChild(el);
+      el.click();
+      document.body.removeChild(el);
+    };
 
+    // 上传成功
+    const handleOnSuccess = async () => {
+      handleOssLists();
+    };
+
+    // 上传前成功
     const handBeforeUpload = async (rawFile) => {
-      console.log("rawFile", rawFile);
+      data.path = rawFile.name;
+    };
+
+    const handleCopy = async ({ path }) => {
+      const url = await getOssAccessUrl(path);
+      let i = document.createElement("input");
+      i.value = url;
+      document.body.appendChild(i);
+      i.select();
+      document.execCommand("copy");
+      document.body.removeChild(i);
+      ElMessage({
+        message: "复制成功！",
+        type: "success",
+      });
     };
 
     return {
@@ -153,6 +192,8 @@ export default {
       handleDownload,
       handBeforeUpload,
       formatFileSize,
+      handleOnSuccess,
+      handleCopy,
       tableData,
       action,
       data,

@@ -6,6 +6,7 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
     Microsoft YaHei, Arial, sans-serif;
   margin: 0;
+  font-size: 14px;
 }
 
 label {
@@ -29,6 +30,7 @@ li {
 }
 
 a {
+  cursor: pointer;
   text-decoration: none;
 }
 

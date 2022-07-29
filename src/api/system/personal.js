@@ -1,16 +1,15 @@
 import request from "@/utils/request";
 
-/**用户个人中心 */
+/** 用户个人中心 */
 export function getSelf(params) {
     return request({
-        // url: "/user/get/self?userId=" + params,
         url: "/user_self/get_self",
         method: "get",
         params
     });
 }
 
-/**用户更新头像 */
+/** 用户更新头像 */
 export function updateAvatar(data) {
     return request({
         url: `/user_self/update_avatar`,
@@ -19,7 +18,7 @@ export function updateAvatar(data) {
     });
 }
 
-/**用户修改密码 */
+/** 用户修改密码 */
 export function updatePassword(data) {
     return request({
         url: `/user_self/update_password`,
@@ -28,7 +27,7 @@ export function updatePassword(data) {
     });
 }
 
-/**用户个人中心更新 */
+/** 用户个人中心更新 */
 export function updateSelf(data) {
     return request({
         url: `/user_self/update_self`,

@@ -1,13 +1,13 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-07-21 23:29:32
+ * @LastEditTime: 2022-07-24 17:20:06
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
 -->
 <template>
-  <div class="Navber-wrapper">
+  <div class="Navbar-wrapper">
     <div style="font-size: 1.25rem" class="header_left">
       <el-radio-group v-model="isCollapse" @change="handleLogo">
         <el-radio-button :label="true" v-if="isCollapse == false">
@@ -17,21 +17,7 @@
           <expand style="width: 1em; height: 1em" />
         </el-radio-button>
         <div style="font-size: 1rem">{{ config.systemName }}</div>
-        -->
       </el-radio-group>
-      <!--      <el-row>-->
-      <!--        <expand-->
-      <!--            style="width: 1em; height: 1em; margin-right: 0.5rem"-->
-      <!--            v-if="datas.isShow == 1"-->
-      <!--            @click="handleSide"-->
-      <!--        />-->
-      <!--        <fold-->
-      <!--            style="width: 1em; height: 1em; margin-right: 0.5rem"-->
-      <!--            v-if="datas.isShow == 0"-->
-      <!--            @click="handleSide"-->
-      <!--        />-->
-      <!--        <div style="font-size: 1rem">{{ config.systemName }}</div>-->
-      <!--      </el-row>-->
     </div>
     <div class="header_right">
       <el-row>
@@ -52,7 +38,9 @@
               <el-dropdown-item @click="handleGoPersonal('/personal')"
                 >个人中心</el-dropdown-item
               >
-              <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item @click="handleLogout"
+                >退出登录</el-dropdown-item
+              >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -65,25 +53,24 @@ import { ref } from "vue";
 import Config from "@/config";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
-import server from "@/api/login.js";
+import { logout } from "@/api/system/login.js";
 import store from "@/store";
 
 export default {
   setup(props, { emit }) {
-    /**控制头部按钮的切换 */
+    /* 控制头部按钮的切换 */
     const isCollapse = ref(false);
     const handleLogo = (val) => {
       emit("isCollapse", val);
     };
-    /**用户姓名 */
-    console.log(Cookies.get("userInfo"));
+    /* 用户信息 */
     const userInfo = JSON.parse(Cookies.get("userInfo")) || "";
     const config = ref(Config);
     const router = useRouter();
 
-    // 退出登录
-    const logout = () => {
-      server.logout().then(() => {
+    /* 退出登录 */
+    const handleLogout = () => {
+      logout().then(() => {
         Cookies.remove("phone");
         Cookies.remove("metaTitle");
         Cookies.remove("userInfo");
@@ -96,16 +83,16 @@ export default {
       });
     };
 
-    // 跳转到个人中心
+    /* 跳转到个人中心 */
     const handleGoPersonal = (path) => {
       router.push({ path, query: { userId: userInfo.userId } });
     };
     return {
       isCollapse,
-      handleLogo,
       config,
       userInfo,
-      logout,
+      handleLogo,
+      handleLogout,
       handleGoPersonal,
     };
   },
@@ -116,7 +103,7 @@ export default {
   display: flex;
 }
 
-.Navber-wrapper {
+.Navbar-wrapper {
   width: 100%;
   padding: 0.5rem;
   background: #fff;
@@ -127,7 +114,7 @@ export default {
   overflow: hidden;
 }
 
-:deep .el-radio-button__inner {
+:deep(.el-radio-button__inner) {
   border: none !important;
   font-size: 24px;
 }
