@@ -32,7 +32,7 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="success" plain @click="handleaddRole" size="small"
+        <el-button type="success" plain @click="handleAddRole" size="small"
           >新增
         </el-button>
       </template>
@@ -82,7 +82,7 @@
         <el-tab-pane label="菜单权限" name="menu">
           <div class="tree-box">
             <el-tree
-                check-strictly
+                :check-strictly="!isStrictly"
                 :data="menuTree"
                 show-checkbox
                 node-key="menuId"
@@ -132,6 +132,7 @@ export default {
     const permissionTree = reactive([]);
     const isEdit = ref(false);
     const activeName = ref("menu");
+    const isStrictly = ref(false)
     const rules = {
       roleName: [
         {
@@ -151,6 +152,7 @@ export default {
       current: 1,
       size: 10,
     });
+
     // 初始化角色详情数据
     const initRoleForm = () => {
       return {
@@ -219,7 +221,7 @@ export default {
     };
 
     // 添加角色
-    const handleaddRole = () => {
+    const handleAddRole = () => {
       isEdit.value = false;
       dialogVisible.value = true;
     };
@@ -247,6 +249,7 @@ export default {
 
     // 修改菜单树选中
     const handleMenuTreeCheckChange = (data, checked) => {
+      isStrictly.value = checked
       if (checked) {
         roleForm.menuIds.push(toRaw(data).menuId);
       } else {
@@ -306,12 +309,13 @@ export default {
       isEdit,
       menuTree,
       permissionTree,
+      isStrictly,
       handleSearch,
       handleReset,
       handleEdit,
       handleConfirm,
       handleDelete,
-      handleaddRole,
+      handleAddRole,
       handleCurrentChange,
       handleGetRoleLists,
       handleCancel,
