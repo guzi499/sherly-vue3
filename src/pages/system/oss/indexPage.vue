@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-07-27 21:05:47
+ * @LastEditTime: 2022-07-30 14:07:35
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
@@ -74,12 +74,7 @@
 <script>
 import { reactive, onMounted } from "vue";
 import SherlyTable from "@/components/SherlyTable.vue";
-import {
-  getOssList,
-  deleteOss,
-  getOssAccessUrl,
-  downloadOss,
-} from "@/api/system/oss";
+import { getOssList, deleteOss, getOssAccessUrl } from "@/api/system/oss";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -150,15 +145,17 @@ export default {
     };
 
     const handleDownload = async ({ path }) => {
-      const url = await downloadOss({ path });
-      const el = document.createElement("a");
-      el.style.display = "none";
-      el.setAttribute("target", "_blank");
-      path && el.setAttribute("download", path);
-      el.href = url;
-      document.body.appendChild(el);
-      el.click();
-      document.body.removeChild(el);
+      const url = await getOssAccessUrl(path);
+      const name = url.split("?")[0].split("/").at(-1);
+      const a_link = document.createElement("a");
+      fetch(url)
+        .then((res) => res.blob())
+        .then((blob) => {
+          a_link.href = URL.createObjectURL(blob);
+          a_link.download = name; //下载的文件的名字
+          document.body.appendChild(a_link);
+          a_link.click();
+        });
     };
 
     // 上传成功
