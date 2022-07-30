@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-07-24 17:20:06
+ * @LastEditTime: 2022-07-31 02:34:42
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
@@ -35,26 +35,53 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="handleGoPersonal('/personal')"
-                >个人中心</el-dropdown-item
-              >
-              <el-dropdown-item @click="handleLogout"
-                >退出登录</el-dropdown-item
-              >
+              <el-dropdown-item @click="handleGoPersonal('/personal')">
+                个人中心
+              </el-dropdown-item>
+              <el-dropdown-item @click="handleChangeTenant">
+                切换租户
+              </el-dropdown-item>
+              <el-dropdown-item @click="handleLogout">
+                退出登录
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </el-row>
     </div>
+    <el-dialog
+      v-model="dialogVisible"
+      title="请选择租户"
+      width="400px"
+      :before-close="handleClose"
+    >
+      <div class="radio">
+        <el-radio-group v-model="selectTenant">
+          <el-radio
+            :label="list.tenantCode"
+            v-for="list in tenantList"
+            :key="list.tenantCode"
+          >
+            {{ list.tenantName }}
+          </el-radio>
+        </el-radio-group>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="confirm"> 确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import Config from "@/config";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
-import { logout } from "@/api/system/login.js";
+import { logout, loginchange, getAvailablelist } from "@/api/system/login.js";
 import store from "@/store";
+import { ElMessage } from "element-plus";
 
 export default {
   setup(props, { emit }) {
@@ -67,6 +94,9 @@ export default {
     const userInfo = JSON.parse(Cookies.get("userInfo")) || "";
     const config = ref(Config);
     const router = useRouter();
+    const dialogVisible = ref(false);
+    const selectTenant = ref(null);
+    const tenantList = reactive([]);
 
     /* 退出登录 */
     const handleLogout = () => {
@@ -87,6 +117,38 @@ export default {
     const handleGoPersonal = (path) => {
       router.push({ path, query: { userId: userInfo.userId } });
     };
+
+    const handleChangeTenant = () => {
+      selectTenant.value = userInfo.tenantCode;
+      getAvailablelist(userInfo.phone).then((_res) => {
+        tenantList.length = 0;
+        _res.forEach((i) => {
+          tenantList.push(i);
+        });
+        dialogVisible.value = true;
+      });
+    };
+
+    // 取消
+    const handleClose = () => {
+      dialogVisible.value = false;
+      selectTenant.value = null;
+    };
+
+    // 确定
+    const confirm = async () => {
+      if (selectTenant.value) {
+        dialogVisible.value = false;
+        await loginchange(selectTenant.value);
+        router.replace({ path: "/home" });
+        location.reload();
+      } else {
+        ElMessage({
+          message: "请选择租户",
+          type: "warning",
+        });
+      }
+    };
     return {
       isCollapse,
       config,
@@ -94,6 +156,12 @@ export default {
       handleLogo,
       handleLogout,
       handleGoPersonal,
+      handleChangeTenant,
+      handleClose,
+      selectTenant,
+      confirm,
+      tenantList,
+      dialogVisible,
     };
   },
 };
@@ -117,5 +185,12 @@ export default {
 :deep(.el-radio-button__inner) {
   border: none !important;
   font-size: 24px;
+}
+.radio {
+  :deep(.el-radio-group) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 </style>

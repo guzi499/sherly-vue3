@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-05-22 20:52:14
- * @LastEditTime: 2022-07-30 23:33:35
+ * @LastEditTime: 2022-07-31 02:58:36
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/tenant/indexPage.vue
@@ -90,7 +90,7 @@
             <el-button
               type="text"
               style="color: #67c23a"
-              @click="handleEditMenu(scope.row)"
+              @click="handleEditMenu(scope.row.tenantId)"
             >
               菜单配置
             </el-button>
@@ -106,24 +106,33 @@
               </template>
             </el-popconfirm>
           </template>
-        </el-table-column></template
-      >
+        </el-table-column>
+      </template>
     </SherlyTable>
     <el-dialog v-model="dialogMenuVisible" title="租户菜单" width="480px">
       <div class="tree-box">
-        <el-tree
-          :data="menuTree"
-          show-checkbox
-          node-key="menuId"
-          :props="{
-            children: 'children',
-            label: 'menuName',
-          }"
-          default-expand-all
-          :default-checked-keys="menuIds"
-          @check-change="handleMenuTreeCheckChange"
-        />
+        <div class="tree-box">
+          <el-tree
+            :check-strictly="!isStrictly"
+            :data="menuTree"
+            show-checkbox
+            node-key="menuId"
+            :props="{
+              children: 'children',
+              label: 'menuName',
+            }"
+            default-expand-all
+            :default-checked-keys="tenantListMenu"
+            @check-change="handleMenuTreeCheckChange"
+          />
+        </div>
       </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="handleMenuCancel">取消</el-button>
+          <el-button type="primary" @click="handleMenuConfirm">确定</el-button>
+        </span>
+      </template>
     </el-dialog>
     <el-dialog
       v-model="dialogVisible"
@@ -177,13 +186,14 @@
   </div>
 </template>
 <script>
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, toRaw } from "vue";
 import {
   getTenant,
   delTenant,
   updateTenant,
   addTenant,
   updateTenantMenu,
+  getTenantListMenu,
 } from "@/api/system/tenant";
 import { getMenu } from "@/api/system/menu";
 import SherlyTable from "@/components/SherlyTable.vue";
@@ -209,8 +219,10 @@ export default {
     const tenantFormRef = ref(null);
     const tableData = reactive({});
     const menuTree = reactive([]);
-    const menuIds = reactive([]);
+    const tenantListMenu = reactive([]);
+    const isStrictly = ref(false);
 
+    let tenantId = ref(null);
     let isEdit = ref(false);
     let dialogVisible = ref(false);
     let dialogMenuVisible = ref(false);
@@ -249,6 +261,7 @@ export default {
         { required: true, message: "请输入联系电话", trigger: "blur" },
       ],
     };
+
     // 获取菜单树
     const handleGetMenuTree = async () => {
       const data = await getMenu();
@@ -256,6 +269,7 @@ export default {
         menuTree.push(i);
       });
     };
+
     // 租户详情数据响应式
     let tenantForm = reactive(inittenantForm());
 
@@ -362,19 +376,50 @@ export default {
     };
 
     // 编辑租户菜单
-    const handleEditMenu = async () => {
+    const handleEditMenu = async (_tenantId) => {
+      tenantId.value = _tenantId;
+      const data = await getTenantListMenu(_tenantId);
+      data.forEach((i) => {
+        tenantListMenu.push(i);
+      });
       dialogMenuVisible.value = true;
     };
 
-    // 更新租户菜单
-    const handleUpMenu = async () => {
-      await updateTenantMenu();
+    // 修改租户菜单树
+    const handleMenuTreeCheckChange = (data, checked) => {
+      isStrictly.value = true;
+      if (checked) {
+        tenantListMenu.push(toRaw(data).menuId);
+      } else {
+        const menuIds = tenantListMenu.filter((i) => i !== toRaw(data).menuId);
+        tenantListMenu.length = 0;
+        menuIds.forEach((i) => {
+          tenantListMenu.push(i);
+        });
+      }
     };
 
-    // 修改租户菜单树
-    const handleMenuTreeCheckChange = () => {};
+    // 菜单权限取消
+    const handleMenuCancel = () => {
+      dialogMenuVisible.value = false;
+    };
+
+    // 菜单权限确认
+    const handleMenuConfirm = async () => {
+      await updateTenantMenu({
+        menuIds: tenantListMenu,
+        tenantId: tenantId.value,
+      });
+      ElMessage({
+        message: "修改租户菜单成功",
+        type: "success",
+      });
+      dialogMenuVisible.value = false;
+      getList();
+    };
 
     return {
+      tenantId,
       form,
       tableData,
       resetFormData,
@@ -391,14 +436,16 @@ export default {
       handleEdit,
       handleDelete,
       handleCancel,
+      handleMenuCancel,
       handleConfirm,
-      handleUpMenu,
+      handleMenuConfirm,
       handleEditMenu,
       handleMenuTreeCheckChange,
       loading,
       menuTree,
-      menuIds,
       rules,
+      tenantListMenu,
+      isStrictly,
     };
   },
 };
