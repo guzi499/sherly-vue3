@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-07-30 14:07:35
+ * @LastEditTime: 2022-07-30 23:59:16
  * @LastEditors: lihaoyu
  * @Description: 
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
@@ -166,6 +166,13 @@ export default {
     // 上传前成功
     const handBeforeUpload = async (rawFile) => {
       data.path = rawFile.name;
+      if (rawFile.size > 1024 * 1024 * 2) {
+        ElMessage({
+          message: "文件上传限制2MB！",
+          type: "warning",
+        });
+        return false;
+      }
     };
 
     const handleCopy = async ({ path }) => {
