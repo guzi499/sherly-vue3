@@ -53,7 +53,7 @@
       </el-row>
     </el-form-item>
   </el-form>
-  <el-dialog v-model="dialogVisible" title="选择收件人" width="40%" center>
+  <el-dialog v-model="dialogVisible" title="选择收件人" width="45%" center>
     <RecipientName ref="recipientName" v-model:dialogVisible="dialogVisible"
                    v-model:users="form2.tos"></RecipientName>
   </el-dialog>
