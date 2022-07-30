@@ -22,7 +22,11 @@
         <el-table-column prop="os" label="请求设备" align="center" show-overflow-tooltip/>
         <el-table-column prop="address" label="请求地址" align="center" show-overflow-tooltip/>
         <el-table-column prop="browser" label="请求浏览器" align="center" show-overflow-tooltip/>
-        <el-table-column prop="duration" label="耗时" align="center"/>
+        <el-table-column prop="duration" label="耗时" align="center">
+          <template #default="scope">
+            <span>{{ scope.row.duration + 'ms' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="操作时间" align="center" width="180"/>
       </template>
     </SherlyTable>
