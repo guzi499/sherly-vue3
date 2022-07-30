@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-05-22 21:58:34
- * @LastEditTime: 2022-07-27 23:18:58
+ * @LastEditTime: 2022-07-31 00:26:06
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/api/system/tenant.js
@@ -49,5 +49,13 @@ export function updateTenantMenu(data) {
     url: `/tenant/update_menu`,
     method: "put",
     data,
+  });
+}
+
+/** 获取租户菜单权限 */
+export function getTenantListMenu(tenantId) {
+  return request({
+    url: "/tenant/list_menu?tenantId=" + tenantId,
+    method: "get",
   });
 }

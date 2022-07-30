@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-30 00:42:42
- * @LastEditTime: 2022-07-24 17:44:47
+ * @LastEditTime: 2022-07-31 02:20:34
  * @LastEditors: lihaoyu
  * @Description: 登录页api
  * @FilePath: /sherly-vue3/src/api/system/login.js
@@ -23,5 +23,21 @@ export function logout() {
   return request({
     url: "/logout",
     method: "get",
+  });
+}
+
+//** 获取可用租户列表 */
+export function getAvailablelist(phone) {
+  return request({
+    url: "/available_list?phone=" + phone,
+    method: "get",
+  });
+}
+
+//** 切换登录租户 */
+export function loginchange(tenantCode) {
+  return request({
+    url: "/login_change?tenantCode=" + tenantCode,
+    method: "put",
   });
 }

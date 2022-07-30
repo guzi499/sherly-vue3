@@ -102,6 +102,7 @@
           >
             <el-option hidden :value="form.parentId" :label="treeDatas">
             </el-option>
+            <span class="mainTopMenu" @click="handleMainTopMenu">主目录</span>
             <el-tree
               :data="menuListSelect"
               :props="defaultProps"
@@ -344,6 +345,13 @@ export default {
       proxy.$refs.selectTree.blur();
     };
 
+    // 点击主目录
+    const handleMainTopMenu = () => {
+      form.value.parentId = 0;
+      treeDatas.value = "主目录";
+      proxy.$refs.selectTree.blur();
+    }
+
     // 点击修改 - 新增按钮
     const handleEdit = (type, index, data) => {
       if (type === "1") {
@@ -510,7 +518,8 @@ export default {
       loading,
       iconPopoverVisible,
       openIconPopover,
-      closeIconPopover
+      closeIconPopover,
+      handleMainTopMenu
     };
   },
 };
@@ -562,6 +571,16 @@ a {
       height: 16px;
       width: 16px;
     }
+  }
+}
+.mainTopMenu {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  padding: 8px 0 8px 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(245, 247, 250);
   }
 }
 </style>

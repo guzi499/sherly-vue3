@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-07-30 18:38:01
+ * @LastEditTime: 2022-07-31 02:10:30
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -118,18 +118,11 @@ axiosInstance.interceptors.response.use(
         duration: 3000,
         type: "error",
       });
-      return Promise.reject({ message: response.data.message });
+      return Promise.reject(response.data);
     }
   },
   (error) => {
-    // 对响应错误做点什么
     console.log(error);
-    // ElNotification({
-    //   title: "警告",
-    //   message: "This is a message that does not automatically close",
-    //   duration: 3000,
-    //   type: "error",
-    // });
     return Promise.reject(error);
   }
 );

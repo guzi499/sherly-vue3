@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-07-30 18:33:02
+ * @LastEditTime: 2022-07-31 02:28:50
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/login/indexPage.vue
@@ -55,21 +55,46 @@
                 class="login-layout-right-button"
                 @click="handlelogin()"
                 style="width: 60%; margin: 0 auto"
-                >登 录
+              >
+                登 录
               </el-button>
             </el-form-item>
           </el-form>
         </div>
       </div>
     </div>
+    <el-dialog
+      v-model="dialogVisible"
+      title="请选择租户"
+      width="400px"
+      :before-close="handleClose"
+    >
+      <el-radio-group v-model="selectTenant">
+        <el-radio
+          :label="list.tenantCode"
+          v-for="list in tenantList"
+          :key="list.tenantCode"
+          >{{ list.tenantName }}</el-radio
+        >
+      </el-radio-group>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="confirm"> 确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { login } from "@/api/system/login";
+import {
+  login,
+  //  getAvailablelist
+} from "@/api/system/login";
 import { heartBzeat } from "@/api/system/generic";
 import Cookies from "js-cookie";
+import { ElMessage } from "element-plus";
 
 export default {
   setup() {
@@ -78,33 +103,79 @@ export default {
       phone: "",
       password: "",
     });
+    const dialogVisible = ref(false);
+    const selectTenant = ref(null);
+    const tenantList = reactive([]);
+
     onMounted(() => {
       getCookie();
       handleHeartBzeat();
     });
+
     const handlelogin = () => {
       login(loginForm).then((res) => {
         localStorage.setItem("token", res.token);
         router.replace({ path: "/home" });
       });
+      // .catch((res) => {
+      //   if (res.code)
+      //     getAvailablelist(loginForm.phone).then((_res) => {
+      //       tenantList.length = 0;
+      //       _res.forEach((i) => {
+      //         tenantList.push(i);
+      //       });
+      //       dialogVisible.value = true;
+      //     });
+      // });
     };
+
+    // 获取cookie
     const getCookie = () => {
       const phone = Cookies.get("phone");
       loginForm.phone = phone === undefined ? loginForm.phone : phone;
     };
+
+    // 心跳检测
     const handleHeartBzeat = () => {
       heartBzeat().then(() => {
         router.replace({ path: "/home" });
       });
     };
-    return { loginForm, handlelogin, getCookie };
+
+    // 取消
+    const handleClose = () => {
+      dialogVisible.value = false;
+      selectTenant.value = null;
+    };
+
+    // 确定
+    const confirm = () => {
+      if (selectTenant.value) {
+        dialogVisible.value = false;
+        router.replace({ path: "/home" });
+      } else {
+        ElMessage({
+          message: "请选择租户",
+          type: "warning",
+        });
+      }
+    };
+    return {
+      loginForm,
+      dialogVisible,
+      selectTenant,
+      handlelogin,
+      getCookie,
+      handleClose,
+      confirm,
+      tenantList,
+    };
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .sherly-page {
-  //background: #459cc0;
   background: url("@/assets/images/bg_img.png");
   background-size: 100% 100%;
 }
@@ -178,5 +249,10 @@ export default {
       }
     }
   }
+}
+:deep(.el-radio-group) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 </style>
