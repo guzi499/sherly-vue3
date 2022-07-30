@@ -82,6 +82,7 @@
         <el-tab-pane label="菜单权限" name="menu">
           <div class="tree-box">
             <el-tree
+                ref="roleTree"
                 :check-strictly="!isStrictly"
                 :data="menuTree"
                 show-checkbox
@@ -108,8 +109,8 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, toRaw } from "vue";
-import { ElMessage } from "element-plus";
+import {ref, reactive, onMounted, toRaw, getCurrentInstance, watch} from "vue";
+import {ElMessage} from "element-plus";
 import {
   getRoleLists,
   addRole,
@@ -117,12 +118,13 @@ import {
   updateRole,
   getOneRole,
 } from "@/api/system/role";
-import { getMenu } from "@/api/system/menu";
+import {getMenu} from "@/api/system/menu";
 import SherlyTable from "@/components/SherlyTable.vue";
 
 export default {
   components: { SherlyTable },
   setup() {
+    const {proxy} = getCurrentInstance()
     const loading = ref(false)
     const resetFormData = ref(null);
     const ruleFormRef = ref(null);
@@ -152,6 +154,13 @@ export default {
       current: 1,
       size: 10,
     });
+
+    watch(dialogVisible, (val) => {
+      if (!val) {
+        console.log('11111111111', val)
+        isStrictly.value = false
+      }
+    })
 
     // 初始化角色详情数据
     const initRoleForm = () => {
@@ -234,6 +243,9 @@ export default {
       });
       isEdit.value = true;
       dialogVisible.value = true;
+      await proxy.$nextTick(() => {
+        isStrictly.value = true
+      })
     };
 
     // 删除角色
@@ -249,12 +261,15 @@ export default {
 
     // 修改菜单树选中
     const handleMenuTreeCheckChange = (data, checked) => {
-      isStrictly.value = true
+      const ary = proxy.$refs.roleTree.getHalfCheckedNodes()
+      ary.forEach((item) => {
+        proxy.$refs.roleTree.setChecked(item.menuId, true)
+      })
       if (checked) {
         roleForm.menuIds.push(toRaw(data).menuId);
       } else {
         const menuIds = roleForm.menuIds.filter(
-          (i) => i !== toRaw(data).menuId
+            (i) => i !== toRaw(data).menuId
         );
         roleForm.menuIds.length = 0;
         menuIds.forEach((i) => {

@@ -113,17 +113,18 @@
       <div class="tree-box">
         <div class="tree-box">
           <el-tree
-            :check-strictly="!isStrictly"
-            :data="menuTree"
-            show-checkbox
-            node-key="menuId"
-            :props="{
+              ref="tenantTree"
+              :check-strictly="!isStrictly"
+              :data="menuTree"
+              show-checkbox
+              node-key="menuId"
+              :props="{
               children: 'children',
               label: 'menuName',
             }"
-            default-expand-all
-            :default-checked-keys="tenantListMenu"
-            @check-change="handleMenuTreeCheckChange"
+              default-expand-all
+              :default-checked-keys="tenantListMenu"
+              @check-change="handleMenuTreeCheckChange"
           />
         </div>
       </div>
@@ -186,7 +187,7 @@
   </div>
 </template>
 <script>
-import { reactive, ref, onMounted, toRaw } from "vue";
+import {reactive, ref, onMounted, toRaw, watch, getCurrentInstance} from "vue";
 import {
   getTenant,
   delTenant,
@@ -215,6 +216,7 @@ export default {
       handleGetMenuTree();
     });
 
+    const {proxy} = getCurrentInstance()
     const resetFormData = ref(null);
     const tenantFormRef = ref(null);
     const tableData = reactive({});
@@ -269,6 +271,13 @@ export default {
         menuTree.push(i);
       });
     };
+
+    watch(dialogVisible, (val) => {
+      if (!val) {
+        console.log('11111111111', val)
+        isStrictly.value = false
+      }
+    })
 
     // 租户详情数据响应式
     let tenantForm = reactive(inittenantForm());
@@ -383,11 +392,17 @@ export default {
         tenantListMenu.push(i);
       });
       dialogMenuVisible.value = true;
+      await proxy.$nextTick(() => {
+        isStrictly.value = true
+      })
     };
 
     // 修改租户菜单树
     const handleMenuTreeCheckChange = (data, checked) => {
-      isStrictly.value = true;
+      const ary = proxy.$refs.tenantTree.getHalfCheckedNodes()
+      ary.forEach((item) => {
+        proxy.$refs.tenantTree.setChecked(item.menuId, true)
+      })
       if (checked) {
         tenantListMenu.push(toRaw(data).menuId);
       } else {
