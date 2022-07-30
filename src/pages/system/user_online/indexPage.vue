@@ -1,10 +1,10 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-05-22 20:52:14
- * @LastEditTime: 2022-05-28 23:32:38
+ * @LastEditTime: 2022-07-30 14:15:33
  * @LastEditors: lihaoyu
  * @Description:
- * @FilePath: /sherly-vue3/src/pages/monitor/onlinePage.vue
+ * @FilePath: /sherly-vue3/src/pages/system/user_online/indexPage.vue
 -->
 <template>
   <div class="sherly-page-wrapper">
@@ -18,7 +18,7 @@
       </div>
     </el-form>
     <SherlyTable
-        :loading="loading"
+      :loading="loading"
       :tableData="tableData.result"
       style="width: 100%"
       showPagination
@@ -31,9 +31,19 @@
       <template #table>
         <el-table-column prop="phone" label="手机号" width="180" />
         <el-table-column prop="realName" label="姓名" width="180" />
-        <el-table-column prop="address" label="登录地点" width="120" />
+        <el-table-column
+          prop="address"
+          label="登录地点"
+          width="120"
+          show-overflow-tooltip="true"
+        />
         <el-table-column prop="browser" label="浏览器" width="120" />
-        <el-table-column prop="os" label="设备" width="220" />
+        <el-table-column
+          prop="os"
+          show-overflow-tooltip="true"
+          label="设备"
+          width="220"
+        />
         <el-table-column prop="ip" label="登录IP" width="220" />
         <el-table-column prop="loginTime" label="登录时间" width="220" />
         <el-table-column fixed="right" label="操作" min-width="150">
@@ -61,7 +71,7 @@ import { ElMessage } from "element-plus";
 export default {
   components: { SherlyTable },
   setup() {
-    const loading = ref(false)
+    const loading = ref(false);
     let form = reactive({
       phone: "",
       current: 1,
@@ -77,7 +87,7 @@ export default {
 
     // 获取列表
     const getList = async () => {
-      loading.value = true
+      loading.value = true;
       const result = await getOnline(form.phone ? form : "");
       const data = {
         result: formatPagination(result),
@@ -89,8 +99,8 @@ export default {
         tableData[i] = data[i];
       });
       setTimeout(() => {
-        loading.value = false
-      }, 100)
+        loading.value = false;
+      }, 100);
     };
 
     const formatPagination = (result) => {
@@ -153,7 +163,7 @@ export default {
       handleCurrentChange,
       handleSizeChange,
       handleDelete,
-      loading
+      loading,
     };
   },
 };
