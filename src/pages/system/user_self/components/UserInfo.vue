@@ -55,10 +55,9 @@
           <i class="iconfont icon-jiaose"></i>
           角色：
         </span>
-        <span>
-          <text v-for="(item, index) in curUserInfo.roleNames" :key="index">{{
-            item + "、 "
-          }}</text>
+        <span>{{
+            curUserInfo.roleNames && curUserInfo.roleNames.join('、')
+          }}
         </span>
       </li>
       <li>

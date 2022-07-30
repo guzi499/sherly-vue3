@@ -28,11 +28,24 @@
       </template>
       <template #table>
         <el-table-column prop="logId" label="日志id" width="100" align="center"></el-table-column>
+        <!--成功 0 账号或密码不正确 1 用户禁用 2 其它 9-->
+        <el-table-column prop="result" label="登录结果" align="center" show-overflow-tooltip>
+          <template #default="scope">
+            <span v-for="item in loginResults" :key="item.value" :hidden="scope.row.result !== item.value">
+<!--              {{ scope.row.result === item.value ? item.label : null }}-->
+              <el-tag type="success" v-if="scope.row.result === item.value && scope.row.result === 0">成功</el-tag>
+              <el-tag type="danger" v-if="scope.row.result === item.value && scope.row.result === 1">账号或密码不正确</el-tag>
+              <el-tag type="warning" v-if="scope.row.result === item.value && scope.row.result === 2">用户禁用</el-tag>
+              <el-tag type="info" v-if="scope.row.result === item.value && scope.row.result === 9">其它</el-tag>
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="username" label="登录账号" width="180" align="center" show-overflow-tooltip/>
+        <!--密码 0 二维码 1 QQ 2 微信 3 支付宝 4-->
         <el-table-column prop="type" label="登录方式" align="center" show-overflow-tooltip>
           <template #default="scope">
             <span v-for="item in loginType" :key="item.value" :hidden="scope.row.type !== item.value">
-              {{scope.row.type === item.value ? item.label : null}}
+              {{ scope.row.type === item.value ? item.label : null }}
             </span>
           </template>
         </el-table-column>
@@ -40,13 +53,6 @@
         <el-table-column prop="os" label="登陆设备" align="center" show-overflow-tooltip width="180px"/>
         <el-table-column prop="ip" label="登录ip" align="center" show-overflow-tooltip/>
         <el-table-column prop="address" label="登录地址" align="center" show-overflow-tooltip/>
-        <el-table-column prop="result" label="登录结果" align="center" show-overflow-tooltip>
-          <template #default="scope">
-            <span v-for="item in loginResults" :key="item.value" :hidden="scope.row.result !== item.value">
-              {{scope.row.result === item.value ? item.label : null}}
-            </span>
-          </template>
-        </el-table-column>
         <el-table-column prop="createTime" label="登录时间" align="center" width="180"/>
       </template>
     </SherlyTable>

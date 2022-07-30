@@ -18,14 +18,18 @@
           </el-checkbox-group>
         </li>
         <li :hidden="activeName !== 'department'">
-          <el-tree node-key="departmentId" check-strictly ref='tree' :data="list1" :props="defaultProps" show-checkbox @check-change="handleCheckbox"/>
+          <el-tree default-expand-all node-key="departmentId" ref='tree' :data="list1"
+                   :props="defaultProps" show-checkbox @check-change="handleCheckbox"/>
         </li>
       </ul>
     </el-col>
+    <e-col :span="1">
+      <el-button plain type="primary" icon="ArrowRight" class="btn" @click="handleAddRight"></el-button>
+    </e-col>
     <!--    右侧穿梭框-->
     <el-col class="el-col" :span="11">
       <ul class="right">
-        <li v-for="item in list2" :key="item.value">
+        <li v-for="(item, index) in list2" :key="item + index">
           <el-checkbox-group v-model="checked2" @change="handleRightCheck">
             <el-checkbox :label="item" size="large" :disabled="!item.split('|')[1]" :checked="item.split('|')[1]"/>
           </el-checkbox-group>
@@ -78,26 +82,32 @@ export default {
     }
   },
   setup(props, {emit}) {
-    const proxy = getCurrentInstance()
+    const {proxy} = getCurrentInstance()
     const checked1 = ref([])
     const checked2 = ref([])
+    const leftCheckedIds = ref([])
     const {activeName, list2} = toRefs(props)
     const departmentIds = ref([])
     // 左边复选框选中
-    const handleCheckbox = async (val) => {
+    const handleCheckbox = (val) => {
+      leftCheckedIds.value = val
+    }
+    // 查看按钮
+    const handleAddRight = async () => {
       if (activeName.value === 'user') {
-        emit('update:list2', val)
+        emit('update:list2', leftCheckedIds.value)
       }
       if (activeName.value === 'role') {
-        const res = await getUserList_all({roleIds: val.join(',')})
+        const res = await getUserList_all({roleIds: leftCheckedIds.value.join(',')})
         const ary = res.map((item) => {
           return item.realName + (item.email === null ? '' : '|' + item.email)
         })
-        val.length === 0 ? emit('update:list2', []) : emit('update:list2', ary)
+        console.log(ary)
+        leftCheckedIds.value.length === 0 ? emit('update:list2', []) : emit('update:list2', ary)
       }
       if (activeName.value === 'department') {
         departmentIds.value = []
-        proxy.refs.tree.getCheckedNodes().forEach(item => {
+        proxy.$refs.tree.getCheckedNodes().forEach(item => {
           departmentIds.value.push(item.departmentId)
         })
         const res = await getUserList_all({departmentIds: (departmentIds.value).join(',')})
@@ -106,8 +116,8 @@ export default {
         })
         departmentIds.value.length === 0 ? emit('update:list2', []) : emit('update:list2', ary)
       }
-      if (!val.length) {
-        emit('sonUsers', [])
+      if (leftCheckedIds.value.length === 0) {
+        emit('update:list2', [])
       }
     }
     // 右边复选框选中
@@ -122,10 +132,9 @@ export default {
     }
 
     const handleReset = () => {
-      console.log(checked2.value)
       checked2.value = []
       emit('update:list2', [])
-      proxy.refs.tree.setCheckedKeys([]);
+      proxy.$refs.tree.setCheckedKeys([]);
     }
 
     const defaultProps = {
@@ -149,8 +158,8 @@ export default {
       handleRightCheck,
       defaultProps,
       handleOk,
-      handleReset
-
+      handleReset,
+      handleAddRight
     }
   }
 }
@@ -202,7 +211,6 @@ li {
     margin: 0 8px;
     padding: 0 20px;
     overflow: hidden;
-
     ul {
       margin: 0;
       padding: 0;
@@ -212,5 +220,12 @@ li {
   }
 }
 
+.btn {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 </style>

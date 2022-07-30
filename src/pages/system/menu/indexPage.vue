@@ -6,17 +6,17 @@
         <el-input v-model="data.queryParams.menuName" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button icon="Search" type="primary" @click="handleSearch"
-          >搜索</el-button
-        >
-        <el-button icon="Refresh" @click="handleReset">重置</el-button>
+        <el-button icon="Search" type="primary" @click="handleSearch">
+          搜索
+        </el-button>
+        <el-button icon="Refresh" @click="handleReset"> 重置 </el-button>
       </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end">
       <el-col :span="1.5">
-        <el-button type="success" plain size="small" @click="handleEdit('1')"
-          >新增
+        <el-button type="success" plain size="small" @click="handleEdit('1')">
+          新增
         </el-button>
       </el-col>
     </el-row>
@@ -58,14 +58,16 @@
           <el-button
             type="text"
             @click="handleEdit('2', scope.$index, scope.row)"
-            >修改</el-button
           >
+            修改
+          </el-button>
           <el-button
             class="delete"
             type="text"
             @click="handleDelete('2', scope.$index, scope.row)"
-            >删除</el-button
           >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -97,7 +99,6 @@
             ref="selectTree"
             v-model="form.parentId"
             placeholder="请选择"
-            :disabled="form.menuType === 1"
           >
             <el-option hidden :value="form.parentId" :label="treeDatas">
             </el-option>
@@ -160,6 +161,10 @@
               </el-input>
             </template>
             <div class="icon_wrapper">
+              <div class="icon_grid" @click="handleSelectIcon('blank')">
+                <div class="icon iconfont blank" />
+                blank
+              </div>
               <div
                 class="icon_grid"
                 v-for="icon in iconfontList"
@@ -265,6 +270,7 @@ export default {
         if (value.menuName) {
           menuList.value = handleTreeData(menuList.value, value.menuName);
         }
+      }).finally(() => {
         setTimeout(() => {
           loading.value = false;
         }, 100);
@@ -287,7 +293,9 @@ export default {
       //   { required: true, message: '请输入权限标识', trigger: 'blur' }
       // ],
       link: [{ required: true, message: "请输入菜单路径", trigger: "blur" }],
-      // icon: [{ required: true, message: "请选择菜单图标", trigger: "change" }],
+
+      icon: [{ required: true, message: "请选择菜单图标", trigger: "blur" }],
+
       sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
     };
 
@@ -323,9 +331,9 @@ export default {
     const reset = () => {
       form.value = {};
       treeDatas.value = "";
-      setTimeout(() => {
-        proxy.$refs.ruleForm.resetFields();
-      }, 50);
+      // setTimeout(() => {
+      //   proxy.$refs.ruleForm.resetFields();
+      // }, 100);
     };
 
     // 选中弹框中的树形数据
@@ -342,6 +350,7 @@ export default {
         reset();
         form.value.menuType = 1;
         form.value.parentId = 0;
+        form.value.icon = "blank";
         treeDatas.value = "主目录";
         dialogType.value = type;
         dialogTitle.value = "新增菜单";
@@ -352,8 +361,10 @@ export default {
         forEachMenuList(menuList.value, data);
         form.value = JSON.parse(JSON.stringify(data));
       }
-      console.log(form.value);
       dialogFormVisible.value = true;
+      proxy.$nextTick(() => {
+        proxy.$refs.ruleForm.resetFields();
+      })
     };
 
     // 处理树形数据回显
@@ -408,21 +419,46 @@ export default {
     const handleOk = (formName) => {
       proxy.$refs[formName].validate((valid) => {
         if (valid) {
+          let _obj = ref({})
+          // 菜单类型切换时数据过滤
+          if (form.value.menuType === 1) {
+            _obj.value.icon = form.value.icon
+            _obj.value.menuName = form.value.menuName
+            _obj.value.menuType = form.value.menuType
+            _obj.value.parentId = form.value.parentId
+            _obj.value.sort = form.value.sort
+          } else if (form.value.menuType === 2) {
+            _obj.value.icon = form.value.icon
+            _obj.value.link = form.value.link
+            _obj.value.menuName = form.value.menuName
+            _obj.value.menuType = form.value.menuType
+            _obj.value.parentId = form.value.parentId
+            _obj.value.permission = form.value.permission || ""
+            _obj.value.sort = form.value.sort
+          } else {
+            _obj.value.icon = form.value.icon
+            _obj.value.menuName = form.value.menuName
+            _obj.value.menuType = form.value.menuType
+            _obj.value.parentId = form.value.parentId
+            _obj.value.permission = form.value.permission || ""
+            _obj.value.sort = form.value.sort
+          }
           // 新增
           if (dialogType.value === "1") {
-            addMenu(form.value)
-              .then(() => {
-                getList(data.queryParams);
-              })
-              .catch(() => {})
-              .finally(() => {
-                reset();
-                dialogFormVisible.value = false;
-              });
+            addMenu(_obj.value)
+                .then(() => {
+                  getList(data.queryParams);
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                  reset();
+                  dialogFormVisible.value = false;
+                });
           }
           // 修改
           if (dialogType.value === "2") {
-            updateMenu(form.value)
+            updateMenu(_obj.value)
               .then(() => {
                 getList(data.queryParams);
               })
@@ -432,11 +468,7 @@ export default {
                 dialogFormVisible.value = false;
               });
           }
-          // setTimeout(() => {
-          //   location.reload();
-          // }, 1000);
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -487,7 +519,7 @@ export default {
       loading,
       iconPopoverVisible,
       openIconPopover,
-      closeIconPopover,
+      closeIconPopover
     };
   },
 };
@@ -530,6 +562,15 @@ a {
   grid-gap: 10px;
   .icon_grid {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-right: 4px;
+    }
+    .blank {
+      height: 16px;
+      width: 16px;
+    }
   }
 }
 </style>

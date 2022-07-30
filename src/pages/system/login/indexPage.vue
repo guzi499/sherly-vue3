@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-07-24 17:19:30
+ * @LastEditTime: 2022-07-30 18:33:02
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/login/indexPage.vue
@@ -68,6 +68,7 @@
 import { reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { login } from "@/api/system/login";
+import { heartBzeat } from "@/api/system/generic";
 import Cookies from "js-cookie";
 
 export default {
@@ -79,6 +80,7 @@ export default {
     });
     onMounted(() => {
       getCookie();
+      handleHeartBzeat();
     });
     const handlelogin = () => {
       login(loginForm).then((res) => {
@@ -89,6 +91,11 @@ export default {
     const getCookie = () => {
       const phone = Cookies.get("phone");
       loginForm.phone = phone === undefined ? loginForm.phone : phone;
+    };
+    const handleHeartBzeat = () => {
+      heartBzeat().then(() => {
+        router.replace({ path: "/home" });
+      });
     };
     return { loginForm, handlelogin, getCookie };
   },
