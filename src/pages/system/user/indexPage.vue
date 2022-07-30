@@ -48,6 +48,7 @@
           <el-tree
               ref="checkTree"
               node-key="departmentId"
+              default-expand-all
               show-checkbox
               highlight-current
               :data="DepartmentList"
