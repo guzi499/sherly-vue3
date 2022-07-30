@@ -187,7 +187,7 @@
   </div>
 </template>
 <script>
-import {reactive, ref, onMounted, toRaw, watch, getCurrentInstance} from "vue";
+import {reactive, ref, onMounted, watch, getCurrentInstance} from "vue";
 import {
   getTenant,
   delTenant,
@@ -274,7 +274,6 @@ export default {
 
     watch(dialogVisible, (val) => {
       if (!val) {
-        console.log('11111111111', val)
         isStrictly.value = false
       }
     })
@@ -398,20 +397,25 @@ export default {
     };
 
     // 修改租户菜单树
-    const handleMenuTreeCheckChange = (data, checked) => {
+    const handleMenuTreeCheckChange = () => {
       const ary = proxy.$refs.tenantTree.getHalfCheckedNodes()
       ary.forEach((item) => {
         proxy.$refs.tenantTree.setChecked(item.menuId, true)
       })
-      if (checked) {
-        tenantListMenu.push(toRaw(data).menuId);
-      } else {
-        const menuIds = tenantListMenu.filter((i) => i !== toRaw(data).menuId);
-        tenantListMenu.length = 0;
-        menuIds.forEach((i) => {
-          tenantListMenu.push(i);
-        });
-      }
+      tenantListMenu.length = 0;
+      proxy.$refs.tenantTree.getCheckedKeys().forEach(item =>{
+        tenantListMenu.push(item)
+      })
+      console.log(tenantListMenu)
+      // if (checked) {
+      //   tenantListMenu.push(toRaw(data).menuId);
+      // } else {
+      //   const menuIds = tenantListMenu.filter((i) => i !== toRaw(data).menuId);
+      //   tenantListMenu.length = 0;
+      //   menuIds.forEach((i) => {
+      //     tenantListMenu.push(i);
+      //   });
+      // }
     };
 
     // 菜单权限取消
@@ -421,6 +425,8 @@ export default {
 
     // 菜单权限确认
     const handleMenuConfirm = async () => {
+      console.log(tenantListMenu)
+      console.log(tenantId.value)
       await updateTenantMenu({
         menuIds: tenantListMenu,
         tenantId: tenantId.value,
@@ -430,7 +436,7 @@ export default {
         type: "success",
       });
       dialogMenuVisible.value = false;
-      getList();
+      await getList();
     };
 
     return {
