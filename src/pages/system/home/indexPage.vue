@@ -7,5 +7,14 @@
  * @FilePath: /sherly-vue3/src/pages/system/homePage.vue
 -->
 <template>
-  <div class="sherly-page-wrapper">欢迎使用-sherly-后台管理系统</div>
+  <div class="sherly-page-wrapper">
+    <iframe src="/static/home/index.html" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+  </div>
 </template>
+<style lang="scss" scoped>
+.sherly-page-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+</style>

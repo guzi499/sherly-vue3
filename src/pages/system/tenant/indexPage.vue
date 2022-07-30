@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-05-22 20:52:14
- * @LastEditTime: 2022-07-30 16:29:53
+ * @LastEditTime: 2022-07-30 23:33:35
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/tenant/indexPage.vue
@@ -148,7 +148,7 @@
           <el-date-picker
             style="width: 360px"
             v-model="tenantForm.expireTime"
-            type="date"
+            type="datetime"
           />
         </el-form-item>
         <el-form-item label="用户上限" prop="userLimit">

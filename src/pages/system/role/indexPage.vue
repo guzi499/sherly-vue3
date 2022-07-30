@@ -249,7 +249,7 @@ export default {
 
     // 修改菜单树选中
     const handleMenuTreeCheckChange = (data, checked) => {
-      isStrictly.value = checked
+      isStrictly.value = true
       if (checked) {
         roleForm.menuIds.push(toRaw(data).menuId);
       } else {
