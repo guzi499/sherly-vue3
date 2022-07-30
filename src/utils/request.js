@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-07-28 23:50:26
+ * @LastEditTime: 2022-07-30 18:38:01
  * @LastEditors: lihaoyu
  * @Description: 请求封装
  * @FilePath: /sherly-vue3/src/utils/request.js
@@ -9,8 +9,11 @@
 
 import axios from "axios";
 import Config from "@/config";
-import { ElNotification } from "element-plus";
+import { ElNotification, ElMessageBox } from "element-plus";
 import { pickBy, identity, trim } from "lodash";
+import router from "@/router/router";
+import Cookies from "js-cookie";
+import store from "@/store";
 
 const axiosInstance = axios.create({
   timeout: Config.timeout,
@@ -19,7 +22,6 @@ const axiosInstance = axios.create({
       ? process.env.VUE_APP_URL + "/api"
       : "/api",
 });
-
 // 添加请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -85,6 +87,30 @@ axiosInstance.interceptors.response.use(
         document.body.removeChild(a);
       };
       return response.data;
+    } else if (response.data.code === "401") {
+      if (response.request.responseURL.indexOf("/generic/basic_data") > -1) {
+        ElNotification({
+          title: "警告",
+          message: "登录授权过期",
+          duration: 3000,
+          type: "error",
+        });
+        remake();
+      } else if (
+        response.request.responseURL.indexOf("/generic/heart_beat") === -1
+      ) {
+        ElMessageBox.alert("登录授权过期,是否跳转登录页？", "提示", {
+          showCancelButton: true,
+          confirmButtonText: "跳转登录页",
+          cancelButtonText: "留在当前页",
+          callback: (action) => {
+            console.log(action);
+            if (action === "confirm") {
+              remake();
+            }
+          },
+        });
+      }
     } else {
       ElNotification({
         title: "警告",
@@ -107,4 +133,15 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+const remake = () => {
+  Cookies.remove("phone");
+  Cookies.remove("metaTitle");
+  Cookies.remove("userInfo");
+  Cookies.remove("routePath");
+  Cookies.remove("password");
+  localStorage.removeItem("token");
+  store.dispatch("router/loadMenus", true);
+  router.replace("/login");
+  location.reload();
+};
 export default axiosInstance;

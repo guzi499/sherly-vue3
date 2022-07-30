@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-05-06 21:46:57
- * @LastEditTime: 2022-07-24 17:45:39
+ * @LastEditTime: 2022-07-30 18:17:54
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/api/system/generic.js
@@ -18,10 +18,9 @@ export function getBasicData(data) {
 }
 
 /** 心脏检测 */
-export function heartBzeat(data) {
+export function heartBzeat() {
   return request({
     url: "/generic/heart_beat",
     method: "get",
-    data: data,
   });
 }

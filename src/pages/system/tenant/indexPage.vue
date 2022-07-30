@@ -1,14 +1,19 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-05-22 20:52:14
- * @LastEditTime: 2022-07-27 23:51:03
+ * @LastEditTime: 2022-07-30 16:29:53
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/tenant/indexPage.vue
 -->
 <template>
   <div class="sherly-page-wrapper">
-    <el-form ref="resetFormData" :model="form" class="sherly-form">
+    <el-form
+      ref="resetFormData"
+      :model="form"
+      class="sherly-form"
+      :inline="true"
+    >
       <el-form-item label="租户代码" prop="tenantCode">
         <el-input v-model="form.tenantCode" />
       </el-form-item>
@@ -133,36 +138,34 @@
         :rules="rules"
         label-width="80px"
       >
-        <el-form-item label="租户代码" prop="tenantCode" required>
-          <el-input v-model="tenantForm.tenantCode" />
+        <el-form-item label="租户代码" prop="tenantCode">
+          <el-input v-model="tenantForm.tenantCode" :disabled="isEdit" />
         </el-form-item>
-        <el-form-item label="租户名称" prop="tenantName" required>
-          <el-input v-model="tenantForm.tenantName" />
+        <el-form-item label="租户名称" prop="tenantName">
+          <el-input v-model="tenantForm.tenantName" :disabled="isEdit" />
         </el-form-item>
-        <template v-if="isEdit">
-          <el-form-item label="联系人" prop="contactUser">
-            <el-input v-model="tenantForm.contactUser" />
-          </el-form-item>
-          <el-form-item label="联系电话" prop="contactPhone">
-            <el-input v-model="tenantForm.contactPhone" />
-          </el-form-item>
-          <el-form-item label="过期时间" prop="expireTime">
-            <el-date-picker
-              style="width: 360px"
-              v-model="tenantForm.expireTime"
-              type="date"
-            />
-          </el-form-item>
-          <el-form-item label="用户上限" prop="userLimit">
-            <el-input-number
-              v-model="tenantForm.userLimit"
-              :min="1"
-              :max="9999"
-              controls-position="right"
-              style="height: 32px"
-            />
-          </el-form-item>
-        </template>
+        <el-form-item label="过期时间" prop="expireTime">
+          <el-date-picker
+            style="width: 360px"
+            v-model="tenantForm.expireTime"
+            type="date"
+          />
+        </el-form-item>
+        <el-form-item label="用户上限" prop="userLimit">
+          <el-input-number
+            v-model="tenantForm.userLimit"
+            :min="1"
+            :max="9999"
+            controls-position="right"
+            style="height: 32px"
+          />
+        </el-form-item>
+        <el-form-item label="联系人" prop="contactUser">
+          <el-input v-model="tenantForm.contactUser" :disabled="isEdit" />
+        </el-form-item>
+        <el-form-item label="联系电话" prop="contactPhone">
+          <el-input v-model="tenantForm.contactPhone" :disabled="isEdit" />
+        </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
@@ -222,6 +225,30 @@ export default {
         userLimit: "",
       };
     };
+    const rules = {
+      tenantCode: [
+        { required: true, message: "请输入租户代码", trigger: "blur" },
+        {
+          pattern: /^[a-z]+$/,
+          message: "租户代码为纯小写英文",
+        },
+      ],
+      tenantName: [
+        { required: true, message: "请输入租户名称", trigger: "blur" },
+      ],
+      expireTime: [
+        { required: true, message: "请输入过期时间", trigger: "blur" },
+      ],
+      userLimit: [
+        { required: true, message: "请输入用户上限", trigger: "blur" },
+      ],
+      contactUser: [
+        { required: true, message: "请输入联系人", trigger: "blur" },
+      ],
+      contactPhone: [
+        { required: true, message: "请输入联系电话", trigger: "blur" },
+      ],
+    };
     // 获取菜单树
     const handleGetMenuTree = async () => {
       const data = await getMenu();
@@ -229,10 +256,10 @@ export default {
         menuTree.push(i);
       });
     };
-    // 角色详情数据响应式
+    // 租户详情数据响应式
     let tenantForm = reactive(inittenantForm());
 
-    // 重置角色详情数据
+    // 重置租户详情数据
     const resettenantForm = () => {
       Object.assign(tenantForm, inittenantForm());
     };
@@ -289,11 +316,11 @@ export default {
       dialogVisible.value = true;
     };
 
-    // 删除角色
+    // 删除租户
     const handleDelete = ({ tenantId }) => {
       delTenant(tenantId).then(() => {
         ElMessage({
-          message: "删除角色成功",
+          message: "删除租户成功",
           type: "success",
         });
         getList();
@@ -314,7 +341,7 @@ export default {
             updateTenant(tenantForm).then(() => {
               dialogVisible.value = false;
               ElMessage({
-                message: "修改角色成功",
+                message: "修改租户成功",
                 type: "success",
               });
               getList();
@@ -323,7 +350,7 @@ export default {
             addTenant(tenantForm).then(() => {
               dialogVisible.value = false;
               ElMessage({
-                message: "添加角色成功",
+                message: "添加租户成功",
                 type: "success",
               });
               getList();
@@ -371,6 +398,7 @@ export default {
       loading,
       menuTree,
       menuIds,
+      rules,
     };
   },
 };

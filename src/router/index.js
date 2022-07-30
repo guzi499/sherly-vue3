@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-07-21 22:23:45
+ * @LastEditTime: 2022-07-30 17:47:56
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -40,25 +40,28 @@ router.beforeEach((to, from, next) => {
 
 const loadRouter = (to, next) => {
   return getBasicData({ token: localStorage.getItem("token") }).then((res) => {
-    store.dispatch("user/setUserInfo", res);
-    const MenuList = res.basicMenuInfoVO;
-    const userInfo = res.basicUserInfoVO; // 存储登录用户的真实名称
-    Cookies.set("userInfo", JSON.stringify(userInfo));
-    addRoute(formatRouter(MenuList));
-    // 判断去跳转的路由是否注册
-    if (!router.getRoutes().find((i) => i.path === to.path)) {
-      ElNotification({
-        title: "警告",
-        message: "当前跳转页面不存在，请联系服务商。",
-        duration: 3000,
-        type: "error",
-      });
-      next("/login");
-    } else {
-      next({ ...to, replace: true });
+    if (res) {
+      store.dispatch("user/setUserInfo", res);
+      const MenuList = res.basicMenuInfoVO;
+      const userInfo = res.basicUserInfoVO;
+      // 存储登录用户的真实名称
+      Cookies.set("userInfo", JSON.stringify(userInfo));
+      addRoute(formatRouter(MenuList));
+      // 判断去跳转的路由是否注册
+      if (!router.getRoutes().find((i) => i.path === to.path)) {
+        ElNotification({
+          title: "警告",
+          message: "当前跳转页面不存在，请联系服务商。",
+          duration: 3000,
+          type: "error",
+        });
+        next("/login");
+      } else {
+        next({ ...to, replace: true });
+      }
+      store.dispatch("router/loadMenus", false);
+      store.dispatch("router/setMenuList", MenuList);
     }
-    store.dispatch("router/loadMenus", false);
-    store.dispatch("router/setMenuList", MenuList);
   });
 };
 
