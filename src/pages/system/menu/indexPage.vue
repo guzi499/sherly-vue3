@@ -99,7 +99,6 @@
             ref="selectTree"
             v-model="form.parentId"
             placeholder="请选择"
-            :disabled="form.menuType === 1"
           >
             <el-option hidden :value="form.parentId" :label="treeDatas">
             </el-option>
@@ -271,6 +270,7 @@ export default {
         if (value.menuName) {
           menuList.value = handleTreeData(menuList.value, value.menuName);
         }
+      }).finally(() => {
         setTimeout(() => {
           loading.value = false;
         }, 100);
@@ -331,9 +331,9 @@ export default {
     const reset = () => {
       form.value = {};
       treeDatas.value = "";
-      setTimeout(() => {
-        proxy.$refs.ruleForm.resetFields();
-      }, 50);
+      // setTimeout(() => {
+      //   proxy.$refs.ruleForm.resetFields();
+      // }, 100);
     };
 
     // 选中弹框中的树形数据
@@ -362,6 +362,9 @@ export default {
         form.value = JSON.parse(JSON.stringify(data));
       }
       dialogFormVisible.value = true;
+      proxy.$nextTick(() => {
+        proxy.$refs.ruleForm.resetFields();
+      })
     };
 
     // 处理树形数据回显
@@ -416,21 +419,46 @@ export default {
     const handleOk = (formName) => {
       proxy.$refs[formName].validate((valid) => {
         if (valid) {
+          let _obj = ref({})
+          // 菜单类型切换时数据过滤
+          if (form.value.menuType === 1) {
+            _obj.value.icon = form.value.icon
+            _obj.value.menuName = form.value.menuName
+            _obj.value.menuType = form.value.menuType
+            _obj.value.parentId = form.value.parentId
+            _obj.value.sort = form.value.sort
+          } else if (form.value.menuType === 2) {
+            _obj.value.icon = form.value.icon
+            _obj.value.link = form.value.link
+            _obj.value.menuName = form.value.menuName
+            _obj.value.menuType = form.value.menuType
+            _obj.value.parentId = form.value.parentId
+            _obj.value.permission = form.value.permission || ""
+            _obj.value.sort = form.value.sort
+          } else {
+            _obj.value.icon = form.value.icon
+            _obj.value.menuName = form.value.menuName
+            _obj.value.menuType = form.value.menuType
+            _obj.value.parentId = form.value.parentId
+            _obj.value.permission = form.value.permission || ""
+            _obj.value.sort = form.value.sort
+          }
           // 新增
           if (dialogType.value === "1") {
-            addMenu(form.value)
-              .then(() => {
-                getList(data.queryParams);
-              })
-              .catch(() => {})
-              .finally(() => {
-                reset();
-                dialogFormVisible.value = false;
-              });
+            addMenu(_obj.value)
+                .then(() => {
+                  getList(data.queryParams);
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                  reset();
+                  dialogFormVisible.value = false;
+                });
           }
           // 修改
           if (dialogType.value === "2") {
-            updateMenu(form.value)
+            updateMenu(_obj.value)
               .then(() => {
                 getList(data.queryParams);
               })
@@ -440,11 +468,7 @@ export default {
                 dialogFormVisible.value = false;
               });
           }
-          // setTimeout(() => {
-          //   location.reload();
-          // }, 1000);
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -495,7 +519,7 @@ export default {
       loading,
       iconPopoverVisible,
       openIconPopover,
-      closeIconPopover,
+      closeIconPopover
     };
   },
 };
