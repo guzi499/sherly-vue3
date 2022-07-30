@@ -417,31 +417,22 @@ export default {
 
     // 点击确定按钮
     const handleOk = (formName) => {
+      console.log(form.value.menuType)
       proxy.$refs[formName].validate((valid) => {
         if (valid) {
           let _obj = ref({})
           // 菜单类型切换时数据过滤
-          if (form.value.menuType === 1) {
-            _obj.value.icon = form.value.icon
-            _obj.value.menuName = form.value.menuName
-            _obj.value.menuType = form.value.menuType
-            _obj.value.parentId = form.value.parentId
-            _obj.value.sort = form.value.sort
-          } else if (form.value.menuType === 2) {
-            _obj.value.icon = form.value.icon
+          _obj.value.icon = form.value.icon
+          _obj.value.menuName = form.value.menuName || ''
+          _obj.value.menuType = form.value.menuType
+          _obj.value.parentId = form.value.parentId
+          _obj.value.sort = form.value.sort
+          dialogType.value === "2" ? _obj.value.menuId = form.value.menuId : ''
+          if (form.value.menuType === 2) {
             _obj.value.link = form.value.link
-            _obj.value.menuName = form.value.menuName
-            _obj.value.menuType = form.value.menuType
-            _obj.value.parentId = form.value.parentId
             _obj.value.permission = form.value.permission || ""
-            _obj.value.sort = form.value.sort
-          } else {
-            _obj.value.icon = form.value.icon
-            _obj.value.menuName = form.value.menuName
-            _obj.value.menuType = form.value.menuType
-            _obj.value.parentId = form.value.parentId
+          } else if (form.value.menuType === 3) {
             _obj.value.permission = form.value.permission || ""
-            _obj.value.sort = form.value.sort
           }
           // 新增
           if (dialogType.value === "1") {
