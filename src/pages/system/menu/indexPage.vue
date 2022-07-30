@@ -6,17 +6,17 @@
         <el-input v-model="data.queryParams.menuName" clearable />
       </el-form-item>
       <el-form-item>
-        <el-button icon="Search" type="primary" @click="handleSearch"
-          >搜索</el-button
-        >
-        <el-button icon="Refresh" @click="handleReset">重置</el-button>
+        <el-button icon="Search" type="primary" @click="handleSearch">
+          搜索
+        </el-button>
+        <el-button icon="Refresh" @click="handleReset"> 重置 </el-button>
       </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end">
       <el-col :span="1.5">
-        <el-button type="success" plain size="small" @click="handleEdit('1')"
-          >新增
+        <el-button type="success" plain size="small" @click="handleEdit('1')">
+          新增
         </el-button>
       </el-col>
     </el-row>
@@ -58,14 +58,16 @@
           <el-button
             type="text"
             @click="handleEdit('2', scope.$index, scope.row)"
-            >修改</el-button
           >
+            修改
+          </el-button>
           <el-button
             class="delete"
             type="text"
             @click="handleDelete('2', scope.$index, scope.row)"
-            >删除</el-button
           >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -160,6 +162,10 @@
               </el-input>
             </template>
             <div class="icon_wrapper">
+              <div class="icon_grid" @click="handleSelectIcon('blank')">
+                <div class="icon iconfont blank" />
+                blank
+              </div>
               <div
                 class="icon_grid"
                 v-for="icon in iconfontList"
@@ -287,7 +293,9 @@ export default {
       //   { required: true, message: '请输入权限标识', trigger: 'blur' }
       // ],
       link: [{ required: true, message: "请输入菜单路径", trigger: "blur" }],
-      // icon: [{ required: true, message: "请选择菜单图标", trigger: "change" }],
+
+      icon: [{ required: true, message: "请选择菜单图标", trigger: "blur" }],
+
       sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
     };
 
@@ -342,6 +350,7 @@ export default {
         reset();
         form.value.menuType = 1;
         form.value.parentId = 0;
+        form.value.icon = "blank";
         treeDatas.value = "主目录";
         dialogType.value = type;
         dialogTitle.value = "新增菜单";
@@ -352,7 +361,6 @@ export default {
         forEachMenuList(menuList.value, data);
         form.value = JSON.parse(JSON.stringify(data));
       }
-      console.log(form.value);
       dialogFormVisible.value = true;
     };
 
@@ -530,6 +538,15 @@ a {
   grid-gap: 10px;
   .icon_grid {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-right: 4px;
+    }
+    .blank {
+      height: 16px;
+      width: 16px;
+    }
   }
 }
 </style>
