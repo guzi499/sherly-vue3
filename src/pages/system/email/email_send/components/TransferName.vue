@@ -18,7 +18,8 @@
           </el-checkbox-group>
         </li>
         <li :hidden="activeName !== 'department'">
-          <el-tree node-key="departmentId" check-strictly ref='tree' :data="list1" :props="defaultProps" show-checkbox @check-change="handleCheckbox"/>
+          <el-tree default-expand-all node-key="departmentId" check-strictly ref='tree' :data="list1"
+                   :props="defaultProps" show-checkbox @check-change="handleCheckbox"/>
         </li>
       </ul>
     </el-col>
