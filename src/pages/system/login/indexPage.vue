@@ -10,10 +10,8 @@
   <div class="sherly-page">
     <div class="login-layout">
       <div class="login-layout-left">
-        <!--        <img src="../../assets/sherly-logo.png" alt="" />-->
         <img src="../../../assets/sherly-logo-simple.png" alt="" />
       </div>
-      <!--      <div class="login-layout-dividing" />-->
       <div class="login-layout-right">
         <div class="login-layout-right-title">账号密码登录</div>
         <div class="login-layout-right-formbox">

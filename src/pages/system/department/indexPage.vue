@@ -13,6 +13,11 @@
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end">
       <el-col :span="1.5">
+        <el-button type="info" size="small" @click="handleUp">
+          展开 / 折叠
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
         <el-button type="primary" size="small" @click="handleEdit('1')"
         >新增
         </el-button>
@@ -20,13 +25,14 @@
     </el-row>
     <!-- 表格菜单 -->
     <el-table
-        v-loading = loading
-      :data="departmentList"
-      style="width: 100%; margin-bottom: 20px"
-      row-key="departmentId"
-      lazy
-      :default-expand-all="true"
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        v-if="refreshTree"
+        v-loading=loading
+        :data="departmentList"
+        style="width: 100%; margin-bottom: 20px"
+        row-key="departmentId"
+        lazy
+        :default-expand-all="isUp"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column label="部门名称" prop="departmentName"/>
       <el-table-column
@@ -140,6 +146,17 @@ export default {
           data.queryParams.departmentName
       );
     };
+
+    const isUp = ref(true)
+    const refreshTree = ref(true)
+    // 折叠展开按钮
+    const handleUp = () => {
+      refreshTree.value = false
+      isUp.value ? isUp.value = false : isUp.value = true
+      proxy.$nextTick(() => {
+        refreshTree.value = true
+      })
+    }
 
     // 处理展示数据
     const handleTreeData = (list, value) => {
@@ -312,7 +329,10 @@ export default {
       handleOk,
       handleCancle,
       departmentListSelect,
-      loading
+      loading,
+      isUp,
+      refreshTree,
+      handleUp
     };
   },
 };

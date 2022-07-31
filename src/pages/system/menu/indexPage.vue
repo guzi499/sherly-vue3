@@ -15,6 +15,11 @@
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end">
       <el-col :span="1.5">
+        <el-button type="info" size="small" @click="handleUp">
+          展开 / 折叠
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
         <el-button type="primary" size="small" @click="handleEdit('1')">
           新增
         </el-button>
@@ -22,25 +27,27 @@
     </el-row>
     <!-- 表格菜单 -->
     <el-table
-      v-loading="loading"
-      :data="menuList"
-      style="width: 100%; margin-bottom: 20px"
-      row-key="menuId"
-      lazy
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        v-if="refreshTree"
+        :default-expand-all="isUp"
+        v-loading="loading"
+        :data="menuList"
+        style="width: 100%; margin-bottom: 20px"
+        row-key="menuId"
+        lazy
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
-      <el-table-column label="菜单名称" prop="menuName" width="230" />
+      <el-table-column label="菜单名称" prop="menuName" width="230"/>
       <el-table-column
-        label="菜单路径"
-        prop="link"
-        width="230"
-        align="center"
+          label="菜单路径"
+          prop="link"
+          width="230"
+          align="center"
       />
       <el-table-column
-        label="权限"
-        prop="permission"
-        width="230"
-        align="center"
+          label="权限"
+          prop="permission"
+          width="230"
+          align="center"
       />
       <el-table-column label="图标" width="150" align="center">
         <template #default="scope">
@@ -276,19 +283,19 @@ export default {
     // 弹框添加校验效果
     const rules = {
       menuType: [
-        { required: true, message: "请选择菜单类型", trigger: "change" },
+        {required: true, message: "请选择菜单类型", trigger: "change"},
       ],
       parentId: [
-        { required: true, message: "请选择父级菜单", trigger: "change" },
+        {required: true, message: "请选择父级菜单", trigger: "change"},
       ],
       menuName: [
-        { required: true, message: "请输入菜单名称", trigger: "blur" },
+        {required: true, message: "请输入菜单名称", trigger: "blur"},
       ],
-      link: [{ required: true, message: "请输入菜单路径", trigger: "blur" }],
+      link: [{required: true, message: "请输入菜单路径", trigger: "blur"}],
 
-      icon: [{ required: true, message: "请选择菜单图标", trigger: "blur" }],
+      icon: [{required: true, message: "请选择菜单图标", trigger: "blur"}],
 
-      sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
+      sort: [{required: true, message: "请输入排序", trigger: "blur"}],
     };
 
     // 查询菜单下拉框列表信息
@@ -298,6 +305,17 @@ export default {
         menuListSelect.value = res;
       });
     };
+
+    const isUp = ref(true)
+    const refreshTree = ref(true)
+    // 折叠展开按钮
+    const handleUp = () => {
+      refreshTree.value = false
+      isUp.value ? isUp.value = false : isUp.value = true
+      proxy.$nextTick(() => {
+        refreshTree.value = true
+      })
+    }
 
     // 判断弹框类型 - 新增/修改
     const dialogType = ref("1");
@@ -493,7 +511,10 @@ export default {
       iconPopoverVisible,
       openIconPopover,
       closeIconPopover,
-      handleMainTopMenu
+      handleMainTopMenu,
+      handleUp,
+      isUp,
+      refreshTree
     };
   },
 };
