@@ -125,7 +125,6 @@
               :active-value="1"
               :inactive-value="0"
               @change="handleChange(scope.row)"
-              v-permission="['user:ban_one']"
           />
         </template>
       </el-table-column>
@@ -359,6 +358,8 @@ export default {
             type: 'success',
           })
         }
+      }).catch(() =>{
+        getList()
       })
     };
 
