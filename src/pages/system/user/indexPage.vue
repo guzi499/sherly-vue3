@@ -93,13 +93,13 @@
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
       <el-col :span="1.5">
-        <el-button type="primary" size="small" @click="handleExport()"
+        <el-button type="primary" size="small" @click="handleExport()"  v-permission="['user:list_export']"
         >导出
         </el-button
         >
       </el-col>
       <el-col :span="1.5">
-        <el-button type="primary" size="small" @click="handleEdit('1')"
+        <el-button type="primary" size="small" @click="handleEdit('1')" v-permission="['user:save_one']"
         >新增
         </el-button
         >
@@ -124,19 +124,20 @@
               :active-value="1"
               :inactive-value="0"
               @change="handleChange(scope.row)"
+              v-permission="['user:ban_one']"
           />
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
       <el-table-column prop="name" label="操作" width="180" align="center">
         <template #default="scope">
-          <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)">修改</el-link>
+          <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)" v-permission="['user:update_one']">修改</el-link>
           <el-popconfirm
               title="确定删除本条数据?"
               @confirm="handleDelete(scope.row)"
           >
             <template #reference>
-              <el-link type="danger">删除</el-link>
+              <el-link type="danger" v-permission="['user:remove_one']">删除</el-link>
             </template>
           </el-popconfirm>
         </template>

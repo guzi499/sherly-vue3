@@ -11,7 +11,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="登录结果">
-        <el-input style="width: 215px" v-model="queryParams.uri" clearable/>
+        <el-input style="width: 215px" v-model="queryParams.result" clearable/>
       </el-form-item>
       <el-form-item label="登录时间">
         <el-date-picker
@@ -52,7 +52,7 @@
             @confirm="handleEmpty"
         >
           <template #reference>
-            <el-button type="danger" size="small"> 清空日志</el-button>
+            <el-button type="danger" size="small" v-permission="['login_log:remove_all']"> 清空日志</el-button>
           </template>
         </el-popconfirm>
 

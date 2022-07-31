@@ -45,7 +45,7 @@
               @confirm="handleSend('ruleFormRef2')"
           >
             <template #reference>
-              <el-button type="primary">发送邮件</el-button>
+              <el-button type="primary" v-permission="['email:send']">发送邮件</el-button>
             </template>
           </el-popconfirm>
           <el-button type="info" @click="handleReset">内容重置</el-button>

@@ -63,7 +63,7 @@
             @confirm="handleEmpty"
         >
           <template #reference>
-            <el-button type="danger" size="small"> 清空日志</el-button>
+            <el-button type="danger" size="small" v-permission="['operation_log:remove_all']"> 清空日志</el-button>
           </template>
         </el-popconfirm>
       </template>
@@ -89,7 +89,7 @@
         <el-table-column prop="createTime" label="操作时间" align="center" width="180"/>
         <el-table-column prop="createTime" label="操作" align="center" width="100" fixed="right">
           <template #default="scope">
-            <el-link type="primary" @click="handleLogId(scope.row.logId)">详情</el-link>
+            <el-link type="primary" @click="handleLogId(scope.row.logId)" v-permission="['operation_log:get_one']">详情</el-link>
           </template>
         </el-table-column>
       </template>

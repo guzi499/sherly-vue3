@@ -34,7 +34,7 @@
                 @confirm="handleUpdate('ruleFormRef1')"
             >
               <template #reference>
-                <el-button type="primary">更新配置</el-button>
+                <el-button type="primary" v-permission="['email_save_or_update']">更新配置</el-button>
               </template>
             </el-popconfirm>
           </el-col>

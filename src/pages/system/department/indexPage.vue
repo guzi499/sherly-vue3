@@ -18,7 +18,7 @@
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="primary" size="small" @click="handleEdit('1')"
+        <el-button type="primary" size="small" @click="handleEdit('1')" v-permission="['department:save_one']"
         >新增
         </el-button>
       </el-col>
@@ -45,13 +45,13 @@
       <el-table-column label="创建时间" prop="createTime" align="center" />
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
-          <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)">修改</el-link>
+          <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)" v-permission="['department:update_one']">修改</el-link>
           <el-popconfirm
               title="确定删除本条数据?"
               @confirm="handleDelete(scope.row)"
           >
             <template #reference>
-              <el-link type="danger">删除</el-link>
+              <el-link type="danger" v-permission="['department:remove_one']">删除</el-link>
             </template>
           </el-popconfirm>
         </template>
