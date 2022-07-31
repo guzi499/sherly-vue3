@@ -55,7 +55,7 @@
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-link type="danger" style="color: #f56c6c"> 删除 </el-link>
+                <el-link type="danger"> 删除 </el-link>
               </template>
             </el-popconfirm>
           </template>

@@ -1,39 +1,39 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-18 09:52:49
- * @LastEditTime: 2022-06-14 01:36:18
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/userPage.vue
+ * @Author: 陈雪丽
+ * @Date: 2022-07-31
 -->
 <template>
   <div class="user_container">
     <!-- 查询条件 -->
-    <el-form :model="queryParams" :inline="true">
-      <el-form-item label="手机号: ">
+    <el-form :model="queryParams" :inline="true" label-width="60px">
+      <el-form-item label="手机号">
         <el-input
+            style="width: 215px"
             clearable
             v-model="queryParams.phone"
             placeholder="请输入手机号"
         ></el-input>
       </el-form-item>
-      <el-form-item label="姓名: ">
+      <el-form-item label="姓名">
         <el-input
             clearable
+            style="width: 215px"
             v-model="queryParams.realName"
             placeholder="请输入姓名"
         ></el-input>
       </el-form-item>
-      <el-form-item label="昵称: ">
+      <el-form-item label="昵称">
         <el-input
             clearable
+            style="width: 215px"
             v-model="queryParams.nickname"
             placeholder="请输入昵称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="部门: ">
+      <el-form-item label="部门">
         <el-select
             collapse-tags
+            style="width: 215px"
             multiple
             ref="selectTree"
             v-model="treeSelectData.treeDate"
@@ -104,7 +104,14 @@
       <el-table-column prop="name" label="操作" width="180" align="center">
         <template #default="scope">
           <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)">修改</el-link>
-          <el-link type="danger" @click="handleDelete('2', scope.$index, scope.row)">删除</el-link>
+          <el-popconfirm
+              title="确定删除本条数据?"
+              @confirm="handleDelete(scope.row)"
+          >
+            <template #reference>
+              <el-link type="danger">删除</el-link>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -209,7 +216,7 @@ import {
   disableUser,
   getUserId
 } from "@/api/system/user.js";
-import { ElMessage, ElMessageBox } from "element-plus";
+import {ElMessage} from "element-plus";
 
 export default {
   setup() {
@@ -454,30 +461,16 @@ export default {
     };
 
     // 删除按钮
-    const handleDelete = (type, index, data1) => {
-      if (type === "2") {
-        ElMessageBox.confirm("确定删除当前用户?", "是否删除", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
-            .then(() => {
-              delMenu(data1.userId).then(() => {
-                ElMessage({
-                  message: "删除成功！",
-                  type: "success",
-                });
-                data.queryParams.current = 1
-                getList();
-              })
-          })
-          .catch(() => {
-            ElMessage({
-              type: "info",
-              message: "取消删除操作",
-            });
-          });
-      }
+    const handleDelete = (data1) => {
+      delMenu(data1.userId).then(() => {
+        ElMessage({
+          message: "删除成功！",
+          type: "success",
+        });
+        data.queryParams.current = 1
+        getList();
+      })
+
     };
 
     // 用户导出
@@ -509,12 +502,12 @@ export default {
       disabled,
       tableData,
       DepartmentList,
-      handleChange,
       dialogTitle,
       formLabelWidth,
       dialogFormVisible,
       form,
       treeSelectData,
+      handleChange,
       nodeCheck,
       nodeOnclick2,
       handleOk,
@@ -535,5 +528,9 @@ export default {
 <style lang="scss" scoped>
 .user_container {
   padding: 16px;
+}
+
+:deep(.el-form-item) {
+  margin-right: 10px;
 }
 </style>

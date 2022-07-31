@@ -8,16 +8,16 @@
 -->
 <template>
   <div class="sherly-page-wrapper">
-    <el-form ref="resetFormData" :model="form" class="sherly-form">
+    <el-form ref="resetFormData" :model="form" :inline="true" label-width="80px">
       <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="form.roleName" clearable />
+        <el-input v-model="form.roleName" style="width: 215px" clearable />
       </el-form-item>
-      <div class="sherly-operate-box">
+      <el-form-item>
         <el-button icon="Search" type="primary" @click="handleSearch">
           搜索
         </el-button>
         <el-button icon="Refresh" @click="handleReset">重置</el-button>
-      </div>
+      </el-form-item>
     </el-form>
 
     <SherlyTable
@@ -342,7 +342,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
 .tree-box {
   height: 180px;
   overflow: scroll;

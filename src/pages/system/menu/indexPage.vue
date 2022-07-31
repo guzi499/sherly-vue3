@@ -1,15 +1,15 @@
 <template>
-  <div class="menu-container">
+  <div class="sherly-page-wrapper">
     <!-- 菜单搜索框 -->
-    <el-form :model="data.queryParams" :inline="true">
-      <el-form-item label="菜单名称:">
-        <el-input v-model="data.queryParams.menuName" clearable />
+    <el-form :model="data.queryParams" :inline="true" label-width="80px">
+      <el-form-item label="菜单名称">
+        <el-input v-model="data.queryParams.menuName" style="width: 215px" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button icon="Search" type="primary" @click="handleSearch">
           搜索
         </el-button>
-        <el-button icon="Refresh" @click="handleReset"> 重置 </el-button>
+        <el-button icon="Refresh" @click="handleReset"> 重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
@@ -56,7 +56,14 @@
       <el-table-column label="操作" align="center" width="250" fixed="right">
         <template #default="scope">
           <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)">修改</el-link>
-          <el-link type="danger" @click="handleDelete('2', scope.$index, scope.row)">删除</el-link>
+          <el-popconfirm
+              title="确定删除本条数据?"
+              @confirm="handleDelete(scope.$index, scope.row)"
+          >
+            <template #reference>
+              <el-link type="danger"> 删除</el-link>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -191,7 +198,7 @@
 </template>
 
 <script>
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 import { reactive, ref, onMounted, getCurrentInstance } from "vue";
 import { getMenu } from "@/api/system/menu";
 import { addMenu, delMenu, updateMenu } from "@/api/system/menu";
@@ -383,33 +390,19 @@ export default {
     };
 
     // 点击删除按钮
-    const handleDelete = (type, index, data) => {
-      if (type === "2") {
-        ElMessageBox.confirm("确定删除本条数据？", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
+    const handleDelete = (index, data) => {
+      delMenu(data.menuId)
           .then(() => {
-            delMenu(data.menuId)
-              .then(() => {
-                ElMessage({
-                  type: "success",
-                  message: "删除成功",
-                });
-                getList(data.queryParams);
-              })
-              .catch((err) => {
-                return err;
-              });
-          })
-          .catch(() => {
             ElMessage({
-              type: "info",
-              message: "取消删除操作",
+              type: "success",
+              message: "删除成功",
             });
-          });
-      }
+            getList(data.queryParams);
+          })
+          .catch((err) => {
+            return err;
+              });
+
     };
 
     // 点击确定按钮
@@ -515,10 +508,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.menu-container {
-  padding: 16px;
-}
-
 .el-row {
   margin: 0.5rem;
 }

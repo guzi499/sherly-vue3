@@ -5,23 +5,24 @@
 <template>
   <div class="sherly-page-wrapper">
     <el-form
-      ref="resetFormData"
-      :model="form"
-      class="sherly-form"
-      :inline="true"
+        ref="resetFormData"
+        :model="form"
+        :inline="true"
+        label-width="80px"
     >
       <el-form-item label="租户代码" prop="tenantCode">
-        <el-input v-model="form.tenantCode" />
+        <el-input v-model="form.tenantCode" style="width: 215px"/>
       </el-form-item>
       <el-form-item label="租户名称" prop="tenantName">
-        <el-input v-model="form.tenantName" />
+        <el-input v-model="form.tenantName" style="width: 215px"/>
       </el-form-item>
-      <div class="sherly-operate-box">
+      <el-form-item>
         <el-button icon="Search" type="primary" @click="handleSearch"
-          >搜索</el-button
+        >搜索
+        </el-button
         >
         <el-button icon="Refresh" @click="handleReset">重置</el-button>
-      </div>
+      </el-form-item>
     </el-form>
     <SherlyTable
       :loading="loading"

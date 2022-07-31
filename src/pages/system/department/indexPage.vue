@@ -1,9 +1,9 @@
 <template>
-  <div class="menu-container">
+  <div class="sherly-page-wrapper">
     <!-- 菜单搜索框 -->
-    <el-form :model="data.queryParams" :inline="true">
-      <el-form-item label="部门名称:">
-        <el-input v-model="data.queryParams.departmentName" clearable/>
+    <el-form :model="data.queryParams" :inline="true" label-width="80px">
+      <el-form-item label="部门名称" prop="departmentName">
+        <el-input v-model="data.queryParams.departmentName" style="width: 215px" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
@@ -40,7 +40,14 @@
       <el-table-column label="操作" align="center" width="250">
         <template #default="scope">
           <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)">修改</el-link>
-          <el-link type="danger" @click="handleDelete('2', scope.$index, scope.row)">删除</el-link>
+          <el-popconfirm
+              title="确定删除本条数据?"
+              @confirm="handleDelete(scope.row)"
+          >
+            <template #reference>
+              <el-link type="danger">删除</el-link>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -102,8 +109,8 @@
 </template>
 
 <script>
-import { ElMessage, ElMessageBox } from "element-plus";
-import { reactive, ref, onMounted, getCurrentInstance } from "vue";
+import {ElMessage} from "element-plus";
+import {reactive, ref, onMounted, getCurrentInstance} from "vue";
 import {
   getDepartmentListTree,
   addDepartment,
@@ -253,43 +260,27 @@ export default {
     };
 
     // 点击删除按钮
-    const handleDelete = (type, index, data) => {
-      if (type === "2") {
-        ElMessageBox.confirm("确定删除本条数据？", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
-          .then(() => {
-            delDepartment(data.departmentId)
-              .then(() => {
-                ElMessage({
-                  type: "success",
-                  message: "删除成功",
-                });
-                getList(data.queryParams);
-              })
-              .catch((err) => {
-                return err;
-              });
-          })
-          .catch(() => {
-            ElMessage({
-              type: "info",
-              message: "取消删除操作",
-            });
-          });
-      }
+    const handleDelete = (data) => {
+      delDepartment(data.departmentId).then(() => {
+        ElMessage({
+          type: "success",
+          message: "删除成功",
+        });
+        getList(data.queryParams);
+      }).catch((err) => {
+        return err;
+      });
     };
     // 点击确定按钮
     const handleOk = () => {
       // 新增
       if (dialogType.value === "1") {
         addDepartment(form.value)
-          .then(() => {
-            getList(data.queryParams);
-          })
-          .catch(() => {})
+            .then(() => {
+              getList(data.queryParams);
+            })
+            .catch(() => {
+            })
           .finally(() => {
             reset();
             dialogFormVisible.value = false;
@@ -337,10 +328,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.menu-container {
-  padding: 16px;
-}
-
 .el-row {
   margin: 0.5rem;
 }

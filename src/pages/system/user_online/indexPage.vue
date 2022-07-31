@@ -8,14 +8,14 @@
 -->
 <template>
   <div class="sherly-page-wrapper">
-    <el-form ref="resetFormData" :model="form" class="sherly-form">
+    <el-form ref="resetFormData" :model="form" :inline="true" label-width="80px" style="display: flex; align-items: center;">
       <el-form-item label="手机号" prop="phone">
-        <el-input v-model="form.phone" />
+        <el-input style="width: 215px" v-model="form.phone"/>
       </el-form-item>
-      <div class="sherly-operate-box">
+      <el-form-item>
         <el-button type="primary" @click="handleSearch">搜索</el-button>
         <el-button @click="handleReset">重置</el-button>
-      </div>
+      </el-form-item>
     </el-form>
     <SherlyTable
       :loading="loading"
