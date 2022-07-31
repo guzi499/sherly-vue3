@@ -371,6 +371,6 @@ export default {
 <style lang="scss" scoped>
 .tree-box {
   height: 180px;
-  overflow: scroll;
+  overflow: auto;
 }
 </style>
