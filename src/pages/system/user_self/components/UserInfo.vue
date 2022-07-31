@@ -3,56 +3,56 @@
     <ul>
       <li>
         <span class="icon">
-          <i class="iconfont icon-nicheng"></i>
+          <i class="iconfont icon-avatar"></i>
           昵称：
         </span>
         <span>{{ curUserInfo.nickname }}</span>
       </li>
       <li>
         <span class="icon">
-          <i class="iconfont icon-zuoxixingming"></i>
+          <i class="iconfont icon-idcard"></i>
           姓名：
         </span>
         <span>{{ curUserInfo.realName }}</span>
       </li>
       <li>
         <span class="icon">
-          <i class="iconfont icon-xingbie"></i>
+          <i class="iconfont icon-gender"></i>
           性别：
         </span>
         <span>{{ curUserInfo.genderStr }}</span>
       </li>
       <li>
         <span class="icon">
-          <i class="iconfont icon-shoujihao"></i>
+          <i class="iconfont icon-phone"></i>
           手机号：
         </span>
         <span>{{ curUserInfo.phone }}</span>
       </li>
       <li>
         <span class="icon">
-          <i class="iconfont icon-youxiang"></i>
+          <i class="iconfont icon-email"></i>
           邮箱：
         </span>
         <span>{{ curUserInfo.email }}</span>
       </li>
       <li>
         <span class="icon">
-          <i class="iconfont icon-jiaoseguanlizuhu"></i>
+          <i class="iconfont icon-tenant"></i>
           租户：
         </span>
         <span>{{ curUserInfo.tenantName }}</span>
       </li>
       <li>
         <span class="icon">
-          <i class="iconfont icon-bumen"></i>
+          <i class="iconfont icon-tree"></i>
           部门：
         </span>
         <span>{{ curUserInfo.departmentName }}</span>
       </li>
       <li>
         <span class="icon">
-          <i class="iconfont icon-jiaose"></i>
+          <i class="iconfont icon-role"></i>
           角色：
         </span>
         <span>{{
@@ -62,7 +62,7 @@
       </li>
       <li>
         <span class="icon">
-          <i class="iconfont icon-chuangjianshijian"></i>
+          <i class="iconfont icon-time"></i>
           创建时间：
         </span>
         <span>{{ curUserInfo.createTime }}</span>

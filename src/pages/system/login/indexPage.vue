@@ -25,7 +25,7 @@
               >
                 <template #prefix>
                   <el-icon class="input-prefix-icon" color="#000">
-                    <avatar />
+                    <HomeFilled />
                   </el-icon>
                 </template>
               </el-input>

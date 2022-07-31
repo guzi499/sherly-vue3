@@ -1,8 +1,6 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 3496019 */
-  src: url('iconfont.woff2?t=1658658544630') format('woff2'),
-       url('iconfont.woff?t=1658658544630') format('woff'),
-       url('iconfont.ttf?t=1658658544630') format('truetype');
+  font-family: "iconfont"; /* Project id  */
+  src: url('iconfont.ttf?t=1659306222272') format('truetype');
 }
 
 .iconfont {
@@ -13,55 +11,51 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-xianshikejian:before {
-  content: "\e8d4";
-}
-
-.icon-yincangbukejian:before {
-  content: "\e8d5";
-}
-
-.icon-kejian:before {
-  content: "\e73c";
-}
-
-.icon-bukejian:before {
-  content: "\ee34";
-}
-
-.icon-chuangjianshijian:before {
-  content: "\e650";
-}
-
-.icon-bumen:before {
+.icon-tree:before {
   content: "\e605";
 }
 
-.icon-shoujihao:before {
+.icon-phone:before {
   content: "\e62f";
 }
 
-.icon-youxiang:before {
+.icon-visible:before {
+  content: "\e8d4";
+}
+
+.icon-email:before {
   content: "\e908";
 }
 
-.icon-xingbie:before {
+.icon-gender:before {
   content: "\e604";
 }
 
-.icon-zuoxixingming:before {
+.icon-idcard:before {
   content: "\e672";
 }
 
-.icon-jiaose:before {
+.icon-role:before {
   content: "\e68e";
 }
 
-.icon-jiaoseguanlizuhu:before {
+.icon-time:before {
+  content: "\e650";
+}
+
+.icon-tenant:before {
   content: "\e649";
 }
 
-.icon-nicheng:before {
+.icon-gear:before {
+  content: "\e611";
+}
+
+.icon-system:before {
+  content: "\e688";
+}
+
+.icon-avatar:before {
   content: "\e633";
 }
 
