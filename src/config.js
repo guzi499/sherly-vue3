@@ -8,7 +8,7 @@
  */
 export default {
   // 最大请求时间
-  timeout: 5000,
+  timeout: 300000,
 
   // 记住密码状态下的token在Cookie中存储的天数，默认1天
   tokenCookieExpires: 1,
