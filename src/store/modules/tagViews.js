@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-09 12:00:36
- * @LastEditTime: 2022-06-14 01:36:45
+ * @LastEditTime: 2022-08-01 01:07:34
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/store/modules/tagViews.js
@@ -42,9 +42,9 @@ const actions = {
             currentRoute.fullPath.split("?")[0] === i.fullPath.split("?")[0]
         ).length === 0
       ) {
-        console.log(routePath, currentRoute)
-        if(currentRoute.fullPath === "/login") {
-          return
+        console.log(routePath, currentRoute);
+        if (currentRoute.fullPath === "/login") {
+          return;
         } else {
           commit("ADDROUTEPATH", currentRoute);
         }
@@ -91,11 +91,8 @@ const actions = {
     return new Promise((resolve) => {
       const routePath = [...state.routePath];
       const index = routePath.findIndex((i) => i.path === data.path);
-      commit(
-        "SETROUTEPATH",
-        [...routePath].splice(index, routePath.length - 1)
-      );
-      resolve([...routePath].splice(index, routePath.length - 1));
+      commit("SETROUTEPATH", [...routePath].splice(index, routePath.length));
+      resolve([...routePath].splice(index, routePath.length));
     });
   },
   delRightRoutePath({ commit }, data) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-08-01 00:25:18
+ * @LastEditTime: 2022-08-01 01:08:55
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
@@ -126,7 +126,7 @@
 import { reactive, onMounted, ref } from "vue";
 import SherlyTable from "@/components/SherlyTable.vue";
 import { getOssList, deleteOss, getOssAccessUrl } from "@/api/system/oss";
-import { ElMessage, ElLoading } from "element-plus";
+import { ElMessage, ElLoading, ElNotification } from "element-plus";
 
 export default {
   components: { SherlyTable },
@@ -235,8 +235,10 @@ export default {
     // 上传成功
     const handleOnSuccess = async (e) => {
       if (e.code !== "000") {
-        ElMessage({
+        ElNotification({
+          title: "警告",
           message: "上传失败！",
+          duration: 3000,
           type: "error",
         });
       } else {

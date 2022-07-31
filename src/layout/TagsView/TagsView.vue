@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:26:42
- * @LastEditTime: 2022-08-01 00:15:16
+ * @LastEditTime: 2022-08-01 01:05:53
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
@@ -46,6 +46,7 @@
     >
       <div
         v-for="(cell, index) in operateList"
+        v-show="!(isHome && index === 0)"
         :key="cell"
         @click="clickMenuCell(index)"
       >
@@ -64,6 +65,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
+    const isHome = ref(false);
     const routePathList = store.state.tagViews.routePath;
     let visible = ref(false);
     let top = ref(0);
@@ -142,6 +144,11 @@ export default {
     };
 
     const openMenu = (event, item) => {
+      if (item.meta?.title === "首页") {
+        isHome.value = true;
+      } else {
+        isHome.value = false;
+      }
       visible.value = true;
       top.value = event.clientY;
       left.value = event.clientX;
@@ -187,6 +194,7 @@ export default {
       openMenu,
       closeMenu,
       clickMenuCell,
+      isHome,
       visible,
       clickNote,
       left,
