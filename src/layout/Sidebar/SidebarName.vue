@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-07-24 22:30:06
+ * @LastEditTime: 2022-07-31 19:04:04
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -58,10 +58,10 @@
                       :class="'icon-' + item_3.icon"
                     />
                     <span>{{ item_3.menuName }}</span>
-                  </template></el-menu-item
-                >
-              </el-sub-menu></template
-            >
+                  </template>
+                </el-menu-item>
+              </el-sub-menu>
+            </template>
           </template>
         </el-sub-menu>
       </el-menu>

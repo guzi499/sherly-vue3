@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-07-31 02:28:50
+ * @LastEditTime: 2022-07-31 20:25:46
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/login/indexPage.vue
@@ -18,6 +18,20 @@
         <div class="login-layout-right-title">账号密码登录</div>
         <div class="login-layout-right-formbox">
           <el-form :model="loginForm" class="login-layout-right-formbox-elForm">
+            <el-form-item>
+              <el-input
+                class="login-layout-right-input"
+                placeholder="租户"
+                readonly
+                :modelValue="tenantDesc || '默认租户'"
+              >
+                <template #prefix>
+                  <el-icon class="input-prefix-icon" color="#000">
+                    <avatar />
+                  </el-icon>
+                </template>
+              </el-input>
+            </el-form-item>
             <el-form-item>
               <el-input
                 class="login-layout-right-input"
@@ -44,21 +58,29 @@
                 @keyup.enter="handlelogin()"
               >
                 <template #prefix>
-                  <el-icon class="input-prefix-icon" color="#000"
-                    ><unlock
-                  /></el-icon>
+                  <el-icon class="input-prefix-icon" color="#000">
+                    <unlock />
+                  </el-icon>
                 </template>
               </el-input>
             </el-form-item>
-            <el-form-item>
+
+            <div class="button-wrapper">
               <el-button
-                class="login-layout-right-button"
+                class="login-button"
+                @click="handleChangeTenant()"
+                :disabled="!(loginForm.phone && loginForm.password)"
+              >
+                切 换 租 户
+              </el-button>
+              <el-button
+                class="login-button"
                 @click="handlelogin()"
-                style="width: 60%; margin: 0 auto"
+                :disabled="!(loginForm.phone && loginForm.password)"
               >
                 登 录
               </el-button>
-            </el-form-item>
+            </div>
           </el-form>
         </div>
       </div>
@@ -74,12 +96,13 @@
           :label="list.tenantCode"
           v-for="list in tenantList"
           :key="list.tenantCode"
-          >{{ list.tenantName }}</el-radio
         >
+          {{ list.tenantName }}
+        </el-radio>
       </el-radio-group>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary" @click="confirm"> 确定</el-button>
+          <el-button type="primary" @click="confirm"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -88,13 +111,10 @@
 <script>
 import { reactive, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import {
-  login,
-  //  getAvailablelist
-} from "@/api/system/login";
+import { login, getAvailablelistCheck } from "@/api/system/login";
 import { heartBzeat } from "@/api/system/generic";
 import Cookies from "js-cookie";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElLoading } from "element-plus";
 
 export default {
   setup() {
@@ -106,6 +126,8 @@ export default {
     const dialogVisible = ref(false);
     const selectTenant = ref(null);
     const tenantList = reactive([]);
+    let tenantDesc = ref(null);
+    let tenantCode = ref(null);
 
     onMounted(() => {
       getCookie();
@@ -113,20 +135,14 @@ export default {
     });
 
     const handlelogin = () => {
-      login(loginForm).then((res) => {
+      const data = loginForm;
+      if (tenantCode.value) {
+        data.tenantCode = tenantCode.value;
+      }
+      login(data).then((res) => {
         localStorage.setItem("token", res.token);
         router.replace({ path: "/home" });
       });
-      // .catch((res) => {
-      //   if (res.code)
-      //     getAvailablelist(loginForm.phone).then((_res) => {
-      //       tenantList.length = 0;
-      //       _res.forEach((i) => {
-      //         tenantList.push(i);
-      //       });
-      //       dialogVisible.value = true;
-      //     });
-      // });
     };
 
     // 获取cookie
@@ -142,6 +158,22 @@ export default {
       });
     };
 
+    // 切换租户
+    const handleChangeTenant = async () => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      const result = await getAvailablelistCheck(loginForm);
+      tenantList.length = 0;
+      result.forEach((i) => {
+        tenantList.push(i);
+      });
+      loading.close();
+      dialogVisible.value = true;
+    };
+
     // 取消
     const handleClose = () => {
       dialogVisible.value = false;
@@ -151,8 +183,11 @@ export default {
     // 确定
     const confirm = () => {
       if (selectTenant.value) {
+        tenantCode.value = selectTenant.value;
+        tenantDesc.value = tenantList.find(
+          (i) => selectTenant.value === i.tenantCode
+        ).tenantName;
         dialogVisible.value = false;
-        router.replace({ path: "/home" });
       } else {
         ElMessage({
           message: "请选择租户",
@@ -165,10 +200,12 @@ export default {
       dialogVisible,
       selectTenant,
       handlelogin,
+      handleChangeTenant,
       getCookie,
       handleClose,
       confirm,
       tenantList,
+      tenantDesc,
     };
   },
 };
@@ -191,7 +228,14 @@ export default {
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-
+  .button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .login-button {
+      width: 45%;
+    }
+  }
   &-left {
     background: url("@/assets/images/bg_img.png");
     background-size: 100% 100%;
