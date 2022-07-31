@@ -1,13 +1,45 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-07-31 21:26:35
+ * @LastEditTime: 2022-07-31 23:03:14
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
 -->
 <template>
   <div class="sherly-page-wrapper">
+    <el-form
+      ref="resetFormData"
+      :model="form"
+      :inline="true"
+      label-width="80px"
+    >
+      <el-form-item label="配置id" prop="configId">
+        <el-input v-model="form.configId" style="width: 215px" />
+      </el-form-item>
+      <el-form-item label="文件相对路径" label-width="120px" prop="path">
+        <el-input v-model="form.path" style="width: 215px" />
+      </el-form-item>
+      <el-form-item label="创建时间">
+        <el-date-picker
+          clearable
+          style="width: 355px"
+          v-model="datetimerange"
+          type="datetimerange"
+          range-separator="至"
+          format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="Search" type="primary" @click="handleSearch">
+          搜索
+        </el-button>
+        <el-button icon="Refresh" @click="handleReset">重置</el-button>
+      </el-form-item>
+    </el-form>
     <SherlyTable
       :tableData="tableData.result"
       style="width: 100%"
@@ -72,7 +104,7 @@
   </div>
 </template>
 <script>
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, ref } from "vue";
 import SherlyTable from "@/components/SherlyTable.vue";
 import { getOssList, deleteOss, getOssAccessUrl } from "@/api/system/oss";
 import { ElMessage, ElLoading } from "element-plus";
@@ -83,18 +115,24 @@ export default {
     let form = reactive({
       current: 1,
       size: 10,
+      path: "",
+      configId: "",
     });
     const action = "/api/oss/upload_one";
     const data = reactive({
       token: localStorage.getItem("token"),
       path: "",
     });
-    const tableData = reactive({});
+    const datetimerange = ref([]);
+    const resetFormData = ref(null);
+
+    const tableData = reactive({ result: [], total: 0, current: 1, size: 10 });
 
     onMounted(() => {
       handleOssLists();
     });
 
+    // 获取文件列表
     const handleOssLists = async () => {
       const data = await getOssList(form);
       Object.keys(data).forEach((key) => {
@@ -102,6 +140,23 @@ export default {
       });
     };
 
+    // 搜索
+    const handleSearch = () => {
+      if (datetimerange.value.length > 0) {
+        form.beginTime = datetimerange.value[0];
+        form.endTime = datetimerange.value[1];
+      }
+      handleOssLists();
+    };
+
+    // 重置
+    const handleReset = () => {
+      datetimerange.value = [];
+      resetFormData.value.resetFields();
+      handleOssLists();
+    };
+
+    // 格式化文件大小
     const formatFileSize = (fileSize) => {
       if (fileSize < 1024) {
         return fileSize + "B";
@@ -208,9 +263,13 @@ export default {
       formatFileSize,
       handleOnSuccess,
       handleCopy,
+      handleSearch,
+      handleReset,
+      datetimerange,
       tableData,
       action,
       data,
+      form,
     };
   },
 };

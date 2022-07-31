@@ -5,22 +5,74 @@
 <template>
   <div class="sherly-page-wrapper">
     <el-form
-        ref="resetFormData"
-        :model="form"
-        :inline="true"
-        label-width="80px"
+      ref="resetFormData"
+      :model="form"
+      :inline="true"
+      label-width="80px"
     >
       <el-form-item label="租户代码" prop="tenantCode">
-        <el-input v-model="form.tenantCode" style="width: 215px"/>
+        <el-input v-model="form.tenantCode" style="width: 215px" />
       </el-form-item>
       <el-form-item label="租户名称" prop="tenantName">
-        <el-input v-model="form.tenantName" style="width: 215px"/>
+        <el-input v-model="form.tenantName" style="width: 215px" />
+      </el-form-item>
+      <el-form-item label="联系人" prop="contactUser">
+        <el-input v-model="form.contactUser" style="width: 215px" />
+      </el-form-item>
+      <el-form-item label="联系电话" prop="contactPhone">
+        <el-input v-model="form.contactPhone" style="width: 215px" />
+      </el-form-item>
+      <el-form-item label="创建时间">
+        <el-date-picker
+          clearable
+          style="width: 355px"
+          v-model="datetimerange"
+          type="datetimerange"
+          range-separator="至"
+          format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        />
+      </el-form-item>
+      <el-form-item label="过期时间">
+        <el-date-picker
+          clearable
+          style="width: 355px"
+          v-model="_datetimerange"
+          type="datetimerange"
+          range-separator="至"
+          format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        />
+      </el-form-item>
+      <el-form-item label="用户上限">
+        <el-form-item prop="beginUserLimit" style="margin: 0">
+          <el-input
+            style="width: 94px"
+            v-model="form.beginUserLimit"
+            placeholder="请输入"
+            clearable
+          />
+        </el-form-item>
+        <span style="width: 28px; text-align: center; user-select: none">
+          ~
+        </span>
+        <el-form-item prop="endUserLimit" style="margin: 0">
+          <el-input
+            style="width: 94px"
+            v-model="form.endUserLimit"
+            placeholder="请输入"
+            clearable
+          />
+        </el-form-item>
       </el-form-item>
       <el-form-item>
-        <el-button icon="Search" type="primary" @click="handleSearch"
-        >搜索
-        </el-button
-        >
+        <el-button icon="Search" type="primary" @click="handleSearch">
+          搜索
+        </el-button>
         <el-button icon="Refresh" @click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>
@@ -84,11 +136,15 @@
           align="center"
         >
           <template #default="scope">
-            <el-link type="primary" @click="handleEditMenu(scope.row.tenantId)">菜单配置</el-link>
-            <el-link type="primary" @click="handleEdit(scope.row)">修改</el-link>
+            <el-link type="primary" @click="handleEditMenu(scope.row.tenantId)">
+              菜单配置
+            </el-link>
+            <el-link type="primary" @click="handleEdit(scope.row)">
+              修改
+            </el-link>
             <el-popconfirm
-                title="确定删除本条数据?"
-                @confirm="handleDelete(scope.row)"
+              title="确定删除本条数据?"
+              @confirm="handleDelete(scope.row)"
             >
               <template #reference>
                 <el-link type="danger">删除</el-link>
@@ -102,18 +158,18 @@
       <div class="tree-box">
         <div class="tree-box">
           <el-tree
-              ref="tenantTree"
-              :check-strictly="!isStrictly"
-              :data="menuTree"
-              show-checkbox
-              node-key="menuId"
-              :props="{
+            ref="tenantTree"
+            :check-strictly="!isStrictly"
+            :data="menuTree"
+            show-checkbox
+            node-key="menuId"
+            :props="{
               children: 'children',
               label: 'menuName',
             }"
-              default-expand-all
-              :default-checked-keys="tenantListMenu"
-              @check-change="handleMenuTreeCheckChange"
+            default-expand-all
+            :default-checked-keys="tenantListMenu"
+            @check-change="handleMenuTreeCheckChange"
           />
         </div>
       </div>
@@ -176,7 +232,7 @@
   </div>
 </template>
 <script>
-import {reactive, ref, onMounted, watch, getCurrentInstance} from "vue";
+import { reactive, ref, onMounted, watch, getCurrentInstance } from "vue";
 import {
   getTenant,
   delTenant,
@@ -196,6 +252,10 @@ export default {
     let form = reactive({
       tenantName: "",
       tenantCode: "",
+      contactPhone: "",
+      contactUser: "",
+      beginUserLimit: "",
+      endUserLimit: "",
       current: 1,
       size: 10,
     });
@@ -205,14 +265,15 @@ export default {
       handleGetMenuTree();
     });
 
-    const {proxy} = getCurrentInstance()
+    const { proxy } = getCurrentInstance();
     const resetFormData = ref(null);
     const tenantFormRef = ref(null);
     const tableData = reactive({});
     const menuTree = reactive([]);
     const tenantListMenu = reactive([]);
+    const datetimerange = ref([]);
+    const _datetimerange = ref([]);
     const isStrictly = ref(false);
-
     let tenantId = ref(null);
     let isEdit = ref(false);
     let dialogVisible = ref(false);
@@ -263,9 +324,9 @@ export default {
 
     watch(dialogVisible, (val) => {
       if (!val) {
-        isStrictly.value = false
+        isStrictly.value = false;
       }
-    })
+    });
 
     // 租户详情数据响应式
     let tenantForm = reactive(inittenantForm());
@@ -278,6 +339,14 @@ export default {
     // 获取列表
     const getList = async () => {
       loading.value = true;
+      if (datetimerange.value.length > 0) {
+        form.beginTime = datetimerange.value[0];
+        form.endTime = datetimerange.value[1];
+      }
+      if (_datetimerange.value.length > 0) {
+        form.beginExpireTime = _datetimerange.value[0];
+        form.endExpireTime = _datetimerange.value[1];
+      }
       const data = await getTenant(form);
       Object.keys(data).forEach((i) => {
         tableData[i] = data[i];
@@ -294,6 +363,8 @@ export default {
 
     // 重置
     const handleReset = () => {
+      datetimerange.value = [];
+      _datetimerange.value = [];
       resetFormData.value.resetFields();
       getList();
     };
@@ -381,30 +452,20 @@ export default {
       });
       dialogMenuVisible.value = true;
       await proxy.$nextTick(() => {
-        isStrictly.value = true
-      })
+        isStrictly.value = true;
+      });
     };
 
     // 修改租户菜单树
     const handleMenuTreeCheckChange = () => {
-      const ary = proxy.$refs.tenantTree.getHalfCheckedNodes()
+      const ary = proxy.$refs.tenantTree.getHalfCheckedNodes();
       ary.forEach((item) => {
-        proxy.$refs.tenantTree.setChecked(item.menuId, true)
-      })
+        proxy.$refs.tenantTree.setChecked(item.menuId, true);
+      });
       tenantListMenu.length = 0;
-      proxy.$refs.tenantTree.getCheckedKeys().forEach(item =>{
-        tenantListMenu.push(item)
-      })
-      console.log(tenantListMenu)
-      // if (checked) {
-      //   tenantListMenu.push(toRaw(data).menuId);
-      // } else {
-      //   const menuIds = tenantListMenu.filter((i) => i !== toRaw(data).menuId);
-      //   tenantListMenu.length = 0;
-      //   menuIds.forEach((i) => {
-      //     tenantListMenu.push(i);
-      //   });
-      // }
+      proxy.$refs.tenantTree.getCheckedKeys().forEach((item) => {
+        tenantListMenu.push(item);
+      });
     };
 
     // 菜单权限取消
@@ -454,6 +515,8 @@ export default {
       rules,
       tenantListMenu,
       isStrictly,
+      datetimerange,
+      _datetimerange,
     };
   },
 };

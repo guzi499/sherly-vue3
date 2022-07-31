@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:38
- * @LastEditTime: 2022-07-21 23:58:25
+ * @LastEditTime: 2022-07-31 23:04:46
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/AppMain/AppMain.vue
@@ -10,9 +10,9 @@
   <div class="AppMain-wrapper">
     <div class="AppMain-wrapper-content">
       <div class="AppMain-wrapper-page">
-        <transition :name="transitionName">
-          <router-view />
-        </transition>
+        <!-- <transition> -->
+        <router-view />
+        <!-- </transition> -->
       </div>
     </div>
   </div>
