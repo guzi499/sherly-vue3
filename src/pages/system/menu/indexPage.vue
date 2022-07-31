@@ -212,7 +212,7 @@ export default {
     const iconfontList = iconfont.glyphs;
     const iconPopoverVisible = ref(false);
     onMounted(() => {
-      getList(data.queryParams);
+      getList();
     });
 
     const data = reactive({
@@ -225,8 +225,7 @@ export default {
 
     // 根据查询条件搜索
     const handleSearch = () => {
-      data.queryParams.pageNum = 1;
-      getList(data.queryParams);
+      menuList.value = handleTreeData(menuList.value, data.queryParams.menuName);
     };
 
     // 处理展示数据
@@ -255,18 +254,18 @@ export default {
         pageSize: 1,
         pageNum: 10,
       };
-      getList(data.queryParams);
+      getList();
     };
 
     // 查询菜单列表信息
     const menuList = ref([]);
-    const getList = (value) => {
+    const getList = () => {
       loading.value = true;
-      getMenu(value).then((res) => {
+      getMenu(data.queryParams).then((res) => {
         menuList.value = res;
-        if (value.menuName) {
-          menuList.value = handleTreeData(menuList.value, value.menuName);
-        }
+        // if (data.queryParams.menuName) {
+        //   menuList.value = handleTreeData(menuList.value, data.queryParams.menuName);
+        // }
         setTimeout(() => {
           loading.value = false;
         }, 100);
@@ -285,9 +284,6 @@ export default {
       menuName: [
         { required: true, message: "请输入菜单名称", trigger: "blur" },
       ],
-      // permission: [
-      //   { required: true, message: '请输入权限标识', trigger: 'blur' }
-      // ],
       link: [{ required: true, message: "请输入菜单路径", trigger: "blur" }],
 
       icon: [{ required: true, message: "请选择菜单图标", trigger: "blur" }],
@@ -327,9 +323,6 @@ export default {
     const reset = () => {
       form.value = {};
       treeDatas.value = "";
-      // setTimeout(() => {
-      //   proxy.$refs.ruleForm.resetFields();
-      // }, 100);
     };
 
     // 选中弹框中的树形数据
@@ -396,7 +389,7 @@ export default {
               type: "success",
               message: "删除成功",
             });
-            getList(data.queryParams);
+            getList();
           })
           .catch((err) => {
             return err;
@@ -427,7 +420,7 @@ export default {
           if (dialogType.value === "1") {
             addMenu(_obj.value)
                 .then(() => {
-                  getList(data.queryParams);
+                  getList();
                 })
                 .catch(() => {
                 })
@@ -440,7 +433,7 @@ export default {
           if (dialogType.value === "2") {
             updateMenu(_obj.value)
               .then(() => {
-                getList(data.queryParams);
+                getList();
               })
               .catch(() => {})
               .finally(() => {
