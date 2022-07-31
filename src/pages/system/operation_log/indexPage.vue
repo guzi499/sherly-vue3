@@ -72,7 +72,9 @@
         <el-table-column prop="logId" label="日志id" width="100" align="center"/>
         <el-table-column prop="type" label="日志类型" width="80" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <el-tag>{{ scope.row.type === 1 ? '异常' : '正常' }}</el-tag>
+            <el-tag v-for="item in logType" :key="item.value" v-show="scope.row.type === item.value" :type="item.color">
+              {{ scope.row.type === item.value ? item.label : '' }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip/>
@@ -82,7 +84,7 @@
         <el-table-column prop="os" label="请求设备" align="center" show-overflow-tooltip width="180px"/>
         <el-table-column prop="address" label="请求地址" align="center" show-overflow-tooltip/>
         <el-table-column prop="browser" label="请求浏览器" align="center" show-overflow-tooltip width="120px"/>
-        <el-table-column prop="duration" label="耗时" align="center">
+        <el-table-column prop="duration" label="耗时" align="center" show-overflow-tooltip>
           <template #default="scope">
             <span>{{scope.row.duration + 'ms'}}</span>
           </template>
@@ -152,6 +154,19 @@ export default {
       }, {
         value: 3,
         label: 'DELETE'
+      }
+    ])
+
+    /* 日志类型枚举 */
+    const logType = reactive([
+      {
+        value: 0,
+        label: '正常',
+        color: 'primary'
+      }, {
+        value: 1,
+        label: '异常',
+        color: 'danger'
       }
     ])
     /* 查看日志详情数据 */
@@ -242,7 +257,8 @@ export default {
       handleSearch,
       handleReset,
       datetimerange,
-      requestType
+      requestType,
+      logType
     }
   }
 }
