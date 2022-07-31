@@ -15,7 +15,7 @@
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end">
       <el-col :span="1.5">
-        <el-button type="success" plain size="small" @click="handleEdit('1')">
+        <el-button type="primary" size="small" @click="handleEdit('1')">
           新增
         </el-button>
       </el-col>
@@ -55,19 +55,8 @@
       <el-table-column label="创建时间" prop="createTime" align="center" />
       <el-table-column label="操作" align="center" width="250" fixed="right">
         <template #default="scope">
-          <el-button
-            type="text"
-            @click="handleEdit('2', scope.$index, scope.row)"
-          >
-            修改
-          </el-button>
-          <el-button
-            class="delete"
-            type="text"
-            @click="handleDelete('2', scope.$index, scope.row)"
-          >
-            删除
-          </el-button>
+          <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)">修改</el-link>
+          <el-link type="danger" @click="handleDelete('2', scope.$index, scope.row)">删除</el-link>
         </template>
       </el-table-column>
     </el-table>
@@ -526,12 +515,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-a {
-  color: #000;
-  &:hover {
-    color: rgb(9, 130, 217);
-  }
-}
 .menu-container {
   padding: 16px;
 }

@@ -49,11 +49,11 @@
         <el-table-column fixed="right" label="操作" min-width="150">
           <template #default="scope">
             <el-popconfirm
-              title="确定删除本条数据?"
+              title="确定强退本条数据?"
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-button type="text">强退</el-button>
+                <el-link type="danger">强退</el-link>
               </template>
             </el-popconfirm>
           </template>

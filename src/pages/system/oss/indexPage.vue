@@ -3,7 +3,7 @@
  * @Date: 2022-07-15 22:24:27
  * @LastEditTime: 2022-07-30 23:59:16
  * @LastEditors: lihaoyu
- * @Description: 
+ * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
 -->
 <template>
@@ -31,7 +31,7 @@
           :before-upload="handBeforeUpload"
           :show-file-list="false"
         >
-          <el-button type="success" size="small">上传文件</el-button>
+          <el-button type="primary" size="small">上传文件</el-button>
         </el-upload>
       </template>
       <template #table>
@@ -51,18 +51,18 @@
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
-            <el-button type="text" @click="handleCopy(scope.row)"
-              >复制地址</el-button
+            <el-link type="primary" @click="handleCopy(scope.row)"
+              >复制地址</el-link
             >
-            <el-button type="text" @click="handleDownload(scope.row)">
+            <el-link type="primary" @click="handleDownload(scope.row)">
               下载
-            </el-button>
+            </el-link>
             <el-popconfirm
               title="确定删除本条数据?"
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-button type="text" style="color: #f56c6c"> 删除 </el-button>
+                <el-link type="danger" style="color: #f56c6c"> 删除 </el-link>
               </template>
             </el-popconfirm>
           </template>

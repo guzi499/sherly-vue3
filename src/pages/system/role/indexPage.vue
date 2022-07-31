@@ -32,7 +32,7 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="success" plain @click="handleAddRole" size="small"
+        <el-button type="primary" @click="handleAddRole" size="small"
           >新增
         </el-button>
       </template>
@@ -46,13 +46,13 @@
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
-            <el-button type="text" @click="handleEdit(scope.row)">修改</el-button>
+            <el-link type="primary" @click="handleEdit(scope.row)">修改</el-link>
             <el-popconfirm
               title="确定删除本条数据?"
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-button class="delete" type="text">删除</el-button>
+                <el-link type="danger">删除</el-link>
               </template>
             </el-popconfirm>
           </template> </el-table-column
@@ -342,13 +342,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-a {
-  color: #000;
-
-  &:hover {
-    color: rgb(9, 130, 217);
-  }
-}
 
 .tree-box {
   height: 180px;

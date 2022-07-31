@@ -1,10 +1,6 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-05-22 20:52:14
- * @LastEditTime: 2022-07-31 02:58:36
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/tenant/indexPage.vue
+ * @Author: 陈雪丽
+ * @Date: 2022-7-31
 -->
 <template>
   <div class="sherly-page-wrapper">
@@ -39,7 +35,7 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="success" plain @click="handleaddTenant" size="small"
+        <el-button type="primary" @click="handleaddTenant" size="small"
           >新增
         </el-button>
       </template>
@@ -87,22 +83,14 @@
           align="center"
         >
           <template #default="scope">
-            <el-button
-              type="text"
-              style="color: #67c23a"
-              @click="handleEditMenu(scope.row.tenantId)"
-            >
-              菜单配置
-            </el-button>
-            <el-button type="text" @click="handleEdit(scope.row)">
-              修改
-            </el-button>
+            <el-link type="primary" @click="handleEditMenu(scope.row.tenantId)">菜单配置</el-link>
+            <el-link type="primary" @click="handleEdit(scope.row)">修改</el-link>
             <el-popconfirm
-              title="确定删除本条数据?"
-              @confirm="handleDelete(scope.row)"
+                title="确定删除本条数据?"
+                @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-button type="text" class="delete">删除</el-button>
+                <el-link type="danger">删除</el-link>
               </template>
             </el-popconfirm>
           </template>
@@ -425,8 +413,6 @@ export default {
 
     // 菜单权限确认
     const handleMenuConfirm = async () => {
-      console.log(tenantListMenu)
-      console.log(tenantId.value)
       await updateTenantMenu({
         menuIds: tenantListMenu,
         tenantId: tenantId.value,
@@ -472,13 +458,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-a {
-  color: #000;
-
-  &:hover {
-    color: rgb(9, 130, 217);
-  }
-}
 .tree-box {
   height: 180px;
   overflow: scroll;

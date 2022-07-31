@@ -47,7 +47,7 @@
         <el-table-column prop="createTime" label="操作时间" align="center" width="180"/>
         <el-table-column prop="createTime" label="操作" align="center" width="100" fixed="right">
           <template #default="scope">
-            <a class="link_style"  @click="handleLogId(scope.row.logId)">详情</a>
+            <el-link type="primary" @click="handleLogId(scope.row.logId)">详情</el-link>
           </template>
         </el-table-column>
       </template>

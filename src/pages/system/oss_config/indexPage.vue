@@ -11,7 +11,7 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="success" plain @click="handleAddStorage" size="small"
+        <el-button type="primary" @click="handleAddStorage" size="small"
           >新增
         </el-button>
       </template>
@@ -42,20 +42,20 @@
               @confirm="handleEnable(scope.row.configId)"
             >
               <template #reference>
-                <el-button type="text" :disabled="scope.row.enable === 1">
+                <el-link type="primary" :disabled="scope.row.enable === 1">
                   启用
-                </el-button>
+                </el-link>
               </template>
             </el-popconfirm>
-            <el-button type="text" @click="handleEdit(scope.row.configId)">
+            <el-link type="primary" @click="handleEdit(scope.row.configId)">
               修改
-            </el-button>
+            </el-link>
             <el-popconfirm
               title="确定删除本条数据?"
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-button type="text" style="color: #f56c6c"> 删除 </el-button>
+                <el-link type="danger" style="color: #f56c6c"> 删除 </el-link>
               </template>
             </el-popconfirm>
           </template>

@@ -66,13 +66,13 @@
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
       <el-col :span="1.5">
-        <el-button type="warning" plain size="small" @click="handleExport()"
+        <el-button type="primary" size="small" @click="handleExport()"
         >导出
         </el-button
         >
       </el-col>
       <el-col :span="1.5">
-        <el-button type="success" plain size="small" @click="handleEdit('1')"
+        <el-button type="primary" size="small" @click="handleEdit('1')"
         >新增
         </el-button
         >
@@ -103,8 +103,8 @@
       <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
       <el-table-column prop="name" label="操作" width="180" align="center">
         <template #default="scope">
-          <el-button type="text" @click="handleEdit('2', scope.$index, scope.row)">修改</el-button>
-          <el-button class="delete" type="text" @click="handleDelete('2', scope.$index, scope.row)">删除</el-button>
+          <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)">修改</el-link>
+          <el-link type="danger" @click="handleDelete('2', scope.$index, scope.row)">删除</el-link>
         </template>
       </el-table-column>
     </el-table>
@@ -533,14 +533,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-a {
-  color: #000;
-
-  &:hover {
-    color: rgb(9, 130, 217);
-  }
-}
-
 .user_container {
   padding: 16px;
 }
