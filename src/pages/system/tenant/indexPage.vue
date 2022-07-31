@@ -178,24 +178,26 @@
       </template>
     </SherlyTable>
     <el-dialog v-model="dialogMenuVisible" title="租户菜单" width="480px">
-      <div class="tree-box">
-        <div class="tree-box">
-          <el-tree
-            ref="tenantTree"
-            :check-strictly="!isStrictly"
-            :data="menuTree"
-            show-checkbox
-            node-key="menuId"
-            :props="{
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="菜单权限" name="menu">
+          <div class="tree-box">
+            <el-tree
+                ref="tenantTree"
+                :check-strictly="!isStrictly"
+                :data="menuTree"
+                show-checkbox
+                node-key="menuId"
+                :props="{
               children: 'children',
               label: 'menuName',
             }"
-            default-expand-all
-            :default-checked-keys="tenantListMenu"
-            @check-change="handleMenuTreeCheckChange"
-          />
-        </div>
-      </div>
+                default-expand-all
+                :default-checked-keys="tenantListMenu"
+                @check-change="handleMenuTreeCheckChange"
+            />
+          </div>
+        </el-tab-pane>
+      </el-tabs>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="handleMenuCancel">取消</el-button>
@@ -271,6 +273,7 @@ import { ElMessage } from "element-plus";
 export default {
   components: { SherlyTable },
   setup() {
+    const activeName = ref("menu");
     const loading = ref(false);
     let form = reactive({
       tenantName: "",
@@ -540,6 +543,7 @@ export default {
       isStrictly,
       datetimerange,
       _datetimerange,
+      activeName
     };
   },
 };
