@@ -137,6 +137,12 @@
           align="center"
         />
         <el-table-column
+            prop="createTime"
+            label="创建时间"
+            width="220"
+            align="center"
+        />
+        <el-table-column
           fixed="right"
           label="操作"
           min-width="150"
