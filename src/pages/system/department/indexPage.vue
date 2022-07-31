@@ -124,21 +124,21 @@ export default {
     const loading = ref(false)
     const { proxy } = getCurrentInstance();
     onMounted(() => {
-      getList(data.queryParams);
+      getList();
       getDepartmentListFn();
     });
 
     const data = reactive({
       // 部门查询条件
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-      },
+      queryParams: {},
     });
 
     // 根据查询条件搜索
     const handleSearch = () => {
-      getList(data.queryParams);
+      departmentList.value = handleTreeData(
+          departmentList.value,
+          data.queryParams.departmentName
+      );
     };
 
     // 处理展示数据
@@ -163,25 +163,16 @@ export default {
 
     // 重置搜索框
     const handleReset = () => {
-      data.queryParams = {
-        pageSize: 1,
-        pageNum: 10,
-      };
-      getList(data.queryParams);
+      data.queryParams = {};
+      getList();
     };
 
     // 查询部门列表信息
     const departmentList = ref([]);
-    const getList = (value) => {
+    const getList = () => {
       loading.value = true;
-      getDepartmentListTree(value).then((res) => {
+      getDepartmentListTree(data.queryParams).then((res) => {
         departmentList.value = res;
-        if (value.departmentName) {
-          departmentList.value = handleTreeData(
-            departmentList.value,
-            value.departmentName
-          );
-        }
         setTimeout(() => {
           loading.value = false;
         }, 100)
@@ -266,7 +257,7 @@ export default {
           type: "success",
           message: "删除成功",
         });
-        getList(data.queryParams);
+        getList();
       }).catch((err) => {
         return err;
       });
@@ -277,7 +268,7 @@ export default {
       if (dialogType.value === "1") {
         addDepartment(form.value)
             .then(() => {
-              getList(data.queryParams);
+              getList();
             })
             .catch(() => {
             })
@@ -290,7 +281,7 @@ export default {
       if (dialogType.value === "2") {
         updateDepartment(form.value)
           .then(() => {
-            getList(data.queryParams);
+            getList();
           })
           .catch(() => {})
           .finally(() => {
