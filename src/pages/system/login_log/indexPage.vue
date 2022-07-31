@@ -11,7 +11,9 @@
         </el-select>
       </el-form-item>
       <el-form-item label="登录结果">
-        <el-input style="width: 215px" v-model="queryParams.result" clearable/>
+        <el-select v-model="queryParams.result" placeholder="请选择登录结果" clearable style="width: 215px">
+          <el-option v-for="item in loginResults" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="登录时间">
         <el-date-picker
