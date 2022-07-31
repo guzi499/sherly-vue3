@@ -69,7 +69,7 @@
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-link type="danger" v-permission="['role:remove_one']">
+                <el-link type="danger" v-permission="['role:remove_one']" v-show="scope.row.roleId !== 1">
                   删除
                 </el-link>
               </template>

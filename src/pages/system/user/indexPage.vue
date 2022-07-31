@@ -138,7 +138,7 @@
               @confirm="handleDelete(scope.row)"
           >
             <template #reference>
-              <el-link type="danger" v-permission="['user:remove_one']">删除</el-link>
+              <el-link type="danger" v-permission="['user:remove_one']" v-show="scope.row.userId !== 1">删除</el-link>
             </template>
           </el-popconfirm>
         </template>

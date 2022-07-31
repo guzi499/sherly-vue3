@@ -153,6 +153,7 @@
               type="primary"
               @click="handleEditMenu(scope.row.tenantId)"
               v-permission="['tenant:update_menu']"
+              v-show="scope.row.tenantId !== 1"
             >
               菜单配置
             </el-link>
