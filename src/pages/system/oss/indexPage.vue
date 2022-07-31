@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-07-31 23:03:14
+ * @LastEditTime: 2022-07-31 23:58:15
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
@@ -63,7 +63,13 @@
           :before-upload="handBeforeUpload"
           :show-file-list="false"
         >
-          <el-button type="primary" size="small">上传文件</el-button>
+          <el-button
+            type="primary"
+            size="small"
+            v-permission="['oss:upload_one']"
+          >
+            上传文件
+          </el-button>
         </el-upload>
       </template>
       <template #table>
@@ -83,10 +89,17 @@
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
-            <el-link type="primary" @click="handleCopy(scope.row)"
+            <el-link
+              type="primary"
+              @click="handleCopy(scope.row)"
+              v-permission="['oss:access_url']"
               >复制地址</el-link
             >
-            <el-link type="primary" @click="handleDownload(scope.row)">
+            <el-link
+              type="primary"
+              @click="handleDownload(scope.row)"
+              v-permission="['oss:download_one']"
+            >
               下载
             </el-link>
             <el-popconfirm
@@ -94,7 +107,13 @@
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-link type="danger" style="color: #f56c6c"> 删除 </el-link>
+                <el-link
+                  type="danger"
+                  style="color: #f56c6c"
+                  v-permission="['oss:remove_one']"
+                >
+                  删除
+                </el-link>
               </template>
             </el-popconfirm>
           </template>

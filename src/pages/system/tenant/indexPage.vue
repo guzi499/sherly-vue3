@@ -88,8 +88,13 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="primary" @click="handleaddTenant" size="small"
-          >新增
+        <el-button
+          type="primary"
+          @click="handleaddTenant"
+          v-permission="['tenant:save_one']"
+          size="small"
+        >
+          新增
         </el-button>
       </template>
       <template #table>
@@ -136,10 +141,18 @@
           align="center"
         >
           <template #default="scope">
-            <el-link type="primary" @click="handleEditMenu(scope.row.tenantId)">
+            <el-link
+              type="primary"
+              @click="handleEditMenu(scope.row.tenantId)"
+              v-permission="['tenant:update_menu']"
+            >
               菜单配置
             </el-link>
-            <el-link type="primary" @click="handleEdit(scope.row)">
+            <el-link
+              type="primary"
+              @click="handleEdit(scope.row)"
+              v-permission="['tenant:update_one']"
+            >
               修改
             </el-link>
             <el-popconfirm
@@ -147,7 +160,9 @@
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-link type="danger">删除</el-link>
+                <el-link type="danger" v-permission="['tenant:remove_one']">
+                  删除
+                </el-link>
               </template>
             </el-popconfirm>
           </template>

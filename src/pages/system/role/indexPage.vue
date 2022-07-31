@@ -1,14 +1,19 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-09 11:49:55
- * @LastEditTime: 2022-07-09 22:55:55
+ * @LastEditTime: 2022-07-31 23:55:07
  * @LastEditors: lihaoyu
  * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/rolePage.vue
+ * @FilePath: /sherly-vue3/src/pages/system/role/indexPage.vue
 -->
 <template>
   <div class="sherly-page-wrapper">
-    <el-form ref="resetFormData" :model="form" :inline="true" label-width="80px">
+    <el-form
+      ref="resetFormData"
+      :model="form"
+      :inline="true"
+      label-width="80px"
+    >
       <el-form-item label="角色名称" prop="roleName">
         <el-input v-model="form.roleName" style="width: 215px" clearable />
       </el-form-item>
@@ -32,8 +37,13 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="primary" @click="handleAddRole" size="small"
-          >新增
+        <el-button
+          type="primary"
+          @click="handleAddRole"
+          size="small"
+          v-permission="['role:save_one']"
+        >
+          新增
         </el-button>
       </template>
       <template #table>
@@ -41,22 +51,32 @@
           prop="roleName"
           label="角色名称"
           width="180"
-          align="center" />
+          align="center"
+        />
         <el-table-column prop="description" label="描述" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
-            <el-link type="primary" @click="handleEdit(scope.row)">修改</el-link>
+            <el-link
+              type="primary"
+              @click="handleEdit(scope.row)"
+              v-permission="['role:update_one']"
+            >
+              修改
+            </el-link>
             <el-popconfirm
               title="确定删除本条数据?"
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-link type="danger">删除</el-link>
+                <el-link type="danger" v-permission="['role:remove_one']">
+                  删除
+                </el-link>
               </template>
             </el-popconfirm>
-          </template> </el-table-column
-      ></template>
+          </template>
+        </el-table-column>
+      </template>
     </SherlyTable>
     <el-dialog
       v-model="dialogVisible"
@@ -82,18 +102,18 @@
         <el-tab-pane label="菜单权限" name="menu">
           <div class="tree-box">
             <el-tree
-                ref="roleTree"
-                :check-strictly="!isStrictly"
-                :data="menuTree"
-                show-checkbox
-                node-key="menuId"
-                :props="{
+              ref="roleTree"
+              :check-strictly="!isStrictly"
+              :data="menuTree"
+              show-checkbox
+              node-key="menuId"
+              :props="{
                 children: 'children',
                 label: 'menuName',
               }"
-                default-expand-all
-                :default-checked-keys="roleForm.menuIds"
-                @check-change="handleMenuTreeCheckChange"
+              default-expand-all
+              :default-checked-keys="roleForm.menuIds"
+              @check-change="handleMenuTreeCheckChange"
             />
           </div>
         </el-tab-pane>
@@ -109,8 +129,15 @@
 </template>
 
 <script>
-import {ref, reactive, onMounted, toRaw, getCurrentInstance, watch} from "vue";
-import {ElMessage} from "element-plus";
+import {
+  ref,
+  reactive,
+  onMounted,
+  toRaw,
+  getCurrentInstance,
+  watch,
+} from "vue";
+import { ElMessage } from "element-plus";
 import {
   getRoleLists,
   addRole,
@@ -118,14 +145,14 @@ import {
   updateRole,
   getOneRole,
 } from "@/api/system/role";
-import {getMenu} from "@/api/system/menu";
+import { getMenu } from "@/api/system/menu";
 import SherlyTable from "@/components/SherlyTable.vue";
 
 export default {
   components: { SherlyTable },
   setup() {
-    const {proxy} = getCurrentInstance()
-    const loading = ref(false)
+    const { proxy } = getCurrentInstance();
+    const loading = ref(false);
     const resetFormData = ref(null);
     const ruleFormRef = ref(null);
     const tableData = reactive({});
@@ -134,7 +161,7 @@ export default {
     const permissionTree = reactive([]);
     const isEdit = ref(false);
     const activeName = ref("menu");
-    const isStrictly = ref(false)
+    const isStrictly = ref(false);
     const rules = {
       roleName: [
         {
@@ -157,10 +184,10 @@ export default {
 
     watch(dialogVisible, (val) => {
       if (!val) {
-        console.log('11111111111', val)
-        isStrictly.value = false
+        console.log("11111111111", val);
+        isStrictly.value = false;
       }
-    })
+    });
 
     // 初始化角色详情数据
     const initRoleForm = () => {
@@ -186,13 +213,13 @@ export default {
 
     // 获取角色列表
     const handleGetRoleLists = async () => {
-      loading.value = true
+      loading.value = true;
       const data = await getRoleLists(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
         setTimeout(() => {
-          loading.value = false
-        }, 100)
+          loading.value = false;
+        }, 100);
       });
     };
 
@@ -244,8 +271,8 @@ export default {
       isEdit.value = true;
       dialogVisible.value = true;
       await proxy.$nextTick(() => {
-        isStrictly.value = true
-      })
+        isStrictly.value = true;
+      });
     };
 
     // 删除角色
@@ -261,15 +288,15 @@ export default {
 
     // 修改菜单树选中
     const handleMenuTreeCheckChange = (data, checked) => {
-      const ary = proxy.$refs.roleTree.getHalfCheckedNodes()
+      const ary = proxy.$refs.roleTree.getHalfCheckedNodes();
       ary.forEach((item) => {
-        proxy.$refs.roleTree.setChecked(item.menuId, true)
-      })
+        proxy.$refs.roleTree.setChecked(item.menuId, true);
+      });
       if (checked) {
         roleForm.menuIds.push(toRaw(data).menuId);
       } else {
         const menuIds = roleForm.menuIds.filter(
-            (i) => i !== toRaw(data).menuId
+          (i) => i !== toRaw(data).menuId
         );
         roleForm.menuIds.length = 0;
         menuIds.forEach((i) => {
@@ -336,7 +363,7 @@ export default {
       handleCancel,
       handleMenuTreeCheckChange,
       handleSizeChange,
-      loading
+      loading,
     };
   },
 };

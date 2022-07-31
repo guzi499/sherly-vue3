@@ -11,8 +11,13 @@
       :pagination-size="tableData.size"
     >
       <template #header>
-        <el-button type="primary" @click="handleAddStorage" size="small"
-          >新增
+        <el-button
+          type="primary"
+          @click="handleAddStorage"
+          size="small"
+          v-permission="['oss_config:save_one']"
+        >
+          新增
         </el-button>
       </template>
       <template #table>
@@ -42,12 +47,20 @@
               @confirm="handleEnable(scope.row.configId)"
             >
               <template #reference>
-                <el-link type="primary" :disabled="scope.row.enable === 1">
+                <el-link
+                  type="primary"
+                  :disabled="scope.row.enable === 1"
+                  v-permission="['oss_config:enable_one']"
+                >
                   启用
                 </el-link>
               </template>
             </el-popconfirm>
-            <el-link type="primary" @click="handleEdit(scope.row.configId)">
+            <el-link
+              type="primary"
+              @click="handleEdit(scope.row.configId)"
+              v-permission="['oss_config:update_one']"
+            >
               修改
             </el-link>
             <el-popconfirm
@@ -55,7 +68,9 @@
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-link type="danger"> 删除 </el-link>
+                <el-link type="danger" v-permission="['oss_config:remove_one']">
+                  删除
+                </el-link>
               </template>
             </el-popconfirm>
           </template>
