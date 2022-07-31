@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:26:42
- * @LastEditTime: 2022-06-28 23:59:16
+ * @LastEditTime: 2022-08-01 00:15:16
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
@@ -14,23 +14,28 @@
           v-for="item in routePathList"
           :key="item.fullPath"
           class="scrollbar-demo-item"
-          :class="isCurrentRouter(item) && 'scrollbar-demo-item-active'"
+          :class="{
+            'scrollbar-demo-item-active': isCurrentRouter(item),
+            'scrollbar-demo-item-ishome': item.meta.title === '首页',
+          }"
           @click="navigation(item.fullPath)"
           @contextmenu.prevent="openMenu($event, item)"
         >
           {{ item.meta?.title || "未命名" }}
-          <img
-            v-if="!isCurrentRouter(item)"
-            src="@/assets/images/close.png"
-            class="close"
-            @click.stop="handleCloseRoute(item)"
-          />
-          <img
-            v-if="isCurrentRouter(item)"
-            src="@/assets/images/closeActive.png"
-            class="close"
-            @click.stop="handleCloseRoute(item)"
-          />
+          <template v-if="item.meta.title !== '首页'">
+            <img
+              v-if="!isCurrentRouter(item)"
+              src="@/assets/images/close.png"
+              class="close"
+              @click.stop="handleCloseRoute(item)"
+            />
+            <img
+              v-if="isCurrentRouter(item)"
+              src="@/assets/images/closeActive.png"
+              class="close"
+              @click.stop="handleCloseRoute(item)"
+            />
+          </template>
         </div>
       </div>
     </el-scrollbar>
@@ -247,6 +252,9 @@ a {
   .scrollbar-demo-item-active {
     background: var(--el-color-primary);
     color: #fff;
+  }
+  .scrollbar-demo-item-ishome {
+    padding: 0 12px;
   }
   .close {
     height: 16px;

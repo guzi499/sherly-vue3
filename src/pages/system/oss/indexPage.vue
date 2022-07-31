@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-07-31 23:58:15
+ * @LastEditTime: 2022-08-01 00:25:18
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
@@ -15,10 +15,10 @@
       label-width="80px"
     >
       <el-form-item label="配置id" prop="configId">
-        <el-input v-model="form.configId" style="width: 215px" />
+        <el-input v-model="form.configId" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="文件相对路径" label-width="120px" prop="path">
-        <el-input v-model="form.path" style="width: 215px" />
+        <el-input v-model="form.path" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
@@ -233,8 +233,15 @@ export default {
     };
 
     // 上传成功
-    const handleOnSuccess = async () => {
-      handleOssLists();
+    const handleOnSuccess = async (e) => {
+      if (e.code !== "000") {
+        ElMessage({
+          message: "上传失败！",
+          type: "error",
+        });
+      } else {
+        handleOssLists();
+      }
       ElLoading.service({
         lock: true,
         text: "Loading",

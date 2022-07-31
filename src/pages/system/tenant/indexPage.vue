@@ -11,16 +11,16 @@
       label-width="80px"
     >
       <el-form-item label="租户代码" prop="tenantCode">
-        <el-input v-model="form.tenantCode" style="width: 215px" />
+        <el-input v-model="form.tenantCode" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="租户名称" prop="tenantName">
-        <el-input v-model="form.tenantName" style="width: 215px" />
+        <el-input v-model="form.tenantName" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="联系人" prop="contactUser">
-        <el-input v-model="form.contactUser" style="width: 215px" />
+        <el-input v-model="form.contactUser" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="联系电话" prop="contactPhone">
-        <el-input v-model="form.contactPhone" style="width: 215px" />
+        <el-input v-model="form.contactPhone" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
