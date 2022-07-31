@@ -64,13 +64,10 @@
         <!--成功 0 账号或密码不正确 1 用户禁用 2 其它 9-->
         <el-table-column prop="result" label="登录结果" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <span v-for="item in loginResults" :key="item.value" :hidden="scope.row.result !== item.value">
-<!--              {{ scope.row.result === item.value ? item.label : null }}-->
-              <el-tag type="success" v-if="scope.row.result === item.value && scope.row.result === 0">成功</el-tag>
-              <el-tag type="danger" v-if="scope.row.result === item.value && scope.row.result === 1">账号或密码不正确</el-tag>
-              <el-tag type="warning" v-if="scope.row.result === item.value && scope.row.result === 2">用户禁用</el-tag>
-              <el-tag type="info" v-if="scope.row.result === item.value && scope.row.result === 9">其它</el-tag>
-            </span>
+            <el-tag :type="item.color" v-for="item in loginResults"
+                    :key="item.value" v-show="scope.row.result === item.value">
+              {{ scope.row.result === item.value ? item.label : '' }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="username" label="登录账号" width="180" align="center" show-overflow-tooltip/>
@@ -114,16 +111,20 @@ export default {
     const loginResults = reactive([
       {
         value: 0,
-        label: '成功'
-      },{
+        label: '成功',
+        color: 'primary'
+      }, {
         value: 1,
-        label: '账号或密码不正确'
-      },{
+        label: '账号或密码不正确',
+        color: 'danger'
+      }, {
         value: 2,
-        label: '用户禁用'
-      },{
+        label: '用户禁用',
+        color: 'warning'
+      }, {
         value: 9,
-        label: '其他'
+        label: '其他',
+        color: 'info'
       }
     ])
 

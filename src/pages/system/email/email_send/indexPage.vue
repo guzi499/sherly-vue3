@@ -135,7 +135,7 @@ export default {
             // resetForm2()
             handleReset()
           }).catch(() => {
-            console.log('catch666666666666')
+            loading.value.close()
           })
         } else {
           return false;
