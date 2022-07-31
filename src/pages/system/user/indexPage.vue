@@ -116,6 +116,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="departmentName" label="部门" align="center"/>
+      <el-table-column prop="email" label="邮箱" align="center"/>
       <el-table-column prop="enable" label="禁用状态" align="center">
         <template #default="scope">
           <el-switch
