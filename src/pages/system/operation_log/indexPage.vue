@@ -2,8 +2,8 @@
   <div class="sherly-page-wrapper">
     <!-- 搜索条件 -->
     <el-form ref="resetFormData" :model="queryParams" :inline="true" label-width="80px">
-      <el-form-item label="用户id">
-        <el-input style="width: 215px" v-model="queryParams.userId" clearable/>
+      <el-form-item label="操作用户">
+        <el-input style="width: 215px" v-model="queryParams.realName" clearable/>
       </el-form-item>
       <el-form-item label="耗时">
         <el-input oninput="value=value.replace(/[^\d]/g,'')" style="width: 100px" v-model="queryParams.beginDuration"
@@ -77,6 +77,7 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="operateUser" label="操作用户" align="center" show-overflow-tooltip/>
         <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip/>
         <el-table-column prop="requestMethod" label="请求方式" align="center"/>
         <el-table-column prop="uri" label="请求uri" align="center" show-overflow-tooltip width="180px"/>
