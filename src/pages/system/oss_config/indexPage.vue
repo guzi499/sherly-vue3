@@ -1,14 +1,15 @@
 <template>
   <div class="sherly-page-wrapper">
     <SherlyTable
-      :tableData="tableData.result"
-      style="width: 100%"
-      showPagination
-      @handleCurrentChange="handleCurrentChange"
-      @handleSizeChange="handleSizeChange"
-      :pagination-total="tableData.total"
-      :pagination-current="tableData.current"
-      :pagination-size="tableData.size"
+        :loading="loading"
+        :tableData="tableData.result"
+        style="width: 100%"
+        showPagination
+        @handleCurrentChange="handleCurrentChange"
+        @handleSizeChange="handleSizeChange"
+        :pagination-total="tableData.total"
+        :pagination-current="tableData.current"
+        :pagination-size="tableData.size"
     >
       <template #header>
         <el-button
@@ -96,6 +97,7 @@ import {
 export default {
   components: { SherlyTable, StorageDialog },
   setup() {
+    const loading = ref(false)
     const tableData = reactive({});
     const StorageDialog = ref(null);
     const typeObj = { 2: "本地存储", 5: "S3" };
@@ -111,10 +113,14 @@ export default {
     });
 
     const handlestorageLists = async () => {
+      loading.value = true;
       const data = await getOssConfigList(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
+      setTimeout(() => {
+        loading.value = false
+      }, 100)
     };
 
     // 添加或编辑存储方式弹窗
@@ -169,6 +175,7 @@ export default {
       dialogVisible,
       StorageDialog,
       typeObj,
+      loading,
       handleCurrentChange,
       handleSizeChange,
       handleAddStorage,

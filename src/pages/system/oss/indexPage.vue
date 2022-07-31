@@ -41,24 +41,25 @@
       </el-form-item>
     </el-form>
     <SherlyTable
-      :tableData="tableData.result"
-      style="width: 100%"
-      showPagination
-      @handleCurrentChange="handleCurrentChange"
-      @handleSizeChange="handleSizeChange"
-      :pagination-total="tableData.total"
-      :pagination-current="tableData.current"
-      :pagination-size="tableData.size"
+        :loading="loading"
+        :tableData="tableData.result"
+        style="width: 100%"
+        showPagination
+        @handleCurrentChange="handleCurrentChange"
+        @handleSizeChange="handleSizeChange"
+        :pagination-total="tableData.total"
+        :pagination-current="tableData.current"
+        :pagination-size="tableData.size"
     >
       <template #header>
         <el-upload
-          v-model:file-list="fileList"
-          class="upload-demo"
-          :headers="{ token: data.token }"
-          :action="action"
-          :data="data"
-          multiple
-          :limit="3"
+            v-model:file-list="fileList"
+            class="upload-demo"
+            :headers="{ token: data.token }"
+            :action="action"
+            :data="data"
+            multiple
+            :limit="3"
           :on-success="handleOnSuccess"
           :before-upload="handBeforeUpload"
           :show-file-list="false"
@@ -131,6 +132,7 @@ import { ElMessage, ElLoading, ElNotification } from "element-plus";
 export default {
   components: { SherlyTable },
   setup() {
+    const loading = ref(false);
     let form = reactive({
       current: 1,
       size: 10,
@@ -153,10 +155,14 @@ export default {
 
     // 获取文件列表
     const handleOssLists = async () => {
+      loading.value = true
       const data = await getOssList(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
+      setTimeout(() => {
+        loading.value = false
+      }, 100)
     };
 
     // 搜索
@@ -283,6 +289,7 @@ export default {
     };
 
     return {
+      loading,
       handleCurrentChange,
       handleSizeChange,
       handleDelete,
