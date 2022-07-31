@@ -22,7 +22,7 @@
 <script>
 import {reactive, ref} from "vue";
 import {ElMessage} from 'element-plus'
-import {updateAvatar} from '@/api/system/personal.js'
+import {updateAvatar} from '@/api/system/user_self.js'
 import Cookies from "js-cookie";
 import {useRouter} from "vue-router";
 

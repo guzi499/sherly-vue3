@@ -224,6 +224,7 @@
         </el-form-item>
         <el-form-item label="过期时间" prop="expireTime">
           <el-date-picker
+              value-format="YYYY-MM-DD hh:mm:ss"
             style="width: 360px"
             v-model="tenantForm.expireTime"
             type="datetime"

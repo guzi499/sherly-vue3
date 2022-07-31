@@ -35,3 +35,12 @@ export function updateSelf(data) {
         data,
     });
 }
+
+/** 个人中心操作日志分页 */
+export function getOperationList(params) {
+    return request({
+        url: "/user_self/operation_log/list_page",
+        method: "get",
+        params,
+    });
+}

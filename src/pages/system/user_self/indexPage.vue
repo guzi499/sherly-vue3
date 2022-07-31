@@ -16,7 +16,7 @@ import { useRoute } from "vue-router";
 import Avatar from './components/AvatarPic.vue'
 import UserInfo from './components/UserInfo.vue'
 import OperationLog from './components/OperationLog.vue'
-import { getSelf } from '@/api/system/personal.js'
+import { getSelf } from '@/api/system/user_self.js'
 
 export default {
   components: {

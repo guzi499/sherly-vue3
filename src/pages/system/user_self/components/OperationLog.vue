@@ -15,7 +15,9 @@
         <el-table-column prop="logId" label="日志id" width="100" align="center"/>
         <el-table-column prop="type" label="日志类型" width="80" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <span>{{ scope.row.type === 1 ? '异常' : '正常' }}</span>
+            <el-tag v-for="item in logType" :key="item.value" v-show="scope.row.type === item.value" :type="item.color">
+              {{ scope.row.type === item.value ? item.label : '' }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" align="center" show-overflow-tooltip/>
@@ -36,7 +38,7 @@
 <script>
 import {reactive, ref, onMounted} from "vue";
 import {useRoute} from "vue-router";
-import {getOperationList} from '@/api/system/operate.js'
+import {getOperationList} from '@/api/system/user_self.js'
 import SherlyTable from "@/components/SherlyTable";
 import {InfoFilled} from '@element-plus/icons-vue'
 
@@ -51,6 +53,18 @@ export default {
       size: 10,
       userId: parseInt(route.query.userId)
     })
+    /* 日志类型枚举 */
+    const logType = reactive([
+      {
+        value: 0,
+        label: '正常',
+        color: 'primary'
+      }, {
+        value: 1,
+        label: '异常',
+        color: 'danger'
+      }
+    ])
 
     onMounted(() => {
       getList()
@@ -86,6 +100,7 @@ export default {
       tableData,
       handleCurrentChange,
       handleSizeChange,
+      logType,
       InfoFilled,
     }
   }

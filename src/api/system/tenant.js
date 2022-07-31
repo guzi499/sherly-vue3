@@ -29,7 +29,7 @@ export function addTenant(data) {
 /** 删除租户 */
 export function delTenant(id) {
   return request({
-    url: `/tenant/remove_one?id=${id}`,
+    url: `/tenant/remove_one?tenantId=${id}`,
     method: "delete",
   });
 }

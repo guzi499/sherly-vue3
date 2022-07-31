@@ -148,7 +148,7 @@
 
 <script>
 import {ref, reactive, getCurrentInstance} from "vue";
-import { updateSelf, updatePassword } from "@/api/system/personal.js";
+import { updateSelf, updatePassword } from "@/api/system/user_self.js";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
