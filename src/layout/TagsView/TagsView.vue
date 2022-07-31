@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:26:42
- * @LastEditTime: 2022-08-01 01:05:53
+ * @LastEditTime: 2022-08-01 01:13:27
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
@@ -46,7 +46,7 @@
     >
       <div
         v-for="(cell, index) in operateList"
-        v-show="!(isHome && index === 0)"
+        v-show="!(isHome && (index === 0 || index === 4))"
         :key="cell"
         @click="clickMenuCell(index)"
       >
