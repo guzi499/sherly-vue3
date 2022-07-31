@@ -51,10 +51,11 @@
       <el-form-item label="用户上限">
         <el-form-item prop="beginUserLimit" style="margin: 0">
           <el-input
-            style="width: 94px"
-            v-model="form.beginUserLimit"
-            placeholder="请输入"
-            clearable
+              oninput="value=value.replace(/[^\d]/g,'')"
+              style="width: 100px"
+              v-model="form.beginUserLimit"
+              placeholder="输入数字"
+              clearable
           />
         </el-form-item>
         <span style="width: 28px; text-align: center; user-select: none">
@@ -62,10 +63,11 @@
         </span>
         <el-form-item prop="endUserLimit" style="margin: 0">
           <el-input
-            style="width: 94px"
-            v-model="form.endUserLimit"
-            placeholder="请输入"
-            clearable
+              oninput="value=value.replace(/[^\d]/g,'')"
+              style="width: 100px"
+              v-model="form.endUserLimit"
+              placeholder="输入数字"
+              clearable
           />
         </el-form-item>
       </el-form-item>

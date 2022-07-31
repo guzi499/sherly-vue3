@@ -9,7 +9,7 @@
         <el-input oninput="value=value.replace(/[^\d]/g,'')" style="width: 100px" v-model="queryParams.beginDuration"
                   placeholder="输入数字" clearable/>
         <span style="width: 28px; text-align: center; user-select: none">~</span>
-        <el-input style="width: 100px" v-model="queryParams.endDuration" placeholder="输入数字" clearable/>
+        <el-input oninput="value=value.replace(/[^\d]/g,'')" style="width: 100px" v-model="queryParams.endDuration" placeholder="输入数字" clearable/>
       </el-form-item>
       <el-form-item label="请求方式">
         <el-select v-model="queryParams.requestMethod" placeholder="请选择请求方式" clearable style="width: 215px">

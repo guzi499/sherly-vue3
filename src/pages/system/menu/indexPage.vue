@@ -562,6 +562,7 @@ export default {
   display: block;
   width: 100%;
   font-size: 14px;
+  color: rgb(96, 98, 102);
   padding: 8px 0 8px 4px;
   cursor: pointer;
   &:hover {
