@@ -237,7 +237,7 @@ export default {
       if (e.code !== "000") {
         ElNotification({
           title: "警告",
-          message: "上传失败！",
+          message: e.message,
           duration: 3000,
           type: "error",
         });
