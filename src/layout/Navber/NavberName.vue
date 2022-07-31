@@ -22,9 +22,9 @@
     <div class="header_right">
       <el-row>
         <el-avatar
-          size="small"
-          :src="userInfo.avatar"
-          style="margin-right: 0.5rem"
+            size="small"
+            :src="userInfo.avatar"
+            style="margin-right: 0.5rem"
         />
         <el-dropdown style="margin: auto 0">
           <span class="el-dropdown-link">
@@ -196,11 +196,19 @@ export default {
   border: none !important;
   font-size: 24px;
 }
+
 .radio {
   :deep(.el-radio-group) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+.el-dropdown-link {
+  cursor: pointer;
+  .el-icon--right {
+    vertical-align: middle;
   }
 }
 </style>

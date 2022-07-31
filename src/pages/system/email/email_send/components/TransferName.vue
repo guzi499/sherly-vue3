@@ -1,7 +1,7 @@
 <template>
   <el-row class="el_row">
     <!--    左侧穿梭框-->
-    <el-col class="el-col" :span="11">
+    <el-col class="el-col" :span="10">
       <ul class="left">
         <li v-for="item in list1" :key="item.userId" :hidden="activeName !== 'user'">
           <el-checkbox-group v-model="checked1" @change="handleCheckbox">
@@ -27,7 +27,7 @@
       <el-button plain type="primary" icon="ArrowRight" class="btn" @click="handleAddRight"></el-button>
     </e-col>
     <!--    右侧穿梭框-->
-    <el-col class="el-col" :span="11">
+    <el-col class="el-col" :span="10">
       <ul class="right">
         <li v-for="(item, index) in list2" :key="item + index">
           <el-checkbox-group v-model="checked2" @change="handleRightCheck">
