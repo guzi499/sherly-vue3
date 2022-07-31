@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-07-31 19:04:04
+ * @LastEditTime: 2022-07-31 22:04:53
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -29,14 +29,21 @@
           :index="item_1.index"
         >
           <template #title>
-            <span class="icon iconfont" :class="'icon-' + item_1.icon" />
+            <el-icon>
+              <span class="icon iconfont" :class="'icon-' + item_1.icon" />
+            </el-icon>
             <span>{{ item_1.menuName }}</span>
           </template>
           <template v-for="item_2 in item_1.children" :key="item_2.index">
             <template v-if="item_2.children.length === 0">
               <el-menu-item :index="item_2.index">
                 <template #title>
-                  <span class="icon iconfont" :class="'icon-' + item_2.icon" />
+                  <el-icon>
+                    <span
+                      class="icon iconfont"
+                      :class="'icon-' + item_2.icon"
+                    />
+                  </el-icon>
                   <span>{{ item_2.menuName }}</span>
                 </template>
               </el-menu-item>
@@ -44,7 +51,12 @@
             <template v-else>
               <el-sub-menu :index="item_2.index">
                 <template #title>
-                  <span class="icon iconfont" :class="'icon-' + item_2.icon" />
+                  <el-icon>
+                    <span
+                      class="icon iconfont"
+                      :class="'icon-' + item_2.icon"
+                    />
+                  </el-icon>
                   <span>{{ item_2.menuName }}</span>
                 </template>
                 <el-menu-item
@@ -53,10 +65,12 @@
                   :index="item_3.index"
                 >
                   <template #title>
-                    <span
-                      class="icon iconfont"
-                      :class="'icon-' + item_3.icon"
-                    />
+                    <el-icon>
+                      <span
+                        class="icon iconfont"
+                        :class="'icon-' + item_3.icon"
+                      />
+                    </el-icon>
                     <span>{{ item_3.menuName }}</span>
                   </template>
                 </el-menu-item>

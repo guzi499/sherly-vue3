@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-03-29 22:29:00
- * @LastEditTime: 2022-04-09 12:04:39
+ * @LastEditTime: 2022-07-31 22:15:53
  * @LastEditors: lihaoyu
  * @Description: 项目设置配置文件
  * @FilePath: /sherly-vue3/src/config.js
@@ -17,5 +17,5 @@ export default {
   passCookieExpires: 1,
 
   //系统名称
-  systemName: "sherly 后台管理系统",
+  systemName: "后台管理系统",
 };

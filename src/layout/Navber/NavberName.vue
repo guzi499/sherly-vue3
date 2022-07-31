@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-07-31 02:34:42
+ * @LastEditTime: 2022-07-31 22:13:30
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
@@ -16,7 +16,7 @@
         <el-radio-button :label="false" v-if="isCollapse == true">
           <expand style="width: 1em; height: 1em" />
         </el-radio-button>
-        <div style="font-size: 1rem">{{ config.systemName }}</div>
+        <div style="font-size: 1rem">{{ tenantName + config.systemName }}</div>
       </el-radio-group>
     </div>
     <div class="header_right">
@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
 import Config from "@/config";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
@@ -85,6 +85,13 @@ import { ElMessage } from "element-plus";
 
 export default {
   setup(props, { emit }) {
+    const tenantName = computed(() => {
+      if (store.state.user.userInfo.basicUserInfoVO) {
+        return store.state.user.userInfo.basicUserInfoVO.tenantName;
+      } else {
+        return "";
+      }
+    });
     /* 控制头部按钮的切换 */
     const isCollapse = ref(false);
     const handleLogo = (val) => {
@@ -141,7 +148,9 @@ export default {
         dialogVisible.value = false;
         await loginchange(selectTenant.value);
         router.replace({ path: "/home" });
-        location.reload();
+        setTimeout(() => {
+          location.reload();
+        });
       } else {
         ElMessage({
           message: "请选择租户",
@@ -162,6 +171,7 @@ export default {
       confirm,
       tenantList,
       dialogVisible,
+      tenantName,
     };
   },
 };

@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-07-30 17:47:56
+ * @LastEditTime: 2022-07-31 22:16:32
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/router/index.js
@@ -16,7 +16,12 @@ import Layout from "@/layout/layoutBox.vue";
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    document.title = to.meta.title + " - " + Config.systemName;
+    const userInfo = store.state.user.userInfo;
+    const tenantName = userInfo.basicUserInfoVO
+      ? "-" + userInfo.basicUserInfoVO.tenantName
+      : "";
+    const systemName = Config.systemName ? Config.systemName : "";
+    document.title = to.meta.title + tenantName + systemName;
     const data = to.meta.title + " - " + to.path;
     Cookies.set("metaTitle", data);
     store.dispatch("setTitle");

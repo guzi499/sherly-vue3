@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-07-31 20:25:46
+ * @LastEditTime: 2022-07-31 21:50:54
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/login/indexPage.vue
@@ -139,10 +139,22 @@ export default {
       if (tenantCode.value) {
         data.tenantCode = tenantCode.value;
       }
-      login(data).then((res) => {
-        localStorage.setItem("token", res.token);
-        router.replace({ path: "/home" });
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
       });
+      login(data)
+        .then((res) => {
+          localStorage.setItem("token", res.token);
+          loading.close();
+          setTimeout(() => {
+            router.replace({ path: "/home" });
+          });
+        })
+        .catch(() => {
+          loading.close();
+        });
     };
 
     // 获取cookie
@@ -165,13 +177,18 @@ export default {
         text: "Loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      const result = await getAvailablelistCheck(loginForm);
-      tenantList.length = 0;
-      result.forEach((i) => {
-        tenantList.push(i);
-      });
-      loading.close();
-      dialogVisible.value = true;
+      await getAvailablelistCheck(loginForm)
+        .then((res) => {
+          tenantList.length = 0;
+          res.forEach((i) => {
+            tenantList.push(i);
+          });
+          loading.close();
+          dialogVisible.value = true;
+        })
+        .catch(() => {
+          loading.close();
+        });
     };
 
     // 取消

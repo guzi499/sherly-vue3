@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-07-30 23:59:16
+ * @LastEditTime: 2022-07-31 21:26:35
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
@@ -75,7 +75,7 @@
 import { reactive, onMounted } from "vue";
 import SherlyTable from "@/components/SherlyTable.vue";
 import { getOssList, deleteOss, getOssAccessUrl } from "@/api/system/oss";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElLoading } from "element-plus";
 
 export default {
   components: { SherlyTable },
@@ -161,6 +161,11 @@ export default {
     // 上传成功
     const handleOnSuccess = async () => {
       handleOssLists();
+      ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      }).close();
     };
 
     // 上传前成功
@@ -173,6 +178,11 @@ export default {
         });
         return false;
       }
+      ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
     };
 
     const handleCopy = async ({ path }) => {
