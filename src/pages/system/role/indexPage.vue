@@ -85,39 +85,42 @@
       :before-close="handleCancel"
     >
       <el-form
-        v-if="dialogVisible"
-        ref="ruleFormRef"
-        :model="roleForm"
-        :rules="rules"
-        label-width="80px"
+          v-if="dialogVisible"
+          ref="ruleFormRef"
+          :model="roleForm"
+          :rules="rules"
+          label-width="80px"
       >
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="roleForm.roleName" />
+          <el-input v-model="roleForm.roleName"/>
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="roleForm.description" />
+          <el-input v-model="roleForm.description"/>
         </el-form-item>
-      </el-form>
-      <el-tabs v-model="activeName" v-if="roleForm.roleId">
-        <el-tab-pane label="菜单权限" name="menu">
+        <el-form-item label="菜单权限" prop="description" v-if="roleForm.roleId">
+          <div>
+            <el-checkbox v-model="menuCheckedKey" @change="handleCheckedTreeChange">全选</el-checkbox>
+            <el-checkbox v-model="isStrictly">父子关联</el-checkbox>
+          </div>
           <div class="tree-box">
             <el-tree
-              ref="roleTree"
-              :check-strictly="!isStrictly"
-              :data="menuTree"
-              show-checkbox
-              node-key="menuId"
-              :props="{
+                ref="roleTree"
+                :check-strictly="!isStrictly"
+                :data="menuTree"
+                show-checkbox
+                empty-text="加载中，请稍后"
+                node-key="menuId"
+                :props="{
                 children: 'children',
                 label: 'menuName',
               }"
-              default-expand-all
-              :default-checked-keys="roleForm.menuIds"
-              @check-change="handleMenuTreeCheckChange"
+                default-expand-all
+                :default-checked-keys="roleForm.menuIds"
+                @check-change="handleMenuTreeCheckChange"
             />
           </div>
-        </el-tab-pane>
-      </el-tabs>
+        </el-form-item>
+      </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="handleCancel">取消</el-button>
@@ -160,7 +163,6 @@ export default {
     const menuTree = reactive([]);
     const permissionTree = reactive([]);
     const isEdit = ref(false);
-    const activeName = ref("menu");
     const isStrictly = ref(false);
     const rules = {
       roleName: [
@@ -184,7 +186,6 @@ export default {
 
     watch(dialogVisible, (val) => {
       if (!val) {
-        console.log("11111111111", val);
         isStrictly.value = false;
       }
     });
@@ -210,6 +211,27 @@ export default {
       handleGetRoleLists();
       handleGetMenuTree();
     });
+
+    // 菜单权限 - 多选框
+    const menuCheckedKey = ref('')
+    const handleCheckedTreeChange = (val) => {
+      const ary = handleTree(menuTree)
+      proxy.$refs.roleTree.setCheckedNodes(val ? ary._rawValue : [])
+    }
+    // 树形数据扁平化
+    const handleTree = (val) => {
+      let ary = ref([])
+      const fn = (val) => {
+        val.forEach(item => {
+          ary.value.push(item)
+          if(item.children && item.children.length > 0) {
+            fn(item.children)
+          }
+        })
+      }
+      fn(val)
+      return ary
+    }
 
     // 获取角色列表
     const handleGetRoleLists = async () => {
@@ -342,7 +364,6 @@ export default {
     return {
       form,
       rules,
-      activeName,
       resetFormData,
       ruleFormRef,
       tableData,
@@ -352,6 +373,8 @@ export default {
       menuTree,
       permissionTree,
       isStrictly,
+      loading,
+      menuCheckedKey,
       handleSearch,
       handleReset,
       handleEdit,
@@ -363,14 +386,46 @@ export default {
       handleCancel,
       handleMenuTreeCheckChange,
       handleSizeChange,
-      loading,
+      handleCheckedTreeChange
     };
   },
 };
 </script>
 <style lang="scss" scoped>
+/* 滚动条整体部分 */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+/*滚动条轨道、滚动条*/
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  border: 6px solid transparent;
+}
+
+/*滚动条轨道*/
+::-webkit-scrollbar-track {
+  box-shadow: 1px 1px 10px #fff inset;
+}
+
+/*滚动条*/
+::-webkit-scrollbar-thumb {
+  min-height: 20px;
+  background-clip: content-box;
+  box-shadow: 0 0 0 5px rgb(204, 204, 204) inset;
+}
+
+/*边角*/
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 .tree-box {
+  width: 100%;
   height: 180px;
   overflow: auto;
+  border: 1px solid rgb(238, 239, 240);
+  border-radius: 5px;
 }
 </style>

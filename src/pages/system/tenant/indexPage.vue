@@ -179,14 +179,19 @@
       </template>
     </SherlyTable>
     <el-dialog v-model="dialogMenuVisible" title="租户菜单" width="480px">
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="菜单权限" name="menu">
+      <el-form>
+        <el-form-item label="菜单权限" prop="description">
+          <div>
+            <el-checkbox v-model="menuCheckedKey" @change="handleCheckedTreeChange">全选</el-checkbox>
+            <el-checkbox v-model="isStrictly">父子关联</el-checkbox>
+          </div>
           <div class="tree-box">
             <el-tree
                 ref="tenantTree"
                 :check-strictly="!isStrictly"
                 :data="menuTree"
                 show-checkbox
+                empty-text="加载中，请稍后"
                 node-key="menuId"
                 :props="{
               children: 'children',
@@ -197,8 +202,8 @@
                 @check-change="handleMenuTreeCheckChange"
             />
           </div>
-        </el-tab-pane>
-      </el-tabs>
+        </el-form-item>
+      </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="handleMenuCancel">取消</el-button>
@@ -332,15 +337,36 @@ export default {
         { required: true, message: "请输入过期时间", trigger: "blur" },
       ],
       userLimit: [
-        { required: true, message: "请输入用户上限", trigger: "blur" },
+        {required: true, message: "请输入用户上限", trigger: "blur"},
       ],
       contactUser: [
-        { required: true, message: "请输入联系人", trigger: "blur" },
+        {required: true, message: "请输入联系人", trigger: "blur"},
       ],
       contactPhone: [
-        { required: true, message: "请输入联系电话", trigger: "blur" },
+        {required: true, message: "请输入联系电话", trigger: "blur"},
       ],
     };
+
+    // 菜单权限 - 多选框
+    const menuCheckedKey = ref('')
+    const handleCheckedTreeChange = (val) => {
+      const ary = handleTree(menuTree)
+      proxy.$refs.tenantTree.setCheckedNodes(val ? ary._rawValue : [])
+    }
+    // 树形数据扁平化
+    const handleTree = (val) => {
+      let ary = ref([])
+      const fn = (val) => {
+        val.forEach(item => {
+          ary.value.push(item)
+          if(item.children && item.children.length > 0) {
+            fn(item.children)
+          }
+        })
+      }
+      fn(val)
+      return ary
+    }
 
     // 获取菜单树
     const handleGetMenuTree = async () => {
@@ -545,14 +571,48 @@ export default {
       isStrictly,
       datetimerange,
       _datetimerange,
-      activeName
+      activeName,
+      menuCheckedKey,
+      handleCheckedTreeChange
     };
   },
 };
 </script>
 <style lang="scss" scoped>
+/* 滚动条整体部分 */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+/*滚动条轨道、滚动条*/
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  border: 6px solid transparent;
+}
+
+/*滚动条轨道*/
+::-webkit-scrollbar-track {
+  box-shadow: 1px 1px 10px #fff inset;
+}
+
+/*滚动条*/
+::-webkit-scrollbar-thumb {
+  min-height: 20px;
+  background-clip: content-box;
+  box-shadow: 0 0 0 5px rgb(204, 204, 204) inset;
+}
+
+/*边角*/
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 .tree-box {
+  width: 100%;
   height: 180px;
   overflow: auto;
+  border: 1px solid rgb(238, 239, 240);
+  border-radius: 5px;
 }
 </style>
