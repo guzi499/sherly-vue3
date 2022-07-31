@@ -145,7 +145,7 @@
         <el-table-column
           fixed="right"
           label="操作"
-          min-width="150"
+          min-width="180"
           align="center"
         >
           <template #default="scope">
@@ -547,6 +547,6 @@ export default {
 <style lang="scss" scoped>
 .tree-box {
   height: 180px;
-  overflow: scroll;
+  overflow: auto;
 }
 </style>
