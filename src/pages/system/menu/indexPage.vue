@@ -267,11 +267,10 @@ export default {
         if (value.menuName) {
           menuList.value = handleTreeData(menuList.value, value.menuName);
         }
-      }).finally(() => {
         setTimeout(() => {
           loading.value = false;
         }, 100);
-      });
+      })
       getMenuListFn();
     };
 

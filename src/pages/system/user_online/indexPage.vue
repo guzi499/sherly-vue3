@@ -8,13 +8,13 @@
 -->
 <template>
   <div class="sherly-page-wrapper">
-    <el-form ref="resetFormData" :model="form" :inline="true" label-width="80px" style="display: flex; align-items: center;">
+    <el-form ref="resetFormData" :model="form" :inline="true" label-width="80px">
       <el-form-item label="手机号" prop="phone">
         <el-input style="width: 215px" v-model="form.phone"/>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleSearch">搜索</el-button>
-        <el-button @click="handleReset">重置</el-button>
+        <el-button type="primary" @click="handleSearch" icon="Search">搜索</el-button>
+        <el-button icon="Refresh" @click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>
     <SherlyTable
@@ -29,24 +29,26 @@
       :pagination-size="tableData.size"
     >
       <template #table>
-        <el-table-column prop="phone" label="手机号" width="180" />
-        <el-table-column prop="realName" label="姓名" width="180" />
+        <el-table-column prop="phone" label="手机号" width="180" align="center"/>
+        <el-table-column prop="realName" label="姓名" width="180"  align="center"/>
         <el-table-column
           prop="address"
           label="登录地点"
           width="120"
           show-overflow-tooltip="true"
+          align="center"
         />
-        <el-table-column prop="browser" label="浏览器" width="120" />
+        <el-table-column prop="browser" label="浏览器" width="120" align="center"/>
         <el-table-column
           prop="os"
           show-overflow-tooltip="true"
           label="设备"
           width="220"
+          align="center"
         />
-        <el-table-column prop="ip" label="登录IP" width="220" />
-        <el-table-column prop="loginTime" label="登录时间" width="220" />
-        <el-table-column fixed="right" label="操作" min-width="150">
+        <el-table-column prop="ip" label="登录IP" width="220" align="center"/>
+        <el-table-column prop="loginTime" label="登录时间" width="220" align="center"/>
+        <el-table-column fixed="right" label="操作" min-width="150" align="center">
           <template #default="scope">
             <el-popconfirm
               title="确定强退本条数据?"

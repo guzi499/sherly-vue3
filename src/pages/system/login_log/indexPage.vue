@@ -1,5 +1,36 @@
 <template>
-  <div class="login_container">
+  <div class="sherly-page-wrapper">
+    <!-- 搜索条件 -->
+    <el-form ref="resetFormData" :model="queryParams" :inline="true" label-width="80px">
+      <el-form-item label="登录账号">
+        <el-input style="width: 215px" v-model="queryParams.username" clearable/>
+      </el-form-item>
+      <el-form-item label="	登录方式">
+        <el-select v-model="queryParams.type" placeholder="请选择登录方式" clearable style="width: 215px">
+          <el-option v-for="item in loginType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="登录结果">
+        <el-input style="width: 215px" v-model="queryParams.uri" clearable/>
+      </el-form-item>
+      <el-form-item label="登录时间">
+        <el-date-picker
+            clearable
+            style="width: 355px"
+            v-model="datetimerange"
+            type="datetimerange"
+            range-separator="至"
+            format="YYYY-MM-DD HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleSearch" icon="Search">搜索</el-button>
+        <el-button icon="Refresh" @click="handleReset">重置</el-button>
+      </el-form-item>
+    </el-form>
     <SherlyTable
         :tableData="tableData.result"
         :loading="loading"
@@ -75,6 +106,7 @@ export default {
       current: 1,
       size: 10,
     })
+    const datetimerange = ref([])
 
     /* 登陆结果枚举 */
     const loginResults = reactive([
@@ -98,16 +130,16 @@ export default {
       {
         value: 0,
         label: '账号密码登录'
-      },{
+      }, {
         value: 1,
         label: '二维码登录'
-      },{
+      }, {
         value: 2,
         label: 'QQ登录'
-      },{
+      }, {
         value: 3,
         label: '微信登录'
-      },{
+      }, {
         value: 4,
         label: '支付宝登录'
       }
@@ -117,6 +149,26 @@ export default {
     onMounted(() => {
       getList()
     });
+
+    // 搜索
+    const handleSearch = () => {
+      if (datetimerange.value.length > 0) {
+        queryParams.beginTime = datetimerange.value[0]
+        queryParams.endTime = datetimerange.value[1]
+      }
+      getList()
+    }
+
+    // 重置
+    const handleReset = () => {
+      datetimerange.value = []
+      for (let key in queryParams) {
+        delete queryParams[key]
+      }
+      queryParams.current = 1
+      queryParams.size = 10
+      getList()
+    }
 
     /* 获取登录日志分页数据 */
     const getList = async () => {
@@ -163,16 +215,17 @@ export default {
       loginType,
       handleCurrentChange,
       handleSizeChange,
-      handleEmpty
+      handleEmpty,
+      queryParams,
+      datetimerange,
+      handleSearch,
+      handleReset
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.login_container {
-  padding: 16px;
-}
 input {
   border: none;
   border-bottom: 1px solid #000;

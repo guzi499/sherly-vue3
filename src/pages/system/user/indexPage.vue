@@ -3,9 +3,9 @@
  * @Date: 2022-07-31
 -->
 <template>
-  <div class="user_container">
+  <div class="sherly-page-wrapper">
     <!-- 查询条件 -->
-    <el-form :model="queryParams" :inline="true" label-width="60px">
+    <el-form :model="queryParams" :inline="true" label-width="80px">
       <el-form-item label="手机号">
         <el-input
             style="width: 215px"
@@ -57,6 +57,33 @@
               @check="nodeCheck"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input
+            clearable
+            style="width: 215px"
+            v-model="queryParams.email"
+            placeholder="请输入邮箱"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="禁用状态">
+        <el-select v-model="queryParams.enable" placeholder="请选择禁用状态" clearable style="width: 215px">
+          <el-option label="启用" :value="1"></el-option>
+          <el-option label="禁用" :value="0"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="创建时间">
+        <el-date-picker
+            clearable
+            style="width: 355px"
+            v-model="datetimerange"
+            type="datetimerange"
+            range-separator="至"
+            format="YYYY-MM-DD HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
@@ -153,7 +180,6 @@
           <el-input v-model="form.nickname" :disabled="type1 === '2'"></el-input>
         </el-form-item>
         <el-form-item label="性别" :label-width="formLabelWidth" prop="gender">
-          <!--          <el-input v-model="form.gender"></el-input>-->
           <el-radio-group v-model="form.gender">
             <el-radio :label="1" size="large">男</el-radio>
             <el-radio :label="0" size="large">女</el-radio>
@@ -249,14 +275,21 @@ export default {
       },
     });
 
+    const datetimerange = ref([])
+
     // 搜索按钮
     const handleSearch = () => {
       data.queryParams.current = 1
+      if (datetimerange.value.length > 0) {
+        data.queryParams.beginTime = datetimerange.value[0]
+        data.queryParams.endTime = datetimerange.value[1]
+      }
       getList();
     };
 
     // 重置查询条件
     const reset = () => {
+      datetimerange.value = []
       data.queryParams = {
         current: 1,
         size: 10
@@ -519,17 +552,14 @@ export default {
       handleSizeChange,
       handleCurrentChange,
       handleExport,
-      rolesOptions
+      rolesOptions,
+      datetimerange
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.user_container {
-  padding: 16px;
-}
-
 :deep(.el-form-item) {
   margin-right: 10px;
 }
