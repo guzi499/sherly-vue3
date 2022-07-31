@@ -172,13 +172,14 @@ export default {
 
     /* 获取登录日志分页数据 */
     const getList = async () => {
+      loading.value = true;
       const data = await getLoginLogList(queryParams)
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
-        setTimeout(() => {
-          loading.value = false
-        }, 100)
       });
+      setTimeout(() => {
+        loading.value = false
+      }, 100)
     }
 
     /* 清空日志 */

@@ -183,13 +183,14 @@ export default {
 
     /* 获取操作日志分页数据 */
     const getList = async () => {
+      loading.value = true;
       const data = await getOperationList(queryParams)
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
-        setTimeout(() => {
-          loading.value = false
-        }, 100)
       });
+      setTimeout(() => {
+        loading.value = false
+      }, 100)
     }
 
     /* 清空日志 */
