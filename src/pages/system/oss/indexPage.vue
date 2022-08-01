@@ -14,9 +14,6 @@
       :inline="true"
       label-width="80px"
     >
-      <el-form-item label="配置id" prop="configId">
-        <el-input v-model="form.configId" style="width: 215px" clearable />
-      </el-form-item>
       <el-form-item label="文件相对路径" label-width="120px" prop="path">
         <el-input v-model="form.path" style="width: 215px" clearable />
       </el-form-item>
@@ -145,7 +142,7 @@ export default {
       path: "",
     });
     const datetimerange = ref([]);
-    const resetFormData = ref(null);
+    // const resetFormData = ref(null);
 
     const tableData = reactive({ result: [], total: 0, current: 1, size: 10 });
 
@@ -177,7 +174,12 @@ export default {
     // 重置
     const handleReset = () => {
       datetimerange.value = [];
-      resetFormData.value.resetFields();
+      // resetFormData.value.resetFields();
+      for (let key in form) {
+        delete form[key]
+      }
+      form.current = 1
+      form.size = 10
       handleOssLists();
     };
 
@@ -228,6 +230,7 @@ export default {
       const url = await getOssAccessUrl(path);
       const name = url.split("?")[0].split("/").at(-1);
       const a_link = document.createElement("a");
+      console.log(a_link)
       fetch(url)
         .then((res) => res.blob())
         .then((blob) => {
@@ -235,6 +238,8 @@ export default {
           a_link.download = name; //下载的文件的名字
           document.body.appendChild(a_link);
           a_link.click();
+          document.body.removeChild(a_link); // 下载完成移除元素
+          window.URL.revokeObjectURL(a_link.href); // 释放掉blob对象
         });
     };
 
