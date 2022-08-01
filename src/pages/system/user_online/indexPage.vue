@@ -66,7 +66,7 @@
 </template>
 <script>
 import { reactive, ref, onMounted } from "vue";
-import { getOnline, delOnline } from "@/api/system/online";
+import { getOnline, delOnline } from "@/api/system/user_online";
 import SherlyTable from "@/components/SherlyTable.vue";
 import { ElMessage } from "element-plus";
 

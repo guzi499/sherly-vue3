@@ -126,7 +126,7 @@
 
 <script>
 import {reactive, ref, onMounted} from "vue";
-import {getOperationList, delLog, getOperationOne} from '@/api/system/operate.js'
+import {getOperationList, delLog, getOperationOne} from '@/api/system/operate_log.js'
 import SherlyTable from "@/components/SherlyTable";
 import {ElMessage} from "element-plus";
 import {InfoFilled} from '@element-plus/icons-vue'
