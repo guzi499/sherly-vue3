@@ -107,7 +107,7 @@
         </el-form-item>
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="handleCancle">取消</el-button>
-          <el-button type="primary" @click="handleOk">确定</el-button>
+          <el-button type="primary" @click="handleOk('ruleFormRef')">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -128,7 +128,18 @@ export default {
   name: "departmentPage",
   setup() {
     const loading = ref(false)
-    const { proxy } = getCurrentInstance();
+    const {proxy} = getCurrentInstance();
+    const formRules = reactive({
+      parentId: [
+        {required: true, message: '请选择父级部门', trigger: 'change'}
+      ],
+      departmentName: [
+        {required: true, message: '请输入部门名称', trigger: 'blur'}
+      ],
+      sort: [
+        {required: true, message: '请输入排序', trigger: 'blur'}
+      ]
+    })
     onMounted(() => {
       getList();
       getDepartmentListFn();
@@ -280,32 +291,40 @@ export default {
       });
     };
     // 点击确定按钮
-    const handleOk = () => {
-      // 新增
-      if (dialogType.value === "1") {
-        addDepartment(form.value)
-            .then(() => {
-              getList();
-            })
-            .catch(() => {
-            })
-          .finally(() => {
-            reset();
-            dialogFormVisible.value = false;
-          });
-      }
-      // 修改
-      if (dialogType.value === "2") {
-        updateDepartment(form.value)
-          .then(() => {
-            getList();
-          })
-          .catch(() => {})
-          .finally(() => {
-            reset();
-            dialogFormVisible.value = false;
-          });
-      }
+    const handleOk = (formName) => {
+      proxy.$refs[formName].validate((config) => {
+        if (config) {
+          // 新增
+          if (dialogType.value === "1") {
+            addDepartment(form.value)
+                .then(() => {
+                  getList();
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                  reset();
+                  dialogFormVisible.value = false;
+                });
+          }
+          // 修改
+          if (dialogType.value === "2") {
+            updateDepartment(form.value)
+                .then(() => {
+                  getList();
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                  reset();
+                  dialogFormVisible.value = false;
+                });
+          }
+        } else {
+          return false;
+        }
+      })
+
     };
     // 点击取消按钮
     const handleCancle = () => {
@@ -332,7 +351,8 @@ export default {
       loading,
       isUp,
       refreshTree,
-      handleUp
+      handleUp,
+      formRules
     };
   },
 };
