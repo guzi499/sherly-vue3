@@ -15,5 +15,5 @@ module.exports = defineConfig({
     // proxy: "http://192.168.16.215:8888",
     // proxy: "http://127.0.0.1:8888",
   },
-  publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
+  publicPath: "/",
 });

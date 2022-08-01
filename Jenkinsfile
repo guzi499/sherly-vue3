@@ -11,7 +11,7 @@ pipeline {
                 sh 'node -v'
                 sh 'yarn -v'
                 sh 'yarn'
-                sh 'yarn build'
+                sh 'yarn build-test'
             }
         }
         stage('远程部署') {
