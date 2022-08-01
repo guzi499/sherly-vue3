@@ -17,6 +17,6 @@ export function getLoginLogList(params) {
 export function deleteLoginLogRemoveAll() {
     return request({
         url: `/login_log/remove_all`,
-        method: "get",
+        method: "delete",
     });
 }

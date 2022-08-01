@@ -21,6 +21,6 @@ export function getOnline(params) {
 export function delOnline(phone) {
   return request({
     url: `/user_online/force_quit?phone=${phone}`,
-    method: "get",
+    method: "delete",
   });
 }
