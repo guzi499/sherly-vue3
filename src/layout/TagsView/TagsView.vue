@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:26:42
- * @LastEditTime: 2022-08-01 01:13:27
+ * @LastEditTime: 2022-08-01 10:40:21
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
@@ -10,6 +10,16 @@
   <div class="TagsView-wrapper">
     <el-scrollbar>
       <div class="scrollbar-flex-content">
+        <div
+          class="scrollbar-demo-item scrollbar-demo-item-ishome"
+          :class="{
+            'scrollbar-demo-item-active': isCurrentRouter(home),
+          }"
+          @click="navigation(home.fullPath)"
+          @contextmenu.prevent="openMenu($event, home)"
+        >
+          {{ home.meta.title }}
+        </div>
         <div
           v-for="item in routePathList"
           :key="item.fullPath"
@@ -46,7 +56,7 @@
     >
       <div
         v-for="(cell, index) in operateList"
-        v-show="!(isHome && (index === 0 || index === 4))"
+        v-show="!(isHome && [0, 3, 2, 4].includes(index))"
         :key="cell"
         @click="clickMenuCell(index)"
       >
@@ -92,6 +102,12 @@ export default {
         document.body.removeEventListener("click", closeMenu);
       }
     });
+
+    const home = {
+      fullPath: "/home",
+      path: "/home",
+      meta: { title: "首页" },
+    };
 
     const navigation = (fullPath) => {
       router.push(fullPath);
@@ -194,6 +210,7 @@ export default {
       openMenu,
       closeMenu,
       clickMenuCell,
+      home,
       isHome,
       visible,
       clickNote,

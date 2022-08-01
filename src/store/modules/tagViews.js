@@ -1,7 +1,7 @@
 /*
  * @Author: lihaoyu
  * @Date: 2022-04-09 12:00:36
- * @LastEditTime: 2022-08-01 01:07:34
+ * @LastEditTime: 2022-08-01 10:41:17
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/store/modules/tagViews.js
@@ -19,12 +19,12 @@ const mutations = {
     state.metaTitle.push({ title: data });
   },
   ADDROUTEPATH(state, data) {
-    state.routePath.push(data);
+    if (data.path !== "/home") state.routePath.push(data);
   },
   SETROUTEPATH(state, data) {
     state.routePath.length = 0;
     data.forEach((i) => {
-      state.routePath.push(i);
+      if (i.path !== "/home") state.routePath.push(i);
     });
   },
 };
@@ -42,7 +42,6 @@ const actions = {
             currentRoute.fullPath.split("?")[0] === i.fullPath.split("?")[0]
         ).length === 0
       ) {
-        console.log(routePath, currentRoute);
         if (currentRoute.fullPath === "/login") {
           return;
         } else {

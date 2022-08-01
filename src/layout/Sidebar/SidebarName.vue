@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-07-31 22:04:53
+ * @LastEditTime: 2022-08-01 10:49:42
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -44,7 +44,14 @@
                       :class="'icon-' + item_2.icon"
                     />
                   </el-icon>
-                  <span>{{ item_2.menuName }}</span>
+                  <span
+                    :class="{
+                      'menu-item-active': isCurrentRouter(item_2),
+                      'menu-item': !isCurrentRouter(item_2),
+                    }"
+                  >
+                    {{ item_2.menuName }}
+                  </span>
                 </template>
               </el-menu-item>
             </template>
@@ -57,7 +64,14 @@
                       :class="'icon-' + item_2.icon"
                     />
                   </el-icon>
-                  <span>{{ item_2.menuName }}</span>
+                  <span
+                    :class="{
+                      'menu-item-active': isCurrentRouter(item_2),
+                      'menu-item': !isCurrentRouter(item_2),
+                    }"
+                  >
+                    {{ item_2.menuName }}
+                  </span>
                 </template>
                 <el-menu-item
                   v-for="item_3 in item_2.children"
@@ -71,7 +85,14 @@
                         :class="'icon-' + item_3.icon"
                       />
                     </el-icon>
-                    <span>{{ item_3.menuName }}</span>
+                    <span
+                      :class="{
+                        'menu-item-active': isCurrentRouter(item_3),
+                        'menu-item': !isCurrentRouter(item_3),
+                      }"
+                    >
+                      {{ item_3.menuName }}
+                    </span>
                   </template>
                 </el-menu-item>
               </el-sub-menu>
@@ -85,8 +106,8 @@
 <script>
 import Logo from "./components/LogoBox.vue";
 import { useStore } from "vuex";
-import { onMounted, watch, computed, ref, reactive, toRaw, toRefs } from "vue";
-import { useRouter } from "vue-router";
+import { watch, computed, ref, reactive, toRaw, toRefs } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 export default {
   components: {
@@ -99,16 +120,14 @@ export default {
     },
   },
   setup(props) {
-    onMounted(() => {
-      //
-    });
-
     const { isShow } = toRefs(props);
     console.log(isShow);
 
     const Store = useStore();
 
     const router = useRouter();
+
+    const route = useRoute();
 
     const isCollapse = ref(false);
 
@@ -188,6 +207,13 @@ export default {
       return link;
     };
 
+    const isCurrentRouter = (currentRouter) => {
+      console.log(currentRouter.link, route.path);
+      if ("/" + currentRouter.link === route.path) {
+        return true;
+      }
+    };
+
     return {
       isCollapse,
       menu,
@@ -196,6 +222,7 @@ export default {
       handleOpen,
       handleselect,
       width,
+      isCurrentRouter,
     };
   },
 };
@@ -217,6 +244,12 @@ export default {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   border: none;
+}
+.menu-item {
+  color: #fff;
+}
+.menu-item-active {
+  color: var(--el-menu-active-color);
 }
 .icon {
   margin-right: 8px;
