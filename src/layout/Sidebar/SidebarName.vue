@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-08-01 11:21:19
+ * @LastEditTime: 2022-08-01 18:21:37
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -235,7 +235,7 @@ export default {
   .menu-box {
     height: calc(100vh - 80px);
     width: 220px;
-    //overflow: scroll;
+    overflow: auto;
   }
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
