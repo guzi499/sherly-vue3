@@ -283,6 +283,10 @@ export default {
     const activeName = ref("menu");
     const loading = ref(false);
     let form = reactive({
+      beginTime:"",
+      endTime: "",
+      beginExpireTime: "",
+      endExpireTime: "",
       tenantName: "",
       tenantCode: "",
       contactPhone: "",
@@ -314,6 +318,12 @@ export default {
     // 初始化租户详情数据
     const inittenantForm = () => {
       return {
+        current: 1,
+        size: 10,
+        beginTime:"",
+        endTime: "",
+        beginExpireTime: "",
+        endExpireTime: "",
         contactPhone: "",
         contactUser: "",
         expireTime: "",
@@ -393,14 +403,14 @@ export default {
     // 获取列表
     const getList = async () => {
       loading.value = true;
-      if (datetimerange.value.length > 0) {
-        form.beginTime = datetimerange.value[0];
-        form.endTime = datetimerange.value[1];
-      }
-      if (_datetimerange.value.length > 0) {
-        form.beginExpireTime = _datetimerange.value[0];
-        form.endExpireTime = _datetimerange.value[1];
-      }
+      // if (datetimerange.value.length > 0) {
+      //   form.beginTime = datetimerange.value[0];
+      //   form.endTime = datetimerange.value[1];
+      // }
+      // if (_datetimerange.value.length > 0) {
+      //   form.beginExpireTime = _datetimerange.value[0];
+      //   form.endExpireTime = _datetimerange.value[1];
+      // }
       const data = await getTenant(form);
       Object.keys(data).forEach((i) => {
         tableData[i] = data[i];
@@ -412,6 +422,14 @@ export default {
 
     // 搜索
     const handleSearch = () => {
+      if (datetimerange.value.length > 0) {
+        form.beginTime = datetimerange.value[0];
+        form.endTime = datetimerange.value[1];
+      }
+      if (_datetimerange.value.length > 0) {
+        form.beginExpireTime = _datetimerange.value[0];
+        form.endExpireTime = _datetimerange.value[1];
+      }
       getList();
     };
 
@@ -419,7 +437,7 @@ export default {
     const handleReset = () => {
       datetimerange.value = [];
       _datetimerange.value = [];
-      resetFormData.value.resetFields();
+      form = inittenantForm()
       getList();
     };
 
