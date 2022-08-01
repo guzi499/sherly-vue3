@@ -97,7 +97,7 @@
         <el-form-item label="描述" prop="description">
           <el-input v-model="roleForm.description"/>
         </el-form-item>
-        <el-form-item label="菜单权限" prop="description" v-if="roleForm.roleId">
+        <el-form-item label="菜单权限" v-if="roleForm.roleId">
           <div>
             <el-checkbox v-model="menuCheckedKey" @change="handleCheckedTreeChange">全选</el-checkbox>
             <el-checkbox v-model="isStrictly">父子关联</el-checkbox>
@@ -170,13 +170,7 @@ export default {
           required: true,
           message: "请输入角色名称",
         },
-      ],
-      description: [
-        {
-          required: true,
-          message: "请输入角色描述",
-        },
-      ],
+      ]
     };
     let form = reactive({
       roleName: "",
