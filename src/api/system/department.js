@@ -38,7 +38,7 @@ export function updateDepartment(data) {
 // 删除菜单
 export function delDepartment(departmentId) {
   return request({
-    url: "/department/remove_one?departmentId=" + departmentId,
+    url: `/department/remove_one?departmentId=${departmentId}` ,
     method: "delete",
   });
 }

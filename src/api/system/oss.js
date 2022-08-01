@@ -25,7 +25,7 @@ export function saveOssConfig(data) {
 /** 删除对象存储 */
 export function deleteOssConfig(configId) {
   return request({
-    url: "oss_config/remove_one?configId=" + configId,
+    url: `oss_config/remove_one?configId=${configId}`,
     method: "delete",
   });
 }
@@ -33,7 +33,7 @@ export function deleteOssConfig(configId) {
 /** 获取对象存储详情 */
 export function getOssDetail(configId) {
   return request({
-    url: "oss_config/get_one?configId=" + configId,
+    url: `oss_config/get_one?configId=${configId}`,
     method: "get",
   });
 }
@@ -50,7 +50,7 @@ export function upDataOss(data) {
 /** 启用对象存储 */
 export function enableOss(configId) {
   return request({
-    url: "oss_config/enable_one?configId=" + configId,
+    url: `oss_config/enable_one?configId=${configId}`,
     method: "put",
   });
 }
@@ -67,7 +67,7 @@ export function getOssList(params) {
 /** 删除文件列表 */
 export function deleteOss(fileId) {
   return request({
-    url: "oss/remove_one?fileId=" + fileId,
+    url: `oss/remove_one?fileId=${fileId}`,
     method: "delete",
   });
 }
@@ -75,7 +75,7 @@ export function deleteOss(fileId) {
 /** 获取文件下载地址 */
 export function getOssAccessUrl(path) {
   return request({
-    url: "oss/access_url?path=" + path,
+    url: `oss/access_url?path=${path}`,
     method: "get",
   });
 }

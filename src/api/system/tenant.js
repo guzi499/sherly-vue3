@@ -55,7 +55,7 @@ export function updateTenantMenu(data) {
 /** 获取租户菜单权限 */
 export function getTenantListMenu(tenantId) {
   return request({
-    url: "/tenant/list_menu?tenantId=" + tenantId,
+    url: `/tenant/list_menu?tenantId=${tenantId}`,
     method: "get",
   });
 }

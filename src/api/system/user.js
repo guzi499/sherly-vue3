@@ -11,7 +11,7 @@ import request from "@/utils/request";
 /**获取用户详情 */
 export function getUserId(userId) {
   return request({
-    url: "/user/get_one?userId=" + userId,
+    url: `/user/get_one?userId=${userId}`,
     method: "get",
   });
 }
@@ -37,7 +37,7 @@ export function updataUser(data) {
 // 用户删除
 export function delMenu(userId) {
   return request({
-    url: "/user/remove_one?userId=" + userId,
+    url: `/user/remove_one?userId=${userId}`,
     method: "delete",
   });
 }
