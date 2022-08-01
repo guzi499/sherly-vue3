@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-08-01 10:49:42
+ * @LastEditTime: 2022-08-01 11:21:19
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
@@ -12,7 +12,6 @@
     <Logo :isShow="isShow" />
     <div class="menu-box">
       <el-menu
-        unique-opened
         class="el-menu-vertical-demo"
         :collapse="isShow"
         :collapse-transition="false"
@@ -191,7 +190,6 @@ export default {
 
     const handleselect = (index) => {
       const path = "/" + findPath(index, menu);
-      console.log("path", path);
       router.push({ path });
     };
 
@@ -208,7 +206,6 @@ export default {
     };
 
     const isCurrentRouter = (currentRouter) => {
-      console.log(currentRouter.link, route.path);
       if ("/" + currentRouter.link === route.path) {
         return true;
       }
