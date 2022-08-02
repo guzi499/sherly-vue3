@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-07-31 21:50:54
+ * @LastEditTime: 2022-08-02 18:49:31
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/login/indexPage.vue
@@ -228,7 +228,7 @@ export default {
 
 <style lang="scss" scoped>
 .sherly-page {
-  background: url("@/assets/images/bg_img.png");
+  background: url("@/assets/images/bg_img.webp");
   background-size: 100% 100%;
 }
 .login-layout {
@@ -252,7 +252,7 @@ export default {
     }
   }
   &-left {
-    background: url("@/assets/images/bg_img.png");
+    background: url("@/assets/images/bg_img.webp");
     background-size: 100% 100%;
     width: 100%;
     height: 380px;
