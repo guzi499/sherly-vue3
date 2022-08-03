@@ -1,15 +1,15 @@
 <template>
   <div class="sherly-page-wrapper">
     <SherlyTable
-        :loading="loading"
-        :tableData="tableData.result"
-        style="width: 100%"
-        showPagination
-        @handleCurrentChange="handleCurrentChange"
-        @handleSizeChange="handleSizeChange"
-        :pagination-total="tableData.total"
-        :pagination-current="tableData.current"
-        :pagination-size="tableData.size"
+      :loading="loading"
+      :tableData="tableData.result"
+      style="width: 100%"
+      showPagination
+      @handleCurrentChange="handleCurrentChange"
+      @handleSizeChange="handleSizeChange"
+      :pagination-total="tableData.total"
+      :pagination-current="tableData.current"
+      :pagination-size="tableData.size"
     >
       <template #header>
         <el-button
@@ -45,6 +45,7 @@
           <template #default="scope">
             <el-popconfirm
               title="确定启用当前存储配置?"
+              :disabled="scope.row.enable === 1"
               @confirm="handleEnable(scope.row.configId)"
             >
               <template #reference>
@@ -97,7 +98,7 @@ import {
 export default {
   components: { SherlyTable, StorageDialog },
   setup() {
-    const loading = ref(false)
+    const loading = ref(false);
     const tableData = reactive({});
     const StorageDialog = ref(null);
     const typeObj = { 2: "本地存储", 5: "S3" };
@@ -119,8 +120,8 @@ export default {
         tableData[key] = data[key];
       });
       setTimeout(() => {
-        loading.value = false
-      }, 100)
+        loading.value = false;
+      }, 100);
     };
 
     // 添加或编辑存储方式弹窗
