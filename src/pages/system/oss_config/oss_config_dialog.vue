@@ -1,7 +1,7 @@
 <!--
  * @Author: lihaoyu
  * @Date: 2022-07-08 23:40:21
- * @LastEditTime: 2022-07-21 23:10:38
+ * @LastEditTime: 2022-08-03 18:04:32
  * @LastEditors: lihaoyu
  * @Description:
  * @FilePath: /sherly-vue3/src/pages/system/oss_config/oss_config_dialog.vue
@@ -222,13 +222,6 @@ export default {
                 trigger: "blur",
               },
             ],
-            "config.region": [
-              {
-                required: true,
-                message: "请输入访问地区",
-                trigger: "blur",
-              },
-            ],
           };
         }
       },
@@ -276,6 +269,7 @@ export default {
         }
       });
     };
+
     return {
       form,
       isEdit,
