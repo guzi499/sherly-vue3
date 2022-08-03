@@ -1,11 +1,8 @@
-/*
- * @Author: lihaoyu
- * @Date: 2022-04-21 22:50:32
- * @LastEditTime: 2022-05-06 21:43:14
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/api/system/menu.js
+/**
+ * @author 李浩宇
+ * @date 2022/4/21
  */
+
 import request from "@/utils/request";
 
 /**菜单列表 */

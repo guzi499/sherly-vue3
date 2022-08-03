@@ -1,10 +1,6 @@
-/*
- * @Author: lihaoyu
- * @Date: 2022-05-22 21:58:34
- * @LastEditTime: 2022-07-31 00:26:06
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/api/system/tenant.js
+/**
+ * @author 李浩宇
+ * @date 2022/5/22
  */
 import request from "@/utils/request";
 

@@ -1,10 +1,6 @@
-/*
- * @Author: lihaoyu
- * @Date: 2022-05-28 21:58:34
- * @LastEditTime: 2022-05-28 23:33:15
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/api/system/user_online.js
+/**
+ * @author 李浩宇
+ * @date 2022/5/28
  */
 import request from "@/utils/request";
 

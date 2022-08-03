@@ -118,7 +118,7 @@
 import {ElMessage} from "element-plus";
 import {reactive, ref, onMounted, getCurrentInstance} from "vue";
 import {
-  getDepartmentListTree,
+  departmentListTree,
   addDepartment,
   delDepartment,
   updateDepartment,
@@ -199,7 +199,7 @@ export default {
     const departmentList = ref([]);
     const getList = () => {
       loading.value = true;
-      getDepartmentListTree(data.queryParams).then((res) => {
+      departmentListTree(data.queryParams).then((res) => {
         departmentList.value = res;
         setTimeout(() => {
           loading.value = false;
@@ -211,7 +211,7 @@ export default {
     // 查询部门下拉框列表信息
     const departmentListSelect = ref([]);
     const getDepartmentListFn = () => {
-      getDepartmentListTree().then((res) => {
+      departmentListTree().then((res) => {
         departmentListSelect.value = res;
       });
     };

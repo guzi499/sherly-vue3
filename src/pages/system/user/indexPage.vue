@@ -233,7 +233,7 @@
 <script>
 import {getCurrentInstance, ref, reactive, toRefs, onMounted, watch} from "vue";
 import {listAll} from "@/api/system/role.js";
-import { getDepartmentListTree } from "@/api/system/department.js";
+import { departmentListTree } from "@/api/system/department.js";
 import {
   pageUser,
   exportUser,
@@ -339,7 +339,7 @@ export default {
     const DepartmentList = ref([]);
     // 获取公共部门下拉框数据
     const getDepartmentListFn = () => {
-      getDepartmentListTree().then((res) => {
+      departmentListTree().then((res) => {
         DepartmentList.value = res;
       });
     };

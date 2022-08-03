@@ -1,15 +1,12 @@
-/*
- * @Author: lihaoyu
- * @Date: 2022-04-21 22:50:32
- * @LastEditTime: 2022-05-06 21:43:14
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/api/system/menu.js
+/**
+ * @author 谷子毅
+ * @date 2022/4/21
  */
+
 import request from "@/utils/request";
 
-/**查询部门树 */
-export function getDepartmentListTree(query) {
+// 查询部门树
+export function departmentListTree(query) {
   return request({
     url: "/department/list_tree",
     method: "get",
@@ -17,7 +14,7 @@ export function getDepartmentListTree(query) {
   });
 }
 
-/**部门新增 */
+// 部门新增
 export function addDepartment(data) {
   return request({
     url: "/department/save_one",
@@ -26,7 +23,7 @@ export function addDepartment(data) {
   });
 }
 
-// 修改菜单
+// 部门更新
 export function updateDepartment(data) {
   return request({
     url: "/department/update_one",
@@ -35,7 +32,7 @@ export function updateDepartment(data) {
   });
 }
 
-// 删除菜单
+// 部门删除
 export function delDepartment(departmentId) {
   return request({
     url: `/department/remove_one?departmentId=${departmentId}` ,

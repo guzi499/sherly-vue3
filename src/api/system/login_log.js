@@ -1,6 +1,6 @@
 /**
- *@author: 陈雪丽
- *@date: 2022-07-23
+ * @author 陈雪丽
+ * @date 2022/7/23
  */
 
 import request from "@/utils/request";

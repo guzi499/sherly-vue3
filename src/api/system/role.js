@@ -1,10 +1,6 @@
-/*
- * @Author: lihaoyu
- * @Date: 2022-04-20 11:01:33
- * @LastEditTime: 2022-04-24 23:08:08
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/api/system/role.js
+/**
+ * @author 李浩宇
+ * @date 2022/4/20
  */
 
 import request from "@/utils/request";

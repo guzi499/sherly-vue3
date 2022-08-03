@@ -1,3 +1,7 @@
+/**
+ * @author 陈雪丽
+ * @date 2022/7/2
+ */
 import request from "@/utils/request";
 
 /** 用户个人中心 */

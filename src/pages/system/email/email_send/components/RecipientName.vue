@@ -21,7 +21,7 @@
 import {ref, toRefs, watch} from 'vue'
 import {getUserList_all} from '@/api/system/user.js'
 import {listAll} from '@/api/system/role.js'
-import {getDepartmentListTree} from '@/api/system/department.js'
+import {departmentListTree} from '@/api/system/department.js'
 
 export default {
   name: "RecipientName",
@@ -61,7 +61,7 @@ export default {
         list1.value = res
       }
       if (activeName.value === 'department') {
-        const res = await getDepartmentListTree()
+        const res = await departmentListTree()
         list1.value = res
       }
     }
