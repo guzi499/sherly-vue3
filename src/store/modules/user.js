@@ -1,12 +1,4 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-04-09 12:00:59
- * @LastEditTime: 2022-08-04 00:41:53
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/store/modules/user.js
- */
-/*
  * @author: 李浩宇
  * @date: 2022-03-29
  */
