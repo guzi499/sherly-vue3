@@ -1,11 +1,8 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-03-30 01:06:51
- * @LastEditTime: 2022-08-02 18:49:31
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/login/indexPage.vue
+ * @author: 李浩宇
+ * @date: 2022-03-30
 -->
+
 <template>
   <div class="sherly-page">
     <div class="login-layout">

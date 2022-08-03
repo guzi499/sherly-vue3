@@ -1,6 +1,6 @@
 <!--
- * @Author: 陈雪丽
- * @Date: 2022-07-31
+ * @author: 陈雪丽
+ * @date: 2022-07-31
 -->
 <template>
   <div class="sherly-page-wrapper">
@@ -8,136 +8,165 @@
     <el-form :model="queryParams" :inline="true" label-width="80px">
       <el-form-item label="手机号">
         <el-input
-            style="width: 215px"
-            clearable
-            v-model="queryParams.phone"
-            placeholder="请输入手机号"
+          style="width: 215px"
+          clearable
+          v-model="queryParams.phone"
+          placeholder="请输入手机号"
         ></el-input>
       </el-form-item>
       <el-form-item label="姓名">
         <el-input
-            clearable
-            style="width: 215px"
-            v-model="queryParams.realName"
-            placeholder="请输入姓名"
+          clearable
+          style="width: 215px"
+          v-model="queryParams.realName"
+          placeholder="请输入姓名"
         ></el-input>
       </el-form-item>
       <el-form-item label="昵称">
         <el-input
-            clearable
-            style="width: 215px"
-            v-model="queryParams.nickname"
-            placeholder="请输入昵称"
+          clearable
+          style="width: 215px"
+          v-model="queryParams.nickname"
+          placeholder="请输入昵称"
         ></el-input>
       </el-form-item>
       <el-form-item label="部门">
         <el-select
-            collapse-tags
-            style="width: 215px"
-            multiple
-            ref="selectTree"
-            v-model="treeSelectData.treeDate"
-            placeholder="请选择"
-            clearable
+          collapse-tags
+          style="width: 215px"
+          multiple
+          ref="selectTree"
+          v-model="treeSelectData.treeDate"
+          placeholder="请选择"
+          clearable
         >
           <el-option
-              hidden
-              :value="treeSelectData.parentId"
-              :label="treeSelectData.treeDate"
+            hidden
+            :value="treeSelectData.parentId"
+            :label="treeSelectData.treeDate"
           ></el-option>
           <el-tree
-              ref="checkTree"
-              node-key="departmentId"
-              default-expand-all
-              show-checkbox
-              highlight-current
-              :data="DepartmentList"
-              :props="defaultProps"
-              expand-on-click-node
-              @check="nodeCheck"
+            ref="checkTree"
+            node-key="departmentId"
+            default-expand-all
+            show-checkbox
+            highlight-current
+            :data="DepartmentList"
+            :props="defaultProps"
+            expand-on-click-node
+            @check="nodeCheck"
           />
         </el-select>
       </el-form-item>
       <el-form-item label="邮箱">
         <el-input
-            clearable
-            style="width: 215px"
-            v-model="queryParams.email"
-            placeholder="请输入邮箱"
+          clearable
+          style="width: 215px"
+          v-model="queryParams.email"
+          placeholder="请输入邮箱"
         ></el-input>
       </el-form-item>
       <el-form-item label="禁用状态">
-        <el-select v-model="queryParams.enable" placeholder="请选择禁用状态" clearable style="width: 215px">
+        <el-select
+          v-model="queryParams.enable"
+          placeholder="请选择禁用状态"
+          clearable
+          style="width: 215px"
+        >
           <el-option label="启用" :value="1"></el-option>
           <el-option label="禁用" :value="0"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
-            clearable
-            style="width: 355px"
-            v-model="datetimerange"
-            type="datetimerange"
-            range-separator="至"
-            format="YYYY-MM-DD HH:mm:ss"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
+          clearable
+          style="width: 355px"
+          v-model="datetimerange"
+          type="datetimerange"
+          range-separator="至"
+          format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
+        <el-button type="primary" icon="Search" @click="handleSearch"
+          >搜索</el-button
+        >
         <el-button icon="Refresh" @click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 操作按钮 -->
     <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
       <el-col :span="1.5">
-        <el-button type="primary" size="small" @click="handleExport()"  v-permission="['user:list_export']"
-        >导出
-        </el-button
-        >
+        <el-button
+          type="primary"
+          size="small"
+          @click="handleExport()"
+          v-permission="['user:list_export']"
+          >导出
+        </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="primary" size="small" @click="handleEdit('1')" v-permission="['user:save_one']"
-        >新增
-        </el-button
-        >
+        <el-button
+          type="primary"
+          size="small"
+          @click="handleEdit('1')"
+          v-permission="['user:save_one']"
+          >新增
+        </el-button>
       </el-col>
     </el-row>
     <!-- 用户表格 -->
     <el-table v-loading="loading" :data="tableData" style="width: 100%">
-      <el-table-column prop="phone" label="手机号" width="180" align="center"/>
-      <el-table-column prop="realName" label="姓名" align="center"/>
-      <el-table-column prop="nickname" label="昵称" align="center"/>
+      <el-table-column prop="phone" label="手机号" width="180" align="center" />
+      <el-table-column prop="realName" label="姓名" align="center" />
+      <el-table-column prop="nickname" label="昵称" align="center" />
       <el-table-column prop="gender" label="性别" align="center">
         <template #default="scope">
           <span>{{ scope.row.gender === 1 ? "男" : "女" }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="departmentName" label="部门" align="center"/>
-      <el-table-column prop="email" label="邮箱" align="center"/>
+      <el-table-column prop="departmentName" label="部门" align="center" />
+      <el-table-column prop="email" label="邮箱" align="center" />
       <el-table-column prop="enable" label="禁用状态" align="center">
         <template #default="scope">
           <el-switch
-              v-model="scope.row.enable"
-              class="switch"
-              :active-value="1"
-              :inactive-value="0"
-              @change="handleChange(scope.row)"
+            v-model="scope.row.enable"
+            class="switch"
+            :active-value="1"
+            :inactive-value="0"
+            @change="handleChange(scope.row)"
           />
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
+      <el-table-column
+        prop="createTime"
+        label="创建时间"
+        width="180"
+        align="center"
+      />
       <el-table-column prop="name" label="操作" width="180" align="center">
         <template #default="scope">
-          <el-link type="primary" @click="handleEdit('2', scope.$index, scope.row)" v-permission="['user:update_one']">修改</el-link>
+          <el-link
+            type="primary"
+            @click="handleEdit('2', scope.$index, scope.row)"
+            v-permission="['user:update_one']"
+            >修改</el-link
+          >
           <el-popconfirm
-              title="确定删除本条数据?"
-              @confirm="handleDelete(scope.row)"
+            title="确定删除本条数据?"
+            @confirm="handleDelete(scope.row)"
           >
             <template #reference>
-              <el-link type="danger" v-permission="['user:remove_one']" v-show="scope.row.userId !== 1">删除</el-link>
+              <el-link
+                type="danger"
+                v-permission="['user:remove_one']"
+                v-show="scope.row.userId !== 1"
+                >删除</el-link
+              >
             </template>
           </el-popconfirm>
         </template>
@@ -157,28 +186,51 @@
       @current-change="handleCurrentChange"
     />
     <!--    新增 / 修改弹框-->
-    <el-dialog v-if="dialogFormVisible" v-model="dialogFormVisible" :title="dialogTitle" width="40%" >
-      <el-form :model="form" :rules="formRules" ref="ruleForm" style="padding-right: 60px">
-        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone" v-if="type1 === '1' ">
-          <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone1" v-if="type1 === '2' ">
+    <el-dialog
+      v-if="dialogFormVisible"
+      v-model="dialogFormVisible"
+      :title="dialogTitle"
+      width="40%"
+    >
+      <el-form
+        :model="form"
+        :rules="formRules"
+        ref="ruleForm"
+        style="padding-right: 60px"
+      >
+        <el-form-item
+          label="手机号"
+          :label-width="formLabelWidth"
+          prop="phone"
+          v-if="type1 === '1'"
+        >
           <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
         </el-form-item>
         <el-form-item
-            label="姓名"
-            :label-width="formLabelWidth"
-            prop="realName"
+          label="手机号"
+          :label-width="formLabelWidth"
+          prop="phone1"
+          v-if="type1 === '2'"
+        >
+          <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="姓名"
+          :label-width="formLabelWidth"
+          prop="realName"
         >
           <el-input v-model="form.realName"></el-input>
         </el-form-item>
         <el-form-item
-            label="昵称"
-            v-if="type1 === '2'"
-            :label-width="formLabelWidth"
-            prop="nickname"
+          label="昵称"
+          v-if="type1 === '2'"
+          :label-width="formLabelWidth"
+          prop="nickname"
         >
-          <el-input v-model="form.nickname" :disabled="type1 === '2'"></el-input>
+          <el-input
+            v-model="form.nickname"
+            :disabled="type1 === '2'"
+          ></el-input>
         </el-form-item>
         <el-form-item label="性别" :label-width="formLabelWidth" prop="gender">
           <el-radio-group v-model="form.gender">
@@ -186,44 +238,50 @@
             <el-radio :label="0" size="large">女</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="部门" :label-width="formLabelWidth" prop="departmentId">
+        <el-form-item
+          label="部门"
+          :label-width="formLabelWidth"
+          prop="departmentId"
+        >
           <el-select
-              ref="selectTree1"
-              v-model="form.departmentId"
-              placeholder="请选择"
+            ref="selectTree1"
+            v-model="form.departmentId"
+            placeholder="请选择"
           >
             <el-option
-                hidden
-                :value="form.departmentId"
-                :label="form.departmentName"
+              hidden
+              :value="form.departmentId"
+              :label="form.departmentName"
             ></el-option>
             <el-tree
-                :data="DepartmentList"
-                :props="defaultProps"
-                :expand-on-click-node="false"
-                @node-click="nodeOnclick2"
+              :data="DepartmentList"
+              :props="defaultProps"
+              :expand-on-click-node="false"
+              @node-click="nodeOnclick2"
             />
           </el-select>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth" prop="roleIds">
           <el-select
-              v-model="form.roleIds"
-              multiple
-              placeholder="选择角色"
-              style="width: 100%"
+            v-model="form.roleIds"
+            multiple
+            placeholder="选择角色"
+            style="width: 100%"
           >
             <el-option
-                v-for="item in rolesOptions"
-                :key="item.roleId"
-                :label="item.roleName"
-                :value="item.roleId"
+              v-for="item in rolesOptions"
+              :key="item.roleId"
+              :label="item.roleName"
+              :value="item.roleId"
             />
           </el-select>
           <!--          <el-input v-model="form.roleIds"></el-input>-->
         </el-form-item>
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="handleCancle">取消</el-button>
-          <el-button type="primary" @click="handleOk('ruleForm')">确定</el-button>
+          <el-button type="primary" @click="handleOk('ruleForm')"
+            >确定</el-button
+          >
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -231,8 +289,15 @@
 </template>
 
 <script>
-import {getCurrentInstance, ref, reactive, toRefs, onMounted, watch} from "vue";
-import {listAll} from "@/api/system/role.js";
+import {
+  getCurrentInstance,
+  ref,
+  reactive,
+  toRefs,
+  onMounted,
+  watch,
+} from "vue";
+import { listAll } from "@/api/system/role.js";
 import { departmentListTree } from "@/api/system/department.js";
 import {
   pageUser,
@@ -241,14 +306,14 @@ import {
   addUser,
   delMenu,
   disableUser,
-  getUserId
+  getUserId,
 } from "@/api/system/user.js";
-import {ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 
 export default {
   setup() {
     const { proxy } = getCurrentInstance();
-    const loading = ref(false)
+    const loading = ref(false);
     onMounted(() => {
       getDepartmentListFn();
       getList();
@@ -267,7 +332,7 @@ export default {
       // 查询条件
       queryParams: {
         current: 1,
-        size: 10
+        size: 10,
       },
       // 部门下拉框配置项
       defaultProps: {
@@ -276,32 +341,32 @@ export default {
       },
     });
 
-    const datetimerange = ref([])
+    const datetimerange = ref([]);
 
     // 搜索按钮
     const handleSearch = () => {
-      data.queryParams.current = 1
+      data.queryParams.current = 1;
       if (datetimerange.value.length > 0) {
-        data.queryParams.beginTime = datetimerange.value[0]
-        data.queryParams.endTime = datetimerange.value[1]
+        data.queryParams.beginTime = datetimerange.value[0];
+        data.queryParams.endTime = datetimerange.value[1];
       }
       getList();
     };
 
     // 重置查询条件
     const reset = () => {
-      datetimerange.value = []
+      datetimerange.value = [];
       data.queryParams = {
         current: 1,
-        size: 10
+        size: 10,
       };
     };
 
     // 重置按钮
     const handleReset = () => {
       reset();
-      treeSelectData.parentId = []
-      treeSelectData.treeDate = []
+      treeSelectData.parentId = [];
+      treeSelectData.treeDate = [];
       getList();
     };
 
@@ -311,13 +376,13 @@ export default {
     const background = ref(false);
     const handleSizeChange = (val) => {
       console.log(`每页${val} 条`);
-      data.queryParams.size = val
-      getList()
+      data.queryParams.size = val;
+      getList();
     };
     const handleCurrentChange = (val) => {
       console.log(`当前页: ${val}`);
-      data.queryParams.current = val
-      getList()
+      data.queryParams.current = val;
+      getList();
     };
     const disabled = ref(false);
 
@@ -325,14 +390,14 @@ export default {
     const tableData = ref([]);
     // 获取用户信息列表
     const getList = () => {
-      loading.value = true
+      loading.value = true;
       pageUser(data.queryParams).then((res) => {
         tableData.value = res.result;
         total.value = res.total;
         setTimeout(() => {
-          loading.value = false
-        }, 100)
-      })
+          loading.value = false;
+        }, 100);
+      });
     };
 
     // 公共部门下拉框
@@ -346,21 +411,23 @@ export default {
 
     // 禁用按钮状态改变
     const handleChange = (data) => {
-      disableUser(data.userId, data.enable).then(() => {
-        if(data.enable === 1) {
-          ElMessage({
-            message: '禁用状态已开启',
-            type: 'success',
-          })
-        } else {
-          ElMessage({
-            message: '禁用状态已关闭',
-            type: 'success',
-          })
-        }
-      }).catch(() =>{
-        getList()
-      })
+      disableUser(data.userId, data.enable)
+        .then(() => {
+          if (data.enable === 1) {
+            ElMessage({
+              message: "禁用状态已开启",
+              type: "success",
+            });
+          } else {
+            ElMessage({
+              message: "禁用状态已关闭",
+              type: "success",
+            });
+          }
+        })
+        .catch(() => {
+          getList();
+        });
     };
 
     // 新增 / 修改按钮弹框数据
@@ -379,22 +446,22 @@ export default {
     const type1 = ref("");
     // 新增 / 修改按钮
     const handleEdit = (type, index, data) => {
-      resetForm()
+      resetForm();
       type1.value = type;
       if (type === "1") {
         dialogTitle.value = "用户新增";
         dialogFormVisible.value = true;
         proxy.$nextTick(() => {
-          proxy.$refs.ruleForm.resetFields()
-        })
+          proxy.$refs.ruleForm.resetFields();
+        });
       }
       if (type === "2") {
         dialogTitle.value = "用户更新";
         getUserId(data.userId).then((res) => {
           form.value = res;
-          form.value.departmentName = data.departmentName
+          form.value.departmentName = data.departmentName;
           dialogFormVisible.value = true;
-        })
+        });
       }
     };
 
@@ -404,13 +471,13 @@ export default {
     });
 
     const nodeCheck = (obj, data1) => {
-      treeSelectData.parentId = data1.checkedNodes.map(item => {
-        return item.departmentId
-      })
-      treeSelectData.treeDate = data1.checkedNodes.map(item => {
-        return item.departmentName
-      })
-      data.queryParams.departmentIds = treeSelectData.parentId.join(',')
+      treeSelectData.parentId = data1.checkedNodes.map((item) => {
+        return item.departmentId;
+      });
+      treeSelectData.treeDate = data1.checkedNodes.map((item) => {
+        return item.departmentName;
+      });
+      data.queryParams.departmentIds = treeSelectData.parentId.join(",");
     };
 
     // 部门选择
@@ -423,26 +490,21 @@ export default {
     // 表格添加校验效果
     const formRules = {
       phone: [
-        { required: true, message: '请输入手机号码', trigger: 'blur' },
-        { min: 11, max: 11, message: '请输入11位手机号码', trigger: 'blur' },
+        { required: true, message: "请输入手机号码", trigger: "blur" },
+        { min: 11, max: 11, message: "请输入11位手机号码", trigger: "blur" },
         {
-          pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+          pattern:
+            /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
           message: "请输入正确的手机号码",
-        }
+        },
       ],
-      realName: [
-        {required: true, message: '请输入姓名', trigger: 'blur'}
-      ],
-      gender: [
-        {required: true, message: '请选择性别', trigger: 'change'}
-      ],
+      realName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+      gender: [{ required: true, message: "请选择性别", trigger: "change" }],
       departmentId: [
-        {required: true, message: '请选择部门', trigger: 'change'}
+        { required: true, message: "请选择部门", trigger: "change" },
       ],
-      roleIds: [
-        {required: true, message: '请选择角色', trigger: 'change'}
-      ]
-    }
+      roleIds: [{ required: true, message: "请选择角色", trigger: "change" }],
+    };
 
     // 确定按钮
     const handleOk = (formName) => {
@@ -451,18 +513,18 @@ export default {
           if (type1.value === "1") {
             delete form.value.departmentName;
             addUser(form.value)
-                .then(() => {
-                  ElMessage({
-                    message: "新增成功！",
-                    type: "success",
-                  });
-                  data.queryParams.current = 1
-                  getList();
-                  dialogFormVisible.value = false;
-                })
-                .catch(() => {
-                  ElMessage.error("新增失败");
+              .then(() => {
+                ElMessage({
+                  message: "新增成功！",
+                  type: "success",
                 });
+                data.queryParams.current = 1;
+                getList();
+                dialogFormVisible.value = false;
+              })
+              .catch(() => {
+                ElMessage.error("新增失败");
+              });
           } else {
             delete form.value.departmentName;
             delete form.value.createTime;
@@ -471,24 +533,23 @@ export default {
             delete form.value.nickname;
             delete form.value.phone;
             updataUser(form.value)
-                .then(() => {
-                  ElMessage({
-                    message: "修改成功！",
-                    type: "success",
-                  });
-                  data.queryParams.current = 1
-                  getList();
-                  dialogFormVisible.value = false;
-                })
-                .catch(() => {
-                  ElMessage.error("修改失败");
+              .then(() => {
+                ElMessage({
+                  message: "修改成功！",
+                  type: "success",
                 });
+                data.queryParams.current = 1;
+                getList();
+                dialogFormVisible.value = false;
+              })
+              .catch(() => {
+                ElMessage.error("修改失败");
+              });
           }
         } else {
           return false;
         }
       });
-
     };
 
     // 取消按钮
@@ -503,10 +564,9 @@ export default {
           message: "删除成功！",
           type: "success",
         });
-        data.queryParams.current = 1
+        data.queryParams.current = 1;
         getList();
-      })
-
+      });
     };
 
     // 用户导出
@@ -515,16 +575,18 @@ export default {
     };
 
     watch(
-        () => treeSelectData.treeDate, (val) => {
-          console.log(val)
-          if (val.length === 0) {
-            console.log(val)
-            delete data.queryParams.departmentIds
-            proxy.$refs.checkTree.setCheckedKeys([]);
-          }
-        }, {
-          deep: true
+      () => treeSelectData.treeDate,
+      (val) => {
+        console.log(val);
+        if (val.length === 0) {
+          console.log(val);
+          delete data.queryParams.departmentIds;
+          proxy.$refs.checkTree.setCheckedKeys([]);
         }
+      },
+      {
+        deep: true,
+      }
     );
 
     return {
@@ -556,7 +618,7 @@ export default {
       handleCurrentChange,
       handleExport,
       rolesOptions,
-      datetimerange
+      datetimerange,
     };
   },
 };

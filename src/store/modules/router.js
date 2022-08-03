@@ -1,10 +1,6 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-04-07 23:23:58
- * @LastEditTime: 2022-04-09 02:22:25
- * @LastEditors: lihaoyu
- * @Description: 存储路由信息的vuex文件
- * @FilePath: /sherly-vue3/src/store/modules/router.js
+ * @author: 李浩宇
+ * @date: 2022-04-07
  */
 export default {
   namespaced: true,

@@ -1,11 +1,8 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-03-29 22:29:00
- * @LastEditTime: 2022-07-31 22:15:53
- * @LastEditors: lihaoyu
- * @Description: 项目设置配置文件
- * @FilePath: /sherly-vue3/src/config.js
+ * @author: 李浩宇
+ * @date: 2022-03-29
  */
+
 export default {
   // 最大请求时间
   timeout: 300000,

@@ -1,17 +1,13 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-07 21:51:36
- * @LastEditTime: 2022-04-07 22:35:41
- * @LastEditors: lihaoyu
- * @Description: 
- * @FilePath: /sherly-vue3/src/layout/Sidebar/components/SidebarItem.vue
+ * @author: 李浩宇
+ * @date: 2022-04-07
 -->
+
 <template>
-  <div class="item-wrapper">111</div>
+  <div class="item-wrapper"></div>
 </template>
 
 <script>
-// import { ref } from "vue";
 export default {
   setup() {
     return {};

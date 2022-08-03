@@ -1,11 +1,8 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-07-15 22:24:27
- * @LastEditTime: 2022-08-01 01:08:55
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/oss/indexPage.vue
+ * @author: 李浩宇
+ * @date: 2022-07-15
 -->
+
 <template>
   <div class="sherly-page-wrapper">
     <el-form
@@ -38,25 +35,25 @@
       </el-form-item>
     </el-form>
     <SherlyTable
-        :loading="loading"
-        :tableData="tableData.result"
-        style="width: 100%"
-        showPagination
-        @handleCurrentChange="handleCurrentChange"
-        @handleSizeChange="handleSizeChange"
-        :pagination-total="tableData.total"
-        :pagination-current="tableData.current"
-        :pagination-size="tableData.size"
+      :loading="loading"
+      :tableData="tableData.result"
+      style="width: 100%"
+      showPagination
+      @handleCurrentChange="handleCurrentChange"
+      @handleSizeChange="handleSizeChange"
+      :pagination-total="tableData.total"
+      :pagination-current="tableData.current"
+      :pagination-size="tableData.size"
     >
       <template #header>
         <el-upload
-            v-model:file-list="fileList"
-            class="upload-demo"
-            :headers="{ token: data.token }"
-            :action="action"
-            :data="data"
-            multiple
-            :limit="3"
+          v-model:file-list="fileList"
+          class="upload-demo"
+          :headers="{ token: data.token }"
+          :action="action"
+          :data="data"
+          multiple
+          :limit="3"
           :on-success="handleOnSuccess"
           :before-upload="handBeforeUpload"
           :show-file-list="false"
@@ -152,14 +149,14 @@ export default {
 
     // 获取文件列表
     const handleOssLists = async () => {
-      loading.value = true
+      loading.value = true;
       const data = await getOssList(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
       setTimeout(() => {
-        loading.value = false
-      }, 100)
+        loading.value = false;
+      }, 100);
     };
 
     // 搜索
@@ -176,10 +173,10 @@ export default {
       datetimerange.value = [];
       // resetFormData.value.resetFields();
       for (let key in form) {
-        delete form[key]
+        delete form[key];
       }
-      form.current = 1
-      form.size = 10
+      form.current = 1;
+      form.size = 10;
       handleOssLists();
     };
 
@@ -230,7 +227,7 @@ export default {
       const url = await getOssAccessUrl(path);
       const name = url.split("?")[0].split("/").at(-1);
       const a_link = document.createElement("a");
-      console.log(a_link)
+      console.log(a_link);
       fetch(url)
         .then((res) => res.blob())
         .then((blob) => {

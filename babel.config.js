@@ -1,10 +1,6 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-03-28 23:41:35
- * @LastEditTime: 2022-04-15 17:19:51
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/babel.config.js
+ * @author: 李浩宇
+ * @date: 2022-03-28
  */
 const plugins = [];
 if (process.env.NODE_ENV === "production") {

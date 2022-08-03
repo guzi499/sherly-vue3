@@ -1,11 +1,8 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-05-06 23:09:53
- * @LastEditTime: 2022-05-07 00:58:28
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/utils/permission.js
+ * @author: 李浩宇
+ * @date: 2022-05-06
  */
+
 import store from "@/store";
 
 /**

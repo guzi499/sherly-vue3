@@ -1,10 +1,6 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-21 00:12:17
- * @LastEditTime: 2022-04-26 15:46:04
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/components/SherlyTable.vue
+ * @author: 李浩宇
+ * @date: 2022-04-21
 -->
 <template>
   <div class="sherlytable-header">
@@ -52,8 +48,8 @@ export default {
     },
     loading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup(props, context) {
     const handleSizeChange = (e) => {

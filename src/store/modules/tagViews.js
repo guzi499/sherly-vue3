@@ -1,10 +1,6 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-04-09 12:00:36
- * @LastEditTime: 2022-08-01 10:41:17
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/store/modules/tagViews.js
+ * @author: 李浩宇
+ * @date: 2022-04-09
  */
 
 import Cookies from "js-cookie";

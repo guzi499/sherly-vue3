@@ -1,10 +1,6 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-04-01 22:38:20
- * @LastEditTime: 2022-07-31 22:16:32
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/router/index.js
+ * @author: 李浩宇
+ * @date: 2022-04-01
  */
 import router from "./router";
 import { ElNotification } from "element-plus";

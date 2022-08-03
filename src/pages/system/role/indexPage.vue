@@ -1,11 +1,8 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-09 11:49:55
- * @LastEditTime: 2022-07-31 23:55:07
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/role/indexPage.vue
+ * @author: 李浩宇
+ * @date: 2022-04-09
 -->
+
 <template>
   <div class="sherly-page-wrapper">
     <el-form
@@ -69,7 +66,11 @@
               @confirm="handleDelete(scope.row)"
             >
               <template #reference>
-                <el-link type="danger" v-permission="['role:remove_one']" v-show="scope.row.roleId !== 1">
+                <el-link
+                  type="danger"
+                  v-permission="['role:remove_one']"
+                  v-show="scope.row.roleId !== 1"
+                >
                   删除
                 </el-link>
               </template>
@@ -85,38 +86,42 @@
       :before-close="handleCancel"
     >
       <el-form
-          v-if="dialogVisible"
-          ref="ruleFormRef"
-          :model="roleForm"
-          :rules="rules"
-          label-width="80px"
+        v-if="dialogVisible"
+        ref="ruleFormRef"
+        :model="roleForm"
+        :rules="rules"
+        label-width="80px"
       >
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="roleForm.roleName"/>
+          <el-input v-model="roleForm.roleName" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="roleForm.description"/>
+          <el-input v-model="roleForm.description" />
         </el-form-item>
         <el-form-item label="菜单权限" v-if="roleForm.roleId">
           <div>
-            <el-checkbox v-model="menuCheckedKey" @change="handleCheckedTreeChange">全选</el-checkbox>
+            <el-checkbox
+              v-model="menuCheckedKey"
+              @change="handleCheckedTreeChange"
+              >全选</el-checkbox
+            >
             <el-checkbox v-model="isStrictly">父子关联</el-checkbox>
           </div>
           <div class="tree-box">
             <el-tree
-                ref="roleTree"
-                :check-strictly="!isStrictly"
-                :data="menuTree"
-                show-checkbox
-                empty-text="加载中，请稍后"
-                node-key="menuId"
-                :props="{
+              ref="roleTree"
+              :check-strictly="!isStrictly"
+              :data="menuTree"
+              show-checkbox
+              empty-text="加载中，请稍后"
+              node-key="menuId"
+              :props="{
                 children: 'children',
                 label: 'menuName',
               }"
-                default-expand-all
-                :default-checked-keys="roleForm.menuIds"
-                @check-change="handleMenuTreeCheckChange"
+              default-expand-all
+              :default-checked-keys="roleForm.menuIds"
+              @check-change="handleMenuTreeCheckChange"
             />
           </div>
         </el-form-item>
@@ -170,7 +175,7 @@ export default {
           required: true,
           message: "请输入角色名称",
         },
-      ]
+      ],
     };
     let form = reactive({
       roleName: "",
@@ -207,25 +212,25 @@ export default {
     });
 
     // 菜单权限 - 多选框
-    const menuCheckedKey = ref('')
+    const menuCheckedKey = ref("");
     const handleCheckedTreeChange = (val) => {
-      const ary = handleTree(menuTree)
-      proxy.$refs.roleTree.setCheckedNodes(val ? ary._rawValue : [])
-    }
+      const ary = handleTree(menuTree);
+      proxy.$refs.roleTree.setCheckedNodes(val ? ary._rawValue : []);
+    };
     // 树形数据扁平化
     const handleTree = (val) => {
-      let ary = ref([])
+      let ary = ref([]);
       const fn = (val) => {
-        val.forEach(item => {
-          ary.value.push(item)
-          if(item.children && item.children.length > 0) {
-            fn(item.children)
+        val.forEach((item) => {
+          ary.value.push(item);
+          if (item.children && item.children.length > 0) {
+            fn(item.children);
           }
-        })
-      }
-      fn(val)
-      return ary
-    }
+        });
+      };
+      fn(val);
+      return ary;
+    };
 
     // 获取角色列表
     const handleGetRoleLists = async () => {
@@ -380,7 +385,7 @@ export default {
       handleCancel,
       handleMenuTreeCheckChange,
       handleSizeChange,
-      handleCheckedTreeChange
+      handleCheckedTreeChange,
     };
   },
 };

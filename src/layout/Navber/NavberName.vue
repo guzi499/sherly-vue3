@@ -1,11 +1,8 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-01 23:17:57
- * @LastEditTime: 2022-07-31 22:13:30
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/layout/Navber/NavberName.vue
+ * @author: 李浩宇
+ * @date: 2022-04-01
 -->
+
 <template>
   <div class="Navbar-wrapper">
     <div style="font-size: 1.25rem" class="header_left">
@@ -22,9 +19,9 @@
     <div class="header_right">
       <el-row>
         <el-avatar
-            size="small"
-            :src="userInfo.avatar"
-            style="margin-right: 0.5rem"
+          size="small"
+          :src="userInfo.avatar"
+          style="margin-right: 0.5rem"
         />
         <el-dropdown style="margin: auto 0">
           <span class="el-dropdown-link">

@@ -1,11 +1,8 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-01 23:26:42
- * @LastEditTime: 2022-08-01 10:40:21
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/layout/TagsView/TagsView.vue
+ * @author: 李浩宇
+ * @date: 2022-04-01
 -->
+
 <template>
   <div class="TagsView-wrapper">
     <el-scrollbar>

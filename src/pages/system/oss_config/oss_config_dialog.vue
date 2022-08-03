@@ -1,10 +1,6 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-07-08 23:40:21
- * @LastEditTime: 2022-08-03 18:04:32
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/pages/system/oss_config/oss_config_dialog.vue
+ * @author: 李浩宇
+ * @date: 2022-07-08
 -->
 <template>
   <el-dialog

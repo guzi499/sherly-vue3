@@ -1,11 +1,16 @@
 /*
  * @Author: lihaoyu
- * @Date: 2022-03-29 22:49:00
- * @LastEditTime: 2022-04-14 23:33:36
+ * @Date: 2022-04-09 12:00:59
+ * @LastEditTime: 2022-08-04 00:41:53
  * @LastEditors: lihaoyu
- * @Description: 存储用户信息的vuex文件
+ * @Description:
  * @FilePath: /sherly-vue3/src/store/modules/user.js
  */
+/*
+ * @author: 李浩宇
+ * @date: 2022-03-29
+ */
+
 export default {
   namespaced: true,
   state: () => ({

@@ -1,11 +1,8 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-05-06 21:29:37
- * @LastEditTime: 2022-06-14 01:34:30
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/components/TreeSelect.vue
+ * @author: 李浩宇
+ * @date: 2022-05-06
 -->
+
 <template>
   <div>
     <el-select
@@ -52,14 +49,14 @@ export default {
     };
 
     watch(
-        () => data.treeSelectData.parentId,
-        (val) => {
-          // console.log(val, typeof(val))
-          if(val === '') {
-            data.treeSelectData.treeDatas = ''
-          }
+      () => data.treeSelectData.parentId,
+      (val) => {
+        // console.log(val, typeof(val))
+        if (val === "") {
+          data.treeSelectData.treeDatas = "";
         }
-    )
+      }
+    );
     return { ...toRefs(data), nodeOnclick };
   },
 };

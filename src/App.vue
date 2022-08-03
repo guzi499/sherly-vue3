@@ -1,15 +1,10 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-03-28 23:41:35
- * @LastEditTime: 2022-04-20 23:45:58
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/App.vue
+ * @author: 李浩宇
+ * @date: 2022-03-28
 -->
 <template>
   <el-config-provider :locale="locale">
-    <router-view>
-    </router-view>
+    <router-view> </router-view>
   </el-config-provider>
 </template>
 
@@ -24,7 +19,7 @@ export default {
     onMounted(() => {
       store.dispatch("user/setApi", process.env.VUE_APP_URL);
     });
-    return {locale: zhCn};
+    return { locale: zhCn };
   },
 };
 </script>

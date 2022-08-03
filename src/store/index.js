@@ -1,11 +1,8 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-03-29 22:48:43
- * @LastEditTime: 2022-04-07 23:59:46
- * @LastEditors: lihaoyu
- * @Description: 集合modules下所有的文件
- * @FilePath: /sherly-vue3/src/store/index.js
+ * @author: 李浩宇
+ * @date: 2022-03-29
  */
+
 import { createStore, createLogger } from "vuex";
 import user from "./modules/user";
 import tagViews from "./modules/tagViews";

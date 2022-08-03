@@ -1,17 +1,11 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-07 21:51:36
- * @LastEditTime: 2022-04-07 22:17:10
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/layout/Sidebar/components/LogoBox.vue
+ * @author: 李浩宇
+ * @date: 2022-04-07
 -->
+
 <template>
   <div class="logo-wrapper">
-    <img
-      style="width: 50%;"
-      src="../../../assets/sherly-logo-simple.png"
-    />
+    <img style="width: 50%" src="../../../assets/sherly-logo-simple.png" />
   </div>
 </template>
 

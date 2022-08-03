@@ -1,13 +1,9 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-01 23:22:23
- * @LastEditTime: 2022-08-01 18:21:37
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/layout/Sidebar/SidebarName.vue
+ * @author: 李浩宇
+ * @date: 2022-04-01
 -->
+
 <template>
-  <!--  <div class="sidebar-wrapper" ref="sideBar" :style="'width:'+ isShow ? 64 + 'px' : 200 + 'px'">-->
   <div class="sidebar-wrapper" ref="sideBar" :style="'width:' + width + 'px'">
     <Logo :isShow="isShow" />
     <div class="menu-box">

@@ -1,6 +1,6 @@
 <!--
- * @Author: 陈雪丽
- * @Date: 2022-7-31
+ * @author: 陈雪丽
+ * @date: 2022-7-31
 -->
 <template>
   <div class="sherly-page-wrapper">
@@ -51,11 +51,11 @@
       <el-form-item label="用户上限">
         <el-form-item prop="beginUserLimit" style="margin: 0">
           <el-input
-              oninput="value=value.replace(/[^\d]/g,'')"
-              style="width: 100px"
-              v-model="form.beginUserLimit"
-              placeholder="输入数字"
-              clearable
+            oninput="value=value.replace(/[^\d]/g,'')"
+            style="width: 100px"
+            v-model="form.beginUserLimit"
+            placeholder="输入数字"
+            clearable
           />
         </el-form-item>
         <span style="width: 28px; text-align: center; user-select: none">
@@ -63,11 +63,11 @@
         </span>
         <el-form-item prop="endUserLimit" style="margin: 0">
           <el-input
-              oninput="value=value.replace(/[^\d]/g,'')"
-              style="width: 100px"
-              v-model="form.endUserLimit"
-              placeholder="输入数字"
-              clearable
+            oninput="value=value.replace(/[^\d]/g,'')"
+            style="width: 100px"
+            v-model="form.endUserLimit"
+            placeholder="输入数字"
+            clearable
           />
         </el-form-item>
       </el-form-item>
@@ -137,10 +137,10 @@
           align="center"
         />
         <el-table-column
-            prop="createTime"
-            label="创建时间"
-            width="220"
-            align="center"
+          prop="createTime"
+          label="创建时间"
+          width="220"
+          align="center"
         />
         <el-table-column
           fixed="right"
@@ -182,24 +182,28 @@
       <el-form>
         <el-form-item label="菜单权限" prop="description">
           <div>
-            <el-checkbox v-model="menuCheckedKey" @change="handleCheckedTreeChange">全选</el-checkbox>
+            <el-checkbox
+              v-model="menuCheckedKey"
+              @change="handleCheckedTreeChange"
+              >全选</el-checkbox
+            >
             <el-checkbox v-model="isStrictly">父子关联</el-checkbox>
           </div>
           <div class="tree-box">
             <el-tree
-                ref="tenantTree"
-                :check-strictly="!isStrictly"
-                :data="menuTree"
-                show-checkbox
-                empty-text="加载中，请稍后"
-                node-key="menuId"
-                :props="{
-              children: 'children',
-              label: 'menuName',
-            }"
-                default-expand-all
-                :default-checked-keys="tenantListMenu"
-                @check-change="handleMenuTreeCheckChange"
+              ref="tenantTree"
+              :check-strictly="!isStrictly"
+              :data="menuTree"
+              show-checkbox
+              empty-text="加载中，请稍后"
+              node-key="menuId"
+              :props="{
+                children: 'children',
+                label: 'menuName',
+              }"
+              default-expand-all
+              :default-checked-keys="tenantListMenu"
+              @check-change="handleMenuTreeCheckChange"
             />
           </div>
         </el-form-item>
@@ -232,7 +236,7 @@
         </el-form-item>
         <el-form-item label="过期时间" prop="expireTime">
           <el-date-picker
-              value-format="YYYY-MM-DD hh:mm:ss"
+            value-format="YYYY-MM-DD hh:mm:ss"
             style="width: 360px"
             v-model="tenantForm.expireTime"
             type="datetime"
@@ -283,7 +287,7 @@ export default {
     const activeName = ref("menu");
     const loading = ref(false);
     let form = reactive({
-      beginTime:"",
+      beginTime: "",
       endTime: "",
       beginExpireTime: "",
       endExpireTime: "",
@@ -320,7 +324,7 @@ export default {
       return {
         current: 1,
         size: 10,
-        beginTime:"",
+        beginTime: "",
         endTime: "",
         beginExpireTime: "",
         endExpireTime: "",
@@ -347,36 +351,36 @@ export default {
         { required: true, message: "请输入过期时间", trigger: "blur" },
       ],
       userLimit: [
-        {required: true, message: "请输入用户上限", trigger: "blur"},
+        { required: true, message: "请输入用户上限", trigger: "blur" },
       ],
       contactUser: [
-        {required: true, message: "请输入联系人", trigger: "blur"},
+        { required: true, message: "请输入联系人", trigger: "blur" },
       ],
       contactPhone: [
-        {required: true, message: "请输入联系电话", trigger: "blur"},
+        { required: true, message: "请输入联系电话", trigger: "blur" },
       ],
     };
 
     // 菜单权限 - 多选框
-    const menuCheckedKey = ref('')
+    const menuCheckedKey = ref("");
     const handleCheckedTreeChange = (val) => {
-      const ary = handleTree(menuTree)
-      proxy.$refs.tenantTree.setCheckedNodes(val ? ary._rawValue : [])
-    }
+      const ary = handleTree(menuTree);
+      proxy.$refs.tenantTree.setCheckedNodes(val ? ary._rawValue : []);
+    };
     // 树形数据扁平化
     const handleTree = (val) => {
-      let ary = ref([])
+      let ary = ref([]);
       const fn = (val) => {
-        val.forEach(item => {
-          ary.value.push(item)
-          if(item.children && item.children.length > 0) {
-            fn(item.children)
+        val.forEach((item) => {
+          ary.value.push(item);
+          if (item.children && item.children.length > 0) {
+            fn(item.children);
           }
-        })
-      }
-      fn(val)
-      return ary
-    }
+        });
+      };
+      fn(val);
+      return ary;
+    };
 
     // 获取菜单树
     const handleGetMenuTree = async () => {
@@ -437,7 +441,7 @@ export default {
     const handleReset = () => {
       datetimerange.value = [];
       _datetimerange.value = [];
-      form = inittenantForm()
+      form = inittenantForm();
       getList();
     };
 
@@ -591,7 +595,7 @@ export default {
       _datetimerange,
       activeName,
       menuCheckedKey,
-      handleCheckedTreeChange
+      handleCheckedTreeChange,
     };
   },
 };

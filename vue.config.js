@@ -1,11 +1,8 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-03-28 22:16:15
- * @LastEditTime: 2022-08-02 18:11:06
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/vue.config.js
+ * @author: 李浩宇
+ * @date: 2022-03-28
  */
+
 const path = require("path");
 const { defineConfig } = require("@vue/cli-service");
 const CompressionPlugin = require("compression-webpack-plugin");

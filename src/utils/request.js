@@ -1,10 +1,6 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-03-29 22:14:03
- * @LastEditTime: 2022-07-31 02:10:30
- * @LastEditors: lihaoyu
- * @Description: 请求封装
- * @FilePath: /sherly-vue3/src/utils/request.js
+ * @author: 李浩宇
+ * @date: 2022-03-29
  */
 
 import axios from "axios";

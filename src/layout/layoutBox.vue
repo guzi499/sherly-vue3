@@ -1,25 +1,22 @@
 <!--
- * @Author: lihaoyu
- * @Date: 2022-04-01 23:14:11
- * @LastEditTime: 2022-04-02 00:09:20
- * @LastEditors: lihaoyu
- * @Description:
- * @FilePath: /sherly-vue3/src/layout/layoutBox.vue
+ * @author: 李浩宇
+ * @date: 2022-04-01
 -->
+
 <template>
   <div class="sherly-wrapper">
     <div class="sherly-wrapper-Sidebar" :style="'width:' + width + 'px'">
-      <Sidebar :isShow="isShow"/>
+      <Sidebar :isShow="isShow" />
     </div>
     <div class="sherly-wrapper-content" style="width: 100%">
-      <Navber @isCollapse="isCollapse"/>
-      <TagsView/>
-      <AppMain/>
+      <Navber @isCollapse="isCollapse" />
+      <TagsView />
+      <AppMain />
     </div>
   </div>
 </template>
 <script>
-import {ref, watch} from 'vue'
+import { ref, watch } from "vue";
 import Navber from "./Navber/NavberName.vue";
 import Sidebar from "./Sidebar/SidebarName.vue";
 import TagsView from "./TagsView/TagsView.vue";
@@ -33,18 +30,15 @@ export default {
     AppMain,
   },
   setup() {
-    const isShow = ref(false)
+    const isShow = ref(false);
     const isCollapse = (val) => {
-      isShow.value = val
-    }
-    const width = ref(200)
-    watch(
-        isShow,
-        (val) => {
-          val ? width.value = 64 : width.value = 200
-        }
-    )
-    return {isShow, isCollapse, width}
+      isShow.value = val;
+    };
+    const width = ref(200);
+    watch(isShow, (val) => {
+      val ? (width.value = 64) : (width.value = 200);
+    });
+    return { isShow, isCollapse, width };
   },
 };
 </script>

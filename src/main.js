@@ -1,11 +1,8 @@
 /*
- * @Author: lihaoyu
- * @Date: 2022-03-28 23:41:35
- * @LastEditTime: 2022-05-07 00:59:36
- * @LastEditors: lihaoyu
- * @Description: 入口文件
- * @FilePath: /sherly-vue3/src/main.js
+ * @author: 李浩宇
+ * @date: 2022-03-28
  */
+
 import { createApp } from "vue";
 import App from "./App.vue";
 import store from "@/store/index";
@@ -24,10 +21,10 @@ import TreeSelect from "@/components/TreeSelect.vue";
 // 自定义分页组件
 import Pagination from "@/components/PaginationEl.vue";
 // 自定义穿梭框组件
-import TransferName from '@/pages/system/email/email_send/components/TransferName.vue'
+import TransferName from "@/pages/system/email/email_send/components/TransferName.vue";
 
 // 引入矢量图标
-import '@/assets/style/font-icon/iconfont.css'
+import "@/assets/style/font-icon/iconfont.css";
 const app = createApp(App);
 
 app.use(store);
