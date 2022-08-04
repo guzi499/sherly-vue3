@@ -152,6 +152,7 @@ import { updateSelf, updatePassword } from "@/api/system/user_self.js";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
+import store from "@/store";
 
 export default {
   name: "UserInfo",
@@ -269,10 +270,16 @@ export default {
                 proxy.$alert('token过期，请重新登录！', '警告', {
                   confirmButtonText: '好的',
                   callback: () => {
+                    Cookies.remove("phone");
                     Cookies.remove("metaTitle");
+                    Cookies.remove("userInfo");
                     Cookies.remove("routePath");
+                    Cookies.remove("password");
                     localStorage.removeItem("token");
-                    router.push("/login");
+                    store.dispatch("router/loadMenus", true);
+                    router.replace("/login");
+                    setTimeout(()=>{ location.reload();})
+
                   }
                 });
               }, 1000)
