@@ -94,10 +94,10 @@ import StorageDialog from "./oss_config_dialog";
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import {
-  getOssConfigList,
-  deleteOssConfig,
-  getOssDetail,
-  enableOss,
+  ossConfigListPage,
+  ossConfigRemoveOne,
+  ossConfigGetOne,
+  ossConfigEnableOne,
 } from "@/api/system/oss";
 
 export default {
@@ -120,7 +120,7 @@ export default {
 
     const handlestorageLists = async () => {
       loading.value = true;
-      const data = await getOssConfigList(form);
+      const data = await ossConfigListPage(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -151,7 +151,7 @@ export default {
 
     // 删除
     const handleDelete = async (e) => {
-      await deleteOssConfig(e.configId);
+      await ossConfigRemoveOne(e.configId);
       ElMessage({
         message: "删除成功！",
         type: "success",
@@ -161,7 +161,7 @@ export default {
 
     // 编辑
     const handleEdit = async (configId) => {
-      const result = await getOssDetail(configId);
+      const result = await ossConfigGetOne(configId);
       Object.keys(result).forEach((key) => {
         StorageDialog.value.form[key] = result[key];
       });
@@ -171,7 +171,7 @@ export default {
 
     // 启用
     const handleEnable = async (configId) => {
-      await enableOss(configId);
+      await ossConfigEnableOne(configId);
       handlestorageLists();
     };
 

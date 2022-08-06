@@ -4,8 +4,8 @@
  */
 
 import request from "@/utils/request";
-/** 登录日志分页 */
-export function getLoginLogList(params) {
+// 登录日志分页
+export function loginLogListPage(params) {
     return request({
         url: "/login_log/list_page",
         method: "get",
@@ -13,8 +13,8 @@ export function getLoginLogList(params) {
     });
 }
 
-/** 登录日志清空 */
-export function deleteLoginLogRemoveAll() {
+// 登录日志清空
+export function loginLogRemoveAll() {
     return request({
         url: `/login_log/remove_all`,
         method: "delete",

@@ -207,8 +207,8 @@
 <script>
 import { ElMessage } from "element-plus";
 import { reactive, ref, onMounted, getCurrentInstance } from "vue";
-import { getMenu } from "@/api/system/menu";
-import { addMenu, delMenu, updateMenu } from "@/api/system/menu";
+import { menuListTree } from "@/api/system/menu";
+import { menuSaveOne, menuRemoveOne, menuUpdateOne } from "@/api/system/menu";
 import iconfont from "@/assets/style/font-icon/iconfont.json";
 
 export default {
@@ -267,7 +267,7 @@ export default {
     const menuList = ref([]);
     const getList = () => {
       loading.value = true;
-      getMenu(data.queryParams).then((res) => {
+      menuListTree(data.queryParams).then((res) => {
         menuList.value = res;
         setTimeout(() => {
           loading.value = false;
@@ -279,7 +279,7 @@ export default {
     // 查询菜单下拉框列表信息
     const menuListSelect = ref([]);
     const getMenuListFn = () => {
-      getMenu().then((res) => {
+      menuListTree().then((res) => {
         menuListSelect.value = res;
       });
     };
@@ -386,7 +386,7 @@ export default {
 
     // 点击删除按钮
     const handleDelete = (index, data) => {
-      delMenu(data.menuId)
+      menuRemoveOne(data.menuId)
           .then(() => {
             ElMessage({
               type: "success",
@@ -421,7 +421,7 @@ export default {
           }
           // 新增
           if (dialogType.value === "1") {
-            addMenu(_obj.value)
+            menuSaveOne(_obj.value)
                 .then(() => {
                   getList();
                 })
@@ -434,7 +434,7 @@ export default {
           }
           // 修改
           if (dialogType.value === "2") {
-            updateMenu(_obj.value)
+            menuUpdateOne(_obj.value)
               .then(() => {
                 getList();
               })

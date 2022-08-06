@@ -19,8 +19,8 @@
 
 <script>
 import {ref, toRefs, watch} from 'vue'
-import {getUserList_all} from '@/api/system/user.js'
-import {listAll} from '@/api/system/role.js'
+import {userListAll} from '@/api/system/user.js'
+import {roleListAll} from '@/api/system/role.js'
 import {departmentListTree} from '@/api/system/department.js'
 
 export default {
@@ -53,11 +53,11 @@ export default {
     const getList = async () => {
       list1.value = []
       if (activeName.value === 'user') {
-        const res = await getUserList_all()
+        const res = await userListAll()
         list1.value = res
       }
       if (activeName.value === 'role') {
-        const res = await listAll()
+        const res = await roleListAll()
         list1.value = res
       }
       if (activeName.value === 'department') {

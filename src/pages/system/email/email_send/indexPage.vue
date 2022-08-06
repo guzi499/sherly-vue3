@@ -62,7 +62,7 @@
 
 <script>
 import {getCurrentInstance, onBeforeUnmount, onMounted, reactive, ref, shallowRef, watch} from "vue";
-import {sendEmail} from "@/api/system/email";
+import {emailSend} from "@/api/system/email";
 import {ElMessage, ElLoading} from "element-plus";
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {Editor, Toolbar} from "@wangeditor/editor-for-vue";
@@ -125,7 +125,7 @@ export default {
             }
           })
           console.log('验证通过', _obj)
-          sendEmail(_obj).then(() => {
+          emailSend(_obj).then(() => {
             loading.value.close()
             ElMessage({
               showClose: true,

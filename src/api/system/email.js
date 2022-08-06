@@ -6,7 +6,7 @@
 import request from "@/utils/request";
 
 // 邮箱配置详情
-export function getEmailOne(params) {
+export function emailGetOne(params) {
     return request({
         url: "/email/get_one",
         method: "get",
@@ -15,7 +15,7 @@ export function getEmailOne(params) {
 }
 
 // 邮件配置保存或修改
-export function saveOrUpdateEmail(data) {
+export function emailSaveOrUpdate(data) {
     return request({
         url: `/email/save_or_update`,
         method: "post",
@@ -24,7 +24,7 @@ export function saveOrUpdateEmail(data) {
 }
 
 // 邮件发送
-export function sendEmail(data) {
+export function emailSend(data) {
     return request({
         url: `/email/send`,
         method: "post",

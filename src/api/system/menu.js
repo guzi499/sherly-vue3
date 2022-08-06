@@ -5,8 +5,8 @@
 
 import request from "@/utils/request";
 
-/**菜单列表 */
-export function getMenu(data) {
+// 菜单列表
+export function menuListTree(data) {
   return request({
     url: "/menu/list_tree",
     method: "get",
@@ -14,8 +14,8 @@ export function getMenu(data) {
   });
 }
 
-/**新增菜单 */
-export function addMenu(data) {
+// 新增菜单
+export function menuSaveOne(data) {
   return request({
     url: "/menu/save_one",
     method: "post",
@@ -24,7 +24,7 @@ export function addMenu(data) {
 }
 
 // 修改菜单
-export function updateMenu(data) {
+export function menuUpdateOne(data) {
   return request({
     url: "/menu/update_one",
     method: "put",
@@ -33,7 +33,7 @@ export function updateMenu(data) {
 }
 
 // 删除菜单
-export function delMenu(menuId) {
+export function menuRemoveOne(menuId) {
   return request({
     url: `/menu/remove_one?menuId=${menuId}`,
     method: "delete",

@@ -18,7 +18,7 @@ import { useRoute } from "vue-router";
 import Avatar from './components/AvatarPic.vue'
 import UserInfo from './components/UserInfo.vue'
 import OperationLog from './components/OperationLog.vue'
-import { getSelf } from '@/api/system/user_self.js'
+import { userSelfGetSelf } from '@/api/system/user_self.js'
 
 export default {
   components: {
@@ -43,7 +43,7 @@ export default {
     const curUserInfo = ref({})
     // 获取当前登录用户的用户信息
     const getList = () => {
-      getSelf().then(res => {
+      userSelfGetSelf().then(res => {
         console.log(res)
         curUserInfo.value = res
       })

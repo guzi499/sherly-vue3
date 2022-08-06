@@ -76,7 +76,7 @@ import { reactive, ref, computed } from "vue";
 import Config from "@/config";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
-import { logout, loginchange, getAvailablelist } from "@/api/system/login.js";
+import { logout, loginChange, availableList } from "@/api/system/login.js";
 import store from "@/store";
 import { ElMessage } from "element-plus";
 
@@ -124,7 +124,7 @@ export default {
 
     const handleChangeTenant = () => {
       selectTenant.value = userInfo.tenantCode;
-      getAvailablelist(userInfo.phone).then((_res) => {
+      availableList(userInfo.phone).then((_res) => {
         tenantList.length = 0;
         _res.forEach((i) => {
           tenantList.push(i);
@@ -143,7 +143,7 @@ export default {
     const confirm = async () => {
       if (selectTenant.value) {
         dialogVisible.value = false;
-        await loginchange(selectTenant.value);
+        await loginChange(selectTenant.value);
         router.replace({ path: "/home" });
         setTimeout(() => {
           location.reload();

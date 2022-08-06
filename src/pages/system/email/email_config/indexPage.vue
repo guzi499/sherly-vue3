@@ -45,7 +45,7 @@
 </template>
 <script>
 import {getCurrentInstance, reactive, ref} from 'vue'
-import {getEmailOne, saveOrUpdateEmail} from '@/api/system/email.js'
+import {emailGetOne, emailSaveOrUpdate} from '@/api/system/email.js'
 import {ElMessage} from "element-plus";
 
 export default {
@@ -77,7 +77,7 @@ export default {
       ],
     })
     const getEmailOneFn = () => {
-      getEmailOne().then((res) => {
+      emailGetOne().then((res) => {
         form1.value = res
       })
     }
@@ -87,7 +87,7 @@ export default {
       proxy.$refs[formName].validate((valid) => {
         if (valid) {
           // console.log('验证通过', form1.value)
-          saveOrUpdateEmail(form1.value).then(() => {
+          emailSaveOrUpdate(form1.value).then(() => {
             ElMessage({
               showClose: true,
               message: '邮箱配置更新成功',

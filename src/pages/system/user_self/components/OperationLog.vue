@@ -38,7 +38,7 @@
 <script>
 import {reactive, ref, onMounted} from "vue";
 import {useRoute} from "vue-router";
-import {getOperationList} from '@/api/system/user_self.js'
+import {userSelfOperationLogListPage} from '@/api/system/user_self.js'
 import SherlyTable from "@/components/SherlyTable";
 import {InfoFilled} from '@element-plus/icons-vue'
 
@@ -73,7 +73,7 @@ export default {
 
     // 获取操作日志分页数据
     const getList = async () => {
-      const data = await getOperationList(queryParams)
+      const data = await userSelfOperationLogListPage(queryParams)
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
         setTimeout(() => {

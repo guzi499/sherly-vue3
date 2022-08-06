@@ -49,7 +49,7 @@
 
 <script>
 import {getCurrentInstance, ref, toRefs, watch} from 'vue'
-import {getUserList_all} from '@/api/system/user.js'
+import {userListAll} from '@/api/system/user.js'
 
 export default {
   name: "transferName",
@@ -98,7 +98,7 @@ export default {
         emit('update:list2', leftCheckedIds.value)
       }
       if (activeName.value === 'role') {
-        const res = await getUserList_all({roleIds: leftCheckedIds.value.join(',')})
+        const res = await userListAll({roleIds: leftCheckedIds.value.join(',')})
         const ary = res.map((item) => {
           return item.realName + (item.email === null ? '' : '|' + item.email)
         })
@@ -110,7 +110,7 @@ export default {
         proxy.$refs.tree.getCheckedNodes().forEach(item => {
           departmentIds.value.push(item.departmentId)
         })
-        const res = await getUserList_all({departmentIds: (departmentIds.value).join(',')})
+        const res = await userListAll({departmentIds: (departmentIds.value).join(',')})
         const ary = res.map((item) => {
           return item.realName + (item.email === null ? '' : '|' + item.email)
         })

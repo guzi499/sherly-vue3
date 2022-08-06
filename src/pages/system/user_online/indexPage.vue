@@ -95,7 +95,7 @@
 </template>
 <script>
 import { reactive, ref, onMounted } from "vue";
-import { getOnline, delOnline } from "@/api/system/user_online";
+import { userOnlineListAll, userOnlineForceQuit } from "@/api/system/user_online";
 import SherlyTable from "@/components/SherlyTable.vue";
 import { ElMessage } from "element-plus";
 
@@ -119,7 +119,7 @@ export default {
     // 获取列表
     const getList = async () => {
       loading.value = true;
-      const result = await getOnline(form.phone ? form : "");
+      const result = await userOnlineListAll(form.phone ? form : "");
       const data = {
         result: formatPagination(result),
         size: form.size,
@@ -175,7 +175,7 @@ export default {
 
     // 删除角色
     const handleDelete = ({ phone }) => {
-      delOnline(phone).then(() => {
+      userOnlineForceQuit(phone).then(() => {
         ElMessage({
           message: "删除用户成功",
           type: "success",

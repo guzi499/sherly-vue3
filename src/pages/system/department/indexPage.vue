@@ -119,9 +119,9 @@ import {ElMessage} from "element-plus";
 import {reactive, ref, onMounted, getCurrentInstance} from "vue";
 import {
   departmentListTree,
-  addDepartment,
-  delDepartment,
-  updateDepartment,
+  departmentSaveOne,
+  departmentRemoveOne,
+  departmentUpdateOne,
 } from "@/api/system/department";
 export default {
   name: "departmentPage",
@@ -277,7 +277,7 @@ export default {
 
     // 点击删除按钮
     const handleDelete = (data) => {
-      delDepartment(data.departmentId).then(() => {
+      departmentRemoveOne(data.departmentId).then(() => {
         ElMessage({
           type: "success",
           message: "删除成功",
@@ -294,7 +294,7 @@ export default {
         if (config) {
           // 新增
           if (dialogType.value === "1") {
-            addDepartment(form.value)
+            departmentSaveOne(form.value)
                 .then(() => {
                   getList();
                 })
@@ -307,7 +307,7 @@ export default {
           }
           // 修改
           if (dialogType.value === "2") {
-            updateDepartment(form.value)
+            departmentUpdateOne(form.value)
                 .then(() => {
                   getList();
                 })

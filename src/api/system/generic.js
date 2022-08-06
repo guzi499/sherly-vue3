@@ -5,7 +5,7 @@
 import request from "@/utils/request";
 
 // 获取当前用户菜单
-export function getBasicData(data) {
+export function genericBasicData(data) {
   return request({
     url: "/generic/basic_data",
     method: "get",
@@ -14,7 +14,7 @@ export function getBasicData(data) {
 }
 
 // 心脏检测
-export function heartBzeat() {
+export function genericHeartBeat() {
   return request({
     url: "/generic/heart_beat",
     method: "get",

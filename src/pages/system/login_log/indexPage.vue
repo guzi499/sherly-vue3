@@ -91,7 +91,7 @@
 
 <script>
 import {reactive, ref, onMounted} from "vue";
-import {deleteLoginLogRemoveAll, getLoginLogList} from '@/api/system/login_log.js'
+import {loginLogRemoveAll, loginLogListPage} from '@/api/system/login_log.js'
 import SherlyTable from "@/components/SherlyTable";
 import {ElMessage} from "element-plus";
 import {InfoFilled} from '@element-plus/icons-vue'
@@ -174,7 +174,7 @@ export default {
     // 获取登录日志分页数据
     const getList = async () => {
       loading.value = true;
-      const data = await getLoginLogList(queryParams)
+      const data = await loginLogListPage(queryParams)
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -185,7 +185,7 @@ export default {
 
     // 清空日志
     const handleEmpty = () => {
-      deleteLoginLogRemoveAll().then(() => {
+      loginLogRemoveAll().then(() => {
         ElMessage({
           message: "清除成功",
           type: "success",

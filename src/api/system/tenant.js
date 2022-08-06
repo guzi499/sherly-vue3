@@ -4,8 +4,8 @@
  */
 import request from "@/utils/request";
 
-/** 获取租户列表 */
-export function getTenant(params) {
+// 获取租户列表
+export function tenantListPage(params) {
   return request({
     url: "/tenant/list_page",
     method: "get",
@@ -13,8 +13,8 @@ export function getTenant(params) {
   });
 }
 
-/** 新增租户 */
-export function addTenant(data) {
+// 新增租户
+export function tenantSaveOne(data) {
   return request({
     url: "/tenant/save_one",
     method: "post",
@@ -22,16 +22,16 @@ export function addTenant(data) {
   });
 }
 
-/** 删除租户 */
-export function delTenant(id) {
+// 删除租户
+export function tenantRemoveOne(id) {
   return request({
     url: `/tenant/remove_one?tenantId=${id}`,
     method: "delete",
   });
 }
 
-/** 更新租户 */
-export function updateTenant(data) {
+// 更新租户
+export function tenantUpdateOne(data) {
   return request({
     url: `/tenant/update_one`,
     method: "put",
@@ -39,8 +39,8 @@ export function updateTenant(data) {
   });
 }
 
-/** 更新租户菜单 */
-export function updateTenantMenu(data) {
+// 更新租户菜单
+export function tenantUpdateMenu(data) {
   return request({
     url: `/tenant/update_menu`,
     method: "put",
@@ -48,8 +48,8 @@ export function updateTenantMenu(data) {
   });
 }
 
-/** 获取租户菜单权限 */
-export function getTenantListMenu(tenantId) {
+// 获取租户菜单权限
+export function tenantListMenuId(tenantId) {
   return request({
     url: `/tenant/list_menu?tenantId=${tenantId}`,
     method: "get",

@@ -126,7 +126,7 @@
 
 <script>
 import {reactive, ref, onMounted} from "vue";
-import {getOperationList, delLog, getOperationOne} from '@/api/system/operate_log.js'
+import {operationLogListPage, operationLogRemoveAll, operationLogGetOne} from '@/api/system/operate_log.js'
 import SherlyTable from "@/components/SherlyTable";
 import {ElMessage} from "element-plus";
 import {InfoFilled} from '@element-plus/icons-vue'
@@ -200,7 +200,7 @@ export default {
     // 获取操作日志分页数据
     const getList = async () => {
       loading.value = true;
-      const data = await getOperationList(queryParams)
+      const data = await operationLogListPage(queryParams)
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -212,7 +212,7 @@ export default {
     // 清空日志
     const handleEmpty = () => {
       formInfo.value = {}
-      delLog().then(() => {
+      operationLogRemoveAll().then(() => {
         ElMessage({
           message: "清除成功",
           type: "success",
@@ -224,7 +224,7 @@ export default {
 
     // 查看日志详情
     const handleLogId = async (logId) => {
-      const data = await getOperationOne(logId)
+      const data = await operationLogGetOne(logId)
       formInfo.value = data
       dialogVisible.value = true
     }

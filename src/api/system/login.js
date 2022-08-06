@@ -23,7 +23,7 @@ export function logout() {
 }
 
 // 获取可用租户列表(不需要密码)
-export function getAvailablelist(phone) {
+export function availableList(phone) {
   return request({
     url: `/available_list?phone=${phone}`,
     method: "get",
@@ -31,7 +31,7 @@ export function getAvailablelist(phone) {
 }
 
 // 获取可用租户列表(需要密码)
-export function getAvailablelistCheck(data) {
+export function availableListCheck(data) {
   return request({
     url: "/available_list_check",
     method: "post",
@@ -40,7 +40,7 @@ export function getAvailablelistCheck(data) {
 }
 
 // 切换登录租户
-export function loginchange(tenantCode) {
+export function loginChange(tenantCode) {
   return request({
     url: `/login_change?tenantCode=${tenantCode}`,
     method: "put",

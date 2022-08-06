@@ -7,7 +7,7 @@ import { ElNotification } from "element-plus";
 import Cookies from "js-cookie";
 import Config from "@/config";
 import store from "@/store";
-import { getBasicData } from "@/api/system/generic";
+import { genericBasicData } from "@/api/system/generic";
 import Layout from "@/layout/layoutBox.vue";
 
 router.beforeEach((to, from, next) => {
@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
 });
 
 const loadRouter = (to, next) => {
-  return getBasicData({ token: localStorage.getItem("token") }).then((res) => {
+  return genericBasicData({ token: localStorage.getItem("token") }).then((res) => {
     if (res) {
       store.dispatch("user/setUserInfo", res);
       const MenuList = res.basicMenuInfoVO;

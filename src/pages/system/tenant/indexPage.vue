@@ -270,14 +270,14 @@
 <script>
 import { reactive, ref, onMounted, watch, getCurrentInstance } from "vue";
 import {
-  getTenant,
-  delTenant,
-  updateTenant,
-  addTenant,
-  updateTenantMenu,
-  getTenantListMenu,
+  tenantListPage,
+  tenantRemoveOne,
+  tenantUpdateOne,
+  tenantSaveOne,
+  tenantUpdateMenu,
+  tenantListMenuId,
 } from "@/api/system/tenant";
-import { getMenu } from "@/api/system/menu";
+import { menuListTree } from "@/api/system/menu";
 import SherlyTable from "@/components/SherlyTable.vue";
 import { ElMessage } from "element-plus";
 
@@ -384,7 +384,7 @@ export default {
 
     // 获取菜单树
     const handleGetMenuTree = async () => {
-      const data = await getMenu();
+      const data = await menuListTree();
       data.forEach((i) => {
         menuTree.push(i);
       });
@@ -407,7 +407,7 @@ export default {
     // 获取列表
     const getList = async () => {
       loading.value = true;
-      const data = await getTenant(form);
+      const data = await tenantListPage(form);
       Object.keys(data).forEach((i) => {
         tableData[i] = data[i];
       });
@@ -468,7 +468,7 @@ export default {
 
     // 删除租户
     const handleDelete = ({ tenantId }) => {
-      delTenant(tenantId).then(() => {
+      tenantRemoveOne(tenantId).then(() => {
         ElMessage({
           message: "删除租户成功",
           type: "success",
@@ -488,7 +488,7 @@ export default {
       tenantFormRef.value.validate((valid) => {
         if (valid) {
           if (tenantForm.tenantId) {
-            updateTenant(tenantForm).then(() => {
+            tenantUpdateOne(tenantForm).then(() => {
               dialogVisible.value = false;
               ElMessage({
                 message: "修改租户成功",
@@ -497,7 +497,7 @@ export default {
               getList();
             });
           } else {
-            addTenant(tenantForm).then(() => {
+            tenantSaveOne(tenantForm).then(() => {
               dialogVisible.value = false;
               ElMessage({
                 message: "添加租户成功",
@@ -514,7 +514,7 @@ export default {
     // 编辑租户菜单
     const handleEditMenu = async (_tenantId) => {
       tenantId.value = _tenantId;
-      const data = await getTenantListMenu(_tenantId);
+      const data = await tenantListMenuId(_tenantId);
       data.forEach((i) => {
         tenantListMenu.push(i);
       });
@@ -543,7 +543,7 @@ export default {
 
     // 菜单权限确认
     const handleMenuConfirm = async () => {
-      await updateTenantMenu({
+      await tenantUpdateMenu({
         menuIds: tenantListMenu,
         tenantId: tenantId.value,
       });

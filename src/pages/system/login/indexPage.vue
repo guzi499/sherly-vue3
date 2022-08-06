@@ -106,8 +106,8 @@
 <script>
 import { reactive, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { login, getAvailablelistCheck } from "@/api/system/login";
-import { heartBzeat } from "@/api/system/generic";
+import { login, availableListCheck } from "@/api/system/login";
+import { genericHeartBeat } from "@/api/system/generic";
 import Cookies from "js-cookie";
 import { ElMessage, ElLoading } from "element-plus";
 
@@ -160,7 +160,7 @@ export default {
 
     // 心跳检测
     const handleHeartBzeat = () => {
-      heartBzeat().then(() => {
+      genericHeartBeat().then(() => {
         router.replace({ path: "/home" });
       });
     };
@@ -172,7 +172,7 @@ export default {
         text: "Loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      await getAvailablelistCheck(loginForm)
+      await availableListCheck(loginForm)
         .then((res) => {
           tenantList.length = 0;
           res.forEach((i) => {

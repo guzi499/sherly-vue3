@@ -120,7 +120,7 @@
 <script>
 import { reactive, onMounted, ref } from "vue";
 import SherlyTable from "@/components/SherlyTable.vue";
-import { getOssList, deleteOss, getOssAccessUrl } from "@/api/system/oss";
+import { ossListPage, ossRemoveOne, ossAccessUrl } from "@/api/system/oss";
 import { ElMessage, ElLoading, ElNotification } from "element-plus";
 
 export default {
@@ -149,7 +149,7 @@ export default {
     // 获取文件列表
     const handleOssLists = async () => {
       loading.value = true;
-      const data = await getOssList(form);
+      const data = await ossListPage(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -213,7 +213,7 @@ export default {
 
     // 删除
     const handleDelete = async (e) => {
-      await deleteOss(e.fileId);
+      await ossRemoveOne(e.fileId);
       ElMessage({
         message: "删除成功！",
         type: "success",
@@ -222,7 +222,7 @@ export default {
     };
 
     const handleDownload = async ({ path }) => {
-      const url = await getOssAccessUrl(path);
+      const url = await ossAccessUrl(path);
       const name = url.split("?")[0].split("/").at(-1);
       const a_link = document.createElement("a");
       console.log(a_link);
@@ -275,7 +275,7 @@ export default {
     };
 
     const handleCopy = async ({ path }) => {
-      const url = await getOssAccessUrl(path);
+      const url = await ossAccessUrl(path);
       let i = document.createElement("input");
       i.value = url;
       document.body.appendChild(i);

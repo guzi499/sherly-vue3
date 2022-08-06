@@ -147,13 +147,13 @@ import {
 } from "vue";
 import { ElMessage } from "element-plus";
 import {
-  getRoleLists,
-  addRole,
-  delRole,
-  updateRole,
-  getOneRole,
+  roleListPage,
+  roleSaveOne,
+  roleRemoveOne,
+  roleUpdateOne,
+  roleGetOne,
 } from "@/api/system/role";
-import { getMenu } from "@/api/system/menu";
+import { menuListTree } from "@/api/system/menu";
 import SherlyTable from "@/components/SherlyTable.vue";
 
 export default {
@@ -235,7 +235,7 @@ export default {
     // 获取角色列表
     const handleGetRoleLists = async () => {
       loading.value = true;
-      const data = await getRoleLists(form);
+      const data = await roleListPage(form);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
         setTimeout(() => {
@@ -246,7 +246,7 @@ export default {
 
     // 获取菜单树
     const handleGetMenuTree = async () => {
-      const data = await getMenu();
+      const data = await menuListTree();
       data.forEach((i) => {
         menuTree.push(i);
       });
@@ -285,7 +285,7 @@ export default {
 
     // 编辑角色
     const handleEdit = async ({ roleId }) => {
-      const data = await getOneRole(roleId);
+      const data = await roleGetOne(roleId);
       Object.keys(data).forEach((i) => {
         roleForm[i] = data[i];
       });
@@ -298,7 +298,7 @@ export default {
 
     // 删除角色
     const handleDelete = ({ roleId }) => {
-      delRole(roleId).then(() => {
+      roleRemoveOne(roleId).then(() => {
         ElMessage({
           message: "删除角色成功",
           type: "success",
@@ -331,7 +331,7 @@ export default {
       ruleFormRef.value.validate((valid) => {
         if (valid) {
           if (roleForm.roleId) {
-            updateRole(roleForm).then(() => {
+            roleUpdateOne(roleForm).then(() => {
               dialogVisible.value = false;
               ElMessage({
                 message: "修改角色成功",
@@ -340,7 +340,7 @@ export default {
               handleGetRoleLists();
             });
           } else {
-            addRole(roleForm).then(() => {
+            roleSaveOne(roleForm).then(() => {
               dialogVisible.value = false;
               ElMessage({
                 message: "添加角色成功",

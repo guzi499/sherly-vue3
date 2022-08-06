@@ -24,7 +24,7 @@
 <script>
 import {reactive, ref} from "vue";
 import {ElMessage} from 'element-plus'
-import {updateAvatar} from '@/api/system/user_self.js'
+import {userSelfUpdateAvatar} from '@/api/system/user_self.js'
 import Cookies from "js-cookie";
 import {useRouter} from "vue-router";
 
@@ -51,7 +51,7 @@ export default {
       imageUrl.value = URL.createObjectURL(file.raw);
       let fileImg = new FormData()
       fileImg.append('file', file.raw)
-      updateAvatar(fileImg).then(() => {
+      userSelfUpdateAvatar(fileImg).then(() => {
         loading.value = false
         ElMessage.success('头像上传成功!')
         router.go(0)

@@ -102,7 +102,7 @@
 
 <script>
 import { reactive, ref, watch } from "vue";
-import { saveOssConfig, upDataOss } from "@/api/system/oss";
+import { ossConfigSaveOne, ossConfigUpdateOne } from "@/api/system/oss";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -243,7 +243,7 @@ export default {
               "com.guzi.upr.storage.client.s3.S3OssClientConfig";
           }
           if (isEdit.value) {
-            upDataOss(form).then(() => {
+            ossConfigUpdateOne(form).then(() => {
               ElMessage({
                 message: "修改成功！",
                 type: "success",
@@ -252,7 +252,7 @@ export default {
               dialogTableVisible.value = false;
             });
           } else {
-            saveOssConfig(form).then(() => {
+            ossConfigSaveOne(form).then(() => {
               ElMessage({
                 message: "添加成功！",
                 type: "success",

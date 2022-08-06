@@ -148,7 +148,7 @@
 
 <script>
 import {ref, reactive, getCurrentInstance} from "vue";
-import { updateSelf, updatePassword } from "@/api/system/user_self.js";
+import { userSelfUpdateSelf, userSelfUpdatePassword } from "@/api/system/user_self.js";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
@@ -200,7 +200,7 @@ export default {
     const handleOk = (formName) => {
       proxy.$refs[formName].validate((valid) => {
         if(valid){
-          updateSelf(formEdit.value).then(() => {
+          userSelfUpdateSelf(formEdit.value).then(() => {
             ElMessage({
               showClose: true,
               message: "更新用户信息成功",
@@ -251,7 +251,7 @@ export default {
         if (valid) {
           console.log(formPwd.value.newPassword, formPwd.value.rePassword)
           if (formPwd.value.newPassword === formPwd.value.rePassword) {
-            updatePassword(formPwd.value).then(() => {
+            userSelfUpdatePassword(formPwd.value).then(() => {
               ElMessage({
                 showClose: true,
                 message: '密码修改成功',

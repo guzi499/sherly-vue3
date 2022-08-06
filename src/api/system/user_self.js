@@ -4,8 +4,8 @@
  */
 import request from "@/utils/request";
 
-/** 用户个人中心 */
-export function getSelf(params) {
+// 用户个人中心
+export function userSelfGetSelf(params) {
     return request({
         url: "/user_self/get_self",
         method: "get",
@@ -13,8 +13,8 @@ export function getSelf(params) {
     });
 }
 
-/** 用户更新头像 */
-export function updateAvatar(data) {
+// 用户更新头像
+export function userSelfUpdateAvatar(data) {
     return request({
         url: `/user_self/update_avatar`,
         method: "put",
@@ -22,8 +22,8 @@ export function updateAvatar(data) {
     });
 }
 
-/** 用户修改密码 */
-export function updatePassword(data) {
+// 用户修改密码
+export function userSelfUpdatePassword(data) {
     return request({
         url: `/user_self/update_password`,
         method: "put",
@@ -31,8 +31,8 @@ export function updatePassword(data) {
     });
 }
 
-/** 用户个人中心更新 */
-export function updateSelf(data) {
+// 用户个人中心更新
+export function userSelfUpdateSelf(data) {
     return request({
         url: `/user_self/update_self`,
         method: "put",
@@ -40,8 +40,8 @@ export function updateSelf(data) {
     });
 }
 
-/** 个人中心操作日志分页 */
-export function getOperationList(params) {
+// 个人中心操作日志分页
+export function userSelfOperationLogListPage(params) {
     return request({
         url: "/user_self/operation_log/list_page",
         method: "get",

@@ -297,16 +297,16 @@ import {
   onMounted,
   watch,
 } from "vue";
-import { listAll } from "@/api/system/role.js";
+import { roleListAll } from "@/api/system/role.js";
 import { departmentListTree } from "@/api/system/department.js";
 import {
-  pageUser,
-  exportUser,
-  updataUser,
-  addUser,
-  delMenu,
-  disableUser,
-  getUserId,
+  userListPage,
+  userListExport,
+  userUpdateOne,
+  userSaveOne,
+  userRemoveOne,
+  userBanOne,
+  userGetOne,
 } from "@/api/system/user.js";
 import { ElMessage } from "element-plus";
 
@@ -323,7 +323,7 @@ export default {
     // 获取角色下拉款数据
     const rolesOptions = ref([]);
     const getRoleListFn = () => {
-      listAll().then((res) => {
+      roleListAll().then((res) => {
         rolesOptions.value = res;
       });
     };
@@ -389,7 +389,7 @@ export default {
     // 获取用户信息列表
     const getList = () => {
       loading.value = true;
-      pageUser(data.queryParams).then((res) => {
+      userListPage(data.queryParams).then((res) => {
         tableData.value = res.result;
         total.value = res.total;
         setTimeout(() => {
@@ -409,7 +409,7 @@ export default {
 
     // 禁用按钮状态改变
     const handleChange = (data) => {
-      disableUser(data.userId, data.enable)
+      userBanOne(data.userId, data.enable)
         .then(() => {
           if (data.enable === 1) {
             ElMessage({
@@ -464,7 +464,7 @@ export default {
       }
       if (type === "2") {
         dialogTitle.value = "用户更新";
-        getUserId(data.userId).then((res) => {
+        userGetOne(data.userId).then((res) => {
           form.value = res;
           form.value.departmentName = data.departmentName;
           dialogFormVisible.value = true;
@@ -500,7 +500,7 @@ export default {
         if (valid) {
           if (type1.value === "1") {
             delete form.value.departmentName;
-            addUser(form.value)
+            userSaveOne(form.value)
               .then(() => {
                 ElMessage({
                   message: "新增成功！",
@@ -520,7 +520,7 @@ export default {
             delete form.value.email;
             delete form.value.nickname;
             delete form.value.phone;
-            updataUser(form.value)
+            userUpdateOne(form.value)
               .then(() => {
                 ElMessage({
                   message: "修改成功！",
@@ -542,7 +542,7 @@ export default {
 
     // 删除按钮
     const handleDelete = (data1) => {
-      delMenu(data1.userId).then(() => {
+      userRemoveOne(data1.userId).then(() => {
         ElMessage({
           message: "删除成功！",
           type: "success",
@@ -554,7 +554,7 @@ export default {
 
     // 用户导出
     const handleExport = () => {
-      exportUser();
+      userListExport();
     };
 
     watch(
