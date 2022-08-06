@@ -99,6 +99,9 @@ import {InfoFilled} from '@element-plus/icons-vue'
 export default {
   components: {SherlyTable},
   setup() {
+    onMounted(() => {
+      getList()
+    });
     const loading = ref(false)
     const tableData = reactive({});
     const queryParams = reactive({
@@ -107,7 +110,7 @@ export default {
     })
     const datetimerange = ref([])
 
-    /* 登陆结果枚举 */
+    // 登陆结果枚举
     const loginResults = reactive([
       {
         value: 0,
@@ -128,7 +131,7 @@ export default {
       }
     ])
 
-    /* 登陆方式枚举 */
+    // 登陆方式枚举
     const loginType = reactive([
       {
         value: 0,
@@ -147,11 +150,6 @@ export default {
         label: '支付宝登录'
       }
     ])
-
-    /* 组件挂载后... */
-    onMounted(() => {
-      getList()
-    });
 
     // 搜索
     const handleSearch = () => {
@@ -173,7 +171,7 @@ export default {
       getList()
     }
 
-    /* 获取登录日志分页数据 */
+    // 获取登录日志分页数据
     const getList = async () => {
       loading.value = true;
       const data = await getLoginLogList(queryParams)
@@ -185,7 +183,7 @@ export default {
       }, 100)
     }
 
-    /* 清空日志 */
+    // 清空日志
     const handleEmpty = () => {
       deleteLoginLogRemoveAll().then(() => {
         ElMessage({
@@ -197,14 +195,14 @@ export default {
       })
     }
 
-    /* 修改当前分页页码 */
+    // 修改当前分页页码
     const handleCurrentChange = (e) => {
       tableData.current = e;
       queryParams.current = e;
       getList();
     };
 
-    /* 修改当前每页数量 */
+    // 修改当前每页数量
     const handleSizeChange = (e) => {
       tableData.size = e;
       queryParams.size = e;

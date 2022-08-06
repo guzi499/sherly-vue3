@@ -123,30 +123,18 @@ import {
   delDepartment,
   updateDepartment,
 } from "@/api/system/department";
-// import type { FormInstance, FormRules } from 'element-plus'
 export default {
   name: "departmentPage",
   setup() {
-    const loading = ref(false)
-    const {proxy} = getCurrentInstance();
-    const formRules = reactive({
-      parentId: [
-        {required: true, message: '请选择父级部门', trigger: 'change'}
-      ],
-      departmentName: [
-        {required: true, message: '请输入部门名称', trigger: 'blur'}
-      ],
-      sort: [
-        {required: true, message: '请输入排序', trigger: 'blur'}
-      ]
-    })
     onMounted(() => {
       getList();
       getDepartmentListFn();
     });
+    const loading = ref(false)
+    const {proxy} = getCurrentInstance();
 
+    // 部门查询条件
     const data = reactive({
-      // 部门查询条件
       queryParams: {},
     });
 
@@ -218,26 +206,33 @@ export default {
 
     // 判断弹框类型 - 新增/修改
     const dialogType = ref("1");
-    // 控制弹框是否显示
     const dialogFormVisible = ref(false);
-    // 统一弹框宽度
     const formLabelWidth = "140px";
-    // 弹框标题
     const dialogTitle = ref("菜单");
-    // 选中回显的数据
-    // const treeData = ref(null);
     const treeDatas = ref("");
-    // 弹框新增 / 修改弹框绑定数据
     const form = ref({});
+    const formRules = reactive({
+      parentId: [
+        {required: true, message: '请选择父级部门', trigger: 'change'}
+      ],
+      departmentName: [
+        {required: true, message: '请输入部门名称', trigger: 'blur'}
+      ],
+      sort: [
+        {required: true, message: '请输入排序', trigger: 'blur'}
+      ]
+    })
     const defaultProps = {
       children: "children",
       label: "departmentName",
     };
+
     // 重置表单
     const reset = () => {
       form.value = {};
       treeDatas.value = "";
     };
+
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
       form.value.parentId = e.departmentId;
@@ -245,6 +240,7 @@ export default {
       treeDatas.value = e.departmentName;
       proxy.$refs.selectTree.blur();
     };
+
     // 点击修改 - 新增按钮
     const handleEdit = (type, index, data) => {
       reset();
@@ -260,6 +256,7 @@ export default {
         form.value = JSON.parse(JSON.stringify(data));
       }
     };
+
     // 处理树形数据回显
     const forEachDepartmentList = (list, data) => {
       list.forEach((item) => {
@@ -290,6 +287,7 @@ export default {
         return err;
       });
     };
+
     // 点击确定按钮
     const handleOk = (formName) => {
       proxy.$refs[formName].validate((config) => {
@@ -326,6 +324,7 @@ export default {
       })
 
     };
+
     // 点击取消按钮
     const handleCancle = () => {
       reset();

@@ -278,7 +278,7 @@
           <!--          <el-input v-model="form.roleIds"></el-input>-->
         </el-form-item>
         <el-form-item :label-width="formLabelWidth">
-          <el-button @click="handleCancle">取消</el-button>
+          <el-button @click="dialogFormVisible = false;">取消</el-button>
           <el-button type="primary" @click="handleOk('ruleForm')"
             >确定</el-button
           >
@@ -340,9 +340,7 @@ export default {
         label: "departmentName",
       },
     });
-
     const datetimerange = ref([]);
-
     // 搜索按钮
     const handleSearch = () => {
       data.queryParams.current = 1;
@@ -370,7 +368,7 @@ export default {
       getList();
     };
 
-    // 分页数据
+    // 分页
     const total = ref(400);
     const small = ref(false);
     const background = ref(false);
@@ -386,7 +384,7 @@ export default {
     };
     const disabled = ref(false);
 
-    // 定义表格数据
+    // 表格列表
     const tableData = ref([]);
     // 获取用户信息列表
     const getList = () => {
@@ -425,28 +423,37 @@ export default {
             });
           }
         })
-        .catch(() => {
-          getList();
-        });
+          .catch(() => {
+            getList();
+          });
     };
 
-    // 新增 / 修改按钮弹框数据
-    // 控制弹框是否显示
+    // 新增 / 修改弹框
     const dialogFormVisible = ref(false);
     const formLabelWidth = "120px";
-    // 弹框标题
     const dialogTitle = ref("用户");
-    // 弹框新增 / 修改弹框绑定数据
     const form = ref({});
-    // 重置弹出框表单
-    const resetForm = () => {
-      form.value = {};
+    const formRules = {
+      phone: [
+        {required: true, message: "请输入手机号码", trigger: "blur"},
+        {min: 11, max: 11, message: "请输入11位手机号码", trigger: "blur"},
+        {
+          pattern:
+              /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+          message: "请输入正确的手机号码",
+        },
+      ],
+      realName: [{required: true, message: "请输入姓名", trigger: "blur"}],
+      gender: [{required: true, message: "请选择性别", trigger: "change"}],
+      departmentId: [
+        {required: true, message: "请选择部门", trigger: "change"},
+      ],
+      roleIds: [{required: true, message: "请选择角色", trigger: "change"}],
     };
-
     const type1 = ref("");
     // 新增 / 修改按钮
     const handleEdit = (type, index, data) => {
-      resetForm();
+      form.value = {};
       type1.value = type;
       if (type === "1") {
         dialogTitle.value = "用户新增";
@@ -485,25 +492,6 @@ export default {
       form.value.departmentId = e.departmentId;
       form.value.departmentName = e.departmentName;
       proxy.$refs.selectTree1.blur();
-    };
-
-    // 表格添加校验效果
-    const formRules = {
-      phone: [
-        { required: true, message: "请输入手机号码", trigger: "blur" },
-        { min: 11, max: 11, message: "请输入11位手机号码", trigger: "blur" },
-        {
-          pattern:
-            /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
-          message: "请输入正确的手机号码",
-        },
-      ],
-      realName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-      gender: [{ required: true, message: "请选择性别", trigger: "change" }],
-      departmentId: [
-        { required: true, message: "请选择部门", trigger: "change" },
-      ],
-      roleIds: [{ required: true, message: "请选择角色", trigger: "change" }],
     };
 
     // 确定按钮
@@ -550,11 +538,6 @@ export default {
           return false;
         }
       });
-    };
-
-    // 取消按钮
-    const handleCancle = () => {
-      dialogFormVisible.value = false;
     };
 
     // 删除按钮
@@ -609,7 +592,6 @@ export default {
       nodeCheck,
       nodeOnclick2,
       handleOk,
-      handleCancle,
       handleEdit,
       handleDelete,
       handleSearch,

@@ -1,12 +1,14 @@
 <template>
-  <div class="personal_container">
+  <div class="sherly-page-wrapper">
+    <div class="personal_container">
       <el-card class="info" :header="title.header1">
-      <Avatar :avatar="curUserInfo.avatar"/>
-      <UserInfo :curUserInfo="curUserInfo" @getList="getList"/>
-    </el-card>
-    <el-card class="operator" :header="title.header2">
-      <OperationLog :userId="userId"></OperationLog>
-    </el-card>
+        <Avatar :avatar="curUserInfo.avatar"/>
+        <UserInfo :curUserInfo="curUserInfo" @getList="getList"/>
+      </el-card>
+      <el-card class="operator" :header="title.header2">
+        <OperationLog :userId="userId"></OperationLog>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -26,7 +28,7 @@ export default {
   },
   setup() {
     onMounted(() => {
-
+      getList()
     })
 
     const title = reactive({
@@ -35,8 +37,10 @@ export default {
     })
 
     const route = useRoute()
-    const userId = parseInt(route.query.userId) // 获取当前登录用户的userId
-    const curUserInfo = ref({})  // 定义当前用户的用户信息
+    // 获取当前登录用户的userId
+    const userId = parseInt(route.query.userId)
+    // 定义当前用户的用户信息
+    const curUserInfo = ref({})
     // 获取当前登录用户的用户信息
     const getList = () => {
       getSelf().then(res => {
@@ -44,7 +48,6 @@ export default {
         curUserInfo.value = res
       })
     }
-    getList()
 
     return {title, userId, curUserInfo, getList};
   },
@@ -53,7 +56,6 @@ export default {
 
 <style lang="scss" scoped>
 .personal_container {
-  padding: 12px;
   display: flex;
 }
 

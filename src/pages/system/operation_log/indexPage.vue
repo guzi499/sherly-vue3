@@ -134,6 +134,9 @@ import {InfoFilled} from '@element-plus/icons-vue'
 export default {
   components: {SherlyTable},
   setup() {
+    onMounted(() => {
+      getList()
+    });
     const loading = ref(false)
     const tableData = reactive({});
     const datetimerange = ref([])
@@ -141,7 +144,7 @@ export default {
       current: 1,
       size: 10,
     })
-    /* 请求方式枚举 */
+    // 请求方式枚举
     const requestType = reactive([
       {
         value: 0,
@@ -158,7 +161,7 @@ export default {
       }
     ])
 
-    /* 日志类型枚举 */
+    // 日志类型枚举
     const logType = reactive([
       {
         value: 0,
@@ -170,13 +173,9 @@ export default {
         color: 'danger'
       }
     ])
-    /* 查看日志详情数据 */
+    // 查看日志详情数据
     const dialogVisible = ref(false)
     const formInfo = ref({})
-
-    onMounted(() => {
-      getList()
-    });
 
     // 搜索
     const handleSearch = () => {
@@ -198,7 +197,7 @@ export default {
       getList()
     }
 
-    /* 获取操作日志分页数据 */
+    // 获取操作日志分页数据
     const getList = async () => {
       loading.value = true;
       const data = await getOperationList(queryParams)
@@ -210,7 +209,7 @@ export default {
       }, 100)
     }
 
-    /* 清空日志 */
+    // 清空日志
     const handleEmpty = () => {
       formInfo.value = {}
       delLog().then(() => {
@@ -223,21 +222,21 @@ export default {
       })
     }
 
-    /* 查看日志详情 */
+    // 查看日志详情
     const handleLogId = async (logId) => {
       const data = await getOperationOne(logId)
       formInfo.value = data
       dialogVisible.value = true
     }
 
-    /* 修改当前分页页码 */
+    // 修改当前分页页码
     const handleCurrentChange = (e) => {
       tableData.current = e;
       queryParams.current = e;
       getList();
     };
 
-    /* 修改当前每页数量 */
+    // 修改当前每页数量
     const handleSizeChange = (e) => {
       tableData.size = e;
       queryParams.size = e;

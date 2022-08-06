@@ -139,7 +139,6 @@ export default {
       path: "",
     });
     const datetimerange = ref([]);
-    // const resetFormData = ref(null);
 
     const tableData = reactive({ result: [], total: 0, current: 1, size: 10 });
 
@@ -171,7 +170,6 @@ export default {
     // 重置
     const handleReset = () => {
       datetimerange.value = [];
-      // resetFormData.value.resetFields();
       for (let key in form) {
         delete form[key];
       }

@@ -1,21 +1,23 @@
 <template>
-  <div class="box-avatar">
-    <el-upload
-        v-loading="loading"
-        class="avatar-uploader"
-        :action="action"
-        :headers="header"
-        :data="data"
-        :show-file-list="false"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload"
-    >
-      <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
-      <el-icon v-else class="avatar-uploader-icon">
-        <Plus/>
-      </el-icon>
-    </el-upload>
-<!--    {{ avatar }}-->
+  <div class="sherly-page-wrapper">
+    <div class="box-avatar">
+      <el-upload
+          v-loading="loading"
+          class="avatar-uploader"
+          :action="action"
+          :headers="header"
+          :data="data"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+      >
+        <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
+        <el-icon v-else class="avatar-uploader-icon">
+          <Plus/>
+        </el-icon>
+      </el-upload>
+      <!--    {{ avatar }}-->
+    </div>
   </div>
 </template>
 
@@ -44,6 +46,7 @@ export default {
     });
     const data = reactive({path: ''})
 
+    // 头像上传成功
     const handleAvatarSuccess = (res, file) => {
       imageUrl.value = URL.createObjectURL(file.raw);
       let fileImg = new FormData()
@@ -58,6 +61,8 @@ export default {
         loading.value = false
       })
     }
+
+    // 上传头像前
     const beforeAvatarUpload = (file) => {
       loading.value = true
       const isPNG = file.type === 'image/png' || file.type === 'image/jpeg';

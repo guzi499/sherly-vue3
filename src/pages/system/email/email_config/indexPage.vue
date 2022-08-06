@@ -1,5 +1,5 @@
 <template>
-  <div class="email_container">
+  <div class="sherly-page-wrapper">
     <el-form
         ref="ruleFormRef1"
         :model="form1"
@@ -59,7 +59,6 @@ export default {
     }
     // 邮箱配置 - 表单数据
     const form1 = ref({})
-    // 邮箱配置 - 表单数据校验
     const rules1 = reactive({
       senderEmail: [
         {required: true, message: '发件人邮箱不能为空', trigger: 'blur'}
@@ -107,13 +106,8 @@ export default {
       form1,
       rules1,
       handleUpdate,
-      mode: 'default', // 或 'simple'
+      mode: 'default',
     }
   }
 }
 </script>
-<style lang="scss" scoped>
-.email_container {
-  padding: 16px;
-}
-</style>

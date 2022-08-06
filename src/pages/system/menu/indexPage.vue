@@ -221,9 +221,8 @@ export default {
     onMounted(() => {
       getList();
     });
-
+    // 菜单查询条件
     const data = reactive({
-      // 菜单查询条件
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -270,32 +269,11 @@ export default {
       loading.value = true;
       getMenu(data.queryParams).then((res) => {
         menuList.value = res;
-        // if (data.queryParams.menuName) {
-        //   menuList.value = handleTreeData(menuList.value, data.queryParams.menuName);
-        // }
         setTimeout(() => {
           loading.value = false;
         }, 100);
       })
       getMenuListFn();
-    };
-
-    // 弹框添加校验效果
-    const rules = {
-      menuType: [
-        {required: true, message: "请选择菜单类型", trigger: "change"},
-      ],
-      parentId: [
-        {required: true, message: "请选择父级菜单", trigger: "change"},
-      ],
-      menuName: [
-        {required: true, message: "请输入菜单名称", trigger: "blur"},
-      ],
-      link: [{required: true, message: "请输入菜单路径", trigger: "blur"}],
-
-      icon: [{required: true, message: "请选择菜单图标", trigger: "blur"}],
-
-      sort: [{required: true, message: "请输入排序", trigger: "blur"}],
     };
 
     // 查询菜单下拉框列表信息
@@ -317,36 +295,43 @@ export default {
       })
     }
 
-    // 判断弹框类型 - 新增/修改
+    // 弹框 - 新增/修改
     const dialogType = ref("1");
-    // 控制弹框是否显示
     const dialogFormVisible = ref(false);
-    // 统一弹框宽度
     const formLabelWidth = "140px";
-    // 弹框标题
     const dialogTitle = ref("菜单");
-    // 选中回显的数据
-    // const treeData = ref(null);
     const treeDatas = ref("");
-    // 弹框新增 / 修改弹框绑定数据
     const form = ref({
       menuType: 1,
     });
+    const rules = {
+      menuType: [
+        {required: true, message: "请选择菜单类型", trigger: "change"},
+      ],
+      parentId: [
+        {required: true, message: "请选择父级菜单", trigger: "change"},
+      ],
+      menuName: [
+        {required: true, message: "请输入菜单名称", trigger: "blur"},
+      ],
+      link: [{required: true, message: "请输入菜单路径", trigger: "blur"}],
+
+      icon: [{required: true, message: "请选择菜单图标", trigger: "blur"}],
+
+      sort: [{required: true, message: "请输入排序", trigger: "blur"}],
+    };
     const defaultProps = {
       children: "children",
       label: "menuName",
     };
-
     // 重置表单
     const reset = () => {
       form.value = {};
       treeDatas.value = "";
     };
-
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
       form.value.parentId = e.menuId;
-      // treeData.value = e.menuId;
       treeDatas.value = e.menuName;
       proxy.$refs.selectTree.blur();
     };

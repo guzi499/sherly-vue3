@@ -407,14 +407,6 @@ export default {
     // 获取列表
     const getList = async () => {
       loading.value = true;
-      // if (datetimerange.value.length > 0) {
-      //   form.beginTime = datetimerange.value[0];
-      //   form.endTime = datetimerange.value[1];
-      // }
-      // if (_datetimerange.value.length > 0) {
-      //   form.beginExpireTime = _datetimerange.value[0];
-      //   form.endExpireTime = _datetimerange.value[1];
-      // }
       const data = await getTenant(form);
       Object.keys(data).forEach((i) => {
         tableData[i] = data[i];

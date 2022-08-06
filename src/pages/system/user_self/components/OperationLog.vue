@@ -1,5 +1,5 @@
 <template>
-  <div class="operate_container">
+  <div class="sherly-page-wrapper">
     <SherlyTable
         :tableData="tableData.result"
         :loading="loading"
@@ -45,15 +45,20 @@ import {InfoFilled} from '@element-plus/icons-vue'
 export default {
   components: {SherlyTable},
   setup() {
-    const loading = ref(false)
-    const tableData = reactive({});
+    onMounted(() => {
+      getList()
+    });
     const route = useRoute()
+    const loading = ref(false)
+    // 表格数据
+    const tableData = reactive({});
+    // 查询条件
     const queryParams = reactive({
       current: 1,
       size: 10,
       userId: parseInt(route.query.userId)
     })
-    /* 日志类型枚举 */
+    // 日志类型枚举
     const logType = reactive([
       {
         value: 0,
@@ -66,11 +71,7 @@ export default {
       }
     ])
 
-    onMounted(() => {
-      getList()
-    });
-
-    /* 获取操作日志分页数据 */
+    // 获取操作日志分页数据
     const getList = async () => {
       const data = await getOperationList(queryParams)
       Object.keys(data).forEach((key) => {
@@ -81,14 +82,14 @@ export default {
       });
     }
 
-    /* 修改当前分页页码 */
+    // 修改当前分页页码
     const handleCurrentChange = (e) => {
       tableData.current = e;
       queryParams.current = e;
       getList();
     };
 
-    /* 修改当前每页数量 */
+    // 修改当前每页数量
     const handleSizeChange = (e) => {
       tableData.size = e;
       queryParams.size = e;
@@ -98,20 +99,16 @@ export default {
     return {
       loading,
       tableData,
-      handleCurrentChange,
-      handleSizeChange,
       logType,
       InfoFilled,
+      handleCurrentChange,
+      handleSizeChange,
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.operate_container {
-  padding: 16px;
-}
-
 label {
   display: inline-block;
   width: 100px;

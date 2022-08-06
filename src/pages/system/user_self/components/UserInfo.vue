@@ -1,5 +1,5 @@
 <template>
-  <div class="box-userInfo">
+  <div class="sherly-page-wrapper" style="overflow: hidden">
     <ul>
       <li>
         <span class="icon">
@@ -163,19 +163,33 @@ export default {
     }
   },
   setup(props, { emit }) {
-    const { proxy } = getCurrentInstance();
+    const {proxy} = getCurrentInstance();
     const router = useRouter();
-    // 添加编辑弹框是否可见
+
+    // 编辑弹框是否可见
     const EditDialogVisible = ref(false);
-    // 添加编辑弹框 - 表单数据
+    // 编辑弹框 - 表单数据
     const formEdit = ref({});
-    // 重置编辑用户表单
-    const reset = () => {
-      formEdit.value = {};
-    };
+    // 编辑用户表单校验
+    const formEditRules = reactive({
+      nickname: [
+        {required: true, message: '用户昵称不能为空', trigger: 'blur'},
+        {min: 3, max: 7, message: '用户昵称长度在 3 到 7 个字符', trigger: 'blur'}
+      ],
+      gender: [
+        {required: true, message: '用户性别不能为空', trigger: 'change'}
+      ],
+      email: [
+        {required: true, message: '用户邮箱不能为空', trigger: 'blur'},
+        {
+          pattern: '^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$',
+          message: '邮箱格式错误！'
+        }
+      ],
+    })
     // 编辑用户 按钮
     const handleEdit = (userInfo) => {
-      reset();
+      formEdit.value = {};
       formEdit.value = JSON.parse(JSON.stringify(userInfo));
       EditDialogVisible.value = true;
       setTimeout(() => {
@@ -203,29 +217,10 @@ export default {
       })
     }
 
-    // 添加修改密码弹框是否可见
+    // 修改密码弹框是否可见
     const PwdDialogVisible = ref(false)
-    // 添加修改密码弹框 - 表单数据
+    // 修改密码弹框 - 表单数据
     const formPwd = ref()
-
-    /* 编辑用户表单校验 */
-    const formEditRules = reactive({
-      nickname: [
-        {required: true, message: '用户昵称不能为空', trigger: 'blur'},
-        { min: 3, max: 7, message: '用户昵称长度在 3 到 7 个字符', trigger: 'blur' }
-      ],
-      gender: [
-        {required: true, message: '用户性别不能为空', trigger: 'change'}
-      ],
-      email: [
-        {required: true, message: '用户邮箱不能为空', trigger: 'blur'},
-        {
-          pattern: '^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$',
-          message: '邮箱格式错误！'
-        }
-      ],
-    })
-
     /* 密码表单校验 */
     const rules = reactive({
       oldPassword: [
@@ -238,7 +233,6 @@ export default {
         {required: true, message: '确认密码不能为空', trigger: 'blur'}
       ],
     })
-
     // 重置修改密码表单
     const resetPwd = () => {
       formPwd.value = {}
@@ -263,8 +257,6 @@ export default {
                 message: '密码修改成功',
                 type: 'success',
               })
-              // 初始化数据
-              // emit('getList')
               PwdDialogVisible.value = false
               setTimeout(() => {
                 proxy.$alert('token过期，请重新登录！', '警告', {
@@ -292,7 +284,6 @@ export default {
             })
           }
         } else {
-          // console.log('error submit!!');
           return false;
         }
       });
@@ -315,12 +306,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.box-userInfo {
-  padding: 0 12px;
-}
-
 ul {
-  margin: 32px 0;
+  margin: 0;
   padding: 0;
 
   li {
