@@ -118,10 +118,10 @@
   </div>
 </template>
 <script>
-import { reactive, onMounted, ref } from "vue";
+import {onMounted, reactive, ref} from "vue";
 import SherlyTable from "@/components/SherlyTable.vue";
-import { ossListPage, ossRemoveOne, ossAccessUrl } from "@/api/system/oss";
-import { ElMessage, ElLoading, ElNotification } from "element-plus";
+import {ossAccessUrl, ossListPage, ossRemoveOne} from "@/api/system/oss";
+import {ElLoading, ElMessage, ElNotification} from "element-plus";
 
 export default {
   components: { SherlyTable },
@@ -259,7 +259,6 @@ export default {
 
     // 上传前成功
     const handBeforeUpload = async (rawFile) => {
-      data.path = rawFile.name;
       if (rawFile.size > 1024 * 1024 * 2) {
         ElMessage({
           message: "文件上传限制2MB！",
