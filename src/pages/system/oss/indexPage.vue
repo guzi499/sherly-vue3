@@ -11,7 +11,10 @@
       :inline="true"
       label-width="80px"
     >
-      <el-form-item label="文件相对路径" label-width="120px" prop="path">
+      <el-form-item label="文件名称" label-width="120px" prop="fileName">
+        <el-input v-model="form.fileName" style="width: 215px" clearable />
+      </el-form-item>
+      <el-form-item label="相对路径" label-width="120px" prop="path">
         <el-input v-model="form.path" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="创建时间">
@@ -74,13 +77,14 @@
           width="180"
           align="center"
         />
-        <el-table-column prop="path" label="相对路径" align="center" />
+        <el-table-column prop="fileName" label="文件名称" show-overflow-tooltip="true" align="center" />
         <el-table-column prop="fileType" label="文件类型" align="center" />
         <el-table-column prop="size" label="文件大小" align="center">
           <template #default="scope">
             {{ formatFileSize(scope.row.size) }}
           </template>
         </el-table-column>
+        <el-table-column prop="path" label="相对路径" show-overflow-tooltip="true" align="center" />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
@@ -130,6 +134,7 @@ export default {
     let form = reactive({
       current: 1,
       size: 10,
+      fileName: "",
       path: "",
       configId: "",
     });
@@ -221,9 +226,9 @@ export default {
       handleOssLists();
     };
 
-    const handleDownload = async ({ path }) => {
+    const handleDownload = async ({ path, fileName }) => {
       const url = await ossAccessUrl(path);
-      const name = url.split("?")[0].split("/").at(-1);
+      const name = fileName;
       const a_link = document.createElement("a");
       console.log(a_link);
       fetch(url)
