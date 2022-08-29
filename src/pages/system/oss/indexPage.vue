@@ -77,14 +77,24 @@
           width="180"
           align="center"
         />
-        <el-table-column prop="fileName" label="文件名称" show-overflow-tooltip="true" align="center" />
+        <el-table-column
+          prop="fileName"
+          label="文件名称"
+          show-overflow-tooltip="true"
+          align="center"
+        />
         <el-table-column prop="fileType" label="文件类型" align="center" />
         <el-table-column prop="size" label="文件大小" align="center">
           <template #default="scope">
             {{ formatFileSize(scope.row.size) }}
           </template>
         </el-table-column>
-        <el-table-column prop="path" label="相对路径" show-overflow-tooltip="true" align="center" />
+        <el-table-column
+          prop="path"
+          label="相对路径"
+          show-overflow-tooltip="true"
+          align="center"
+        />
         <el-table-column prop="createTime" label="创建时间" align="center" />
         <el-table-column fixed="right" label="操作" width="180" align="center">
           <template #default="scope">
@@ -122,10 +132,10 @@
   </div>
 </template>
 <script>
-import {onMounted, reactive, ref} from "vue";
+import { onMounted, reactive, ref } from "vue";
 import SherlyTable from "@/components/SherlyTable.vue";
-import {ossAccessUrl, ossListPage, ossRemoveOne} from "@/api/system/oss";
-import {ElLoading, ElMessage, ElNotification} from "element-plus";
+import { ossAccessUrl, ossListPage, ossRemoveOne } from "@/api/system/oss";
+import { ElLoading, ElMessage, ElNotification } from "element-plus";
 
 export default {
   components: { SherlyTable },
@@ -230,7 +240,11 @@ export default {
       const url = await ossAccessUrl(path);
       const name = fileName;
       const a_link = document.createElement("a");
-      console.log(a_link);
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       fetch(url)
         .then((res) => res.blob())
         .then((blob) => {
@@ -240,6 +254,10 @@ export default {
           a_link.click();
           document.body.removeChild(a_link); // 下载完成移除元素
           window.URL.revokeObjectURL(a_link.href); // 释放掉blob对象
+          loading.close();
+        })
+        .catch(() => {
+          loading.close();
         });
     };
 
