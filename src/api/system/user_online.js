@@ -14,9 +14,9 @@ export function userOnlineListAll(params) {
 }
 
 // 删除租户
-export function userOnlineForceQuit(phone) {
+export function userOnlineForceQuit(sessionId) {
   return request({
-    url: `/user_online/force_quit?phone=${phone}`,
+    url: `/user_online/force_quit?sessionId=${sessionId}`,
     method: "delete",
   });
 }

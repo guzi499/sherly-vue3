@@ -34,6 +34,12 @@
     >
       <template #table>
         <el-table-column
+            prop="sessionId"
+            label="会话id"
+            width="300"
+            align="center"
+        />
+        <el-table-column
           prop="phone"
           label="手机号"
           width="180"
@@ -174,10 +180,10 @@ export default {
     };
 
     // 删除角色
-    const handleDelete = ({ phone }) => {
-      userOnlineForceQuit(phone).then(() => {
+    const handleDelete = ({ sessionId }) => {
+      userOnlineForceQuit(sessionId).then(() => {
         ElMessage({
-          message: "删除用户成功",
+          message: "强退用户成功",
           type: "success",
         });
         getList();
