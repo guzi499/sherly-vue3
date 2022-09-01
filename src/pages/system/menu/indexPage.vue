@@ -1,9 +1,9 @@
 <template>
   <div class="sherly-page-wrapper">
     <!-- 菜单搜索框 -->
-    <el-form :model="queryParams" :inline="true" label-width="80px">
+    <el-form :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="菜单名称">
-        <el-input v-model="queryParams.menuName" style="width: 215px" clearable/>
+        <el-input v-model="queryForm.menuName" style="width: 215px" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button icon="Search" type="primary" @click="handleSearch">
@@ -222,14 +222,13 @@ export default {
       getList();
     });
     // 菜单查询条件
-    const queryParams = reactive({
-      current: 1,
-      size: 10,
+    const queryForm = reactive({
+      menuName: '',
     });
 
     // 根据查询条件搜索
     const handleSearch = () => {
-      tableData.value = handleTreeData(tableData.value, queryParams.menuName);
+      tableData.value = handleTreeData(tableData.value, queryForm.menuName);
     };
 
     // 处理展示数据
@@ -254,8 +253,7 @@ export default {
 
     // 重置搜索框
     const handleReset = () => {
-      queryParams.current = 1
-      queryParams.size = 10
+      queryForm.menuName = ''
       getList();
     };
 
@@ -263,7 +261,7 @@ export default {
     const tableData = ref([]);
     const getList = () => {
       loading.value = true;
-      menuListTree(queryParams).then((res) => {
+      menuListTree(queryForm).then((res) => {
         tableData.value = res;
         setTimeout(() => {
           loading.value = false;
@@ -470,7 +468,7 @@ export default {
 
     return {
       tableData,
-      queryParams,
+      queryForm,
       dialogFormVisible,
       dialogTitle,
       formLabelWidth,
