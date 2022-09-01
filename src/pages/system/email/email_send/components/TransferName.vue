@@ -154,9 +154,9 @@ export default {
     return {
       checked1,
       checked2,
+      defaultProps,
       handleCheckbox,
       handleRightCheck,
-      defaultProps,
       handleOk,
       handleReset,
       handleAddRight

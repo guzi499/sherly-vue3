@@ -1,9 +1,9 @@
 <template>
   <div class="sherly-page-wrapper">
     <!-- 菜单搜索框 -->
-    <el-form :model="data.queryParams" :inline="true" label-width="80px">
+    <el-form :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="部门名称" prop="departmentName">
-        <el-input v-model="data.queryParams.departmentName" style="width: 215px" clearable/>
+        <el-input v-model="queryForm.departmentName" style="width: 215px" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
@@ -73,7 +73,7 @@
             <el-option
               hidden
               :value="form.parentId"
-              :label="treeDatas"
+              :label="treeData"
             ></el-option>
             <el-tree
               :data="departmentListSelect"
@@ -106,7 +106,7 @@
           />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth">
-          <el-button @click="handleCancle">取消</el-button>
+          <el-button @click="handleCancel">取消</el-button>
           <el-button type="primary" @click="handleOk('ruleFormRef')">确定</el-button>
         </el-form-item>
       </el-form>
@@ -134,15 +134,15 @@ export default {
     const {proxy} = getCurrentInstance();
 
     // 部门查询条件
-    const data = reactive({
-      queryParams: {},
+    const queryForm = reactive({
+      departmentName: ''
     });
 
     // 根据查询条件搜索
     const handleSearch = () => {
       departmentList.value = handleTreeData(
           departmentList.value,
-          data.queryParams.departmentName
+          queryForm.departmentName
       );
     };
 
@@ -179,7 +179,7 @@ export default {
 
     // 重置搜索框
     const handleReset = () => {
-      data.queryParams = {};
+      queryForm.departmentName = ''
       getList();
     };
 
@@ -187,7 +187,7 @@ export default {
     const departmentList = ref([]);
     const getList = () => {
       loading.value = true;
-      departmentListTree(data.queryParams).then((res) => {
+      departmentListTree(queryForm).then((res) => {
         departmentList.value = res;
         setTimeout(() => {
           loading.value = false;
@@ -209,7 +209,7 @@ export default {
     const dialogFormVisible = ref(false);
     const formLabelWidth = "140px";
     const dialogTitle = ref("菜单");
-    const treeDatas = ref("");
+    const treeData = ref("");
     const form = ref({});
     const formRules = reactive({
       parentId: [
@@ -230,14 +230,14 @@ export default {
     // 重置表单
     const reset = () => {
       form.value = {};
-      treeDatas.value = "";
+      treeData.value = "";
     };
 
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
       form.value.parentId = e.departmentId;
       // treeData.value = e.menuId;
-      treeDatas.value = e.departmentName;
+      treeData.value = e.departmentName;
       proxy.$refs.selectTree.blur();
     };
 
@@ -261,11 +261,11 @@ export default {
     const forEachDepartmentList = (list, data) => {
       list.forEach((item) => {
         if (data.parentId === 0) {
-          return (treeDatas.value = "总部");
+          return (treeData.value = "总部");
         } else {
           const _obj = JSON.parse(JSON.stringify(item));
           if (_obj.departmentId === data.parentId) {
-            return (treeDatas.value = _obj.departmentName);
+            return (treeData.value = _obj.departmentName);
           } else {
             if (_obj.children) {
               forEachDepartmentList(_obj.children, data);
@@ -326,32 +326,32 @@ export default {
     };
 
     // 点击取消按钮
-    const handleCancle = () => {
+    const handleCancel = () => {
       reset();
       dialogFormVisible.value = false;
     };
     return {
       departmentList,
-      data,
-      handleSearch,
-      handleReset,
-      handleEdit,
-      handleDelete,
+      queryForm,
       dialogFormVisible,
       dialogTitle,
       formLabelWidth,
       form,
       defaultProps,
-      nodeOnclick,
-      treeDatas,
-      handleOk,
-      handleCancle,
+      treeData,
       departmentListSelect,
       loading,
       isUp,
       refreshTree,
+      formRules,
+      handleSearch,
+      handleReset,
+      handleEdit,
+      handleDelete,
+      nodeOnclick,
+      handleOk,
+      handleCancel,
       handleUp,
-      formRules
     };
   },
 };

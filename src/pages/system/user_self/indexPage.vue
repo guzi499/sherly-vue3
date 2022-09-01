@@ -49,7 +49,12 @@ export default {
       })
     }
 
-    return {title, userId, curUserInfo, getList};
+    return {
+      title,
+      userId,
+      curUserInfo,
+      getList
+    };
   },
 };
 </script>

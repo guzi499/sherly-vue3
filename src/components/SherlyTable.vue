@@ -11,15 +11,16 @@
   </el-table>
   <div class="sherly-pagination-box" v-if="showPagination">
     <el-pagination
-      background
-      layout="total,sizes,prev,pager,next,jumper"
-      :total="paginationTotal"
-      :current-page="paginationCurrent"
-      :page-size="paginationSize"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      @prev-click="handlePrevClick"
-      @next-click="handleNextClick"
+        v-show="paginationTotal && paginationTotal > 0"
+        background
+        layout="total,sizes,prev,pager,next,jumper"
+        :total="paginationTotal"
+        :current-page="paginationCurrent"
+        :page-size="paginationSize"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        @prev-click="handlePrevClick"
+        @next-click="handleNextClick"
     />
   </div>
 </template>
@@ -51,18 +52,18 @@ export default {
       default: false,
     },
   },
-  setup(props, context) {
+  setup(props, {emit}) {
     const handleSizeChange = (e) => {
-      context.emit("handleSizeChange", e);
+      emit("handleSizeChange", e);
     };
     const handleCurrentChange = (e) => {
-      context.emit("handleCurrentChange", e);
+      emit("handleCurrentChange", e);
     };
     const handlePrevClick = (e) => {
-      context.emit("handleCurrentChange", e);
+      emit("handleCurrentChange", e);
     };
     const handleNextClick = (e) => {
-      context.emit("handleCurrentChange", e);
+      emit("handleCurrentChange", e);
     };
 
     return {

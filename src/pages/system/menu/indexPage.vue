@@ -1,9 +1,9 @@
 <template>
   <div class="sherly-page-wrapper">
     <!-- 菜单搜索框 -->
-    <el-form :model="data.queryParams" :inline="true" label-width="80px">
+    <el-form :model="queryParams" :inline="true" label-width="80px">
       <el-form-item label="菜单名称">
-        <el-input v-model="data.queryParams.menuName" style="width: 215px" clearable/>
+        <el-input v-model="queryParams.menuName" style="width: 215px" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button icon="Search" type="primary" @click="handleSearch">
@@ -30,7 +30,7 @@
         v-if="refreshTree"
         :default-expand-all="isUp"
         v-loading="loading"
-        :data="menuList"
+        :data="tableData"
         style="width: 100%; margin-bottom: 20px"
         row-key="menuId"
         lazy
@@ -103,7 +103,7 @@
             v-model="form.parentId"
             placeholder="请选择"
           >
-            <el-option hidden :value="form.parentId" :label="treeDatas">
+            <el-option hidden :value="form.parentId" :label="treeData">
             </el-option>
             <span class="mainTopMenu" @click="handleMainTopMenu">主目录</span>
             <el-tree
@@ -194,7 +194,7 @@
         </el-form-item>
 
         <el-form-item :label-width="formLabelWidth">
-          <el-button @click="handleCancle">取消</el-button>
+          <el-button @click="handleCancel">取消</el-button>
           <el-button type="primary" @click="handleOk('ruleForm')"
             >确定</el-button
           >
@@ -214,7 +214,7 @@ import iconfont from "@/assets/style/font-icon/iconfont.json";
 export default {
   name: "menuPage",
   setup() {
-    const { proxy } = getCurrentInstance();
+    const {proxy} = getCurrentInstance();
     const loading = ref(false);
     const iconfontList = iconfont.glyphs;
     const iconPopoverVisible = ref(false);
@@ -222,16 +222,14 @@ export default {
       getList();
     });
     // 菜单查询条件
-    const data = reactive({
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-      },
+    const queryParams = reactive({
+      current: 1,
+      size: 10,
     });
 
     // 根据查询条件搜索
     const handleSearch = () => {
-      menuList.value = handleTreeData(menuList.value, data.queryParams.menuName);
+      tableData.value = handleTreeData(tableData.value, queryParams.menuName);
     };
 
     // 处理展示数据
@@ -256,19 +254,17 @@ export default {
 
     // 重置搜索框
     const handleReset = () => {
-      data.queryParams = {
-        pageSize: 1,
-        pageNum: 10,
-      };
+      queryParams.current = 1
+      queryParams.size = 10
       getList();
     };
 
     // 查询菜单列表信息
-    const menuList = ref([]);
+    const tableData = ref([]);
     const getList = () => {
       loading.value = true;
-      menuListTree(data.queryParams).then((res) => {
-        menuList.value = res;
+      menuListTree(queryParams).then((res) => {
+        tableData.value = res;
         setTimeout(() => {
           loading.value = false;
         }, 100);
@@ -300,7 +296,7 @@ export default {
     const dialogFormVisible = ref(false);
     const formLabelWidth = "140px";
     const dialogTitle = ref("菜单");
-    const treeDatas = ref("");
+    const treeData = ref("");
     const form = ref({
       menuType: 1,
     });
@@ -327,19 +323,19 @@ export default {
     // 重置表单
     const reset = () => {
       form.value = {};
-      treeDatas.value = "";
+      treeData.value = "";
     };
     // 选中弹框中的树形数据
     const nodeOnclick = (e) => {
       form.value.parentId = e.menuId;
-      treeDatas.value = e.menuName;
+      treeData.value = e.menuName;
       proxy.$refs.selectTree.blur();
     };
 
     // 点击主目录
     const handleMainTopMenu = () => {
       form.value.parentId = 0;
-      treeDatas.value = "主目录";
+      treeData.value = "主目录";
       proxy.$refs.selectTree.blur();
     }
 
@@ -350,14 +346,14 @@ export default {
         form.value.menuType = 1;
         form.value.parentId = 0;
         form.value.icon = "blank";
-        treeDatas.value = "主目录";
+        treeData.value = "主目录";
         dialogType.value = type;
         dialogTitle.value = "新增菜单";
       }
       if (type === "2") {
         dialogType.value = type;
         dialogTitle.value = "修改菜单";
-        forEachMenuList(menuList.value, data);
+        forEachMenuList(tableData.value, data);
         form.value = JSON.parse(JSON.stringify(data));
       }
       dialogFormVisible.value = true;
@@ -370,11 +366,11 @@ export default {
     const forEachMenuList = (list, data) => {
       list.forEach((item) => {
         if (data.parentId === 0) {
-          return (treeDatas.value = "主目录");
+          return (treeData.value = "主目录");
         } else {
           const _obj = JSON.parse(JSON.stringify(item));
           if (_obj.menuId === data.parentId) {
-            return (treeDatas.value = _obj.menuName);
+            return (treeData.value = _obj.menuName);
           } else {
             if (_obj.children) {
               forEachMenuList(_obj.children, data);
@@ -451,7 +447,7 @@ export default {
     };
 
     // 点击取消按钮
-    const handleCancle = () => {
+    const handleCancel = () => {
       reset();
       dialogFormVisible.value = false;
     };
@@ -473,33 +469,33 @@ export default {
     };
 
     return {
-      menuList,
-      data,
-      handleSearch,
-      handleReset,
-      handleEdit,
-      handleDelete,
-      handleSelectIcon,
+      tableData,
+      queryParams,
       dialogFormVisible,
       dialogTitle,
       formLabelWidth,
       form,
       defaultProps,
-      nodeOnclick,
       iconfontList,
-      treeDatas,
-      handleOk,
-      handleCancle,
+      treeData,
       menuListSelect,
       rules,
       loading,
       iconPopoverVisible,
+      isUp,
+      refreshTree,
+      handleSearch,
+      handleReset,
+      handleEdit,
+      handleDelete,
+      handleSelectIcon,
+      nodeOnclick,
+      handleOk,
+      handleCancel,
       openIconPopover,
       closeIconPopover,
       handleMainTopMenu,
-      handleUp,
-      isUp,
-      refreshTree
+      handleUp
     };
   },
 };

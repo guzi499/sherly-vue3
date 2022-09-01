@@ -13,8 +13,8 @@
       @handleCurrentChange="handleCurrentChange"
       @handleSizeChange="handleSizeChange"
       :pagination-total="tableData.total"
-      :pagination-current="tableData.current"
-      :pagination-size="tableData.size"
+      :pagination-current="queryForm.current"
+      :pagination-size="queryForm.size"
     >
       <template #header>
         <el-button
@@ -84,12 +84,11 @@
         </el-table-column>
       </template>
     </SherlyTable>
-    <StorageDialog ref="StorageDialog" @updata="handlestorageLists" />
+    <StorageDialog ref="StorageDialog" @updata="getList" />
   </div>
 </template>
 
 <script>
-import SherlyTable from "@/components/SherlyTable.vue";
 import StorageDialog from "./oss_config_dialog";
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
@@ -101,7 +100,7 @@ import {
 } from "@/api/system/oss";
 
 export default {
-  components: { SherlyTable, StorageDialog },
+  components: { StorageDialog },
   setup() {
     const loading = ref(false);
     const tableData = reactive({});
@@ -109,18 +108,18 @@ export default {
     const typeObj = { 2: "本地存储", 5: "S3" };
     let activeName = ref("first");
     let dialogVisible = ref(false);
-    let form = reactive({
+    let queryForm = reactive({
       current: 1,
       size: 10,
     });
 
     onMounted(() => {
-      handlestorageLists();
+      getList();
     });
 
-    const handlestorageLists = async () => {
+    const getList = async () => {
       loading.value = true;
-      const data = await ossConfigListPage(form);
+      const data = await ossConfigListPage(queryForm);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -137,16 +136,14 @@ export default {
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
-      tableData.current = e;
-      form.current = e;
-      handlestorageLists();
+      queryForm.current = e;
+      getList();
     };
 
     // 修改当前每页数量
     const handleSizeChange = (e) => {
-      tableData.size = e;
-      form.size = e;
-      handlestorageLists();
+      queryForm.size = e;
+      getList();
     };
 
     // 删除
@@ -156,7 +153,7 @@ export default {
         message: "删除成功！",
         type: "success",
       });
-      handlestorageLists();
+      getList();
     };
 
     // 编辑
@@ -172,7 +169,7 @@ export default {
     // 启用
     const handleEnable = async (configId) => {
       await ossConfigEnableOne(configId);
-      handlestorageLists();
+      getList();
     };
 
     return {
@@ -182,11 +179,12 @@ export default {
       StorageDialog,
       typeObj,
       loading,
+      queryForm,
       handleCurrentChange,
       handleSizeChange,
       handleAddStorage,
       handleDelete,
-      handlestorageLists,
+      getList,
       handleEdit,
       handleEnable,
     };

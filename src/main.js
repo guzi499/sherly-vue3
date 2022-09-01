@@ -16,6 +16,7 @@ import "./router/index"; // permission control
 import "@/assets/style/sherly.scss";
 import "@/assets/style/index.scss";
 
+import SherlyTable from "@/components/SherlyTable.vue";
 // 自定义树形下拉框组件
 import TreeSelect from "@/components/TreeSelect.vue";
 // 自定义分页组件
@@ -30,8 +31,8 @@ const app = createApp(App);
 app.use(store);
 
 // 全局注册组件
+app.component("SherlyTable", SherlyTable);
 app.component("TreeSelect", TreeSelect);
-
 // eslint-disable-next-line vue/multi-word-component-names
 app.component("Pagination", Pagination);
 app.component("TransferName", TransferName);

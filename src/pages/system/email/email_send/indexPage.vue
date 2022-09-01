@@ -219,16 +219,16 @@ export default {
     return {
       form2,
       rules2,
-      handleClickInput,
-      handleReChoose,
-      dialogVisible,
-      handleSend,
-      handleReset,
       editorRef,
       valueHtml,
+      dialogVisible,
       mode: 'default', // 或 'simple'
       toolbarConfig,
       editorConfig,
+      handleClickInput,
+      handleReChoose,
+      handleSend,
+      handleReset,
       handleCreated,
     }
   }

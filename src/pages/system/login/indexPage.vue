@@ -50,7 +50,7 @@
                 type="password"
                 show-password
                 clearable
-                @keyup.enter="handlelogin()"
+                @keyup.enter="handleLogin()"
               >
                 <template #prefix>
                   <el-icon class="input-prefix-icon" color="#000">
@@ -70,7 +70,7 @@
               </el-button>
               <el-button
                 class="login-button"
-                @click="handlelogin()"
+                @click="handleLogin()"
                 :disabled="!(loginForm.phone && loginForm.password)"
               >
                 登 录
@@ -129,7 +129,7 @@ export default {
       handleHeartBzeat();
     });
 
-    const handlelogin = () => {
+    const handleLogin = () => {
       const data = loginForm;
       if (tenantCode.value) {
         data.tenantCode = tenantCode.value;
@@ -211,13 +211,13 @@ export default {
       loginForm,
       dialogVisible,
       selectTenant,
-      handlelogin,
+      tenantList,
+      tenantDesc,
+      handleLogin,
       handleChangeTenant,
       getCookie,
       handleClose,
       confirm,
-      tenantList,
-      tenantDesc,
     };
   },
 };
