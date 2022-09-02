@@ -94,14 +94,14 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="handleCancel">取消</el-button>
-        <el-button type="primary" @click="handleConfirm">确定</el-button>
+        <el-button type="primary" @click="handleConfirm('formRef')">确定</el-button>
       </span>
     </template>
   </el-dialog>
 </template>
 
 <script>
-import { reactive, ref, watch } from "vue";
+import { reactive, ref } from "vue";
 import { ossConfigSaveOne, ossConfigUpdateOne } from "@/api/system/oss";
 import { ElMessage } from "element-plus";
 
@@ -124,111 +124,69 @@ export default {
     };
     const formLabelWidth = "110px";
     const typeOptions = [
-      { label: "数据库", value: 1, disabled: true },
-      { label: "本地存储", value: 2 },
-      { label: "FTP", value: 3, disabled: true },
-      { label: "SFTP", value: 4, disabled: true },
-      { label: "S3", value: 5 },
+      {label: "数据库", value: 1, disabled: true},
+      {label: "本地存储", value: 2},
+      {label: "FTP", value: 3, disabled: true},
+      {label: "SFTP", value: 4, disabled: true},
+      {label: "S3", value: 5},
     ];
     const formRef = ref(null);
-    const rules = ref({});
-
-    watch(
-      form,
-      (newVal) => {
-        if (newVal.type !== 5) {
-          rules.value = {
-            configName: [
-              {
-                required: true,
-                message: "请输入配置名称",
-                trigger: "blur",
-              },
-            ],
-            type: [
-              {
-                required: true,
-                message: "请选择存储类型",
-                trigger: "blur",
-              },
-            ],
-            "config.bucket": [
-              {
-                required: true,
-                message: "请输入存储桶",
-                trigger: "blur",
-              },
-            ],
-            "config.domainName": [
-              {
-                required: true,
-                message: "请输入访问域名",
-                trigger: "blur",
-              },
-            ],
-          };
-        } else if (newVal.type === 5) {
-          rules.value = {
-            configName: [
-              {
-                required: true,
-                message: "请输入配置名称",
-                trigger: "blur",
-              },
-            ],
-            type: [
-              {
-                required: true,
-                message: "请选择存储类型",
-                trigger: "blur",
-              },
-            ],
-            "config.bucket": [
-              {
-                required: true,
-                message: "请输入存储桶",
-                trigger: "blur",
-              },
-            ],
-            "config.domainName": [
-              {
-                required: true,
-                message: "请输入访问域名",
-                trigger: "blur",
-              },
-            ],
-            "config.endpoint": [
-              {
-                required: true,
-                message: "请输入上传地址",
-                trigger: "blur",
-              },
-            ],
-            "config.accessKey": [
-              {
-                required: true,
-                message: "请输入访问Key",
-                trigger: "blur",
-              },
-            ],
-            "config.accessSecret": [
-              {
-                required: true,
-                message: "请输入访问Secret",
-                trigger: "blur",
-              },
-            ],
-          };
-        }
-      },
-      { immediate: true, deep: true }
-    );
+    const rules = reactive({
+      configName: [
+        {
+          required: true,
+          message: "请输入配置名称",
+          trigger: "blur",
+        },
+      ],
+      type: [
+        {
+          required: true,
+          message: "请选择存储类型",
+          trigger: "change",
+        },
+      ],
+      "config.bucket": [
+        {
+          required: true,
+          message: "请输入存储桶",
+          trigger: "blur",
+        },
+      ],
+      "config.domainName": [
+        {
+          required: true,
+          message: "请输入访问域名",
+          trigger: "blur",
+        },
+      ],
+      "config.endpoint": [
+        {
+          required: true,
+          message: "请输入上传地址",
+          trigger: "blur",
+        },
+      ],
+      "config.accessKey": [
+        {
+          required: true,
+          message: "请输入访问Key",
+          trigger: "blur",
+        },
+      ],
+      "config.accessSecret": [
+        {
+          required: true,
+          message: "请输入访问Secret",
+          trigger: "blur",
+        },
+      ],
+    });
     const handleCancel = () => {
       dialogTableVisible.value = false;
       resetForm();
     };
     const handleConfirm = async () => {
-      if (!formRef.value) return;
       await formRef.value.validate((valid) => {
         if (valid) {
           if (form.type === 2) {
