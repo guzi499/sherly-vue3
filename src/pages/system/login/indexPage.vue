@@ -104,12 +104,12 @@
   </div>
 </template>
 <script>
-import { reactive, onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import { login, availableListCheck } from "@/api/system/login";
-import { genericHeartBeat } from "@/api/system/generic";
+import {onMounted, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+import {availableListCheck, login} from "@/api/system/login";
+import {genericHeartBeat} from "@/api/system/generic";
 import Cookies from "js-cookie";
-import { ElMessage, ElLoading } from "element-plus";
+import {ElLoading, ElMessage} from "element-plus";
 
 export default {
   setup() {
@@ -126,7 +126,7 @@ export default {
 
     onMounted(() => {
       getCookie();
-      handleHeartBzeat();
+      handleHeartBeat();
     });
 
     const handleLogin = () => {
@@ -159,7 +159,7 @@ export default {
     };
 
     // 心跳检测
-    const handleHeartBzeat = () => {
+    const handleHeartBeat = () => {
       genericHeartBeat().then(() => {
         router.replace({ path: "/home" });
       });

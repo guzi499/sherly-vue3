@@ -3,7 +3,7 @@
  * @date: 2022-03-28
  */
 
-import { createApp } from "vue";
+import {createApp} from "vue";
 import App from "./App.vue";
 import store from "@/store/index";
 import ElementPlus from "element-plus";
@@ -12,20 +12,18 @@ import * as ElIcons from "@element-plus/icons-vue";
 import router from "./router/router";
 import permission from "@/utils/permission";
 import "./router/index"; // permission control
-
 import "@/assets/style/sherly.scss";
 import "@/assets/style/index.scss";
 
 import SherlyTable from "@/components/SherlyTable.vue";
 // 自定义树形下拉框组件
 import TreeSelect from "@/components/TreeSelect.vue";
-// 自定义分页组件
-import Pagination from "@/components/PaginationEl.vue";
 // 自定义穿梭框组件
 import TransferName from "@/pages/system/email/email_send/components/TransferName.vue";
 
 // 引入矢量图标
 import "@/assets/style/font-icon/iconfont.css";
+
 const app = createApp(App);
 
 app.use(store);
@@ -34,7 +32,6 @@ app.use(store);
 app.component("SherlyTable", SherlyTable);
 app.component("TreeSelect", TreeSelect);
 // eslint-disable-next-line vue/multi-word-component-names
-app.component("Pagination", Pagination);
 app.component("TransferName", TransferName);
 
 app.use(ElementPlus);

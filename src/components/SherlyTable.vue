@@ -3,7 +3,7 @@
  * @date: 2022-04-21
 -->
 <template>
-  <div class="sherlytable-header">
+  <div class="sherly-table-header">
     <slot name="header"></slot>
   </div>
   <el-table v-bind="$attrs" :data="tableData" v-loading="loading">
