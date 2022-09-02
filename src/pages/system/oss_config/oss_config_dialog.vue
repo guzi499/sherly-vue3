@@ -233,14 +233,14 @@ export default {
         if (valid) {
           if (form.type === 2) {
             form.config["@class"] =
-              "com.guzi.upr.storage.client.local.LocalOssClientConfig";
+              "com.guzi.sherly.modules.storage.client.local.LocalOssClientConfig";
             delete form.config.endpoint;
             delete form.config.accessKey;
             delete form.config.accessSecret;
             delete form.config.region;
           } else if (form.type === 5) {
             form.config["@class"] =
-              "com.guzi.upr.storage.client.s3.S3OssClientConfig";
+              "com.guzi.sherly.modules.storage.client.s3.S3OssClientConfig";
           }
           if (isEdit.value) {
             ossConfigUpdateOne(form).then(() => {
