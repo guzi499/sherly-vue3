@@ -8,26 +8,33 @@
     <div style="font-size: 1.25rem" class="header_left">
       <el-radio-group v-model="isCollapse" @change="handleLogo">
         <el-radio-button :label="true" v-if="isCollapse == false">
-          <fold style="width: 1em; height: 1em" />
+          <fold style="width: 1em; height: 1em"/>
         </el-radio-button>
         <el-radio-button :label="false" v-if="isCollapse == true">
-          <expand style="width: 1em; height: 1em" />
+          <expand style="width: 1em; height: 1em"/>
         </el-radio-button>
-        <div style="font-size: 1rem">{{ tenantName + config.systemName }}</div>
       </el-radio-group>
+      <el-breadcrumb separator="/" style="line-height: 44px">
+        <el-breadcrumb-item :to="{ path: '/home' }" @click="handleClickHome">首页</el-breadcrumb-item>
+        <el-breadcrumb-item v-for="item in store.state.router.menuNames" :key="item.value">
+          {{ item }}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="header_right">
       <el-row>
+        <!--        <div style="font-size: 1rem">{{ tenantName + config.systemName }}</div>-->
+        <div style="font-size: 1rem">{{ tenantName }}</div>
         <el-avatar
-          size="small"
-          :src="userInfo.avatar"
-          style="margin-right: 0.5rem"
+            size="small"
+            :src="userInfo.avatar"
+            style="margin: 0 0.5rem"
         />
         <el-dropdown style="margin: auto 0">
           <span class="el-dropdown-link">
             {{ userInfo.realName }}
             <el-icon class="el-icon--right">
-              <arrow-down />
+              <arrow-down/>
             </el-icon>
           </span>
           <template #dropdown>
@@ -72,16 +79,16 @@
   </div>
 </template>
 <script>
-import { reactive, ref, computed } from "vue";
+import {reactive, ref, computed} from "vue";
 import Config from "@/config";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
+import {useStore} from "vuex";
 import Cookies from "js-cookie";
-import { logout, loginChange, availableList } from "@/api/system/login.js";
-import store from "@/store";
-import { ElMessage } from "element-plus";
+import {logout, loginChange, availableList} from "@/api/system/login.js";
+import {ElMessage} from "element-plus";
 
 export default {
-  setup(props, { emit }) {
+  setup(props, {emit}) {
     const tenantName = computed(() => {
       if (store.state.user.userInfo.basicUserInfoVO) {
         return store.state.user.userInfo.basicUserInfoVO.tenantName;
@@ -89,20 +96,21 @@ export default {
         return "";
       }
     });
-    /* 控制头部按钮的切换 */
+    // 控制头部按钮的切换
     const isCollapse = ref(false);
     const handleLogo = (val) => {
       emit("isCollapse", val);
     };
-    /* 用户信息 */
+    // 用户信息
     const userInfo = JSON.parse(Cookies.get("userInfo")) || "";
     const config = ref(Config);
     const router = useRouter();
+    const store = useStore();
     const dialogVisible = ref(false);
     const selectTenant = ref(null);
     const tenantList = reactive([]);
 
-    /* 退出登录 */
+    // 退出登录
     const handleLogout = () => {
       logout().then(() => {
         Cookies.remove("phone");
@@ -117,7 +125,7 @@ export default {
       });
     };
 
-    /* 跳转到个人中心 */
+    // 跳转到个人中心
     const handleGoPersonal = (path) => {
       router.push({ path, query: { userId: userInfo.userId } });
     };
@@ -155,6 +163,12 @@ export default {
         });
       }
     };
+
+    // 点击面包屑 / 首页时
+    const handleClickHome = () => {
+      store.dispatch('router/setMenuNames', [])
+      // router.push('/home')
+    }
     return {
       isCollapse,
       config,
@@ -169,6 +183,8 @@ export default {
       tenantList,
       dialogVisible,
       tenantName,
+      store,
+      handleClickHome
     };
   },
 };
