@@ -7,6 +7,7 @@ export default {
   namespaced: true,
   state: () => ({
     menuList: [],
+    menuNames: [],
     isUpdata: true,
   }),
   mutations: {
@@ -16,6 +17,9 @@ export default {
     LOADMENUS(state, data) {
       state.isUpdata = data;
     },
+    MENUNAMES(state, data) {
+      state.menuNames = data;
+    },
   },
   actions: {
     setMenuList({ commit }, data) {
@@ -23,6 +27,10 @@ export default {
     },
     loadMenus({ commit }, data) {
       commit("LOADMENUS", data);
+    },
+    setMenuNames({ commit }, data) {
+      console.log(data)
+      commit("MENUNAMES", data);
     },
   },
   getters: {},

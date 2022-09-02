@@ -73,12 +73,12 @@ const formatRouter = (MenuList) => {
       path: i.link || "",
       component: Layout,
       meta: { title: i.menuName },
-      children: filterchildren(i.children, i),
+      children: filterChildren(i.children, i),
     });
   });
   return _router;
 };
-const filterchildren = (children) => {
+const filterChildren = (children) => {
   let _children = [];
   children.forEach((i) => {
     if (i.link) {
@@ -89,7 +89,7 @@ const filterchildren = (children) => {
         meta: { title: i.menuName },
       });
     } else {
-      _children = _children.concat(filterchildren(i.children));
+      _children = _children.concat(filterChildren(i.children));
     }
   });
   return _children;

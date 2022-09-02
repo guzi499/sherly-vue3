@@ -7,12 +7,12 @@
   <div class="sherly-page-wrapper">
     <el-form
       ref="resetFormData"
-      :model="form"
+      :model="queryForm"
       :inline="true"
       label-width="80px"
     >
       <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="form.roleName" style="width: 215px" clearable />
+        <el-input v-model="queryForm.roleName" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item>
         <el-button icon="Search" type="primary" @click="handleSearch">
@@ -30,8 +30,8 @@
       @handleCurrentChange="handleCurrentChange"
       @handleSizeChange="handleSizeChange"
       :pagination-total="tableData.total"
-      :pagination-current="tableData.current"
-      :pagination-size="tableData.size"
+      :pagination-current="queryForm.current"
+      :pagination-size="queryForm.size"
     >
       <template #header>
         <el-button
@@ -154,10 +154,8 @@ import {
   roleGetOne,
 } from "@/api/system/role";
 import { menuListTree } from "@/api/system/menu";
-import SherlyTable from "@/components/SherlyTable.vue";
 
 export default {
-  components: { SherlyTable },
   setup() {
     const { proxy } = getCurrentInstance();
     const loading = ref(false);
@@ -177,7 +175,7 @@ export default {
         },
       ],
     };
-    let form = reactive({
+    let queryForm = reactive({
       roleName: "",
       current: 1,
       size: 10,
@@ -207,7 +205,7 @@ export default {
     };
 
     onMounted(() => {
-      handleGetRoleLists();
+      getList();
       handleGetMenuTree();
     });
 
@@ -233,9 +231,9 @@ export default {
     };
 
     // 获取角色列表
-    const handleGetRoleLists = async () => {
+    const getList = async () => {
       loading.value = true;
-      const data = await roleListPage(form);
+      const data = await roleListPage(queryForm);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
         setTimeout(() => {
@@ -254,27 +252,25 @@ export default {
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
-      tableData.current = e;
-      form.current = e;
-      handleGetRoleLists(form);
+      queryForm.current = e;
+      getList();
     };
 
     // 修改当前每页数量
     const handleSizeChange = (e) => {
-      tableData.size = e;
-      form.size = e;
-      handleGetRoleLists(form);
+      queryForm.size = e;
+      getList();
     };
 
     // 搜索
     const handleSearch = () => {
-      handleGetRoleLists(form);
+      getList();
     };
 
     // 重置搜素
     const handleReset = () => {
       resetFormData.value.resetFields();
-      handleGetRoleLists();
+      getList();
     };
 
     // 添加角色
@@ -303,7 +299,7 @@ export default {
           message: "删除角色成功",
           type: "success",
         });
-        handleGetRoleLists();
+        getList();
       });
     };
 
@@ -337,7 +333,7 @@ export default {
                 message: "修改角色成功",
                 type: "success",
               });
-              handleGetRoleLists();
+              getList();
             });
           } else {
             roleSaveOne(roleForm).then(() => {
@@ -346,7 +342,7 @@ export default {
                 message: "添加角色成功",
                 type: "success",
               });
-              handleGetRoleLists();
+              getList();
             });
           }
           handleCancel();
@@ -361,7 +357,7 @@ export default {
     };
 
     return {
-      form,
+      queryForm,
       rules,
       resetFormData,
       ruleFormRef,
@@ -381,7 +377,7 @@ export default {
       handleDelete,
       handleAddRole,
       handleCurrentChange,
-      handleGetRoleLists,
+      getList,
       handleCancel,
       handleMenuTreeCheckChange,
       handleSizeChange,

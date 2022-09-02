@@ -83,13 +83,13 @@ export default {
     })
     return {
       activeName,
-      handleClick,
       list1,
       list2,
       isDisabled,
+      transferName,
       handleUsers,
       getList,
-      transferName,
+      handleClick,
       handleDialogVisible
     }
   }

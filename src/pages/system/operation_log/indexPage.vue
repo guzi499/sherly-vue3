@@ -1,29 +1,29 @@
 <template>
   <div class="sherly-page-wrapper">
     <!-- 搜索条件 -->
-    <el-form ref="resetFormData" :model="queryParams" :inline="true" label-width="80px">
+    <el-form ref="resetFormData" :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="操作用户">
-        <el-input style="width: 215px" v-model="queryParams.realName" clearable/>
+        <el-input style="width: 215px" v-model="queryForm.realName" clearable/>
       </el-form-item>
       <el-form-item label="耗时">
-        <el-input oninput="value=value.replace(/[^\d]/g,'')" style="width: 100px" v-model="queryParams.beginDuration"
+        <el-input oninput="value=value.replace(/[^\d]/g,'')" style="width: 100px" v-model="queryForm.beginDuration"
                   placeholder="输入数字" clearable/>
         <span style="width: 28px; text-align: center; user-select: none">~</span>
-        <el-input oninput="value=value.replace(/[^\d]/g,'')" style="width: 100px" v-model="queryParams.endDuration" placeholder="输入数字" clearable/>
+        <el-input oninput="value=value.replace(/[^\d]/g,'')" style="width: 100px" v-model="queryForm.endDuration" placeholder="输入数字" clearable/>
       </el-form-item>
       <el-form-item label="请求方式">
-        <el-select v-model="queryParams.requestMethod" placeholder="请选择请求方式" clearable style="width: 215px">
+        <el-select v-model="queryForm.requestMethod" placeholder="请选择请求方式" clearable style="width: 215px">
           <el-option v-for="item in requestType" :key="item.value" :label="item.label" :value="item.label"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="	日志类型">
-        <el-select v-model="queryParams.type" placeholder="请选择日志类型" clearable style="width: 215px">
+        <el-select v-model="queryForm.type" placeholder="请选择日志类型" clearable style="width: 215px">
           <el-option label="正常" :value="0"></el-option>
           <el-option label="异常" :value="1"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="请求uri">
-        <el-input style="width: 215px" v-model="queryParams.uri" clearable/>
+        <el-input style="width: 215px" v-model="queryForm.uri" clearable/>
       </el-form-item>
       <el-form-item label="操作时间">
         <el-date-picker
@@ -51,8 +51,8 @@
         @handleCurrentChange="handleCurrentChange"
         @handleSizeChange="handleSizeChange"
         :pagination-total="tableData.total"
-        :pagination-current="tableData.current"
-        :pagination-size="tableData.size"
+        :pagination-current="queryForm.current"
+        :pagination-size="queryForm.size"
     >
       <template #header>
         <el-popconfirm
@@ -127,12 +127,10 @@
 <script>
 import {reactive, ref, onMounted} from "vue";
 import {operationLogListPage, operationLogRemoveAll, operationLogGetOne} from '@/api/system/operate_log.js'
-import SherlyTable from "@/components/SherlyTable";
 import {ElMessage} from "element-plus";
 import {InfoFilled} from '@element-plus/icons-vue'
 
 export default {
-  components: {SherlyTable},
   setup() {
     onMounted(() => {
       getList()
@@ -140,7 +138,7 @@ export default {
     const loading = ref(false)
     const tableData = reactive({});
     const datetimerange = ref([])
-    const queryParams = reactive({
+    const queryForm = reactive({
       current: 1,
       size: 10,
     })
@@ -180,8 +178,8 @@ export default {
     // 搜索
     const handleSearch = () => {
       if (datetimerange.value.length > 0) {
-        queryParams.beginTime = datetimerange.value[0]
-        queryParams.endTime = datetimerange.value[1]
+        queryForm.beginTime = datetimerange.value[0]
+        queryForm.endTime = datetimerange.value[1]
       }
       getList()
     }
@@ -189,18 +187,18 @@ export default {
     // 重置
     const handleReset = () => {
       datetimerange.value = []
-      for (let key in queryParams) {
-        delete queryParams[key]
+      for (let key in queryForm) {
+        delete queryForm[key]
       }
-      queryParams.current = 1
-      queryParams.size = 10
+      queryForm.current = 1
+      queryForm.size = 10
       getList()
     }
 
     // 获取操作日志分页数据
     const getList = async () => {
       loading.value = true;
-      const data = await operationLogListPage(queryParams)
+      const data = await operationLogListPage(queryForm)
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -217,7 +215,7 @@ export default {
           message: "清除成功",
           type: "success",
         });
-        queryParams.current = 1
+        queryForm.current = 1
         getList()
       })
     }
@@ -231,34 +229,32 @@ export default {
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
-      tableData.current = e;
-      queryParams.current = e;
+      queryForm.current = e;
       getList();
     };
 
     // 修改当前每页数量
     const handleSizeChange = (e) => {
-      tableData.size = e;
-      queryParams.size = e;
+      queryForm.size = e;
       getList();
     };
 
     return {
       loading,
       tableData,
+      InfoFilled,
+      dialogVisible,
+      formInfo,
+      queryForm,
+      datetimerange,
+      requestType,
+      logType,
       handleCurrentChange,
       handleSizeChange,
       handleEmpty,
-      InfoFilled,
       handleLogId,
-      dialogVisible,
-      formInfo,
-      queryParams,
       handleSearch,
-      handleReset,
-      datetimerange,
-      requestType,
-      logType
+      handleReset
     }
   }
 }

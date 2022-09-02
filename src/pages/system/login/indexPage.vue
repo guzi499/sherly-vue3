@@ -50,7 +50,7 @@
                 type="password"
                 show-password
                 clearable
-                @keyup.enter="handlelogin()"
+                @keyup.enter="handleLogin()"
               >
                 <template #prefix>
                   <el-icon class="input-prefix-icon" color="#000">
@@ -70,7 +70,7 @@
               </el-button>
               <el-button
                 class="login-button"
-                @click="handlelogin()"
+                @click="handleLogin()"
                 :disabled="!(loginForm.phone && loginForm.password)"
               >
                 登 录
@@ -104,12 +104,12 @@
   </div>
 </template>
 <script>
-import { reactive, onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import { login, availableListCheck } from "@/api/system/login";
-import { genericHeartBeat } from "@/api/system/generic";
+import {onMounted, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+import {availableListCheck, login} from "@/api/system/login";
+import {genericHeartBeat} from "@/api/system/generic";
 import Cookies from "js-cookie";
-import { ElMessage, ElLoading } from "element-plus";
+import {ElLoading, ElMessage} from "element-plus";
 
 export default {
   setup() {
@@ -126,10 +126,10 @@ export default {
 
     onMounted(() => {
       getCookie();
-      handleHeartBzeat();
+      handleHeartBeat();
     });
 
-    const handlelogin = () => {
+    const handleLogin = () => {
       const data = loginForm;
       if (tenantCode.value) {
         data.tenantCode = tenantCode.value;
@@ -159,7 +159,7 @@ export default {
     };
 
     // 心跳检测
-    const handleHeartBzeat = () => {
+    const handleHeartBeat = () => {
       genericHeartBeat().then(() => {
         router.replace({ path: "/home" });
       });
@@ -211,13 +211,13 @@ export default {
       loginForm,
       dialogVisible,
       selectTenant,
-      handlelogin,
+      tenantList,
+      tenantDesc,
+      handleLogin,
       handleChangeTenant,
       getCookie,
       handleClose,
       confirm,
-      tenantList,
-      tenantDesc,
     };
   },
 };

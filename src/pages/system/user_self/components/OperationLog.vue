@@ -8,8 +8,8 @@
         @handleCurrentChange="handleCurrentChange"
         @handleSizeChange="handleSizeChange"
         :pagination-total="tableData.total"
-        :pagination-current="tableData.current"
-        :pagination-size="tableData.size"
+        :pagination-current="queryForm.current"
+        :pagination-size="queryForm.size"
     >
       <template #table>
         <el-table-column prop="logId" label="日志id" width="100" align="center"/>
@@ -39,11 +39,9 @@
 import {reactive, ref, onMounted} from "vue";
 import {useRoute} from "vue-router";
 import {userSelfOperationLogListPage} from '@/api/system/user_self.js'
-import SherlyTable from "@/components/SherlyTable";
 import {InfoFilled} from '@element-plus/icons-vue'
 
 export default {
-  components: {SherlyTable},
   setup() {
     onMounted(() => {
       getList()
@@ -53,7 +51,7 @@ export default {
     // 表格数据
     const tableData = reactive({});
     // 查询条件
-    const queryParams = reactive({
+    const queryForm = reactive({
       current: 1,
       size: 10,
       userId: parseInt(route.query.userId)
@@ -73,7 +71,7 @@ export default {
 
     // 获取操作日志分页数据
     const getList = async () => {
-      const data = await userSelfOperationLogListPage(queryParams)
+      const data = await userSelfOperationLogListPage(queryForm)
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
         setTimeout(() => {
@@ -84,15 +82,13 @@ export default {
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
-      tableData.current = e;
-      queryParams.current = e;
+      queryForm.current = e;
       getList();
     };
 
     // 修改当前每页数量
     const handleSizeChange = (e) => {
-      tableData.size = e;
-      queryParams.size = e;
+      queryForm.size = e;
       getList();
     };
 
@@ -101,6 +97,7 @@ export default {
       tableData,
       logType,
       InfoFilled,
+      queryForm,
       handleCurrentChange,
       handleSizeChange,
     }

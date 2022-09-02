@@ -1,17 +1,17 @@
 <template>
   <div class="sherly-page-wrapper">
     <!-- 搜索条件 -->
-    <el-form ref="resetFormData" :model="queryParams" :inline="true" label-width="80px">
+    <el-form ref="resetFormData" :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="登录账号">
-        <el-input style="width: 215px" v-model="queryParams.username" clearable/>
+        <el-input style="width: 215px" v-model="queryForm.username" clearable/>
       </el-form-item>
       <el-form-item label="	登录方式">
-        <el-select v-model="queryParams.type" placeholder="请选择登录方式" clearable style="width: 215px">
+        <el-select v-model="queryForm.type" placeholder="请选择登录方式" clearable style="width: 215px">
           <el-option v-for="item in loginType" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="登录结果">
-        <el-select v-model="queryParams.result" placeholder="请选择登录结果" clearable style="width: 215px">
+        <el-select v-model="queryForm.result" placeholder="请选择登录结果" clearable style="width: 215px">
           <el-option v-for="item in loginResults" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
@@ -41,8 +41,8 @@
         @handleCurrentChange="handleCurrentChange"
         @handleSizeChange="handleSizeChange"
         :pagination-total="tableData.total"
-        :pagination-current="tableData.current"
-        :pagination-size="tableData.size"
+        :pagination-current="queryForm.current"
+        :pagination-size="queryForm.size"
     >
       <template #header>
         <el-popconfirm
@@ -92,19 +92,17 @@
 <script>
 import {reactive, ref, onMounted} from "vue";
 import {loginLogRemoveAll, loginLogListPage} from '@/api/system/login_log.js'
-import SherlyTable from "@/components/SherlyTable";
 import {ElMessage} from "element-plus";
 import {InfoFilled} from '@element-plus/icons-vue'
 
 export default {
-  components: {SherlyTable},
   setup() {
     onMounted(() => {
       getList()
     });
     const loading = ref(false)
     const tableData = reactive({});
-    const queryParams = reactive({
+    const queryForm = reactive({
       current: 1,
       size: 10,
     })
@@ -154,8 +152,8 @@ export default {
     // 搜索
     const handleSearch = () => {
       if (datetimerange.value.length > 0) {
-        queryParams.beginTime = datetimerange.value[0]
-        queryParams.endTime = datetimerange.value[1]
+        queryForm.beginTime = datetimerange.value[0]
+        queryForm.endTime = datetimerange.value[1]
       }
       getList()
     }
@@ -163,18 +161,18 @@ export default {
     // 重置
     const handleReset = () => {
       datetimerange.value = []
-      for (let key in queryParams) {
-        delete queryParams[key]
+      for (let key in queryForm) {
+        delete queryForm[key]
       }
-      queryParams.current = 1
-      queryParams.size = 10
+      queryForm.current = 1
+      queryForm.size = 10
       getList()
     }
 
     // 获取登录日志分页数据
     const getList = async () => {
       loading.value = true;
-      const data = await loginLogListPage(queryParams)
+      const data = await loginLogListPage(queryForm)
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -190,22 +188,20 @@ export default {
           message: "清除成功",
           type: "success",
         });
-        queryParams.current = 1
+        queryForm.current = 1
         getList()
       })
     }
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
-      tableData.current = e;
-      queryParams.current = e;
+      queryForm.current = e;
       getList();
     };
 
     // 修改当前每页数量
     const handleSizeChange = (e) => {
-      tableData.size = e;
-      queryParams.size = e;
+      queryForm.size = e;
       getList();
     };
 
@@ -215,11 +211,11 @@ export default {
       InfoFilled,
       loginResults,
       loginType,
+      queryForm,
+      datetimerange,
       handleCurrentChange,
       handleSizeChange,
       handleEmpty,
-      queryParams,
-      datetimerange,
       handleSearch,
       handleReset
     }

@@ -7,15 +7,15 @@
   <div class="sherly-page-wrapper">
     <el-form
       ref="resetFormData"
-      :model="form"
+      :model="queryForm"
       :inline="true"
       label-width="80px"
     >
       <el-form-item label="文件名称" label-width="120px" prop="fileName">
-        <el-input v-model="form.fileName" style="width: 215px" clearable />
+        <el-input v-model="queryForm.fileName" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="相对路径" label-width="120px" prop="path">
-        <el-input v-model="form.path" style="width: 215px" clearable />
+        <el-input v-model="queryForm.path" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
@@ -45,8 +45,8 @@
       @handleCurrentChange="handleCurrentChange"
       @handleSizeChange="handleSizeChange"
       :pagination-total="tableData.total"
-      :pagination-current="tableData.current"
-      :pagination-size="tableData.size"
+      :pagination-current="queryForm.current"
+      :pagination-size="queryForm.size"
     >
       <template #header>
         <el-upload
@@ -133,15 +133,13 @@
 </template>
 <script>
 import { onMounted, reactive, ref } from "vue";
-import SherlyTable from "@/components/SherlyTable.vue";
 import { ossAccessUrl, ossListPage, ossRemoveOne } from "@/api/system/oss";
 import { ElLoading, ElMessage, ElNotification } from "element-plus";
 
 export default {
-  components: { SherlyTable },
   setup() {
     const loading = ref(false);
-    let form = reactive({
+    let queryForm = reactive({
       current: 1,
       size: 10,
       fileName: "",
@@ -158,13 +156,13 @@ export default {
     const tableData = reactive({ result: [], total: 0, current: 1, size: 10 });
 
     onMounted(() => {
-      handleOssLists();
+      getList();
     });
 
     // 获取文件列表
-    const handleOssLists = async () => {
+    const getList = async () => {
       loading.value = true;
-      const data = await ossListPage(form);
+      const data = await ossListPage(queryForm);
       Object.keys(data).forEach((key) => {
         tableData[key] = data[key];
       });
@@ -176,21 +174,21 @@ export default {
     // 搜索
     const handleSearch = () => {
       if (datetimerange.value.length > 0) {
-        form.beginTime = datetimerange.value[0];
-        form.endTime = datetimerange.value[1];
+        queryForm.beginTime = datetimerange.value[0];
+        queryForm.endTime = datetimerange.value[1];
       }
-      handleOssLists();
+      getList();
     };
 
     // 重置
     const handleReset = () => {
       datetimerange.value = [];
-      for (let key in form) {
-        delete form[key];
+      for (let key in queryForm) {
+        delete queryForm[key];
       }
-      form.current = 1;
-      form.size = 10;
-      handleOssLists();
+      queryForm.current = 1;
+      queryForm.size = 10;
+      getList();
     };
 
     // 格式化文件大小
@@ -214,16 +212,14 @@ export default {
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
-      tableData.current = e;
-      form.current = e;
-      handleOssLists();
+      queryForm.current = e;
+      getList();
     };
 
     // 修改当前每页数量
     const handleSizeChange = (e) => {
-      tableData.size = e;
-      form.size = e;
-      handleOssLists();
+      queryForm.size = e;
+      getList();
     };
 
     // 删除
@@ -233,7 +229,7 @@ export default {
         message: "删除成功！",
         type: "success",
       });
-      handleOssLists();
+      getList();
     };
 
     const handleDownload = async ({ path, fileName }) => {
@@ -262,7 +258,7 @@ export default {
     };
 
     // 上传成功
-    const handleOnSuccess = async (e) => {
+    const handleOnSuccess = (e) => {
       if (e.code !== "000") {
         ElNotification({
           title: "警告",
@@ -271,7 +267,7 @@ export default {
           type: "error",
         });
       } else {
-        handleOssLists();
+        getList();
       }
       ElLoading.service({
         lock: true,
@@ -312,6 +308,11 @@ export default {
 
     return {
       loading,
+      datetimerange,
+      tableData,
+      action,
+      data,
+      queryForm,
       handleCurrentChange,
       handleSizeChange,
       handleDelete,
@@ -321,12 +322,7 @@ export default {
       handleOnSuccess,
       handleCopy,
       handleSearch,
-      handleReset,
-      datetimerange,
-      tableData,
-      action,
-      data,
-      form,
+      handleReset
     };
   },
 };

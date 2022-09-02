@@ -7,12 +7,12 @@
   <div class="sherly-page-wrapper">
     <el-form
       ref="resetFormData"
-      :model="form"
+      :model="queryForm"
       :inline="true"
       label-width="80px"
     >
       <el-form-item label="手机号" prop="phone">
-        <el-input style="width: 215px" v-model="form.phone" />
+        <el-input style="width: 215px" v-model="queryForm.phone" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch" icon="Search"
@@ -29,8 +29,8 @@
       @handleCurrentChange="handleCurrentChange"
       @handleSizeChange="handleSizeChange"
       :pagination-total="tableData.total"
-      :pagination-current="tableData.current"
-      :pagination-size="tableData.size"
+      :pagination-current="queryForm.current"
+      :pagination-size="queryForm.size"
     >
       <template #table>
         <el-table-column
@@ -102,14 +102,12 @@
 <script>
 import { reactive, ref, onMounted } from "vue";
 import { userOnlineListAll, userOnlineForceQuit } from "@/api/system/user_online";
-import SherlyTable from "@/components/SherlyTable.vue";
 import { ElMessage } from "element-plus";
 
 export default {
-  components: { SherlyTable },
   setup() {
     const loading = ref(false);
-    let form = reactive({
+    let queryForm = reactive({
       phone: "",
       current: 1,
       size: 10,
@@ -125,12 +123,12 @@ export default {
     // 获取列表
     const getList = async () => {
       loading.value = true;
-      const result = await userOnlineListAll(form.phone ? form : "");
+      const result = await userOnlineListAll(queryForm.phone ? queryForm : "");
       const data = {
         result: formatPagination(result),
-        size: form.size,
+        size: queryForm.size,
         total: result.length,
-        current: form.current,
+        current: queryForm.current,
       };
       Object.keys(data).forEach((i) => {
         tableData[i] = data[i];
@@ -142,7 +140,7 @@ export default {
 
     const formatPagination = (result) => {
       const newArr = [];
-      const { size, current } = form;
+      const { size, current } = queryForm;
       if (result instanceof Array && result.length > 0) {
         for (let i = 0; i < result.length; ) {
           newArr.push(result.slice(i, (i += size)));
@@ -163,20 +161,18 @@ export default {
     };
 
     // 添加租户
-    const handleaddTenant = () => {};
+    const handleAddTenant = () => {};
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
-      tableData.current = e;
-      form.current = e;
-      getList(form);
+      queryForm.current = e;
+      getList();
     };
 
     // 修改当前每页数量
     const handleSizeChange = (e) => {
-      tableData.size = e;
-      form.size = e;
-      getList(form);
+      queryForm.size = e;
+      getList();
     };
 
     // 删除角色
@@ -191,16 +187,16 @@ export default {
     };
 
     return {
-      form,
+      queryForm,
       tableData,
       resetFormData,
+      loading,
       handleSearch,
       handleReset,
-      handleaddTenant,
+      handleAddTenant,
       handleCurrentChange,
       handleSizeChange,
-      handleDelete,
-      loading,
+      handleDelete
     };
   },
 };

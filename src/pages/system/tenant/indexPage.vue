@@ -6,21 +6,21 @@
   <div class="sherly-page-wrapper">
     <el-form
       ref="resetFormData"
-      :model="form"
+      :model="queryForm"
       :inline="true"
       label-width="80px"
     >
       <el-form-item label="租户代码" prop="tenantCode">
-        <el-input v-model="form.tenantCode" style="width: 215px" clearable />
+        <el-input v-model="queryForm.tenantCode" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="租户名称" prop="tenantName">
-        <el-input v-model="form.tenantName" style="width: 215px" clearable />
+        <el-input v-model="queryForm.tenantName" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="联系人" prop="contactUser">
-        <el-input v-model="form.contactUser" style="width: 215px" clearable />
+        <el-input v-model="queryForm.contactUser" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="联系电话" prop="contactPhone">
-        <el-input v-model="form.contactPhone" style="width: 215px" clearable />
+        <el-input v-model="queryForm.contactPhone" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
@@ -53,7 +53,7 @@
           <el-input
             oninput="value=value.replace(/[^\d]/g,'')"
             style="width: 100px"
-            v-model="form.beginUserLimit"
+            v-model="queryForm.beginUserLimit"
             placeholder="输入数字"
             clearable
           />
@@ -65,7 +65,7 @@
           <el-input
             oninput="value=value.replace(/[^\d]/g,'')"
             style="width: 100px"
-            v-model="form.endUserLimit"
+            v-model="queryForm.endUserLimit"
             placeholder="输入数字"
             clearable
           />
@@ -86,13 +86,13 @@
       @handleCurrentChange="handleCurrentChange"
       @handleSizeChange="handleSizeChange"
       :pagination-total="tableData.total"
-      :pagination-current="tableData.current"
-      :pagination-size="tableData.size"
+      :pagination-current="queryForm.current"
+      :pagination-size="queryForm.size"
     >
       <template #header>
         <el-button
           type="primary"
-          @click="handleaddTenant"
+          @click="handleAddTenant"
           v-permission="['tenant:save_one']"
           size="small"
         >
@@ -278,15 +278,13 @@ import {
   tenantListMenuId,
 } from "@/api/system/tenant";
 import { menuListTree } from "@/api/system/menu";
-import SherlyTable from "@/components/SherlyTable.vue";
 import { ElMessage } from "element-plus";
 
 export default {
-  components: { SherlyTable },
   setup() {
     const activeName = ref("menu");
     const loading = ref(false);
-    let form = reactive({
+    let queryForm = reactive({
       beginTime: "",
       endTime: "",
       beginExpireTime: "",
@@ -400,16 +398,16 @@ export default {
     let tenantForm = reactive(inittenantForm());
 
     // 重置租户详情数据
-    const resettenantForm = () => {
+    const resetTenantForm = () => {
       Object.assign(tenantForm, inittenantForm());
     };
 
     // 获取列表
     const getList = async () => {
       loading.value = true;
-      const data = await tenantListPage(form);
-      Object.keys(data).forEach((i) => {
-        tableData[i] = data[i];
+      const data = await tenantListPage(queryForm);
+      Object.keys(data).forEach((key) => {
+        tableData[key] = data[key];
       });
       setTimeout(() => {
         loading.value = false;
@@ -419,12 +417,12 @@ export default {
     // 搜索
     const handleSearch = () => {
       if (datetimerange.value.length > 0) {
-        form.beginTime = datetimerange.value[0];
-        form.endTime = datetimerange.value[1];
+        queryForm.beginTime = datetimerange.value[0];
+        queryForm.endTime = datetimerange.value[1];
       }
       if (_datetimerange.value.length > 0) {
-        form.beginExpireTime = _datetimerange.value[0];
-        form.endExpireTime = _datetimerange.value[1];
+        queryForm.beginExpireTime = _datetimerange.value[0];
+        queryForm.endExpireTime = _datetimerange.value[1];
       }
       getList();
     };
@@ -433,28 +431,26 @@ export default {
     const handleReset = () => {
       datetimerange.value = [];
       _datetimerange.value = [];
-      form = inittenantForm();
+      queryForm = inittenantForm();
       getList();
     };
 
     // 添加租户
-    const handleaddTenant = () => {
+    const handleAddTenant = () => {
       isEdit.value = false;
       dialogVisible.value = true;
     };
 
     // 修改当前分页页码
     const handleCurrentChange = (e) => {
-      tableData.current = e;
-      form.current = e;
-      getList(form);
+      queryForm.current = e;
+      getList();
     };
 
     // 修改当前每页数量
     const handleSizeChange = (e) => {
-      tableData.size = e;
-      form.size = e;
-      getList(form);
+      queryForm.size = e;
+      getList();
     };
 
     // 编辑租户
@@ -479,7 +475,7 @@ export default {
 
     // 取消
     const handleCancel = () => {
-      resettenantForm();
+      resetTenantForm();
       dialogVisible.value = false;
     };
 
@@ -557,7 +553,7 @@ export default {
 
     return {
       tenantId,
-      form,
+      queryForm,
       tableData,
       resetFormData,
       tenantFormRef,
@@ -565,9 +561,18 @@ export default {
       isEdit,
       dialogVisible,
       dialogMenuVisible,
+      loading,
+      menuTree,
+      rules,
+      tenantListMenu,
+      isStrictly,
+      datetimerange,
+      _datetimerange,
+      activeName,
+      menuCheckedKey,
       handleSearch,
       handleReset,
-      handleaddTenant,
+      handleAddTenant,
       handleCurrentChange,
       handleSizeChange,
       handleEdit,
@@ -578,15 +583,6 @@ export default {
       handleMenuConfirm,
       handleEditMenu,
       handleMenuTreeCheckChange,
-      loading,
-      menuTree,
-      rules,
-      tenantListMenu,
-      isStrictly,
-      datetimerange,
-      _datetimerange,
-      activeName,
-      menuCheckedKey,
       handleCheckedTreeChange,
     };
   },

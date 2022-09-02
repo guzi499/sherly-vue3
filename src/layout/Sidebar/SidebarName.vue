@@ -184,9 +184,16 @@ export default {
       console.log("close", key, keyPath);
     };
 
-    const handleselect = (index) => {
+    const handleselect = (index, indexPath) => {
       const path = "/" + findPath(index, menu);
-      router.push({ path });
+      router.push({path});
+      const menuNames = []
+      indexPath.forEach((item) => {
+        menuNames.push(findName(item, menu))
+        setTimeout(() => {
+          Store.dispatch('router/setMenuNames', menuNames)
+        }, 50)
+      })
     };
 
     const findPath = (index, lists) => {
@@ -199,6 +206,18 @@ export default {
         }
       });
       return link;
+    };
+
+    const findName = (index, lists) => {
+      let menuName = "";
+      lists.forEach((i) => {
+        if (lists.find((j) => j.index === index)) {
+          menuName = lists.find((j) => j.index === index).menuName;
+        } else if (!menuName && i.children) {
+          menuName = findName(index, i.children);
+        }
+      });
+      return menuName;
     };
 
     const isCurrentRouter = (currentRouter) => {

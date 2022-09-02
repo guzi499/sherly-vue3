@@ -102,11 +102,11 @@ export default {
     }
     return {
       activeName,
-      handleClick,
       form1,
       rules1,
-      handleUpdate,
       mode: 'default',
+      handleClick,
+      handleUpdate
     }
   }
 }

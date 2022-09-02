@@ -8,7 +8,7 @@
     <el-scrollbar>
       <div class="scrollbar-flex-content">
         <div
-          class="scrollbar-demo-item scrollbar-demo-item-ishome"
+          class="scrollbar-demo-item scrollbar-demo-item-isHome"
           :class="{
             'scrollbar-demo-item-active': isCurrentRouter(home),
           }"
@@ -23,7 +23,7 @@
           class="scrollbar-demo-item"
           :class="{
             'scrollbar-demo-item-active': isCurrentRouter(item),
-            'scrollbar-demo-item-ishome': item.meta.title === '首页',
+            'scrollbar-demo-item-isHome': item.meta.title === '首页',
           }"
           @click="navigation(item.fullPath)"
           @contextmenu.prevent="openMenu($event, item)"
@@ -63,9 +63,10 @@
   </div>
 </template>
 <script>
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
-import { watch, reactive, ref } from "vue";
+import {useStore} from "vuex";
+import {useRoute, useRouter} from "vue-router";
+import {reactive, ref, watch} from "vue";
+
 export default {
   setup() {
     const useRouterCurrent = reactive(useRouter());
@@ -275,7 +276,7 @@ a {
     background: var(--el-color-primary);
     color: #fff;
   }
-  .scrollbar-demo-item-ishome {
+  .scrollbar-demo-item-isHome {
     padding: 0 12px;
   }
   .close {

@@ -5,29 +5,29 @@
 <template>
   <div class="sherly-page-wrapper">
     <!-- 查询条件 -->
-    <el-form :model="queryParams" :inline="true" label-width="80px">
+    <el-form :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="手机号">
         <el-input
-          style="width: 215px"
-          clearable
-          v-model="queryParams.phone"
-          placeholder="请输入手机号"
+            style="width: 215px"
+            clearable
+            v-model="queryForm.phone"
+            placeholder="请输入手机号"
         ></el-input>
       </el-form-item>
       <el-form-item label="姓名">
         <el-input
-          clearable
-          style="width: 215px"
-          v-model="queryParams.realName"
-          placeholder="请输入姓名"
+            clearable
+            style="width: 215px"
+            v-model="queryForm.realName"
+            placeholder="请输入姓名"
         ></el-input>
       </el-form-item>
       <el-form-item label="昵称">
         <el-input
-          clearable
-          style="width: 215px"
-          v-model="queryParams.nickname"
-          placeholder="请输入昵称"
+            clearable
+            style="width: 215px"
+            v-model="queryForm.nickname"
+            placeholder="请输入昵称"
         ></el-input>
       </el-form-item>
       <el-form-item label="部门">
@@ -60,18 +60,18 @@
       </el-form-item>
       <el-form-item label="邮箱">
         <el-input
-          clearable
-          style="width: 215px"
-          v-model="queryParams.email"
-          placeholder="请输入邮箱"
+            clearable
+            style="width: 215px"
+            v-model="queryForm.email"
+            placeholder="请输入邮箱"
         ></el-input>
       </el-form-item>
       <el-form-item label="禁用状态">
         <el-select
-          v-model="queryParams.enable"
-          placeholder="请选择禁用状态"
-          clearable
-          style="width: 215px"
+            v-model="queryForm.enable"
+            placeholder="请选择禁用状态"
+            clearable
+            style="width: 215px"
         >
           <el-option label="启用" :value="1"></el-option>
           <el-option label="禁用" :value="0"></el-option>
@@ -93,116 +93,117 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleSearch"
-          >搜索</el-button
+        >搜索
+        </el-button
         >
         <el-button icon="Refresh" @click="handleReset">重置</el-button>
       </el-form-item>
     </el-form>
-    <!-- 操作按钮 -->
-    <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          size="small"
-          @click="handleExport()"
-          v-permission="['user:list_export']"
-          >导出
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          size="small"
-          @click="handleEdit('1')"
-          v-permission="['user:save_one']"
-          >新增
-        </el-button>
-      </el-col>
-    </el-row>
-    <!-- 用户表格 -->
-    <el-table v-loading="loading" :data="tableData" style="width: 100%">
-      <el-table-column prop="phone" label="手机号" width="180" align="center" />
-      <el-table-column prop="realName" label="姓名" align="center" />
-      <el-table-column prop="nickname" label="昵称" align="center" />
-      <el-table-column prop="gender" label="性别" align="center">
-        <template #default="scope">
-          <span>{{ scope.row.gender === 1 ? "男" : "女" }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="departmentName" label="部门" align="center" />
-      <el-table-column prop="email" label="邮箱" align="center" />
-      <el-table-column prop="enable" label="禁用状态" align="center">
-        <template #default="scope">
-          <el-switch
-            v-model="scope.row.enable"
-            class="switch"
-            :active-value="1"
-            :inactive-value="0"
-            @change="handleChange(scope.row)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-        width="180"
-        align="center"
-      />
-      <el-table-column prop="name" label="操作" width="180" align="center">
-        <template #default="scope">
-          <el-link
-            type="primary"
-            @click="handleEdit('2', scope.$index, scope.row)"
-            v-permission="['user:update_one']"
-            >修改</el-link
-          >
-          <el-popconfirm
-            title="确定删除本条数据?"
-            @confirm="handleDelete(scope.row)"
-          >
-            <template #reference>
-              <el-link
-                type="danger"
-                v-permission="['user:remove_one']"
-                v-show="scope.row.userId !== 1"
-                >删除</el-link
-              >
-            </template>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      style="margin-top: 20px"
-      v-model:currentPage="queryParams.current"
-      v-model:page-size="queryParams.size"
-      :page-sizes="[10, 20, 30, 40]"
-      :small="small"
-      :disabled="disabled"
-      layout="total, sizes, prev, pager, next, jumper"
-      v-show="total >= 1"
-      :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
-    <!--    新增 / 修改弹框-->
+    <SherlyTable
+        :loading="loading"
+        :tableData="tableData.result"
+        style="width: 100%"
+        showPagination
+        @handleCurrentChange="handleCurrentChange"
+        @handleSizeChange="handleSizeChange"
+        :pagination-total="tableData.total"
+        :pagination-current="queryForm.current"
+        :pagination-size="queryForm.size"
+    >
+      <template #header>
+        <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
+          <el-col :span="1.5">
+            <el-button
+                type="primary"
+                size="small"
+                @click="handleExport()"
+                v-permission="['user:list_export']"
+            >导出
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+                type="primary"
+                size="small"
+                @click="handleEdit('1')"
+                v-permission="['user:save_one']"
+            >新增
+            </el-button>
+          </el-col>
+        </el-row>
+      </template>
+      <template #table>
+        <el-table-column prop="phone" label="手机号" width="180" align="center"/>
+        <el-table-column prop="realName" label="姓名" align="center"/>
+        <el-table-column prop="nickname" label="昵称" align="center"/>
+        <el-table-column prop="gender" label="性别" align="center">
+          <template #default="scope">
+            <span>{{ scope.row.gender === 1 ? "男" : "女" }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="departmentName" label="部门" align="center"/>
+        <el-table-column prop="email" label="邮箱" align="center"/>
+        <el-table-column prop="enable" label="禁用状态" align="center">
+          <template #default="scope">
+            <el-switch
+                v-model="scope.row.enable"
+                class="switch"
+                :active-value="1"
+                :inactive-value="0"
+                @change="handleChange(scope.row)"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="createTime"
+            label="创建时间"
+            width="180"
+            align="center"
+        />
+        <el-table-column prop="name" label="操作" width="180" align="center">
+          <template #default="scope">
+            <el-link
+                type="primary"
+                @click="handleEdit('2', scope.$index, scope.row)"
+                v-permission="['user:update_one']"
+            >修改
+            </el-link
+            >
+            <el-popconfirm
+                title="确定删除本条数据?"
+                @confirm="handleDelete(scope.row)"
+            >
+              <template #reference>
+                <el-link
+                    type="danger"
+                    v-permission="['user:remove_one']"
+                    v-show="scope.row.userId !== 1"
+                >删除
+                </el-link
+                >
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </template>
+    </SherlyTable>
     <el-dialog
-      v-if="dialogFormVisible"
-      v-model="dialogFormVisible"
-      :title="dialogTitle"
-      width="40%"
+        v-if="dialogFormVisible"
+        v-model="dialogFormVisible"
+        :title="dialogTitle"
+        width="40%"
     >
       <el-form
-        :model="form"
-        :rules="formRules"
-        ref="ruleForm"
-        style="padding-right: 60px"
+          :model="form"
+          :rules="formRules"
+          ref="ruleForm"
+          style="padding-right: 60px"
       >
         <el-form-item
-          label="手机号"
-          :label-width="formLabelWidth"
-          prop="phone"
-          v-if="type1 === '1'"
+            label="手机号"
+            :label-width="formLabelWidth"
+            prop="phone"
+            v-if="type1 === '1'"
         >
           <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
         </el-form-item>
@@ -293,7 +294,6 @@ import {
   getCurrentInstance,
   ref,
   reactive,
-  toRefs,
   onMounted,
   watch,
 } from "vue";
@@ -328,25 +328,24 @@ export default {
       });
     };
 
-    const data = reactive({
-      // 查询条件
-      queryParams: {
-        current: 1,
-        size: 10,
-      },
-      // 部门下拉框配置项
-      defaultProps: {
-        children: "children",
-        label: "departmentName",
-      },
-    });
+    // 查询条件
+    const queryForm = reactive({
+      current: 1,
+      size: 10,
+    })
+
+    const defaultProps = reactive({
+      children: "children",
+      label: "departmentName",
+    })
+
     const datetimerange = ref([]);
     // 搜索按钮
     const handleSearch = () => {
-      data.queryParams.current = 1;
+      queryForm.current = 1;
       if (datetimerange.value.length > 0) {
-        data.queryParams.beginTime = datetimerange.value[0];
-        data.queryParams.endTime = datetimerange.value[1];
+        queryForm.beginTime = datetimerange.value[0];
+        queryForm.endTime = datetimerange.value[1];
       }
       getList();
     };
@@ -354,10 +353,8 @@ export default {
     // 重置查询条件
     const reset = () => {
       datetimerange.value = [];
-      data.queryParams = {
-        current: 1,
-        size: 10,
-      };
+      queryForm.current = 1
+      queryForm.size = 10
     };
 
     // 重置按钮
@@ -373,29 +370,27 @@ export default {
     const small = ref(false);
     const background = ref(false);
     const handleSizeChange = (val) => {
-      console.log(`每页${val} 条`);
-      data.queryParams.size = val;
+      queryForm.size = val;
       getList();
     };
     const handleCurrentChange = (val) => {
-      console.log(`当前页: ${val}`);
-      data.queryParams.current = val;
+      queryForm.current = val;
       getList();
     };
     const disabled = ref(false);
 
     // 表格列表
-    const tableData = ref([]);
+    const tableData = reactive([]);
     // 获取用户信息列表
-    const getList = () => {
+    const getList = async () => {
       loading.value = true;
-      userListPage(data.queryParams).then((res) => {
-        tableData.value = res.result;
-        total.value = res.total;
-        setTimeout(() => {
-          loading.value = false;
-        }, 100);
-      });
+      const data = await userListPage(queryForm)
+      Object.keys(data).forEach((key)  => {
+        tableData[key] = data[key]
+      })
+      setTimeout(() => {
+        loading.value = false;
+      }, 100);
     };
 
     // 公共部门下拉框
@@ -484,7 +479,7 @@ export default {
       treeSelectData.treeDate = data1.checkedNodes.map((item) => {
         return item.departmentName;
       });
-      data.queryParams.departmentIds = treeSelectData.parentId.join(",");
+      queryForm.departmentIds = treeSelectData.parentId.join(",");
     };
 
     // 部门选择
@@ -506,7 +501,7 @@ export default {
                   message: "新增成功！",
                   type: "success",
                 });
-                data.queryParams.current = 1;
+                queryForm.current = 1;
                 getList();
                 dialogFormVisible.value = false;
               })
@@ -526,7 +521,7 @@ export default {
                   message: "修改成功！",
                   type: "success",
                 });
-                data.queryParams.current = 1;
+                queryForm.current = 1;
                 getList();
                 dialogFormVisible.value = false;
               })
@@ -547,7 +542,7 @@ export default {
           message: "删除成功！",
           type: "success",
         });
-        data.queryParams.current = 1;
+        queryForm.current = 1;
         getList();
       });
     };
@@ -563,7 +558,7 @@ export default {
         console.log(val);
         if (val.length === 0) {
           console.log(val);
-          delete data.queryParams.departmentIds;
+          delete queryForm.departmentIds;
           proxy.$refs.checkTree.setCheckedKeys([]);
         }
       },
@@ -576,7 +571,8 @@ export default {
       loading,
       formRules,
       type1,
-      ...toRefs(data),
+      queryForm,
+      defaultProps,
       total,
       small,
       background,
@@ -588,6 +584,8 @@ export default {
       dialogFormVisible,
       form,
       treeSelectData,
+      rolesOptions,
+      datetimerange,
       handleChange,
       nodeCheck,
       nodeOnclick2,
@@ -598,9 +596,7 @@ export default {
       handleReset,
       handleSizeChange,
       handleCurrentChange,
-      handleExport,
-      rolesOptions,
-      datetimerange,
+      handleExport
     };
   },
 };
