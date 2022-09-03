@@ -8,33 +8,33 @@
     <el-scrollbar>
       <div class="scrollbar-flex-content">
         <div
-          class="scrollbar-demo-item scrollbar-demo-item-isHome"
-          :class="{
+            class="scrollbar-demo-item scrollbar-demo-item-isHome"
+            :class="{
             'scrollbar-demo-item-active': isCurrentRouter(home),
           }"
-          @click="navigation(home.fullPath)"
-          @contextmenu.prevent="openMenu($event, home)"
+            @click="navigation(home)"
+            @contextmenu.prevent="openMenu($event, home)"
         >
           {{ home.meta.title }}
         </div>
         <div
-          v-for="item in routePathList"
-          :key="item.fullPath"
-          class="scrollbar-demo-item"
-          :class="{
+            v-for="item in routePathList"
+            :key="item.fullPath"
+            class="scrollbar-demo-item"
+            :class="{
             'scrollbar-demo-item-active': isCurrentRouter(item),
             'scrollbar-demo-item-isHome': item.meta.title === '首页',
           }"
-          @click="navigation(item.fullPath)"
-          @contextmenu.prevent="openMenu($event, item)"
+            @click="navigation(item)"
+            @contextmenu.prevent="openMenu($event, item)"
         >
           {{ item.meta?.title || "未命名" }}
           <template v-if="item.meta.title !== '首页'">
             <img
-              v-if="!isCurrentRouter(item)"
-              src="@/assets/images/close.png"
-              class="close"
-              @click.stop="handleCloseRoute(item)"
+                v-if="!isCurrentRouter(item)"
+                src="@/assets/images/close.png"
+                class="close"
+                @click.stop="handleCloseRoute(item)"
             />
             <img
               v-if="isCurrentRouter(item)"
@@ -104,16 +104,22 @@ export default {
     const home = {
       fullPath: "/home",
       path: "/home",
-      meta: { title: "首页" },
+      meta: {title: "首页"},
     };
 
-    const navigation = (fullPath) => {
-      router.push(fullPath);
+    const navigation = (item) => {
+      const menuNames = []
+      console.log(item.matched)
+      router.push(item.fullPath);
+      item.matched.forEach(item => {
+        menuNames.push(item.meta.title)
+        store.dispatch('router/setMenuNames', menuNames)
+      })
     };
 
     //删除当前导航
     const handleCloseRoute = (item) => {
-      const data = Object.assign({ ...item }, { bool: isCurrentRouter(item) });
+      const data = Object.assign({...item}, {bool: isCurrentRouter(item)});
       store.dispatch("delRoutePath", data).then((res) => {
         if (res.length > 0) {
           router.push(res[res.length - 1].fullPath);

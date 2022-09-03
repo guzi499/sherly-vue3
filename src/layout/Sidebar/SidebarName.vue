@@ -13,7 +13,7 @@
         :collapse-transition="false"
         @open="handleOpen"
         @close="handleClose"
-        @select="handleselect"
+        @select="handleSelect"
         background-color="#334154"
         text-color="#fff"
         style="border-right: 0"
@@ -136,19 +136,19 @@ export default {
       const menu = [];
       tree.forEach((i, index) => {
         const temp = Object.assign(i, { index: `${index + 1}` });
-        i.children = formatMenuchildren(i.children, temp.index);
+        i.children = formatMenuChildren(i.children, temp.index);
         menu.push(temp);
       });
       return menu;
     };
 
-    const formatMenuchildren = (children, index) => {
+    const formatMenuChildren = (children, index) => {
       const _children = [];
       children.forEach((i, _index) => {
         const _temp = Object.assign(i, {
           index: `${index}-${_index + 1}`,
         });
-        i.children = formatMenuchildren(i.children, _temp.index);
+        i.children = formatMenuChildren(i.children, _temp.index);
         _children.push(_temp);
       });
       return _children;
@@ -184,7 +184,7 @@ export default {
       console.log("close", key, keyPath);
     };
 
-    const handleselect = (index, indexPath) => {
+    const handleSelect = (index, indexPath) => {
       const path = "/" + findPath(index, menu);
       router.push({path});
       const menuNames = []
@@ -232,7 +232,7 @@ export default {
       handleNodeClick,
       handleClose,
       handleOpen,
-      handleselect,
+      handleSelect,
       width,
       isCurrentRouter,
     };
