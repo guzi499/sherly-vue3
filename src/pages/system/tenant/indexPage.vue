@@ -216,30 +216,29 @@
       </template>
     </el-dialog>
     <el-dialog
-      v-model="dialogVisible"
-      :title="isEdit ? '租户修改' : '租户新增'"
-      width="480px"
-      :before-close="handleCancel"
+        v-model="dialogVisible"
+        :title="isEdit ? '租户修改' : '租户新增'"
+        width="480px"
     >
       <el-form
-        v-if="dialogVisible"
-        ref="tenantFormRef"
-        :model="tenantForm"
-        :rules="rules"
-        label-width="80px"
+          v-if="dialogVisible"
+          ref="tenantFormRef"
+          :model="tenantForm"
+          :rules="rules"
+          label-width="80px"
       >
         <el-form-item label="租户代码" prop="tenantCode">
-          <el-input v-model="tenantForm.tenantCode" :disabled="isEdit" />
+          <el-input v-model="tenantForm.tenantCode" :disabled="isEdit"/>
         </el-form-item>
         <el-form-item label="租户名称" prop="tenantName">
-          <el-input v-model="tenantForm.tenantName" :disabled="isEdit" />
+          <el-input v-model="tenantForm.tenantName" :disabled="isEdit"/>
         </el-form-item>
         <el-form-item label="过期时间" prop="expireTime">
           <el-date-picker
-            value-format="YYYY-MM-DD hh:mm:ss"
-            style="width: 360px"
-            v-model="tenantForm.expireTime"
-            type="datetime"
+              value-format="YYYY-MM-DD hh:mm:ss"
+              style="width: 360px"
+              v-model="tenantForm.expireTime"
+              type="datetime"
           />
         </el-form-item>
         <el-form-item label="用户上限" prop="userLimit">
@@ -260,7 +259,7 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="handleCancel">取消</el-button>
+          <el-button @click="dialogVisible = false">取消</el-button>
           <el-button type="primary" @click="handleConfirm">确定</el-button>
         </span>
       </template>
@@ -399,6 +398,9 @@ export default {
 
     // 重置租户详情数据
     const resetTenantForm = () => {
+      for (let key in tenantForm) {
+        delete tenantForm[key]
+      }
       Object.assign(tenantForm, inittenantForm());
     };
 
@@ -437,6 +439,7 @@ export default {
 
     // 添加租户
     const handleAddTenant = () => {
+      resetTenantForm();
       isEdit.value = false;
       dialogVisible.value = true;
     };
@@ -473,16 +476,11 @@ export default {
       });
     };
 
-    // 取消
-    const handleCancel = () => {
-      resetTenantForm();
-      dialogVisible.value = false;
-    };
-
     // 确定
     const handleConfirm = () => {
       tenantFormRef.value.validate((valid) => {
         if (valid) {
+          console.log(tenantForm.tenantId)
           if (tenantForm.tenantId) {
             tenantUpdateOne(tenantForm).then(() => {
               dialogVisible.value = false;
@@ -502,7 +500,6 @@ export default {
               getList();
             });
           }
-          handleCancel();
         }
       });
     };
@@ -577,7 +574,6 @@ export default {
       handleSizeChange,
       handleEdit,
       handleDelete,
-      handleCancel,
       handleMenuCancel,
       handleConfirm,
       handleMenuConfirm,
