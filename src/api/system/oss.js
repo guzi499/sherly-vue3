@@ -81,11 +81,10 @@ export function ossAccessUrl(path) {
 }
 
 // 文件下载
-export function ossDownloadOne(params) {
+export function ossDownloadOne(path) {
   return request({
-    url: "oss/download_one",
     method: "get",
-    params,
+    url: `oss/download_one?path=${path}`,
     responseType: "blob",
   });
 }

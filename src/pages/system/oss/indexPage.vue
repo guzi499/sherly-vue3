@@ -133,7 +133,12 @@
 </template>
 <script>
 import { onMounted, reactive, ref } from "vue";
-import { ossAccessUrl, ossListPage, ossRemoveOne } from "@/api/system/oss";
+import {
+  ossAccessUrl,
+  ossListPage,
+  ossRemoveOne,
+  ossDownloadOne,
+} from "@/api/system/oss";
 import { ElLoading, ElMessage, ElNotification } from "element-plus";
 
 export default {
@@ -233,7 +238,7 @@ export default {
     };
 
     const handleDownload = async ({ path, fileName }) => {
-      const url = await ossAccessUrl(path);
+      const url = await ossDownloadOne(path);
       const name = fileName;
       const a_link = document.createElement("a");
       const loading = ElLoading.service({
@@ -322,7 +327,7 @@ export default {
       handleOnSuccess,
       handleCopy,
       handleSearch,
-      handleReset
+      handleReset,
     };
   },
 };
