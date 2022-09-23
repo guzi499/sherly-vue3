@@ -237,29 +237,8 @@ export default {
       getList();
     };
 
-    const handleDownload = async ({ path, fileName }) => {
-      const url = await ossDownloadOne(path);
-      const name = fileName;
-      const a_link = document.createElement("a");
-      const loading = ElLoading.service({
-        lock: true,
-        text: "Loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
-      fetch(url)
-        .then((res) => res.blob())
-        .then((blob) => {
-          a_link.href = URL.createObjectURL(blob);
-          a_link.download = name; //下载的文件的名字
-          document.body.appendChild(a_link);
-          a_link.click();
-          document.body.removeChild(a_link); // 下载完成移除元素
-          window.URL.revokeObjectURL(a_link.href); // 释放掉blob对象
-          loading.close();
-        })
-        .catch(() => {
-          loading.close();
-        });
+    const handleDownload = async ({ path }) => {
+      await ossDownloadOne(path);
     };
 
     // 上传成功
