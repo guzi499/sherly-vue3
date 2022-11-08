@@ -21,21 +21,21 @@
         :label-width="formLabelWidth"
         prop="configName"
       >
-        <el-input v-model="form.configName" />
+        <el-input v-model="form.configName" placeholder="请输入配置名称" />
       </el-form-item>
       <el-form-item
         label="描述："
         :label-width="formLabelWidth"
         prop="description"
       >
-        <el-input v-model="form.description" />
+        <el-input v-model="form.description" placeholder="描述" />
       </el-form-item>
       <el-form-item
         label="存储方式："
         :label-width="formLabelWidth"
         prop="type"
       >
-        <el-select v-model="form.type" size="default" clearable>
+        <el-select v-model="form.type" size="default" clearable placeholder="请选择存储方式">
           <el-option
             v-for="item in typeOptions"
             :key="item.value"
@@ -51,21 +51,21 @@
         :label-width="formLabelWidth"
         prop="config.endpoint"
       >
-        <el-input v-model="form.config.endpoint" />
+        <el-input v-model="form.config.endpoint" placeholder="请输入上传地址" />
       </el-form-item>
       <el-form-item
         label="存储桶："
         :label-width="formLabelWidth"
         prop="config.bucket"
       >
-        <el-input v-model="form.config.bucket" />
+        <el-input v-model="form.config.bucket" placeholder="请输入存储桶" />
       </el-form-item>
       <el-form-item
         label="访问域名："
         :label-width="formLabelWidth"
         prop="config.domainName"
       >
-        <el-input v-model="form.config.domainName" />
+        <el-input v-model="form.config.domainName" placeholder="请输入访问域名" />
       </el-form-item>
       <block v-if="form.type === 5">
         <el-form-item
@@ -73,21 +73,21 @@
           :label-width="formLabelWidth"
           prop="config.accessKey"
         >
-          <el-input v-model="form.config.accessKey" />
+          <el-input v-model="form.config.accessKey" placeholder="请输入访问Key" />
         </el-form-item>
         <el-form-item
           label="访问Secret："
           :label-width="formLabelWidth"
           prop="config.accessSecret"
         >
-          <el-input v-model="form.config.accessSecret" />
+          <el-input v-model="form.config.accessSecret" placeholder="请输入访问Secret" />
         </el-form-item>
         <el-form-item
           label="访问地区："
           :label-width="formLabelWidth"
           prop="config.region"
         >
-          <el-input v-model="form.config.region" />
+          <el-input v-model="form.config.region" placeholder="请输入访问地区" />
         </el-form-item>
       </block>
     </el-form>

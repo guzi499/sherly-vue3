@@ -11,16 +11,16 @@
       label-width="80px"
     >
       <el-form-item label="租户代码" prop="tenantCode">
-        <el-input v-model="queryForm.tenantCode" style="width: 215px" clearable />
+        <el-input v-model="queryForm.tenantCode" placeholder="请输入租户代码" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="租户名称" prop="tenantName">
-        <el-input v-model="queryForm.tenantName" style="width: 215px" clearable />
+        <el-input v-model="queryForm.tenantName" placeholder="请输入租户名称" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="联系人" prop="contactUser">
-        <el-input v-model="queryForm.contactUser" style="width: 215px" clearable />
+        <el-input v-model="queryForm.contactUser" placeholder="请输入联系人" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="联系电话" prop="contactPhone">
-        <el-input v-model="queryForm.contactPhone" style="width: 215px" clearable />
+        <el-input v-model="queryForm.contactPhone" placeholder="请输入联系电话" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
@@ -53,9 +53,12 @@
           <el-input
             oninput="value=value.replace(/[^\d]/g,'')"
             style="width: 100px"
-            v-model="queryForm.beginUserLimit"
-            placeholder="输入数字"
+            v-model.number="queryForm.beginUserLimit"
+            placeholder="0"
             clearable
+            :min="0"
+            :max="9999"
+            maxlength="4"
           />
         </el-form-item>
         <span style="width: 28px; text-align: center; user-select: none">
@@ -65,9 +68,12 @@
           <el-input
             oninput="value=value.replace(/[^\d]/g,'')"
             style="width: 100px"
-            v-model="queryForm.endUserLimit"
-            placeholder="输入数字"
+            v-model.number="queryForm.endUserLimit"
+            placeholder="9999"
             clearable
+            :min="0"
+            :max="9999"
+            maxlength="4"
           />
         </el-form-item>
       </el-form-item>
@@ -228,13 +234,14 @@
           label-width="80px"
       >
         <el-form-item label="租户代码" prop="tenantCode">
-          <el-input v-model="tenantForm.tenantCode" :disabled="isEdit"/>
+          <el-input v-model="tenantForm.tenantCode" placeholder="请输入租户代码" :disabled="isEdit"/>
         </el-form-item>
         <el-form-item label="租户名称" prop="tenantName">
-          <el-input v-model="tenantForm.tenantName" :disabled="isEdit"/>
+          <el-input v-model="tenantForm.tenantName" placeholder="请输入租户名称"  :disabled="isEdit"/>
         </el-form-item>
         <el-form-item label="过期时间" prop="expireTime">
           <el-date-picker
+              placeholder="请选择过期时间"
               value-format="YYYY-MM-DD hh:mm:ss"
               style="width: 360px"
               v-model="tenantForm.expireTime"
@@ -251,10 +258,10 @@
           />
         </el-form-item>
         <el-form-item label="联系人" prop="contactUser">
-          <el-input v-model="tenantForm.contactUser" :disabled="isEdit" />
+          <el-input v-model="tenantForm.contactUser" placeholder="请输入联系人" :disabled="isEdit" />
         </el-form-item>
         <el-form-item label="联系电话" prop="contactPhone">
-          <el-input v-model="tenantForm.contactPhone" :disabled="isEdit" />
+          <el-input v-model="tenantForm.contactPhone" placeholder="请输入联系电话" :disabled="isEdit" />
         </el-form-item>
       </el-form>
       <template #footer>

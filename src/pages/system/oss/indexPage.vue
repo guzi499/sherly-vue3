@@ -12,10 +12,10 @@
       label-width="80px"
     >
       <el-form-item label="文件名称" label-width="120px" prop="fileName">
-        <el-input v-model="queryForm.fileName" style="width: 215px" clearable />
+        <el-input v-model="queryForm.fileName" placeholder="请输入文件名称" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="相对路径" label-width="120px" prop="path">
-        <el-input v-model="queryForm.path" style="width: 215px" clearable />
+        <el-input v-model="queryForm.path" placeholder="请输入相对路径" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker

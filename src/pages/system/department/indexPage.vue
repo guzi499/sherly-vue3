@@ -3,7 +3,7 @@
     <!-- 菜单搜索框 -->
     <el-form :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="部门名称" prop="departmentName">
-        <el-input v-model="queryForm.departmentName" style="width: 215px" clearable/>
+        <el-input v-model="queryForm.departmentName" placeholder="请输入部门名称" style="width: 215px" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
@@ -88,14 +88,14 @@
           :label-width="formLabelWidth"
           prop="departmentName"
         >
-          <el-input v-model="form.departmentName"></el-input>
+          <el-input v-model="form.departmentName" placeholder="请输入部门名称"></el-input>
         </el-form-item>
         <el-form-item
           label="描述"
           :label-width="formLabelWidth"
           prop="description"
         >
-          <el-input v-model="form.description"></el-input>
+          <el-input v-model="form.description" placeholder="描述"></el-input>
         </el-form-item>
         <el-form-item label="排序" :label-width="formLabelWidth" prop="sort">
           <el-input-number
@@ -103,6 +103,7 @@
             :min="1"
             controls-position="right"
             size="large"
+            placeholder="仅限输入数字"
           />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth">

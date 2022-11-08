@@ -205,7 +205,7 @@
             prop="phone"
             v-if="type1 === '1'"
         >
-          <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
+          <el-input v-model="form.phone" placeholder="请输入手机号" :disabled="type1 === '2'"></el-input>
         </el-form-item>
         <el-form-item
           label="手机号"
@@ -213,14 +213,14 @@
           prop="phone1"
           v-if="type1 === '2'"
         >
-          <el-input v-model="form.phone" :disabled="type1 === '2'"></el-input>
+          <el-input v-model="form.phone" placeholder="请输入手机号" :disabled="type1 === '2'"></el-input>
         </el-form-item>
         <el-form-item
           label="姓名"
           :label-width="formLabelWidth"
           prop="realName"
         >
-          <el-input v-model="form.realName"></el-input>
+          <el-input v-model="form.realName" placeholder="请输入姓名"></el-input>
         </el-form-item>
         <el-form-item
           label="昵称"

@@ -3,7 +3,7 @@
     <!-- 搜索条件 -->
     <el-form ref="resetFormData" :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="登录账号">
-        <el-input style="width: 215px" v-model="queryForm.username" clearable/>
+        <el-input style="width: 215px" placeholder="请输入登陆账号" v-model="queryForm.username" clearable/>
       </el-form-item>
       <el-form-item label="	登录方式">
         <el-select v-model="queryForm.type" placeholder="请选择登录方式" clearable style="width: 215px">

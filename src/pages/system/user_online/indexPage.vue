@@ -12,7 +12,7 @@
       label-width="80px"
     >
       <el-form-item label="手机号" prop="phone">
-        <el-input style="width: 215px" v-model="queryForm.phone" />
+        <el-input style="width: 215px" v-model="queryForm.phone" placeholder="请输入手机号" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSearch" icon="Search"

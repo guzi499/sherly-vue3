@@ -80,13 +80,13 @@
     <el-dialog v-model="EditDialogVisible" title="信息编辑" width="25%" center>
       <el-form :model="formEdit" label-width="60px"  ref="formEditRef" :rules="formEditRules">
         <el-form-item label="手机号">
-          <el-input v-model="formEdit.phone" disabled />
+          <el-input v-model="formEdit.phone" placeholder="请输入手机号" disabled />
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="formEdit.nickname" />
+          <el-input v-model="formEdit.nickname" placeholder="请输入昵称" />
         </el-form-item>
         <el-form-item label="姓名">
-          <el-input v-model="formEdit.realName" disabled />
+          <el-input v-model="formEdit.realName" placeholder="请输入姓名" disabled />
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="formEdit.gender">
@@ -95,13 +95,13 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="formEdit.email" />
+          <el-input v-model="formEdit.email" placeholder="请输入邮箱" />
         </el-form-item>
         <el-form-item label="部门">
-          <el-input v-model="formEdit.departmentName" disabled />
+          <el-input v-model="formEdit.departmentName" placeholder="请输入部门" disabled />
         </el-form-item>
         <el-form-item label="角色">
-          <el-input v-model="formEdit.roleNames" disabled />
+          <el-input v-model="formEdit.roleNames" placeholder="请输入角色" disabled />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -123,15 +123,16 @@
           <el-input
             type="password"
             v-model="formPwd.oldPassword"
+            placeholder="请输入旧密码"
             style="text-align: right"
             show-password
           ></el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
-          <el-input v-model="formPwd.newPassword" show-password />
+          <el-input v-model="formPwd.newPassword" placeholder="请输入新密码" show-password />
         </el-form-item>
         <el-form-item label="确认密码" prop="rePassword">
-          <el-input v-model="formPwd.rePassword" show-password />
+          <el-input v-model="formPwd.rePassword" placeholder="请再次输入" show-password />
         </el-form-item>
       </el-form>
       <template #footer>

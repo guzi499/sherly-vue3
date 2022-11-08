@@ -3,7 +3,7 @@
     <!-- 菜单搜索框 -->
     <el-form :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="菜单名称">
-        <el-input v-model="queryForm.menuName" style="width: 215px" clearable/>
+        <el-input v-model="queryForm.menuName" placeholder="请输入菜单名称" style="width: 215px" clearable/>
       </el-form-item>
       <el-form-item>
         <el-button icon="Search" type="primary" @click="handleSearch">
@@ -119,7 +119,7 @@
           :label-width="formLabelWidth"
           prop="menuName"
         >
-          <el-input v-model="form.menuName"></el-input>
+          <el-input v-model="form.menuName" placeholder="请输入菜单名称"></el-input>
         </el-form-item>
         <el-form-item
           label="权限"
@@ -127,7 +127,7 @@
           prop="permission"
           v-if="form.menuType !== 1"
         >
-          <el-input v-model="form.permission"></el-input>
+          <el-input v-model="form.permission" placeholder="请输入权限code"></el-input>
         </el-form-item>
         <el-form-item
           label="菜单路径"
@@ -135,7 +135,7 @@
           prop="link"
           v-if="form.menuType == 2"
         >
-          <el-input v-model="form.link"></el-input>
+          <el-input v-model="form.link" placeholder="请输入菜单路径"></el-input>
         </el-form-item>
         <el-form-item
           label="图标"
@@ -190,6 +190,7 @@
             :min="1"
             controls-position="right"
             size="large"
+            placeholder="仅限输入数字"
           />
         </el-form-item>
 

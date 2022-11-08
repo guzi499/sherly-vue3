@@ -3,7 +3,7 @@
     <!-- 搜索条件 -->
     <el-form ref="resetFormData" :model="queryForm" :inline="true" label-width="80px">
       <el-form-item label="操作用户">
-        <el-input style="width: 215px" v-model="queryForm.realName" clearable/>
+        <el-input style="width: 215px" placeholder="请输入操作用户" v-model="queryForm.realName" clearable/>
       </el-form-item>
       <el-form-item label="耗时">
         <el-input oninput="value=value.replace(/[^\d]/g,'')" style="width: 100px" v-model="queryForm.beginDuration"
@@ -23,7 +23,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="请求uri">
-        <el-input style="width: 215px" v-model="queryForm.uri" clearable/>
+        <el-input style="width: 215px" v-model="queryForm.uri" placeholder="请输入请求uri" clearable/>
       </el-form-item>
       <el-form-item label="操作时间">
         <el-date-picker

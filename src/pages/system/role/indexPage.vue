@@ -12,7 +12,7 @@
       label-width="80px"
     >
       <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="queryForm.roleName" style="width: 215px" clearable />
+        <el-input v-model="queryForm.roleName" placeholder="请输入角色名称" style="width: 215px" clearable />
       </el-form-item>
       <el-form-item>
         <el-button icon="Search" type="primary" @click="handleSearch">
@@ -93,10 +93,10 @@
         label-width="80px"
       >
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="roleForm.roleName" />
+          <el-input v-model="roleForm.roleName" placeholder="请输入角色名称" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="roleForm.description" />
+          <el-input v-model="roleForm.description" placeholder="描述"/>
         </el-form-item>
         <el-form-item label="菜单权限" v-if="roleForm.roleId">
           <div>
