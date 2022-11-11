@@ -12,7 +12,7 @@
             :class="{
             'scrollbar-demo-item-active': isCurrentRouter(home),
           }"
-            @click="router.push('/home')"
+            @click="navigation(home)"
             @contextmenu.prevent="openMenu($event, home)"
         >
           {{ home.meta.title }}
@@ -108,13 +108,22 @@ export default {
     };
 
     const navigation = (item) => {
+      console.log(item)
       const menuNames = []
       router.push(item.fullPath);
-      item.matched.forEach(item => {
-        menuNames.push(item.meta.title)
-        store.dispatch('router/setMenuNames', menuNames)
-      })
+      if (item.path == "/home") {
+        tagView(menuNames, item)
+      } else {
+        item.matched.forEach(item => {
+          tagView(menuNames, item)
+        })
+      }
     };
+
+    const tagView = (menuNames, item) => {
+      menuNames.push(item.meta.title)
+      store.dispatch('router/setMenuNames', menuNames)
+    }
 
     //删除当前导航
     const handleCloseRoute = (item) => {
@@ -221,7 +230,6 @@ export default {
       top,
       routePathList,
       operateList,
-      router
     };
   },
 };
