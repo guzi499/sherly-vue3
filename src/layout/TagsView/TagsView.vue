@@ -12,7 +12,7 @@
             :class="{
             'scrollbar-demo-item-active': isCurrentRouter(home),
           }"
-            @click="navigation(home)"
+            @click="router.push('/home')"
             @contextmenu.prevent="openMenu($event, home)"
         >
           {{ home.meta.title }}
@@ -109,7 +109,6 @@ export default {
 
     const navigation = (item) => {
       const menuNames = []
-      console.log(item.matched)
       router.push(item.fullPath);
       item.matched.forEach(item => {
         menuNames.push(item.meta.title)
@@ -222,6 +221,7 @@ export default {
       top,
       routePathList,
       operateList,
+      router
     };
   },
 };
