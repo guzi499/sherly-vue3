@@ -178,6 +178,7 @@ export default {
 
     // 搜索
     const handleSearch = () => {
+      queryForm.current = 1;
       if (datetimerange.value.length > 0) {
         queryForm.beginTime = datetimerange.value[0];
         queryForm.endTime = datetimerange.value[1];

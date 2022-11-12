@@ -108,7 +108,6 @@ export default {
     };
 
     const navigation = (item) => {
-      console.log(item)
       const menuNames = []
       router.push(item.fullPath);
       if (item.path == "/home") {

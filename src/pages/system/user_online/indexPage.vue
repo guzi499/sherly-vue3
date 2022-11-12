@@ -151,6 +151,7 @@ export default {
 
     // 搜索
     const handleSearch = () => {
+      queryForm.current = 1;
       getList();
     };
 
