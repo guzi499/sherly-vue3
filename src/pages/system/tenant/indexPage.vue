@@ -96,14 +96,26 @@
       :pagination-size="queryForm.size"
     >
       <template #header>
-        <el-button
-          type="primary"
-          @click="handleAddTenant"
-          v-permission="['tenant:save_one']"
-          size="small"
-        >
-          新增
-        </el-button>
+        <el-row :gutter="5" type="flex" justify="end" style="margin-bottom: 12px">
+          <el-col :span="1.5">
+            <el-button
+                type="primary"
+                size="small"
+                @click="handleExport()"
+                v-permission="['user:list_export']"
+            >导出
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+                type="primary"
+                size="small"
+                @click="handleAddTenant"
+                v-permission="['tenant:save_one']"
+            >新增
+            </el-button>
+          </el-col>
+        </el-row>
       </template>
       <template #table>
         <el-table-column
@@ -276,12 +288,13 @@
 <script>
 import { reactive, ref, onMounted, watch, getCurrentInstance } from "vue";
 import {
+  tenantExport,
   tenantListPage,
   tenantRemoveOne,
   tenantUpdateOne,
   tenantSaveOne,
   tenantUpdateMenu,
-  tenantListMenuId,
+  tenantListMenuId
 } from "@/api/system/tenant";
 import { menuListTree } from "@/api/system/menu";
 import { ElMessage } from "element-plus";
@@ -384,6 +397,11 @@ export default {
       };
       fn(val);
       return ary;
+    };
+
+    // 租户导出
+    const handleExport = () => {
+      tenantExport();
     };
 
     // 获取菜单树
@@ -575,6 +593,7 @@ export default {
       _datetimerange,
       activeName,
       menuCheckedKey,
+      handleExport,
       handleSearch,
       handleReset,
       handleAddTenant,

@@ -13,6 +13,15 @@ export function tenantListPage(params) {
   });
 }
 
+// 租户导出
+export function tenantExport() {
+  return request({
+    url: "/tenant/list_export",
+    method: "get",
+    responseType: "blob",
+  });
+}
+
 // 新增租户
 export function tenantSaveOne(data) {
   return request({
