@@ -2,7 +2,7 @@
   <div class="sherly-page-wrapper">
     <div class="box-avatar">
       <div class="avatar-uploader" @click="open = true">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
+        <img v-if="imageUrl" :src="avatarImg" class="avatar"/>
         <el-icon v-else class="avatar-uploader-icon">
           <Plus/>
         </el-icon>
@@ -106,6 +106,7 @@ export default {
     const loading = ref(false)
     const router = useRouter();
     const cropper = ref(null)
+    const avatarImg = ref(JSON.parse(Cookies.get("userInfo")).avatar || "");
     const imageUrl = ref(JSON.parse(Cookies.get("userInfo")).avatar || "");
     const action = "/api/oss/upload_one";
     const imgName = ref('')
@@ -187,6 +188,7 @@ export default {
       return isPNG && isLt2M;
     }
     return {
+      avatarImg,
       imageUrl,
       action,
       header,
