@@ -1,23 +1,85 @@
 <template>
   <div class="sherly-page-wrapper">
     <div class="box-avatar">
-      <el-upload
-          v-loading="loading"
-          class="avatar-uploader"
-          :action="action"
-          :headers="header"
-          :data="data"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-      >
+      <div class="avatar-uploader" @click="open = true">
         <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
         <el-icon v-else class="avatar-uploader-icon">
           <Plus/>
         </el-icon>
-      </el-upload>
-      <!--    {{ avatar }}-->
+      </div>
     </div>
+    <!--    头像裁切弹窗-->
+    <el-dialog :title="title" v-model="open" width="800px" append-to-body @opened="visible = true">
+      <el-row>
+        <el-col :xs="24" :md="12" :style="{height: '350px'}">
+          <div style="width: 100%; height: 100%">
+            <vue-cropper
+                ref="cropper"
+                :img="options.img"
+                :autoCrop="options.autoCrop"
+                :autoCropWidth="options.autoCropWidth"
+                :autoCropHeight="options.autoCropHeight"
+                :fixedBox="options.fixedBox"
+                @realTime="realTime"
+                v-if="visible"
+            >
+            </vue-cropper>
+          </div>
+        </el-col>
+        <el-col :xs="24" :md="12" :style="{height: '350px', overflow: hidden}">
+          <div :style="previewStyle">
+            <div :style="previews.div">
+              <img :src="previews.url" :style="previews.img">
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <br/>
+      <el-row>
+        <el-col :lg="2" :md="2">
+          <el-upload action="#" :http-request="requestUpload" :show-file-list="false"
+                     :before-upload="beforeAvatarUpload">
+            <el-button size="small">
+              选择
+              <el-icon style="vertical-align: middle">
+                <UploadFilled />
+              </el-icon>
+            </el-button>
+          </el-upload>
+        </el-col>
+        <el-col :lg="{span: 1, offset: 2}" :md="2">
+          <el-button size="small" @click="$refs.cropper.changeScale(1)">
+            <el-icon style="vertical-align: middle">
+              <Plus/>
+            </el-icon>
+          </el-button>
+        </el-col>
+        <el-col :lg="{span: 1, offset: 1}" :md="2">
+          <el-button size="small" @click="$refs.cropper.changeScale(-1)">
+            <el-icon style="vertical-align: middle">
+              <Minus/>
+            </el-icon>
+          </el-button>
+        </el-col>
+        <el-col :lg="{span: 1, offset: 1}" :md="2">
+          <el-button size="small" @click="$refs.cropper.rotateLeft()">
+            <el-icon style="vertical-align: middle">
+              <RefreshLeft/>
+            </el-icon>
+          </el-button>
+        </el-col>
+        <el-col :lg="{span: 1, offset: 1}" :md="2">
+          <el-button size="small" @click="$refs.cropper.rotateRight()">
+            <el-icon style="vertical-align: middle">
+              <RefreshRight/>
+            </el-icon>
+          </el-button>
+        </el-col>
+        <el-col :lg="{span: 2, offset: 6}" :md="2">
+          <el-button type="primary" size="small" @click="handleAvatarSuccess()">提 交</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -27,9 +89,14 @@ import {ElMessage} from 'element-plus'
 import {userSelfUpdateAvatar} from '@/api/system/user_self.js'
 import Cookies from "js-cookie";
 import {useRouter} from "vue-router";
+import 'vue-cropper/dist/index.css'
+import { VueCropper }  from "vue-cropper";
 
 export default {
   name: "AvatarPic",
+  components: {
+    VueCropper
+  },
   props: {
     avatar: {
       type: String
@@ -38,32 +105,69 @@ export default {
   setup() {
     const loading = ref(false)
     const router = useRouter();
+    const cropper = ref(null)
     const imageUrl = ref(JSON.parse(Cookies.get("userInfo")).avatar || "");
     const action = "/api/oss/upload_one";
+    const imgName = ref('')
     const header = reactive({
       token: localStorage.getItem("token"),
       path: "",
     });
     const data = reactive({path: ''})
+    const open = ref(false)
+    const visible = ref(false)
+
+    const options = reactive({
+      img: imageUrl, //裁剪图片的地址
+      autoCrop: true, // 是否默认生成截图框
+      autoCropWidth: 200, // 默认生成截图框宽度
+      autoCropHeight: 200, // 默认生成截图框高度
+      fixedBox: true // 固定截图框大小 不允许改变
+    })
+
+    const previews = ref({})
+
+    // 覆盖默认的上传行为
+    const requestUpload = () => {
+    }
+
+    const previewStyle = ref({})
+    // 实时预览
+    const realTime = (data) => {
+      previewStyle.value = {
+        width: data.w + "px",
+        height: data.h + "px",
+        overflow: "hidden",
+        margin: "0 auto",
+        zoom: 1
+      }
+      previews.value = data;
+    }
+
 
     // 头像上传成功
-    const handleAvatarSuccess = (res, file) => {
-      imageUrl.value = URL.createObjectURL(file.raw);
+    const handleAvatarSuccess = () => {
       let fileImg = new FormData()
-      fileImg.append('file', file.raw)
-      userSelfUpdateAvatar(fileImg).then(() => {
-        loading.value = false
-        ElMessage.success('头像上传成功!')
-        router.go(0)
-      }).catch(() => {
-        ElMessage.info('头像上传超时!')
-      }).finally(() => {
-        loading.value = false
+      cropper.value.getCropBlob(data => {
+        let file = new File([data], imgName.value)
+        fileImg.append('file', file)
+        console.log(fileImg)
+        userSelfUpdateAvatar(fileImg).then(() => {
+          loading.value = false
+          ElMessage.success('头像上传成功!')
+          imageUrl.value = options.img
+          router.go(0)
+        }).catch(() => {
+          return false
+        }).finally(() => {
+          loading.value = false
+        })
       })
     }
 
     // 上传头像前
     const beforeAvatarUpload = (file) => {
+      imgName.value = file.name
       loading.value = true
       const isPNG = file.type === 'image/png' || file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -75,17 +179,29 @@ export default {
         ElMessage.error('上传头像图片大小不能超过 2MB!')
         loading.value = false
       }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        options.img = reader.result;
+      };
       return isPNG && isLt2M;
     }
-
     return {
       imageUrl,
       action,
       header,
       data,
       loading,
+      visible,
+      open,
+      options,
+      previews,
+      previewStyle,
+      cropper,
       handleAvatarSuccess,
-      beforeAvatarUpload
+      beforeAvatarUpload,
+      requestUpload,
+      realTime
     }
   }
 }
@@ -95,8 +211,14 @@ export default {
 .box-avatar {
   text-align: center;
 }
+
 .avatar-uploader {
-  margin-bottom: 24px;
+  width: 178px;
+  height: 178px;
+  margin: 0 auto 24px;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .avatar-uploader .avatar {
@@ -126,5 +248,10 @@ export default {
   width: 178px;
   height: 178px;
   text-align: center;
+}
+
+.cropper {
+  width: 200px;
+  height: 200px;
 }
 </style>

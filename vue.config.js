@@ -19,7 +19,6 @@ module.exports = defineConfig({
   devServer: {
     proxy: "http://101.34.169.185",
     // proxy: "http://192.168.16.215:8888",
-    // proxy: "http://127.0.0.1:8888",
   },
   configureWebpack: {
     resolve: {
