@@ -1,7 +1,10 @@
 <template>
   <div class="sherly-page-wrapper">
     <div class="box-avatar">
-      <div class="avatar-uploader" @click="open = true">
+      <div class="avatar-uploader" @click="() => {
+        visible = true
+        open = true
+      }">
         <img v-if="imageUrl" :src="avatarImg" class="avatar"/>
         <el-icon v-else class="avatar-uploader-icon">
           <Plus/>
@@ -9,76 +12,95 @@
       </div>
     </div>
     <!--    头像裁切弹窗-->
-    <el-dialog :title="title" v-model="open" width="800px" append-to-body @opened="visible = true">
-      <el-row>
-        <el-col :xs="24" :md="12" :style="{height: '350px'}">
-          <div style="width: 100%; height: 100%">
-            <vue-cropper
-                ref="cropper"
-                :img="options.img"
-                :autoCrop="options.autoCrop"
-                :autoCropWidth="options.autoCropWidth"
-                :autoCropHeight="options.autoCropHeight"
-                :fixedBox="options.fixedBox"
-                @realTime="realTime"
-                v-if="visible"
-            >
-            </vue-cropper>
+    <el-dialog title="头像上传" v-model="open" center append-to-body>
+      <div v-if="visible">
+        <el-upload
+            class="upload-demo"
+            drag
+            action="#"
+            :before-upload="beforeAvatarUpload"
+        >
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">
+            拖动图片到此处或 <em>点击上传</em>
           </div>
-        </el-col>
-        <el-col :xs="24" :md="12" :style="{height: '350px', overflow: hidden}">
-          <div :style="previewStyle">
-            <div :style="previews.div">
-              <img :src="previews.url" :style="previews.img">
+          <template #tip>
+            <div class="el-upload__tip">
+              上传头像图片只能是 PNG / jpg 格式、图片不大于2Mb！
             </div>
-          </div>
-        </el-col>
-      </el-row>
-      <br/>
-      <el-row>
-        <el-col :lg="2" :md="2">
-          <el-upload action="#" :http-request="requestUpload" :show-file-list="false"
-                     :before-upload="beforeAvatarUpload">
-            <el-button size="small">
-              选择
+          </template>
+        </el-upload>
+      </div>
+      <div v-else>
+        <el-row>
+          <el-col :xs="24" :md="12" :style="{height: '350px'}">
+            <div style="width: 100%; height: 100%">
+              <vue-cropper
+                  ref="cropper"
+                  :img="options.img"
+                  :autoCrop="options.autoCrop"
+                  :autoCropWidth="options.autoCropWidth"
+                  :autoCropHeight="options.autoCropHeight"
+                  :fixedBox="options.fixedBox"
+                  @realTime="realTime"
+              >
+              </vue-cropper>
+            </div>
+          </el-col>
+          <el-col :xs="24" :md="12" :style="{height: '350px', overflow: hidden}">
+            <div :style="previewStyle">
+              <div :style="previews.div">
+                <img :src="previews.url" :style="previews.img">
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+        <br/>
+        <el-row>
+          <el-col :lg="2" :md="2">
+            <el-upload action="#" :http-request="requestUpload" :show-file-list="false"
+                       :before-upload="beforeAvatarUpload">
+              <el-button size="small">
+                选择
+                <el-icon style="vertical-align: middle">
+                  <UploadFilled />
+                </el-icon>
+              </el-button>
+            </el-upload>
+          </el-col>
+          <el-col :lg="{span: 1, offset: 2}" :md="2">
+            <el-button size="small" @click="$refs.cropper.changeScale(1)">
               <el-icon style="vertical-align: middle">
-                <UploadFilled />
+                <Plus/>
               </el-icon>
             </el-button>
-          </el-upload>
-        </el-col>
-        <el-col :lg="{span: 1, offset: 2}" :md="2">
-          <el-button size="small" @click="$refs.cropper.changeScale(1)">
-            <el-icon style="vertical-align: middle">
-              <Plus/>
-            </el-icon>
-          </el-button>
-        </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :md="2">
-          <el-button size="small" @click="$refs.cropper.changeScale(-1)">
-            <el-icon style="vertical-align: middle">
-              <Minus/>
-            </el-icon>
-          </el-button>
-        </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :md="2">
-          <el-button size="small" @click="$refs.cropper.rotateLeft()">
-            <el-icon style="vertical-align: middle">
-              <RefreshLeft/>
-            </el-icon>
-          </el-button>
-        </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :md="2">
-          <el-button size="small" @click="$refs.cropper.rotateRight()">
-            <el-icon style="vertical-align: middle">
-              <RefreshRight/>
-            </el-icon>
-          </el-button>
-        </el-col>
-        <el-col :lg="{span: 2, offset: 6}" :md="2">
-          <el-button type="primary" size="small" @click="handleAvatarSuccess()">提 交</el-button>
-        </el-col>
-      </el-row>
+          </el-col>
+          <el-col :lg="{span: 1, offset: 1}" :md="2">
+            <el-button size="small" @click="$refs.cropper.changeScale(-1)">
+              <el-icon style="vertical-align: middle">
+                <Minus/>
+              </el-icon>
+            </el-button>
+          </el-col>
+          <el-col :lg="{span: 1, offset: 1}" :md="2">
+            <el-button size="small" @click="$refs.cropper.rotateLeft()">
+              <el-icon style="vertical-align: middle">
+                <RefreshLeft/>
+              </el-icon>
+            </el-button>
+          </el-col>
+          <el-col :lg="{span: 1, offset: 1}" :md="2">
+            <el-button size="small" @click="$refs.cropper.rotateRight()">
+              <el-icon style="vertical-align: middle">
+                <RefreshRight/>
+              </el-icon>
+            </el-button>
+          </el-col>
+          <el-col :lg="{span: 2, offset: 6}" :md="2">
+            <el-button type="primary" size="small" @click="handleAvatarSuccess()">提 交</el-button>
+          </el-col>
+        </el-row>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -140,6 +162,8 @@ export default {
         height: data.h + "px",
         overflow: "hidden",
         margin: "0 auto",
+        border: '1px dashed pink',
+        borderRadius: '10px',
         zoom: 1
       }
       previews.value = data;
@@ -168,6 +192,7 @@ export default {
 
     // 上传头像前
     const beforeAvatarUpload = (file) => {
+      visible.value = false
       imgName.value = file.name
       loading.value = true
       const isPNG = file.type === 'image/png' || file.type === 'image/jpeg';
@@ -209,7 +234,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .box-avatar {
   text-align: center;
 }
@@ -218,9 +243,15 @@ export default {
   width: 178px;
   height: 178px;
   margin: 0 auto 24px;
+  border: 1px dashed pink;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
+
+  &:hover {
+    transition: 0.3s;
+    opacity: 0.7;
+  }
 }
 
 .avatar-uploader .avatar {
@@ -255,5 +286,11 @@ export default {
 .cropper {
   width: 200px;
   height: 200px;
+}
+
+.upload-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

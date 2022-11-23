@@ -137,7 +137,7 @@ import {
   ossAccessUrl,
   ossListPage,
   ossRemoveOne,
-  // ossDownloadOne,
+  ossDownloadOne,
 } from "@/api/system/oss";
 import { ElLoading, ElMessage, ElNotification } from "element-plus";
 
@@ -238,26 +238,8 @@ export default {
       getList();
     };
 
-    const handleDownload = async ({path,fileName}) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', `oss/download_one?path=${path}`);
-      xhr.responseType = 'blob';
-      xhr.onload = function (res) {
-        console.log(res)
-        if (this.status === 200) {
-          console.log(this)
-          const blob = new Blob([this.response]);
-          const blobUrl = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          const index = blobUrl.indexOf(':')
-          a.href = blobUrl.slice(index + 1) ;
-          a.download = fileName;
-          a.click();
-          window.URL.revokeObjectURL(blobUrl);
-        }
-      };
-      xhr.send();
-      // await ossDownloadOne(path);
+    const handleDownload = async ({path}) => {
+      await ossDownloadOne(path);
     };
 
     // 上传成功
