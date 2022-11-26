@@ -64,14 +64,12 @@
               <el-button
                 class="login-button"
                 @click="handleChangeTenant()"
-                :disabled="!(loginForm.phone && loginForm.password)"
               >
                 切 换 租 户
               </el-button>
               <el-button
                 class="login-button"
                 @click="handleLogin()"
-                :disabled="!(loginForm.phone && loginForm.password)"
               >
                 登 录
               </el-button>
@@ -130,6 +128,9 @@ export default {
     });
 
     const handleLogin = () => {
+      if(!(loginForm.phone && loginForm.password)) {
+        ElMessage.error('用户名/密码不能为空!')
+      }
       const data = loginForm;
       if (tenantCode.value) {
         data.tenantCode = tenantCode.value;
@@ -167,6 +168,9 @@ export default {
 
     // 切换租户
     const handleChangeTenant = async () => {
+      if(!(loginForm.phone && loginForm.password)) {
+        ElMessage.error('用户名/密码不能为空!')
+      }
       const loading = ElLoading.service({
         lock: true,
         text: "Loading",
