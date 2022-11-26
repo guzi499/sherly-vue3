@@ -164,7 +164,6 @@ export default {
         margin: "0 auto",
         border: '1px dashed pink',
         borderRadius: '10px',
-        backgroundColor: '#000',
         zoom: 1
       }
       previews.value = data;

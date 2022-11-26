@@ -238,8 +238,27 @@ export default {
       getList();
     };
 
-    const handleDownload = async ({path}) => {
-      await ossDownloadOne(path);
+    const handleDownload = async (row) => {
+      const res = await ossDownloadOne(row.path)
+      console.log(res)
+      let createFileUrl = window.URL.createObjectURL(res);
+      let a = document.createElement("a");
+      a.setAttribute("href", createFileUrl)
+      a.setAttribute("download", row.fileName)
+      a.click()
+      window.URL.revokeObjectURL(createFileUrl)
+      // ossDownloadOne(row.path).then((res) => {
+      //   // 将blob流 转为 文件地址
+      //   let createFileUrl = window.URL.createObjectURL(res);
+      //   // 通过创建a标签下载文件
+      //   let a = document.createElement("a");
+      //   a.setAttribute("href",createFileUrl);
+      //   // 文件名可以自定义后缀(是否带文件类型，例如:xxx.txt 或者 xxx)
+      //   a.setAttribute("download",row.fileName);
+      //   a.click();
+      //   // 释放创建的文件地址对象
+      //   window.URL.revokeObjectURL(createFileUrl);
+      // })
     };
 
     // 上传成功
