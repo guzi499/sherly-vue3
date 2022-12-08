@@ -8216,9 +8216,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vue-cropper@1.0.5:
+vue-cropper@^1.0.5:
   version "1.0.5"
-  resolved "https://registry.npmmirror.com/vue-cropper/-/vue-cropper-1.0.5.tgz#eddc55a2165d721fa795c14d5d38117315904650"
+  resolved "https://registry.yarnpkg.com/vue-cropper/-/vue-cropper-1.0.5.tgz#eddc55a2165d721fa795c14d5d38117315904650"
   integrity sha512-D4XXdqWmMWRLOIV9LIh7/mkH6OBOMQDFbRjwntkxmAtxOtwpC9U5ZZ6lSXw5F5cbd4g8znDjk6MuCwIL+fZSrA==
 
 vue-demi@*:
