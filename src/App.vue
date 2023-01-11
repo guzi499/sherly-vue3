@@ -1,27 +1,26 @@
-<!--
- * @author: 李浩宇
- * @date: 2022-03-28
--->
-<template>
-  <el-config-provider :locale="locale">
-    <router-view> </router-view>
-  </el-config-provider>
-</template>
-
-<script>
-import { onMounted } from "vue";
-import store from "@/store";
-import zhCn from "element-plus/lib/locale/lang/zh-cn";
-
-export default {
-  name: "App",
-  setup() {
-    onMounted(() => {
-      store.dispatch("user/setApi", process.env.VUE_APP_URL);
-    });
-    return { locale: zhCn };
-  },
-};
+<script setup lang="ts">
+import HelloWorld from './components/index.vue'
 </script>
 
-<style></style>
+<template>
+  <div>
+    <a href="https://vitejs.dev" target="_blank">
+      <img src="/sherly.svg" class="logo" alt="Vite logo" />
+    </a>
+  </div>
+  <HelloWorld msg="Sherl后台管理系统" />
+</template>
+
+<style scoped>
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+</style>
