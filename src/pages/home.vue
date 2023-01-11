@@ -3,20 +3,25 @@
 
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
+    <button type="button" @click="store.count++">store.count is {{ store.count }}</button>
+    <button type="button" @click="store.$reset()">重置pinia</button>
+    <p>open
       <a href="https://gitee.com/guzi499/sherly-vue3" target="_blank"
-      >open sherl-Vue3</a
+      >sherl-Vue3</a
       >
       git
-      <code>components/index.vue</code> to
+      <code>index.vue</code> to
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
 import {ref} from 'vue'
+import {useStore} from "@/store";
 
 defineProps<{ msg: string }>()
+
+const store = useStore()
 
 const count = ref(0)
 </script>
