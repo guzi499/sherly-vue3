@@ -1,0 +1,50 @@
+.sherly-page {
+  height: 100%;
+  width: 100%;
+}
+
+.sherly-wrapper {
+  height: 100%;
+  width: 100%;
+  min-width: 1200px;
+  background: #f0f2f5;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+  &-Sidebar {
+    width: 200px;
+  }
+  &-content {
+    width: calc(100vw - 200px);
+    min-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+}
+.sherly-page-wrapper {
+  padding: 12px;
+  overflow: auto;
+}
+
+.sherly-table-box {
+  padding: 0 16px;
+}
+
+.sherly-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 20px;
+}
+
+.sherly-pagination-box {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 12px;
+}
+
+.sherly-table-header {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 12px 0;
+}
