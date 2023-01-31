@@ -14,5 +14,11 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()]
     })
-  ]
+  ],
+  resolve: {
+    // 别名设置
+    alias: {
+      '@': resolve(__dirname, './src')
+    }
+  }
 })
