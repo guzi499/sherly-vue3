@@ -12,6 +12,10 @@ import HelloWorld from './components/HelloWorld.vue'
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
+  <el-button><router-link to="/">go home</router-link></el-button>
+  <el-button><router-link to="/about">go about</router-link></el-button>
+  <br>
+  <router-view></router-view>
 </template>
 
 <style scoped>
