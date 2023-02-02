@@ -1,16 +1,22 @@
 .wave {
   position: fixed;
+  width: 100vw;
   height: 100%;
   left: 0;
   bottom: 0;
   z-index: -1;
 }
 
+.small_wave {
+  width: 590px;
+  height: 380px;
+}
+
 .login-container {
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   grid-gap: 18rem;
   padding: 0 2rem;
 }
@@ -29,36 +35,54 @@
   display: flex;
   align-items: center;
   text-align: center;
+  margin: 0 auto;
 }
 
 .login-form {
-  width: 360px;
-}
-
-.avatar {
-  width: 350px;
-  height: 80px;
+  width: 900px;
+  height: 380px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .login-form h2 {
-  text-transform: uppercase;
-  margin: 15px 0;
-  color: #999;
-  font: bold 200% Consolas, Monaco, monospace;
+  margin-bottom: 20px;
+}
+
+.login-form-left {
+  width: 100%;
+  margin: 0 15px;
 }
 
 @media screen and (max-width: 1180px) {
+  .wave {
+    display: none;
+  }
+
+  .small_wave {
+    display: none
+  }
+
   .login-container {
     grid-gap: 9rem;
   }
 
   .login-form {
     width: 290px;
+    border-radius: 0;
+    background-color: transparent;
   }
 
   .login-form h2 {
     font-size: 2.4rem;
     margin: 8px 0;
+  }
+
+  .login-form-left {
+    margin: 0;
   }
 
   .img img {
@@ -72,8 +96,8 @@
 }
 
 @media screen and (max-width: 968px) {
-  .wave {
-    display: none;
+  .small_wave {
+    display: none
   }
 
   .img {

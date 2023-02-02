@@ -8,15 +8,16 @@ import { useNav } from "@/layout/hooks/useNav";
 import type { FormInstance } from "element-plus";
 import { useLayout } from "@/layout/hooks/useLayout";
 import { useUserStoreHook } from "@/store/modules/user";
-import { bg, avatar, illustration } from "./utils/static";
+import { bg } from "./utils/static";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
+import Home from "@iconify-icons/ri/home-2-fill";
 
 defineOptions({
   name: "Login"
@@ -36,6 +37,11 @@ const ruleForm = reactive({
   username: "admin",
   password: "admin123"
 });
+
+// 切换租户
+const onSwitch = () => {
+  console.log("切换租户");
+};
 
 const onLogin = async (formEl: FormInstance | undefined) => {
   loading.value = true;
@@ -78,7 +84,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="select-none">
-    <img :src="bg" class="wave" />
+    <img :src="bg" class="wave" alt="" />
     <div class="flex-c absolute right-5 top-3">
       <!-- 主题 -->
       <el-switch
@@ -90,66 +96,78 @@ onBeforeUnmount(() => {
       />
     </div>
     <div class="login-container">
-      <div class="img">
-        <component :is="toRaw(illustration)" />
-      </div>
       <div class="login-box">
         <div class="login-form">
-          <avatar class="avatar" />
-          <Motion>
-            <h2 class="outline-none">{{ title }}</h2>
-          </Motion>
-
-          <el-form
-            ref="ruleFormRef"
-            :model="ruleForm"
-            :rules="loginRules"
-            size="large"
-          >
-            <Motion :delay="100">
-              <el-form-item
-                :rules="[
-                  {
-                    required: true,
-                    message: '请输入账号',
-                    trigger: 'blur'
-                  }
-                ]"
-                prop="username"
-              >
-                <el-input
-                  clearable
-                  v-model="ruleForm.username"
-                  placeholder="账号"
-                  :prefix-icon="useRenderIcon(User)"
-                />
-              </el-form-item>
+          <img :src="bg" class="small_wave" alt="" />
+          <div class="login-form-left">
+            <Motion>
+              <h2 class="outline-none">{{ title }}</h2>
             </Motion>
+            <el-form
+              ref="ruleFormRef"
+              :model="ruleForm"
+              :rules="loginRules"
+              size="large"
+            >
+              <Motion :delay="100">
+                <el-form-item prop="username">
+                  <el-input
+                    v-model="ruleForm.username"
+                    placeholder="选择默认租户"
+                    :prefix-icon="useRenderIcon(Home)"
+                  />
+                </el-form-item>
+                <el-form-item
+                  :rules="[
+                    {
+                      required: true,
+                      message: '请输入账号',
+                      trigger: 'blur'
+                    }
+                  ]"
+                  prop="username"
+                >
+                  <el-input
+                    clearable
+                    v-model="ruleForm.username"
+                    placeholder="账号"
+                    :prefix-icon="useRenderIcon(User)"
+                  />
+                </el-form-item>
+              </Motion>
 
-            <Motion :delay="150">
-              <el-form-item prop="password">
-                <el-input
-                  clearable
-                  show-password
-                  v-model="ruleForm.password"
-                  placeholder="密码"
-                  :prefix-icon="useRenderIcon(Lock)"
-                />
-              </el-form-item>
-            </Motion>
+              <Motion :delay="150">
+                <el-form-item prop="password">
+                  <el-input
+                    clearable
+                    show-password
+                    v-model="ruleForm.password"
+                    placeholder="密码"
+                    :prefix-icon="useRenderIcon(Lock)"
+                  />
+                </el-form-item>
+              </Motion>
 
-            <Motion :delay="250">
-              <el-button
-                class="w-full mt-4"
-                size="default"
-                type="primary"
-                :loading="loading"
-                @click="onLogin(ruleFormRef)"
-              >
-                登录
-              </el-button>
-            </Motion>
-          </el-form>
+              <Motion :delay="250" style="display: flex">
+                <el-button
+                  class="w-full mt-4"
+                  size="default"
+                  :loading="loading"
+                  @click="onSwitch"
+                >
+                  切换租户
+                </el-button>
+                <el-button
+                  class="w-full mt-4"
+                  size="default"
+                  :loading="loading"
+                  @click="onLogin(ruleFormRef)"
+                >
+                  登录
+                </el-button>
+              </Motion>
+            </el-form>
+          </div>
         </div>
       </div>
     </div>

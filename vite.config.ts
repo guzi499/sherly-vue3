@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 import { resolve } from "path";
 import pkg from "./package.json";
 import { warpperEnv } from "./build";
-import { getPluginsList } from "./build/plugins";
-import { include, exclude } from "./build/optimize";
+import { getPluginsList } from "@build/plugins";
+import { include, exclude } from "@build/optimize";
 import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
 
 /** 当前执行node命令时文件夹的地址（工作目录） */
@@ -37,6 +37,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
     },
     // 服务端渲染
     server: {
+      open: true,
       // 是否开启 https
       https: false,
       // 端口号
