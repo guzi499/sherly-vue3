@@ -85,16 +85,16 @@ onBeforeUnmount(() => {
 <template>
   <div class="select-none">
     <img :src="bg" class="wave" alt="" />
-    <div class="flex-c absolute right-5 top-3">
-      <!-- 主题 -->
-      <el-switch
-        v-model="dataTheme"
-        inline-prompt
-        :active-icon="dayIcon"
-        :inactive-icon="darkIcon"
-        @change="dataThemeChange"
-      />
-    </div>
+<!--    <div class="flex-c absolute right-5 top-3">-->
+<!--      &lt;!&ndash; 主题 &ndash;&gt;-->
+<!--      <el-switch-->
+<!--        v-model="dataTheme"-->
+<!--        inline-prompt-->
+<!--        :active-icon="dayIcon"-->
+<!--        :inactive-icon="darkIcon"-->
+<!--        @change="dataThemeChange"-->
+<!--      />-->
+<!--    </div>-->
     <div class="login-container">
       <div class="login-box">
         <div class="login-form">
