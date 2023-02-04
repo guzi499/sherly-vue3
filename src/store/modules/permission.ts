@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { store } from "@/store";
 import { cacheType } from "./types";
 import { constantMenus } from "@/router";
-import { ascending, filterTree, filterNoPermissionTree } from "@/router/utils";
 
 export const usePermissionStore = defineStore({
   id: "pure-permission",
@@ -17,9 +16,7 @@ export const usePermissionStore = defineStore({
   actions: {
     /** 组装整体路由生成的菜单 */
     handleWholeMenus(routes: any[]) {
-      this.wholeMenus = filterNoPermissionTree(
-        filterTree(ascending(this.constantMenus.concat(routes)))
-      );
+      this.constantMenus.concat(routes);
     },
     cacheOperate({ mode, name }: cacheType) {
       switch (mode) {
