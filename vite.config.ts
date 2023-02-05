@@ -44,14 +44,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       port: VITE_PORT,
       host: "0.0.0.0",
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
-      proxy: {
-        "^/api/.*": {
-          // 这里填写后端地址
-          target: "http://127.0.0.1:8888",
-          changeOrigin: true
-          // rewrite: path => path.replace(/^\/api/, "")
-        }
-      }
+      proxy: {}
     },
     plugins: getPluginsList(command, VITE_CDN, VITE_COMPRESSION),
     // https://cn.vitejs.dev/config/dep-optimization-options.html#dep-optimization-options

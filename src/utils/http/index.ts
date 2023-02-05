@@ -11,8 +11,8 @@ import {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { getToken } from "@/utils/auth";
-import { message } from "@/utils/message";
+import { getToken, formatToken } from "@/utils/auth";
+import { useUserStoreHook } from "@/store/modules/user";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -35,11 +35,27 @@ class PureHttp {
     this.httpInterceptorsResponse();
   }
 
+  /** token过期后，暂存待执行的请求 */
+  private static requests = [];
+
+  /** 防止重复刷新token */
+  private static isRefreshing = false;
+
   /** 初始化配置对象 */
   private static initConfig: PureHttpRequestConfig = {};
 
   /** 保存当前Axios实例对象 */
   private static axiosInstance: AxiosInstance = Axios.create(defaultConfig);
+
+  /** 重连原始请求 */
+  private static retryOriginalRequest(config: PureHttpRequestConfig) {
+    return new Promise(resolve => {
+      PureHttp.requests.push((token: string) => {
+        config.headers["Authorization"] = formatToken(token);
+        resolve(config);
+      });
+    });
+  }
 
   /** 请求拦截 */
   private httpInterceptorsRequest(): void {
@@ -61,10 +77,33 @@ class PureHttp {
         return whiteList.some(v => config.url.indexOf(v) > -1)
           ? config
           : new Promise(resolve => {
-              const token = getToken();
-              if (token) {
-                config.headers["token"] = token;
-                resolve(config);
+              const data = getToken();
+              if (data) {
+                const now = new Date().getTime();
+                const expired = parseInt(data.expires) - now <= 0;
+                if (expired) {
+                  if (!PureHttp.isRefreshing) {
+                    PureHttp.isRefreshing = true;
+                    // token过期刷新
+                    useUserStoreHook()
+                      .handRefreshToken({ refreshToken: data.refreshToken })
+                      .then(res => {
+                        const token = res.data.accessToken;
+                        config.headers["Authorization"] = formatToken(token);
+                        PureHttp.requests.forEach(cb => cb(token));
+                        PureHttp.requests = [];
+                      })
+                      .finally(() => {
+                        PureHttp.isRefreshing = false;
+                      });
+                  }
+                  resolve(PureHttp.retryOriginalRequest(config));
+                } else {
+                  config.headers["Authorization"] = formatToken(
+                    data.accessToken
+                  );
+                  resolve(config);
+                }
               } else {
                 resolve(config);
               }
@@ -93,11 +132,7 @@ class PureHttp {
           PureHttp.initConfig.beforeResponseCallback(response);
           return response.data;
         }
-        // 全局异常处理
-        if (response.data.code !== "000") {
-          message(response.data.message, { type: "error" });
-        }
-        return response.data.data;
+        return response.data;
       },
       (error: PureHttpError) => {
         const $error = error;

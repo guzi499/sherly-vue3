@@ -18,7 +18,6 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
 import Home from "@iconify-icons/ri/home-2-fill";
-import { LoginDTO } from "@/api/login";
 
 defineOptions({
   name: "Login"
@@ -34,10 +33,9 @@ const { dataTheme, dataThemeChange } = useDataThemeChange();
 dataThemeChange();
 const { title } = useNav();
 
-const ruleForm: LoginDTO = reactive({
-  phone: "",
-  password: "",
-  tenant: ""
+const ruleForm = reactive({
+  username: "admin",
+  password: "admin123"
 });
 
 // 切换租户
@@ -51,19 +49,15 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       useUserStoreHook()
-        .loginByUsername({
-          phone: ruleForm.phone,
-          password: ruleForm.password,
-          tenant: ruleForm.tenant
-        })
-        .then(() => {
-          initRouter().then(() => {
-            router.push("/");
-            message("登录成功", { type: "success" });
-          });
-        })
-        .catch(() => {
-          loading.value = false;
+        .loginByUsername({ username: ruleForm.username, password: "admin123" })
+        .then(res => {
+          if (res.success) {
+            // 获取后端路由
+            initRouter().then(() => {
+              router.push("/");
+              message("登录成功", { type: "success" });
+            });
+          }
         });
     } else {
       loading.value = false;
@@ -91,16 +85,16 @@ onBeforeUnmount(() => {
 <template>
   <div class="select-none">
     <img :src="bg" class="wave" alt="" />
-    <div v-show="false" class="flex-c absolute right-5 top-3">
-      <!-- 主题 -->
-      <el-switch
-        v-model="dataTheme"
-        inline-prompt
-        :active-icon="dayIcon"
-        :inactive-icon="darkIcon"
-        @change="dataThemeChange"
-      />
-    </div>
+<!--    <div class="flex-c absolute right-5 top-3">-->
+<!--      &lt;!&ndash; 主题 &ndash;&gt;-->
+<!--      <el-switch-->
+<!--        v-model="dataTheme"-->
+<!--        inline-prompt-->
+<!--        :active-icon="dayIcon"-->
+<!--        :inactive-icon="darkIcon"-->
+<!--        @change="dataThemeChange"-->
+<!--      />-->
+<!--    </div>-->
     <div class="login-container">
       <div class="login-box">
         <div class="login-form">
@@ -116,9 +110,9 @@ onBeforeUnmount(() => {
               size="large"
             >
               <Motion :delay="100">
-                <el-form-item prop="tenant">
+                <el-form-item prop="username">
                   <el-input
-                    v-model="ruleForm.tenant"
+                    v-model="ruleForm.username"
                     placeholder="选择默认租户"
                     :prefix-icon="useRenderIcon(Home)"
                   />
@@ -131,11 +125,11 @@ onBeforeUnmount(() => {
                       trigger: 'blur'
                     }
                   ]"
-                  prop="phone"
+                  prop="username"
                 >
                   <el-input
                     clearable
-                    v-model="ruleForm.phone"
+                    v-model="ruleForm.username"
                     placeholder="账号"
                     :prefix-icon="useRenderIcon(User)"
                   />

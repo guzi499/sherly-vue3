@@ -232,16 +232,15 @@ onBeforeMount(() => {
 
 <template>
   <panel>
-    <el-divider v-show="false">主题</el-divider>
-    <el-switch
-      v-show="false"
-      v-model="dataTheme"
-      inline-prompt
-      class="pure-datatheme"
-      :active-icon="dayIcon"
-      :inactive-icon="darkIcon"
-      @change="dataThemeChange"
-    />
+<!--    <el-divider>主题</el-divider>-->
+<!--    <el-switch-->
+<!--      v-model="dataTheme"-->
+<!--      inline-prompt-->
+<!--      class="pure-datatheme"-->
+<!--      :active-icon="dayIcon"-->
+<!--      :inactive-icon="darkIcon"-->
+<!--      @change="dataThemeChange"-->
+<!--    />-->
 
     <el-divider>导航栏模式</el-divider>
     <ul class="pure-theme">
