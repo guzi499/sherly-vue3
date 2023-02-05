@@ -1,7 +1,7 @@
 // import "@/utils/sso";
 import { getConfig } from "@/config";
 import NProgress from "@/utils/progress";
-import { sessionKey } from "@/utils/auth";
+import { sessionKey, type DataInfo } from "@/utils/auth";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import {
@@ -11,6 +11,7 @@ import {
   RouteComponent
 } from "vue-router";
 import {
+  ascending,
   initRouter,
   isOneOfArray,
   getHistoryMode,
@@ -44,11 +45,11 @@ Object.keys(modules).forEach(key => {
 
 /** 导出处理后的静态路由（三级及以上的路由全部拍成二级） */
 export const constantRoutes: Array<RouteRecordRaw> = formatTwoStageRoutes(
-  formatFlatteningRoutes(buildHierarchyTree(routes))
+  formatFlatteningRoutes(buildHierarchyTree(ascending(routes)))
 );
 
 /** 用于渲染菜单，保持原始层级 */
-export const constantMenus: Array<RouteComponent> = routes.concat(
+export const constantMenus: Array<RouteComponent> = ascending(routes).concat(
   ...remainingRouter
 );
 
@@ -84,7 +85,7 @@ export function resetRouter() {
     if (name && router.hasRoute(name) && meta?.backstage) {
       router.removeRoute(name);
       router.options.routes = formatTwoStageRoutes(
-        formatFlatteningRoutes(buildHierarchyTree(routes))
+        formatFlatteningRoutes(buildHierarchyTree(ascending(routes)))
       );
     }
   });
@@ -103,7 +104,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
       handleAliveRoute(newMatched);
     }
   }
-  const userInfo = storageSession().getItem<any>(sessionKey);
+  const userInfo = storageSession().getItem<DataInfo<number>>(sessionKey);
   NProgress.start();
   const externalLink = isUrl(to?.name as string);
   if (!externalLink) {
