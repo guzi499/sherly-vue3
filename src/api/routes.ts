@@ -5,6 +5,6 @@ type Result = {
   data: Array<any>;
 };
 
-export const getAsyncRoutes = () => {
+export const genericBasicData = () => {
   return http.request<Result>("get", "/getAsyncRoutes");
 };
