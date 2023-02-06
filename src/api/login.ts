@@ -14,13 +14,13 @@ export type LoginDTO = {
 export type BasicMenuInfoVO = {
   children: BasicMenuInfoVO[];
   icon: string;
-  link: string;
+  path: string;
   menuId: number;
   menuName: string;
 };
 
 export type BasicInfoVO = {
-  basicMenuInfoVO: BasicMenuInfoVO[];
+  basicMenuInfoVO: Array<BasicMenuInfoVO>;
   basicPermissionVO: string[];
   basicRoleInfoVO: {
     roleId: number;
