@@ -17,7 +17,10 @@ export const usePermissionStore = defineStore({
   actions: {
     /** 组装整体路由生成的菜单 */
     handleWholeMenus(routes: any[]) {
-      this.wholeMenus = filterTree(this.constantMenus.concat(routes));
+      console.log(filterTree(this.constantMenus.concat(routes)));
+      this.wholeMenus = ascending(
+        filterTree(this.constantMenus.concat(routes))
+      );
     },
     cacheOperate({ mode, name }: cacheType) {
       switch (mode) {
