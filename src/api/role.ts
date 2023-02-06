@@ -19,9 +19,9 @@ export type RolePageVO = {
   roleName: string;
 };
 
-/** 登录 */
-export const roleListPage = (data?: RolePageDTO) => {
+/** 角色分页 */
+export const roleListPage = (params?: RolePageDTO) => {
   return http.request<PageResult>("get", baseUrlApi("/role/list_page"), {
-    data
+    params
   });
 };
