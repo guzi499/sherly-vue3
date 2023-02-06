@@ -41,7 +41,7 @@ export type BasicInfoVO = {
 };
 
 /** 登录 */
-export const login = (data?: object) => {
+export const login = (data?: LoginDTO) => {
   return http.request<LoginVO>("post", baseUrlApi("/login"), { data });
 };
 
