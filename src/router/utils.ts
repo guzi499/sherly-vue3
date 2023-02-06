@@ -278,7 +278,8 @@ function addAsyncRoutes(arrRoutes: Array<any>) {
     // 将backstage属性加入meta，标识此路由为后端返回路由
     v.meta = {
       backstage: true,
-      title: v.menuName
+      title: v.menuName,
+      icon: v.icon
     };
     v.name = v.menuName;
     if (v.path === "") v.path = buildPrefixUUID("/");
