@@ -1,5 +1,3 @@
-import {roleGetOne, roleRemoveOne, roleSaveOne, roleUpdateOne} from "@/api/role";
-
 /** 角色分页 类型声明 */
 export type RolePageDTO = {
   current: number;
