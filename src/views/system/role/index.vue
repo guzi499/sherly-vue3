@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRole } from "./hook";
-import { PureTableBar } from "@/components/RePureTableBar";
-import { useRenderIcon } from "@/components/ReIcon/src/hooks";
+import {ref} from "vue";
+import {useRole} from "./hook";
+import {PureTableBar} from "@/components/RePureTableBar";
+import {useRenderIcon} from "@/components/ReIcon/src/hooks";
 
 import Database from "@iconify-icons/ri/database-2-line";
 import More from "@iconify-icons/ep/more-filled";
@@ -18,6 +18,7 @@ defineOptions({
 });
 
 const formRef = ref();
+const ruleFormRef = ref();
 const {
   form,
   loading,
@@ -31,7 +32,17 @@ const {
   handleDelete,
   handleSizeChange,
   handleCurrentChange,
-  handleSelectionChange
+  handleSelectionChange,
+  handleClose,
+  dialogVisible,
+  title,
+  ruleForm,
+  rules,
+  handleOk,
+  handleCancle,
+  type,
+  menuList,
+  treeProps
 } = useRole();
 </script>
 
@@ -68,7 +79,7 @@ const {
 
     <PureTableBar title="角色列表" @refresh="onSearch">
       <template #buttons>
-        <el-button type="primary" :icon="useRenderIcon(AddFill)">
+        <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="handleUpdate('add')">
           新增角色
         </el-button>
       </template>
@@ -100,11 +111,11 @@ const {
               type="primary"
               :size="size"
               :icon="useRenderIcon(EditPen)"
-              @click="handleUpdate(row)"
+              @click="handleUpdate('update', row)"
             >
               修改
             </el-button>
-            <el-popconfirm title="是否确认删除?">
+            <el-popconfirm title="是否确认删除?" @confirm="handleDelete(row)">
               <template #reference>
                 <el-button
                   class="reset-margin"
@@ -112,53 +123,58 @@ const {
                   type="primary"
                   :size="size"
                   :icon="useRenderIcon(Delete)"
-                  @click="handleDelete(row)"
                 >
                   删除
                 </el-button>
               </template>
             </el-popconfirm>
-            <el-dropdown>
-              <el-button
-                class="ml-3 mt-[2px]"
-                link
-                type="primary"
-                :size="size"
-                :icon="useRenderIcon(More)"
-                @click="handleUpdate(row)"
-              />
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <el-button
-                      :class="buttonClass"
-                      link
-                      type="primary"
-                      :size="size"
-                      :icon="useRenderIcon(Menu)"
-                    >
-                      菜单权限
-                    </el-button>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <el-button
-                      :class="buttonClass"
-                      link
-                      type="primary"
-                      :size="size"
-                      :icon="useRenderIcon(Database)"
-                    >
-                      数据权限
-                    </el-button>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
           </template>
         </pure-table>
       </template>
     </PureTableBar>
   </div>
+  <!--  新增/编辑弹框组件-->
+  <el-dialog
+    v-model="dialogVisible"
+    :title="'角色' + title"
+    width="30%"
+    :before-close="handleClose"
+  >
+    <el-form
+      ref="ruleFormRef"
+      :model="ruleForm"
+      :rules="rules"
+      label-width="120px"
+      class="demo-ruleForm"
+      status-icon
+    >
+      <el-form-item label="角色名称" prop="roleName">
+        <el-input v-model="ruleForm.roleName"/>
+      </el-form-item>
+      <el-form-item label="描述" prop="description">
+        <el-input v-model="ruleForm.description"/>
+      </el-form-item>
+      <el-form-item label="菜单权限" prop="menuIds" v-if="type === 'update'">
+        <el-tree-select
+          v-model="ruleForm.menuIds"
+          node-key="menuId"
+          :data="menuList"
+          :props="treeProps"
+          multiple
+          :render-after-expand="false"
+          show-checkbox
+          check-strictly
+          check-on-click-node
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="handleCancle(ruleFormRef)">取消</el-button>
+        <el-button type="primary" @click="handleOk(ruleFormRef)">
+          确定
+        </el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">
