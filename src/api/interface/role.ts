@@ -25,7 +25,7 @@ export type RoleSaveOneDTO = {
   /** 描述 */
   description?: string;
   /** 角色名称 */
-  roleName: string;
+  roleName?: string;
 };
 
 /** 角色编辑 类型声明 */

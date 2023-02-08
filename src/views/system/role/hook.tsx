@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import {roleGetOne, roleListPage, roleRemoveOne, roleSaveOne, roleUpdateOne} from "@/api/role";
 import {PageResult, RolePageDTO, RoleSaveOneDTO, RoleUpdateOneDTO} from "@/api/interface/role"
-import {type PaginationProps} from "@pureadmin/table";
+import type {PaginationProps} from "@pureadmin/table";
 import {reactive, ref, computed, onMounted} from "vue";
 import type {FormRules, FormInstance} from 'element-plus'
 import {menuListTree} from "@/api/menu";
