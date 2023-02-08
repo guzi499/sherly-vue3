@@ -20,8 +20,6 @@ export type userListPageDTO = {
   realName?: string;
   /** 页大小 */
   size?: number;
-  /** Authorization */
-  token?: string
 };
 
 export type userListPageVO = {
@@ -29,25 +27,17 @@ export type userListPageVO = {
   total?: number;
 };
 
-export type PageResult = {
+export type PageResult = userListAllVO & {
   /** 创建时间 */
   createTime?: string;
   /** 部门id */
   departmentId?: number;
-  /** 用户邮箱  */
-  email?: string;
   /** 可用性,可用值:ENABLE,DISABLE */
   enable?: string;
   /** 性别,可用值:FEMALE,MALE,UNKNOWN */
   gender?: string;
   /** 昵称 */
   nickname?: string;
-  /** 手机号 */
-  phone?: string;
-  /** 姓名 */
-  realName?: string;
-  /**  用户编号 */
-  userId?: number;
 };
 
 /** 用户新增 类型声明 */
@@ -82,28 +72,18 @@ export type userUpdateOneDTO = {
 export type userRemoveOneDTO = {
   /** 用户编号 */
   userId?: number;
-  /** Authorization */
-  token?: string
 };
 
 /** 用户详情 类型声明 */
-export type userGetOneVO = {
+export type userGetOneVO = userListAllVO & {
   /** 部门编号 */
   departmentId?: number;
-  /** 用户邮箱 */
-  email?: string;
   /** 性别,可用值:FEMALE,MALE,UNKNOWN */
   gender?: string;
   /** 昵称 */
   nickname?: string;
-  /** 手机号 */
-  phone?: string;
-  /** 姓名 */
-  realName?: string;
   /** 角色ids */
   roleIds?: number[];
-  /** 手机号 */
-  userId?: number;
 };
 
 /** 用户查询 类型声明 */
@@ -124,8 +104,6 @@ export type userListAllDTO = {
   roleIds?: number[];
   /** 用户ids */
   userIds?: number[];
-  /** Authorization */
-  token?: string;
 };
 
 export type userListAllVO = {
