@@ -1,6 +1,3 @@
-import {menuEmpty} from "@/api/interface/menu";
-import {userBanOne, userListAll} from "@/api/userManagement";
-
 /** 重复类型 空对象 */
 export type isEmpty = {}
 
