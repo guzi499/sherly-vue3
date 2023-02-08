@@ -8,7 +8,7 @@ export type userListPageDTO = {
   departmentIds?: number[];
   /** 用户邮箱  */
   email?: string;
-  /** 可用性,可用值:FEMALE,MALE,UNKNOWN */
+  /** 可用性,可用值:ENABLE,DISABLE */
   enable?: string;
   /** 结束时间 */
   endTime?: string;
@@ -143,7 +143,7 @@ export type userListAllVO = {
 
 /** 用户禁用 - 启用 类型声明 */
 export type userBanOneDTO = {
-  /** 可用性,可用值:FEMALE,MALE,UNKNOWN */
+  /** 可用性,可用值:ENABLE,DISABLE */
   enable?: string;
   /** 用户id */
   userId?: number;

@@ -1,15 +1,31 @@
 import dayjs from "dayjs";
-import {roleGetOne, roleListPage, roleRemoveOne, roleSaveOne, roleUpdateOne} from "@/api/role";
-import {PageResult, RolePageDTO, RoleSaveOneDTO, RoleUpdateOneDTO} from "@/api/interface/role"
+import {roleListPage} from "@/api/role";
+import {RolePageVO} from "@/api/interface/role"
+import {userGetOneVO, userListPageVO} from "@/api/interface/userManagement"
 import type {PaginationProps} from "@pureadmin/table";
 import {reactive, ref, computed, onMounted} from "vue";
 import type {FormRules, FormInstance} from 'element-plus'
-import {menuListTree} from "@/api/menu";
-import {menuListTreeVO} from "@/api/interface/menu";
+import {
+  userBanOne,
+  userGetOne,
+  userListPage,
+  userRemoveOne,
+  userSaveOne,
+  userUpdateOne
+} from "@/api/userManagement";
+import {userListPageDTO} from "@/api/interface/userManagement";
+import {departmentListTreeVO} from "@/api/interface/department";
+import {departmentListTree} from "@/api/department";
 
-export function useRole() {
-  const form: RolePageDTO = reactive({
-    roleName: "",
+export function useDepartment() {
+  const form: userListPageDTO = reactive({
+    realName: "",
+    nickname: "",
+    phone: "",
+    email: "",
+    departmentIds: [],
+    enable: null,
+    createTime: ['', ''],
     current: 1,
     size: 10
   });
@@ -35,19 +51,73 @@ export function useRole() {
       hide: ({checkList}) => !checkList.includes("序号列")
     },
     {
-      label: "角色编号",
-      prop: "roleId",
+      label: "姓名",
+      prop: "realName",
       minWidth: 100
     },
     {
-      label: "角色名称",
-      prop: "roleName",
+      label: "昵称",
+      prop: "nickname",
       minWidth: 120
     },
     {
-      label: "描述",
-      prop: "description",
+      label: "性别",
+      prop: "gender",
+      minWidth: 120,
+      cellRenderer: ({row}) => {
+        function name() {
+          if (row.gender === "MALE") {
+            return '男'
+          } else if (row.gender === "FEMALE") {
+            return '女'
+          } else {
+            return ''
+          }
+        }
+
+        return (
+          <div>{name()}</div>
+        )
+      }
+    },
+    {
+      label: "手机号",
+      prop: "phone",
       minWidth: 120
+    },
+    {
+      label: "邮箱",
+      prop: "email",
+      minWidth: 120
+    },
+    {
+      label: "部门",
+      prop: "departmentName",
+      minWidth: 120
+    },
+    {
+      label: "状态",
+      prop: "departmentName",
+      minWidth: 120,
+      cellRenderer: ({row}) => {
+        function isDisabled() {
+          if (row.enable === "ENABLE") {
+            return true
+          } else {
+            return false
+          }
+        }
+
+        return (
+          <el-switch
+            value={isDisabled()}
+            onChange={async (val) => {
+              await userBanOne({enable: val ? 'ENABLE' : 'DISABLE', userId: row.userId})
+              await onSearch()
+            }}
+          />
+        )
+      }
     },
     {
       label: "创建时间",
@@ -75,29 +145,50 @@ export function useRole() {
   const dialogVisible = ref(false as boolean);
   const title = ref('编辑' as string);
   const type = ref<string>('')
-  const ruleForm = ref<RoleUpdateOneDTO>({
-    roleId: null,
-    roleName: '',
-    menuIds: [],
-    description: ''
+  const ruleForm = ref<userGetOneVO>({
+    phone: '',
+    departmentId: null,
+    gender: '',
+    realName: '',
+    roleIds: [],
+    nickname: ''
   })
   const rules = reactive<FormRules>({
-    roleName: [
-      {required: true, message: '请输入角色名称', trigger: 'blur'},
-      {min: 1, max: 20, message: '最大输入20个字符', trigger: 'blur'},
+    phone: [
+      {required: true, message: '请输入手机号', trigger: 'blur'},
+    ],
+    realName: [
+      {required: true, message: '请输入姓名', trigger: 'blur'},
+    ],
+    gender: [
+      {required: true, message: '请选择性别', trigger: 'blur'},
+    ],
+    departmentId: [
+      {required: true, message: '请选择部门', trigger: 'blur'},
+    ],
+    roleIds: [
+      {required: true, message: '请选择角色', trigger: 'blur'},
     ],
   })
-  const menuList = ref<menuListTreeVO[]>([])
+  const departmentList = ref<departmentListTreeVO[]>([])
   const treeProps = {
     children: 'children',
-    label: 'menuName'
+    label: 'departmentName'
+  }
+
+  const roleList = ref<RolePageVO[]>([])
+
+  // 查询角色
+  async function getRoleList() {
+    const data = await roleListPage({current: 1});
+    roleList.value = data.result;
   }
 
   // 新增 / 编辑
   async function handleUpdate(ty, row) {
     ruleForm.value = {}
-    if(ty !== 'add') {
-      const data = await roleGetOne({'roleId': row.roleId})
+    if (ty !== 'add') {
+      const data = await userGetOne({userId: row.userId})
       ruleForm.value = data
     }
     type.value = ty
@@ -110,7 +201,7 @@ export function useRole() {
   }
 
   async function handleDelete(row) {
-    await roleRemoveOne({'roleId': row.roleId})
+    await userRemoveOne({userId: row.userId})
     await onSearch()
   }
 
@@ -128,7 +219,13 @@ export function useRole() {
 
   async function onSearch() {
     loading.value = true;
-    const data: PageResult = await roleListPage(form);
+    let _obj = {
+      ...form,
+      beginTime: form.createTime[0],
+      endTime: form.createTime[1]
+    }
+    delete _obj["createTime"]
+    const data: userListPageVO = await userListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
     setTimeout(() => {
@@ -137,9 +234,9 @@ export function useRole() {
   }
 
   // 查询菜单树
-  async function menuTree() {
-    const data: menuListTreeVO[] = await menuListTree();
-    menuList.value = data;
+  async function departmentTree() {
+    const data: departmentListTreeVO[] = await departmentListTree();
+    departmentList.value = data;
   }
 
   const resetForm = formEl => {
@@ -159,13 +256,9 @@ export function useRole() {
   const update = async (data) => {
     loading.value = true;
     if (type.value === 'add') {
-      const _obj: RoleSaveOneDTO = {
-        roleName: data.roleName,
-        description: data.description
-      }
-      await roleSaveOne(_obj)
+      await userSaveOne(data)
     } else {
-      await roleUpdateOne(data)
+      await userUpdateOne(data)
     }
     setTimeout(() => {
       loading.value = false;
@@ -188,7 +281,8 @@ export function useRole() {
 
   onMounted(() => {
     onSearch();
-    menuTree()
+    departmentTree();
+    getRoleList()
   });
 
   return {
@@ -203,8 +297,9 @@ export function useRole() {
     ruleForm,
     rules,
     type,
-    menuList,
+    departmentList,
     treeProps,
+    roleList,
     onSearch,
     resetForm,
     handleUpdate,
