@@ -4,10 +4,10 @@ import {
   RolePageDTO,
   PageResult,
   RoleSaveOneDTO,
-  RoleSaveOneVO,
   RoleUpdateOneDTO,
   RoleRemoveOneDTO
 } from './interface/role'
+import {isEmpty} from "@/globalType";
 
 /** 角色分页 */
 export const roleListPage = (params?: RolePageDTO) => {
@@ -18,21 +18,21 @@ export const roleListPage = (params?: RolePageDTO) => {
 
 /** 角色新增 */
 export const roleSaveOne = (data?: RoleSaveOneDTO) => {
-  return http.request<RoleSaveOneVO>("post", baseUrlApi("/role/save_one"), {
+  return http.request<isEmpty>("post", baseUrlApi("/role/save_one"), {
     data
   });
 };
 
 /** 角色编辑 */
 export const roleUpdateOne = (data?: RoleUpdateOneDTO) => {
-  return http.request<RoleSaveOneVO>("put", baseUrlApi("/role/update_one"), {
+  return http.request<isEmpty>("put", baseUrlApi("/role/update_one"), {
     data
   });
 };
 
 /** 角色删除 */
 export const roleRemoveOne = (params?: RoleRemoveOneDTO) => {
-  return http.request<RoleSaveOneVO>("delete", baseUrlApi("/role/remove_one"), {
+  return http.request<isEmpty>("delete", baseUrlApi("/role/remove_one"), {
     params
   });
 };

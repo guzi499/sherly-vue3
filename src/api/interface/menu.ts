@@ -1,6 +1,3 @@
-/** 重复类型 空对象 */
-export type menuEmpty = {};
-
 /** 菜单树 类型声明 */
 export type menuListTreeVO = {
   children?: Array<menuListTreeVO>;

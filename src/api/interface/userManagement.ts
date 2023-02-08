@@ -1,6 +1,3 @@
-/** 重复类型 空对象 */
-export type isEmpty = {}
-
 /** 用户分页 类型声明 */
 export type userListPageDTO = {
   /** 开始时间 */

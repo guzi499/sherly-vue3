@@ -1,7 +1,6 @@
 import {http} from "@/utils/http";
 import {baseUrlApi} from "@/api/utils";
 import {
-  isEmpty,
   userBanOneDTO,
   userGetOneVO,
   userListAllDTO,
@@ -12,6 +11,7 @@ import {
   userSaveOneDTO,
   userUpdateOneDTO
 } from "@/api/interface/userManagement";
+import {isEmpty} from "@/globalType";
 
 /** 用户分页 */
 export const userListPage = (params?: userListPageDTO) => {

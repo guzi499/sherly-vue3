@@ -23,8 +23,6 @@ export type RoleSaveOneDTO = {
   roleName: string;
 };
 
-export type RoleSaveOneVO = {};
-
 /** 角色编辑 类型声明 */
 export type RoleUpdateOneDTO = {
   description?: string;

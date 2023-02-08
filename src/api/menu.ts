@@ -1,15 +1,15 @@
 import {http} from "@/utils/http";
 import {baseUrlApi} from "@/api/utils";
 import {
-  menuEmpty,
   menuListTreeVO,
   menuRemoveOneDTO,
   menuSaveOneDTO,
   menuUpdateOneDTO,
 } from "@/api/interface/menu";
+import {isEmpty} from "@/globalType";
 
 /** 查询菜单树 */
-export const menuListTree = (params?: menuEmpty) => {
+export const menuListTree = (params?: isEmpty) => {
   return http.request<menuListTreeVO[]>("get", baseUrlApi("/menu/list_tree"), {
     params
   });
@@ -17,21 +17,21 @@ export const menuListTree = (params?: menuEmpty) => {
 
 /** 菜单新增 */
 export const menuSaveOne = (data?: menuSaveOneDTO) => {
-  return http.request<menuEmpty>("post", baseUrlApi("/menu/save_one"), {
+  return http.request<isEmpty>("post", baseUrlApi("/menu/save_one"), {
     data
   });
 };
 
 /** 菜单修改 */
 export const menuUpdateOne = (data?: menuUpdateOneDTO) => {
-  return http.request<menuEmpty>("put", baseUrlApi("/menu/update_one"), {
+  return http.request<isEmpty>("put", baseUrlApi("/menu/update_one"), {
     data
   });
 };
 
 /** 菜单删除 */
 export const menuRemoveOne = (params?: menuRemoveOneDTO) => {
-  return http.request<menuEmpty>("delete", baseUrlApi("/menu/remove_one"), {
+  return http.request<isEmpty>("delete", baseUrlApi("/menu/remove_one"), {
     params
   });
 };
