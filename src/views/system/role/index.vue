@@ -132,49 +132,50 @@ const {
         </pure-table>
       </template>
     </PureTableBar>
-  </div>
-  <!--  新增/编辑弹框组件-->
-  <el-dialog
-    v-model="dialogVisible"
-    :title="'角色' + title"
-    width="30%"
-    :before-close="handleClose"
-  >
-    <el-form
-      ref="ruleFormRef"
-      :model="ruleForm"
-      :rules="rules"
-      label-width="120px"
-      class="demo-ruleForm"
-      status-icon
+
+    <!--  新增/编辑弹框组件-->
+    <el-dialog
+      v-model="dialogVisible"
+      :title="'角色' + title"
+      width="30%"
+      :before-close="handleClose"
     >
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="ruleForm.roleName"/>
-      </el-form-item>
-      <el-form-item label="描述" prop="description">
-        <el-input v-model="ruleForm.description"/>
-      </el-form-item>
-      <el-form-item label="菜单权限" prop="menuIds" v-if="type === 'update'">
-        <el-tree-select
-          v-model="ruleForm.menuIds"
-          node-key="menuId"
-          :data="menuList"
-          :props="treeProps"
-          multiple
-          :render-after-expand="false"
-          show-checkbox
-          check-strictly
-          check-on-click-node
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="handleCancle(ruleFormRef)">取消</el-button>
-        <el-button type="primary" @click="handleOk(ruleFormRef)">
-          确定
-        </el-button>
-      </el-form-item>
-    </el-form>
-  </el-dialog>
+      <el-form
+        ref="ruleFormRef"
+        :model="ruleForm"
+        :rules="rules"
+        label-width="120px"
+        class="demo-ruleForm"
+        status-icon
+      >
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input v-model="ruleForm.roleName"/>
+        </el-form-item>
+        <el-form-item label="描述" prop="description">
+          <el-input v-model="ruleForm.description"/>
+        </el-form-item>
+        <el-form-item label="菜单权限" prop="menuIds" v-if="type === 'update'">
+          <el-tree-select
+            v-model="ruleForm.menuIds"
+            node-key="menuId"
+            :data="menuList"
+            :props="treeProps"
+            multiple
+            :render-after-expand="false"
+            show-checkbox
+            check-strictly
+            check-on-click-node
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="handleCancle(ruleFormRef)">取消</el-button>
+          <el-button type="primary" @click="handleOk(ruleFormRef)">
+            确定
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
 </template>
 
 <style scoped lang="scss">
