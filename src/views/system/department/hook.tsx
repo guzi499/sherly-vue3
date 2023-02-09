@@ -1,8 +1,16 @@
 import dayjs from "dayjs";
-import {reactive, ref, computed, onMounted} from "vue";
-import type {FormRules, FormInstance} from 'element-plus'
-import {departmentListTree, departmentRemoveOne, departmentSaveOne, departmentUpdateOne} from "@/api/department";
-import {departmentListTreeVO, departmentSaveOneDTO, departmentUpdateOneDTO} from "@/api/interface/department";
+import { reactive, ref, computed, onMounted } from "vue";
+import type { FormRules, FormInstance } from "element-plus";
+import {
+  departmentListTree,
+  departmentRemoveOne,
+  departmentSaveOne,
+  departmentUpdateOne
+} from "@/api/department";
+import {
+  departmentListTreeVO,
+  departmentUpdateOneDTO
+} from "@/api/interface/department";
 
 export function useDepartment() {
   const form = reactive({
@@ -15,13 +23,13 @@ export function useDepartment() {
       type: "selection",
       width: 55,
       align: "left",
-      hide: ({checkList}) => !checkList.includes("勾选列")
+      hide: ({ checkList }) => !checkList.includes("勾选列")
     },
     {
       label: "序号",
       type: "index",
       width: 70,
-      hide: ({checkList}) => !checkList.includes("序号列")
+      hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
       label: "部门名称",
@@ -42,7 +50,7 @@ export function useDepartment() {
       label: "创建时间",
       minWidth: 180,
       prop: "createTime",
-      formatter: ({createTime}) =>
+      formatter: ({ createTime }) =>
         dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
@@ -62,55 +70,51 @@ export function useDepartment() {
     ];
   });
   const dialogVisible = ref(false as boolean);
-  const title = ref('编辑' as string);
-  const type = ref<string>('')
+  const title = ref("编辑" as string);
+  const type = ref<string>("");
   const ruleForm = ref<departmentUpdateOneDTO>({
     departmentId: null,
-    departmentName: '',
-    description: '',
+    departmentName: "",
+    description: "",
     parentId: null,
     sort: null
-  })
+  });
   const rules = reactive<FormRules>({
-    parentId: [
-      {required: true, message: '请选择父级部门', trigger: 'blur'}
-    ],
+    parentId: [{ required: true, message: "请选择父级部门", trigger: "blur" }],
     departmentName: [
-      {required: true, message: '请输入部门名称', trigger: 'blur'}
+      { required: true, message: "请输入部门名称", trigger: "blur" }
     ],
-    sort: [
-      {required: true, message: '请输入排序', trigger: 'blur'}
-    ]
-  })
+    sort: [{ required: true, message: "请输入排序", trigger: "blur" }]
+  });
   const departmentList = ref({
     children: [] as Array<departmentListTreeVO>,
     departmentId: 0,
-    departmentName: '主目录',
-    parentId: null,
-  })
+    departmentName: "主目录",
+    parentId: null
+  });
   const treeProps = {
-    children: 'children',
-    label: 'departmentName'
-  }
+    children: "children",
+    label: "departmentName"
+  };
 
   // 新增 / 编辑
   async function handleUpdate(ty, row) {
-    ruleForm.value = {}
-    if (ty !== 'add') {
-      ruleForm.value = row
+    ruleForm.value = {};
+    if (ty !== "add") {
+      ruleForm.value = row;
     }
-    type.value = ty
-    ty === 'add' ? title.value = '新增' : title.value = '编辑'
-    dialogVisible.value = true
+    type.value = ty;
+    ty === "add" ? (title.value = "新增") : (title.value = "编辑");
+    dialogVisible.value = true;
   }
 
   function handleClose() {
-    dialogVisible.value = false
+    dialogVisible.value = false;
   }
 
   async function handleDelete(row) {
-    await departmentRemoveOne({departmentId: row.departmentId})
-    await onSearch()
+    await departmentRemoveOne({ departmentId: row.departmentId });
+    await onSearch();
   }
 
   async function onSearch() {
@@ -118,9 +122,9 @@ export function useDepartment() {
     if (!form.departmentName) {
       const data: departmentListTreeVO[] = await departmentListTree();
       dataList.value = data;
-      departmentList.value.children = data
+      departmentList.value.children = data;
     } else {
-      dataList.value = handleTree(dataList.value, form.departmentName)
+      dataList.value = handleTree(dataList.value, form.departmentName);
     }
     setTimeout(() => {
       loading.value = false;
@@ -129,22 +133,22 @@ export function useDepartment() {
 
   // 自定义查询
   const handleTree = (list, value) => {
-    let arr = []
+    const arr = [];
     const handleTreeInner = (lis, val) => {
       lis.forEach(item => {
         // 判断该层级是否包含当前部门 若不包含则判断是否有children，有则继续调用
         if (item.departmentName.indexOf(value) === -1) {
-          if(item.children.length !== 0) {
-            handleTreeInner(item.children, val)
+          if (item.children.length !== 0) {
+            handleTreeInner(item.children, val);
           }
         } else {
-          arr.push(item)
+          arr.push(item);
         }
-      })
-    }
-    handleTreeInner(list,value)
-    return arr
-  }
+      });
+    };
+    handleTreeInner(list, value);
+    return arr;
+  };
 
   const resetForm = formEl => {
     if (!formEl) return;
@@ -155,36 +159,36 @@ export function useDepartment() {
   const handleCancle = formEl => {
     if (!formEl) return;
     formEl.resetFields();
-    dialogVisible.value = false
+    dialogVisible.value = false;
     onSearch();
   };
 
   // 调用编辑 / 新增接口
-  const update = async (data) => {
+  const update = async data => {
     loading.value = true;
-    if (type.value === 'add') {
-      await departmentSaveOne(data)
+    if (type.value === "add") {
+      await departmentSaveOne(data);
     } else {
-      await departmentUpdateOne(data)
+      await departmentUpdateOne(data);
     }
     setTimeout(() => {
       loading.value = false;
-      dialogVisible.value = false
-      onSearch()
+      dialogVisible.value = false;
+      onSearch();
     }, 500);
-  }
+  };
 
   const handleOk = async (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    await formEl.validate(async (valid, fields) => {
+    if (!formEl) return;
+    await formEl.validate(async valid => {
       if (valid) {
-        await update(ruleForm.value)
-        ruleForm.value = {}
+        await update(ruleForm.value);
+        ruleForm.value = {};
       } else {
-        return
+        return;
       }
-    })
-  }
+    });
+  };
 
   onMounted(() => {
     onSearch();

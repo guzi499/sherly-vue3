@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import {useDepartment} from "./hook";
-import {PureTableBar} from "@/components/RePureTableBar";
-import {useRenderIcon} from "@/components/ReIcon/src/hooks";
+import { ref } from "vue";
+import { useDepartment } from "./hook";
+import { PureTableBar } from "@/components/RePureTableBar";
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 
-import Database from "@iconify-icons/ri/database-2-line";
-import More from "@iconify-icons/ep/more-filled";
 import Delete from "@iconify-icons/ep/delete";
 import EditPen from "@iconify-icons/ep/edit-pen";
 import Search from "@iconify-icons/ep/search";
 import Refresh from "@iconify-icons/ep/refresh";
-import Menu from "@iconify-icons/ep/menu";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 
 defineOptions({
@@ -24,7 +21,7 @@ const {
   loading,
   columns,
   dataList,
-  buttonClass,
+  // buttonClass,
   onSearch,
   resetForm,
   handleUpdate,
@@ -36,7 +33,6 @@ const {
   rules,
   handleOk,
   handleCancle,
-  type,
   departmentList,
   treeProps
 } = useDepartment();
@@ -75,7 +71,11 @@ const {
 
     <PureTableBar title="部门列表" @refresh="onSearch">
       <template #buttons>
-        <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="handleUpdate('add')">
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
+          @click="handleUpdate('add', '')"
+        >
           新增部门
         </el-button>
       </template>
@@ -152,13 +152,13 @@ const {
           />
         </el-form-item>
         <el-form-item label="部门名称" prop="departmentName">
-          <el-input v-model="ruleForm.departmentName"/>
+          <el-input v-model="ruleForm.departmentName" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="ruleForm.description"/>
+          <el-input v-model="ruleForm.description" />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input v-model="ruleForm.sort"/>
+          <el-input v-model="ruleForm.sort" />
         </el-form-item>
         <el-form-item>
           <el-button @click="handleCancle(ruleFormRef)">取消</el-button>

@@ -18,7 +18,7 @@ export type menuListTreeVO = {
   /**	权限 */
   permission?: string;
   /**	排序 */
-  sort?: number
+  sort?: number;
 };
 
 /** 菜单新增 类型声明 */
@@ -36,7 +36,7 @@ export type menuSaveOneDTO = {
   /**	权限 */
   permission?: string;
   /**	排序 */
-  sort?: number
+  sort?: number;
 };
 
 /** 菜单修改 类型声明 */
@@ -44,7 +44,7 @@ export type menuUpdateOneDTO = {
   /** 菜单图标 */
   icon?: string;
   /** 菜单编号 */
-  menuId ?: number;
+  menuId?: number;
   /** 菜单名称	*/
   menuName?: string;
   /** 菜单类型,可用值:DIR,MENU,BUTTON */
@@ -56,13 +56,11 @@ export type menuUpdateOneDTO = {
   /**	权限 */
   permission?: string;
   /**	排序 */
-  sort?: number
+  sort?: number;
 };
 
 /** 菜单删除 类型声明 */
 export type menuRemoveOneDTO = {
   /** 菜单编号 */
-  menuId ?: number;
+  menuId?: number;
 };
-
-

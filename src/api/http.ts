@@ -1,4 +1,4 @@
-import axios, {AxiosInstance} from "axios";
+import axios, { AxiosInstance } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
   // 前缀
@@ -7,8 +7,8 @@ const axiosInstance: AxiosInstance = axios.create({
   timeout: 1000 * 30,
   // 请求头
   headers: {
-    'Content-Type': 'application/json',
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 const service = {
@@ -24,6 +24,6 @@ const service = {
   delete<T = any>(url: string, data?: object): Promise<T> {
     return axiosInstance.delete(url, data);
   }
-}
+};
 
 export default service;

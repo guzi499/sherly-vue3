@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import {useRole} from "./hook";
-import {PureTableBar} from "@/components/RePureTableBar";
-import {useRenderIcon} from "@/components/ReIcon/src/hooks";
+import { ref } from "vue";
+import { useRole } from "./hook";
+import { PureTableBar } from "@/components/RePureTableBar";
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 
-import Database from "@iconify-icons/ri/database-2-line";
-import More from "@iconify-icons/ep/more-filled";
 import Delete from "@iconify-icons/ep/delete";
 import EditPen from "@iconify-icons/ep/edit-pen";
 import Search from "@iconify-icons/ep/search";
 import Refresh from "@iconify-icons/ep/refresh";
-import Menu from "@iconify-icons/ep/menu";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 
 defineOptions({
@@ -25,7 +22,7 @@ const {
   columns,
   dataList,
   pagination,
-  buttonClass,
+  // buttonClass,
   onSearch,
   resetForm,
   handleUpdate,
@@ -79,7 +76,11 @@ const {
 
     <PureTableBar title="角色列表" @refresh="onSearch">
       <template #buttons>
-        <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="handleUpdate('add')">
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
+          @click="handleUpdate('add', '')"
+        >
           新增角色
         </el-button>
       </template>
@@ -149,10 +150,10 @@ const {
         status-icon
       >
         <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="ruleForm.roleName"/>
+          <el-input v-model="ruleForm.roleName" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="ruleForm.description"/>
+          <el-input v-model="ruleForm.description" />
         </el-form-item>
         <el-form-item label="菜单权限" prop="menuIds" v-if="type === 'update'">
           <el-tree-select

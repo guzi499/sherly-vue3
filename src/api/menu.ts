@@ -1,12 +1,12 @@
-import {http} from "@/utils/http";
-import {baseUrlApi} from "@/api/utils";
+import { http } from "@/utils/http";
+import { baseUrlApi } from "@/api/utils";
 import {
   menuListTreeVO,
   menuRemoveOneDTO,
   menuSaveOneDTO,
-  menuUpdateOneDTO,
+  menuUpdateOneDTO
 } from "@/api/interface/menu";
-import {isEmpty} from "@/globalType";
+import { isEmpty } from "@/globalType";
 
 /** 查询菜单树 */
 export const menuListTree = (params?: isEmpty) => {

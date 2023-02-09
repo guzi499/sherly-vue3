@@ -1,13 +1,13 @@
-import {http} from "@/utils/http";
-import {baseUrlApi} from "@/api/utils";
+import { http } from "@/utils/http";
+import { baseUrlApi } from "@/api/utils";
 import {
   RolePageDTO,
   PageResult,
   RoleSaveOneDTO,
   RoleUpdateOneDTO,
   RoleRemoveOneDTO
-} from './interface/role'
-import {isEmpty} from "@/globalType";
+} from "./interface/role";
+import { isEmpty } from "@/globalType";
 
 /** 角色分页 */
 export const roleListPage = (params?: RolePageDTO) => {

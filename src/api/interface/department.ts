@@ -12,14 +12,14 @@ export type departmentListTreeVO = {
   /** 父部门编号 */
   parentId?: number;
   /** 排序 */
-  sort?: number
-}
+  sort?: number;
+};
 
 /** 部门删除 类型声明 */
 export type departmentRemoveOneDTO = {
   /** 部门id */
-  departmentId?: number
-}
+  departmentId?: number;
+};
 
 /** 部门新增 类型声明 */
 export type departmentSaveOneDTO = {
@@ -30,8 +30,8 @@ export type departmentSaveOneDTO = {
   /** 父部门编号 */
   parentId?: number;
   /** 排序 */
-  sort?: number
-}
+  sort?: number;
+};
 
 /** 部门更新 类型声明 */
 export type departmentUpdateOneDTO = {
@@ -44,5 +44,5 @@ export type departmentUpdateOneDTO = {
   /** 父部门编号 */
   parentId?: number;
   /** 排序 */
-  sort?: number
-}
+  sort?: number;
+};

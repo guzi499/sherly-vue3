@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
-import {roleListPage} from "@/api/role";
-import {RolePageVO} from "@/api/interface/role"
-import {userGetOneVO, userListPageVO} from "@/api/interface/userManagement"
-import type {PaginationProps} from "@pureadmin/table";
-import {reactive, ref, computed, onMounted} from "vue";
-import type {FormRules, FormInstance} from 'element-plus'
+import { roleListPage } from "@/api/role";
+import { RolePageVO } from "@/api/interface/role";
+import { userGetOneVO, userListPageVO } from "@/api/interface/userManagement";
+import type { PaginationProps } from "@pureadmin/table";
+import { reactive, ref, computed, onMounted } from "vue";
+import type { FormRules, FormInstance } from "element-plus";
 import {
   userBanOne,
   userGetOne,
@@ -13,9 +13,9 @@ import {
   userSaveOne,
   userUpdateOne
 } from "@/api/userManagement";
-import {userListPageDTO} from "@/api/interface/userManagement";
-import {departmentListTreeVO} from "@/api/interface/department";
-import {departmentListTree} from "@/api/department";
+import { userListPageDTO } from "@/api/interface/userManagement";
+import { departmentListTreeVO } from "@/api/interface/department";
+import { departmentListTree } from "@/api/department";
 
 export function useDepartment() {
   const form: userListPageDTO = reactive({
@@ -25,7 +25,7 @@ export function useDepartment() {
     email: "",
     departmentIds: [],
     enable: null,
-    createTime: ['', ''],
+    createTime: ["", ""],
     current: 1,
     size: 10
   });
@@ -42,13 +42,13 @@ export function useDepartment() {
       type: "selection",
       width: 55,
       align: "left",
-      hide: ({checkList}) => !checkList.includes("勾选列")
+      hide: ({ checkList }) => !checkList.includes("勾选列")
     },
     {
       label: "序号",
       type: "index",
       width: 70,
-      hide: ({checkList}) => !checkList.includes("序号列")
+      hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
       label: "姓名",
@@ -64,20 +64,18 @@ export function useDepartment() {
       label: "性别",
       prop: "gender",
       minWidth: 120,
-      cellRenderer: ({row}) => {
+      cellRenderer: ({ row }) => {
         function name() {
           if (row.gender === "MALE") {
-            return '男'
+            return "男";
           } else if (row.gender === "FEMALE") {
-            return '女'
+            return "女";
           } else {
-            return ''
+            return "";
           }
         }
 
-        return (
-          <div>{name()}</div>
-        )
+        return <div>{name()}</div>;
       }
     },
     {
@@ -99,31 +97,34 @@ export function useDepartment() {
       label: "状态",
       prop: "departmentName",
       minWidth: 120,
-      cellRenderer: ({row}) => {
+      cellRenderer: ({ row }) => {
         function isDisabled() {
           if (row.enable === "ENABLE") {
-            return true
+            return true;
           } else {
-            return false
+            return false;
           }
         }
 
         return (
           <el-switch
             value={isDisabled()}
-            onChange={async (val) => {
-              await userBanOne({enable: val ? 'ENABLE' : 'DISABLE', userId: row.userId})
-              await onSearch()
+            onChange={async val => {
+              await userBanOne({
+                enable: val ? "ENABLE" : "DISABLE",
+                userId: row.userId
+              });
+              await onSearch();
             }}
           />
-        )
+        );
       }
     },
     {
       label: "创建时间",
       minWidth: 180,
       prop: "createTime",
-      formatter: ({createTime}) =>
+      formatter: ({ createTime }) =>
         dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
@@ -143,66 +144,56 @@ export function useDepartment() {
     ];
   });
   const dialogVisible = ref(false as boolean);
-  const title = ref('编辑' as string);
-  const type = ref<string>('')
+  const title = ref("编辑" as string);
+  const type = ref<string>("");
   const ruleForm = ref<userGetOneVO>({
-    phone: '',
+    phone: "",
     departmentId: null,
-    gender: '',
-    realName: '',
+    gender: "",
+    realName: "",
     roleIds: [],
-    nickname: ''
-  })
+    nickname: ""
+  });
   const rules = reactive<FormRules>({
-    phone: [
-      {required: true, message: '请输入手机号', trigger: 'blur'},
-    ],
-    realName: [
-      {required: true, message: '请输入姓名', trigger: 'blur'},
-    ],
-    gender: [
-      {required: true, message: '请选择性别', trigger: 'blur'},
-    ],
-    departmentId: [
-      {required: true, message: '请选择部门', trigger: 'blur'},
-    ],
-    roleIds: [
-      {required: true, message: '请选择角色', trigger: 'blur'},
-    ],
-  })
-  const departmentList = ref<departmentListTreeVO[]>([])
+    phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+    realName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+    gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
+    departmentId: [{ required: true, message: "请选择部门", trigger: "blur" }],
+    roleIds: [{ required: true, message: "请选择角色", trigger: "blur" }]
+  });
+  const departmentList = ref<departmentListTreeVO[]>([]);
   const treeProps = {
-    children: 'children',
-    label: 'departmentName'
-  }
+    children: "children",
+    label: "departmentName"
+  };
 
-  const roleList = ref<RolePageVO[]>([])
+  const roleList = ref<RolePageVO[]>([]);
 
   // 查询角色
   async function getRoleList() {
-    const data = await roleListPage({current: 1});
+    const data = await roleListPage({ current: 1 });
     roleList.value = data.result;
   }
 
   // 新增 / 编辑
   async function handleUpdate(ty, row) {
-    ruleForm.value = {}
-    if (ty !== 'add') {
-      const data = await userGetOne({userId: row.userId})
-      ruleForm.value = data
+    ruleForm.value = {};
+    if (ty !== "add") {
+      const data = await userGetOne({ userId: row.userId });
+      ruleForm.value = data;
     }
-    type.value = ty
-    ty === 'add' ? title.value = '新增' : title.value = '编辑'
-    dialogVisible.value = true
+    type.value = ty;
+    ty === "add" ? (title.value = "新增") : (title.value = "编辑");
+    dialogVisible.value = true;
   }
 
   function handleClose() {
-    dialogVisible.value = false
+    dialogVisible.value = false;
   }
 
   async function handleDelete(row) {
-    await userRemoveOne({userId: row.userId})
-    await onSearch()
+    await userRemoveOne({ userId: row.userId });
+    await onSearch();
   }
 
   function handleSizeChange(val: number) {
@@ -219,12 +210,12 @@ export function useDepartment() {
 
   async function onSearch() {
     loading.value = true;
-    let _obj = {
+    const _obj = {
       ...form,
       beginTime: form.createTime[0],
       endTime: form.createTime[1]
-    }
-    delete _obj["createTime"]
+    };
+    delete _obj["createTime"];
     const data: userListPageVO = await userListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
@@ -248,41 +239,41 @@ export function useDepartment() {
   const handleCancle = formEl => {
     if (!formEl) return;
     formEl.resetFields();
-    dialogVisible.value = false
+    dialogVisible.value = false;
     onSearch();
   };
 
   // 调用编辑 / 新增接口
-  const update = async (data) => {
+  const update = async data => {
     loading.value = true;
-    if (type.value === 'add') {
-      await userSaveOne(data)
+    if (type.value === "add") {
+      await userSaveOne(data);
     } else {
-      await userUpdateOne(data)
+      await userUpdateOne(data);
     }
     setTimeout(() => {
       loading.value = false;
-      dialogVisible.value = false
-      onSearch()
+      dialogVisible.value = false;
+      onSearch();
     }, 500);
-  }
+  };
 
   const handleOk = async (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    await formEl.validate(async (valid, fields) => {
+    if (!formEl) return;
+    await formEl.validate(async valid => {
       if (valid) {
-        await update(ruleForm.value)
-        ruleForm.value = {}
+        await update(ruleForm.value);
+        ruleForm.value = {};
       } else {
-        return
+        return;
       }
-    })
-  }
+    });
+  };
 
   onMounted(() => {
     onSearch();
     departmentTree();
-    getRoleList()
+    getRoleList();
   });
 
   return {

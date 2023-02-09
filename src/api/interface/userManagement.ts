@@ -21,7 +21,7 @@ export type userListPageDTO = {
   /** 页大小 */
   size?: number;
   /** 创建时间 */
-  createTime?: ['', '']
+  createTime?: ["", ""];
 };
 
 export type userListPageVO = {
@@ -81,7 +81,7 @@ export type userUpdateOneDTO = {
   /** 手机号 */
   phone?: string;
   /** 昵称 */
-  nickname?: string
+  nickname?: string;
 };
 
 /** 用户删除 类型声明 */
@@ -148,5 +148,3 @@ export type userBanOneDTO = {
   /** 用户id */
   userId?: number;
 };
-
-

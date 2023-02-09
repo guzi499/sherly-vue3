@@ -49,5 +49,3 @@ export type RoleRemoveOneDTO = {
   /** 角色编号 */
   roleId?: number;
 };
-
-

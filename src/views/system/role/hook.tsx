@@ -1,11 +1,22 @@
 import dayjs from "dayjs";
-import {roleGetOne, roleListPage, roleRemoveOne, roleSaveOne, roleUpdateOne} from "@/api/role";
-import {PageResult, RolePageDTO, RoleSaveOneDTO, RoleUpdateOneDTO} from "@/api/interface/role"
-import type {PaginationProps} from "@pureadmin/table";
-import {reactive, ref, computed, onMounted} from "vue";
-import type {FormRules, FormInstance} from 'element-plus'
-import {menuListTree} from "@/api/menu";
-import {menuListTreeVO} from "@/api/interface/menu";
+import {
+  roleGetOne,
+  roleListPage,
+  roleRemoveOne,
+  roleSaveOne,
+  roleUpdateOne
+} from "@/api/role";
+import {
+  PageResult,
+  RolePageDTO,
+  RoleSaveOneDTO,
+  RoleUpdateOneDTO
+} from "@/api/interface/role";
+import type { PaginationProps } from "@pureadmin/table";
+import { reactive, ref, computed, onMounted } from "vue";
+import type { FormRules, FormInstance } from "element-plus";
+import { menuListTree } from "@/api/menu";
+import { menuListTreeVO } from "@/api/interface/menu";
 
 export function useRole() {
   const form: RolePageDTO = reactive({
@@ -26,13 +37,13 @@ export function useRole() {
       type: "selection",
       width: 55,
       align: "left",
-      hide: ({checkList}) => !checkList.includes("勾选列")
+      hide: ({ checkList }) => !checkList.includes("勾选列")
     },
     {
       label: "序号",
       type: "index",
       width: 70,
-      hide: ({checkList}) => !checkList.includes("序号列")
+      hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
       label: "角色编号",
@@ -53,7 +64,7 @@ export function useRole() {
       label: "创建时间",
       minWidth: 180,
       prop: "createTime",
-      formatter: ({createTime}) =>
+      formatter: ({ createTime }) =>
         dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
@@ -73,45 +84,45 @@ export function useRole() {
     ];
   });
   const dialogVisible = ref(false as boolean);
-  const title = ref('编辑' as string);
-  const type = ref<string>('')
+  const title = ref("编辑" as string);
+  const type = ref<string>("");
   const ruleForm = ref<RoleUpdateOneDTO>({
     roleId: null,
-    roleName: '',
+    roleName: "",
     menuIds: [],
-    description: ''
-  })
+    description: ""
+  });
   const rules = reactive<FormRules>({
     roleName: [
-      {required: true, message: '请输入角色名称', trigger: 'blur'},
-      {min: 1, max: 20, message: '最大输入20个字符', trigger: 'blur'},
-    ],
-  })
-  const menuList = ref<menuListTreeVO[]>([])
+      { required: true, message: "请输入角色名称", trigger: "blur" },
+      { min: 1, max: 20, message: "最大输入20个字符", trigger: "blur" }
+    ]
+  });
+  const menuList = ref<menuListTreeVO[]>([]);
   const treeProps = {
-    children: 'children',
-    label: 'menuName'
-  }
+    children: "children",
+    label: "menuName"
+  };
 
   // 新增 / 编辑
   async function handleUpdate(ty, row) {
-    ruleForm.value = {}
-    if(ty !== 'add') {
-      const data = await roleGetOne({'roleId': row.roleId})
-      ruleForm.value = data
+    ruleForm.value = {};
+    if (ty !== "add") {
+      const data = await roleGetOne({ roleId: row.roleId });
+      ruleForm.value = data;
     }
-    type.value = ty
-    ty === 'add' ? title.value = '新增' : title.value = '编辑'
-    dialogVisible.value = true
+    type.value = ty;
+    ty === "add" ? (title.value = "新增") : (title.value = "编辑");
+    dialogVisible.value = true;
   }
 
   function handleClose() {
-    dialogVisible.value = false
+    dialogVisible.value = false;
   }
 
   async function handleDelete(row) {
-    await roleRemoveOne({'roleId': row.roleId})
-    await onSearch()
+    await roleRemoveOne({ roleId: row.roleId });
+    await onSearch();
   }
 
   function handleSizeChange(val: number) {
@@ -151,44 +162,44 @@ export function useRole() {
   const handleCancle = formEl => {
     if (!formEl) return;
     formEl.resetFields();
-    dialogVisible.value = false
+    dialogVisible.value = false;
     onSearch();
   };
 
   // 调用编辑 / 新增接口
-  const update = async (data) => {
+  const update = async data => {
     loading.value = true;
-    if (type.value === 'add') {
+    if (type.value === "add") {
       const _obj: RoleSaveOneDTO = {
         roleName: data.roleName,
         description: data.description
-      }
-      await roleSaveOne(_obj)
+      };
+      await roleSaveOne(_obj);
     } else {
-      await roleUpdateOne(data)
+      await roleUpdateOne(data);
     }
     setTimeout(() => {
       loading.value = false;
-      dialogVisible.value = false
-      onSearch()
+      dialogVisible.value = false;
+      onSearch();
     }, 500);
-  }
+  };
 
   const handleOk = async (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    await formEl.validate(async (valid, fields) => {
+    if (!formEl) return;
+    await formEl.validate(async valid => {
       if (valid) {
-        await update(ruleForm.value)
-        ruleForm.value = {}
+        await update(ruleForm.value);
+        ruleForm.value = {};
       } else {
-        return
+        return;
       }
-    })
-  }
+    });
+  };
 
   onMounted(() => {
     onSearch();
-    menuTree()
+    menuTree();
   });
 
   return {
