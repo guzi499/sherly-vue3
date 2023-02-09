@@ -1,6 +1,6 @@
 /** 查询部门树 类型声明 */
 export type departmentListTreeVO = {
-  children?: Array<departmentListTreeVO>;
+  children?: Array<departmentListTreeVO[]>;
   /** 创建时间 */
   createTime?: string;
   /** 部门编号 */
