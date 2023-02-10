@@ -1,7 +1,7 @@
 import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import {
-  departmentListTreeVO,
+  DepartmentListTreeVO,
   departmentRemoveOneDTO,
   departmentSaveOneDTO,
   departmentUpdateOneDTO
@@ -10,7 +10,7 @@ import { isEmpty } from "@/globalType";
 
 /** 查询部门树 */
 export const departmentListTree = (params?: isEmpty) => {
-  return http.request<departmentListTreeVO[]>(
+  return http.request<DepartmentListTreeVO[]>(
     "get",
     baseUrlApi("/department/list_tree"),
     {

@@ -8,7 +8,7 @@ import {
   departmentUpdateOne
 } from "@/api/department";
 import {
-  departmentListTreeVO,
+  DepartmentListTreeVO,
   departmentUpdateOneDTO
 } from "@/api/interface/department";
 
@@ -87,7 +87,7 @@ export function useDepartment() {
     sort: [{ required: true, message: "请输入排序", trigger: "blur" }]
   });
   const departmentList = ref({
-    children: [] as Array<departmentListTreeVO>,
+    children: [] as Array<DepartmentListTreeVO>,
     departmentId: 0,
     departmentName: "主目录",
     parentId: null
@@ -120,7 +120,7 @@ export function useDepartment() {
   async function onSearch() {
     loading.value = true;
     if (!form.departmentName) {
-      const data: departmentListTreeVO[] = await departmentListTree();
+      const data: DepartmentListTreeVO[] = await departmentListTree();
       dataList.value = data;
       departmentList.value.children = data;
     } else {

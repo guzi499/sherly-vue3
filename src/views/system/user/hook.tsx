@@ -14,7 +14,7 @@ import {
   userUpdateOne
 } from "@/api/userManagement";
 import { userListPageDTO } from "@/api/interface/userManagement";
-import { departmentListTreeVO } from "@/api/interface/department";
+import { DepartmentListTreeVO } from "@/api/interface/department";
 import { departmentListTree } from "@/api/department";
 
 export function useDepartment() {
@@ -161,7 +161,7 @@ export function useDepartment() {
     departmentId: [{ required: true, message: "请选择部门", trigger: "blur" }],
     roleIds: [{ required: true, message: "请选择角色", trigger: "blur" }]
   });
-  const departmentList = ref<departmentListTreeVO[]>([]);
+  const departmentList = ref<DepartmentListTreeVO[]>([]);
   const treeProps = {
     children: "children",
     label: "departmentName"
@@ -226,7 +226,7 @@ export function useDepartment() {
 
   // 查询菜单树
   async function departmentTree() {
-    const data: departmentListTreeVO[] = await departmentListTree();
+    const data: DepartmentListTreeVO[] = await departmentListTree();
     departmentList.value = data;
   }
 
