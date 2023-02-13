@@ -1,17 +1,17 @@
 import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import { isEmpty } from "@/globalType";
-import {emailGetOneVO, emailSaveOrUpdateDTO, emailSendDTO} from "@/api/interface/email";
+import {
+  emailGetOneVO,
+  emailSaveOrUpdateDTO,
+  emailSendDTO
+} from "@/api/interface/email";
 
 /** 邮件配置详情 */
 export const emailGetOne = (params?: isEmpty) => {
-  return http.request<emailGetOneVO>(
-    "get",
-    baseUrlApi("/email/get_one"),
-    {
-      params
-    }
-  );
+  return http.request<emailGetOneVO>("get", baseUrlApi("/email/get_one"), {
+    params
+  });
 };
 
 /** 邮件配置保存或修改 */

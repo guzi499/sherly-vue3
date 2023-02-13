@@ -1,7 +1,7 @@
-import {reactive, ref, computed, onMounted} from "vue";
-import type {FormRules, FormInstance} from "element-plus";
-import {emailGetOneVO, emailSaveOrUpdateDTO} from "@/api/interface/email";
-import {emailGetOne, emailSaveOrUpdate} from "@/api/email";
+import { reactive, ref, onMounted } from "vue";
+import type { FormRules, FormInstance } from "element-plus";
+import { emailGetOneVO, emailSaveOrUpdateDTO } from "@/api/interface/email";
+import { emailGetOne, emailSaveOrUpdate } from "@/api/email";
 
 export function useEmailConfig() {
   const loading = ref(true);
@@ -14,25 +14,19 @@ export function useEmailConfig() {
   });
   const rules = reactive<FormRules>({
     senderEmail: [
-      {required: true, message: "请输入发件人邮箱", trigger: "blur"},
+      { required: true, message: "请输入发件人邮箱", trigger: "blur" }
     ],
     senderUser: [
-      {required: true, message: "请输入发件人名称", trigger: "blur"},
+      { required: true, message: "请输入发件人名称", trigger: "blur" }
     ],
-    password: [
-      {required: true, message: "请输入邮箱密码", trigger: "blur"},
-    ],
-    host: [
-      {required: true, message: "请输入SMTP地址", trigger: "blur"},
-    ],
-    port: [
-      {required: true, message: "请输入SMTP端口", trigger: "blur"},
-    ]
+    password: [{ required: true, message: "请输入邮箱密码", trigger: "blur" }],
+    host: [{ required: true, message: "请输入SMTP地址", trigger: "blur" }],
+    port: [{ required: true, message: "请输入SMTP端口", trigger: "blur" }]
   });
   async function onSearch() {
     loading.value = true;
     const data: emailGetOneVO = await emailGetOne();
-    ruleForm.value = data
+    ruleForm.value = data;
     setTimeout(() => {
       loading.value = false;
     }, 500);
@@ -48,8 +42,8 @@ export function useEmailConfig() {
     if (!formEl) return;
     await formEl.validate(async valid => {
       if (valid) {
-        loading.value = true
-        const data: emailGetOneVO = await emailSaveOrUpdate(ruleForm.value);
+        loading.value = true;
+        await emailSaveOrUpdate(ruleForm.value);
         setTimeout(() => {
           loading.value = false;
         }, 500);

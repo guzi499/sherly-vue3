@@ -39,4 +39,3 @@ export type emailSendDTO = {
   /** 收件人邮箱 */
   tos?: string;
 };
-
