@@ -159,7 +159,7 @@ export function useRole() {
     onSearch();
   };
 
-  const handleCancle = formEl => {
+  const handleCancel = formEl => {
     if (!formEl) return;
     formEl.resetFields();
     dialogVisible.value = false;
@@ -225,6 +225,6 @@ export function useRole() {
     handleSelectionChange,
     handleClose,
     handleOk,
-    handleCancle
+    handleCancel
   };
 }

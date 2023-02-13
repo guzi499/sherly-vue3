@@ -156,7 +156,7 @@ export function useDepartment() {
     onSearch();
   };
 
-  const handleCancle = formEl => {
+  const handleCancel = formEl => {
     if (!formEl) return;
     formEl.resetFields();
     dialogVisible.value = false;
@@ -213,6 +213,6 @@ export function useDepartment() {
     handleDelete,
     handleClose,
     handleOk,
-    handleCancle
+    handleCancel
   };
 }
