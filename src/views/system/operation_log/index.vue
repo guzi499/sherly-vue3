@@ -22,14 +22,13 @@ const {
   columns,
   dataList,
   pagination,
+  detail,
   requestType,
-  // buttonClass,
   onSearch,
   resetForm,
   handleRemove,
   handleSizeChange,
   handleCurrentChange,
-  handleSelectionChange,
   handleClose,
   dialogVisible,
   datetimeRange,
@@ -137,7 +136,7 @@ const {
             background: 'var(--el-table-row-hover-bg-color)',
             color: 'var(--el-text-color-primary)'
           }"
-          @selection-change="handleSelectionChange"
+          @selection-change="handleCurrentChange"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
@@ -164,7 +163,21 @@ const {
       width="40%"
       :before-close="handleClose"
     >
-      1111
+      <el-descriptions column="1" size="large">
+        <el-descriptions-item label="日志id：">{{ detail.logId }}</el-descriptions-item>
+        <el-descriptions-item label="日志类型：">
+          {{ detail.type }}
+        </el-descriptions-item>
+        <el-descriptions-item label="描述：">{{ detail.description }}</el-descriptions-item>
+        <el-descriptions-item label="请求方式：">{{ detail.requestMethod }}</el-descriptions-item>
+        <el-descriptions-item label="请求uri：">{{ detail.uri }}</el-descriptions-item>
+        <el-descriptions-item label="请求参数：">{{ detail.requestParams }}</el-descriptions-item>
+        <el-descriptions-item label="请求ip：">{{ detail.ip }}</el-descriptions-item>
+        <el-descriptions-item label="请求地址：">{{ detail.address }}</el-descriptions-item>
+        <el-descriptions-item label="请求浏览器：">{{ detail.browser }}</el-descriptions-item>
+        <el-descriptions-item label="耗时：">{{ detail.duration }}</el-descriptions-item>
+        <el-descriptions-item label="异常详情：">{{ detail.exception }}</el-descriptions-item>
+      </el-descriptions>
     </el-dialog>
   </div>
 </template>

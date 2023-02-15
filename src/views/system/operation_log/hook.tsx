@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import type {PaginationProps} from "@pureadmin/table";
 import {reactive, ref, computed, onMounted} from "vue";
 import {ElMessageBox} from 'element-plus'
-import {operationLogListPage, operationLogRemoveAll} from "@/api/operation_log";
+import {operationLogGetOne, operationLogListPage, operationLogRemoveAll} from "@/api/operation_log";
 import {operationLogGetOneVO, operationLogListPageDTO, operationLogListPageVO} from "@/api/interface/operation_log";
 import {message} from "@/utils/message";
 
@@ -39,6 +39,14 @@ export function useOperationLog() {
       minWidth: 100
     },
     {
+      label: "日志类型",
+      prop: "type",
+      minWidth: 100,
+      cellRenderer: ({row}) => (
+        <el-tag type={row.type === 'NORMAL' ? "success" : 'danger'}>{row.type === 'NORMAL' ? "正常" : '异常'}</el-tag>
+      )
+    },
+    {
       label: "操作用户",
       prop: "operateUser",
       minWidth: 120
@@ -56,6 +64,11 @@ export function useOperationLog() {
     {
       label: "请求uri",
       prop: "uri",
+      minWidth: 120
+    },
+    {
+      label: "请求ip",
+      prop: "ip",
       minWidth: 120
     },
     {
@@ -145,15 +158,13 @@ export function useOperationLog() {
   }
 
   function handleSizeChange(val: number) {
-    console.log(`${val} items per page`);
+    form.size = val
+    onSearch()
   }
 
   function handleCurrentChange(val: number) {
-    console.log(`current page: ${val}`);
-  }
-
-  function handleSelectionChange(val) {
-    console.log("handleSelectionChange", val);
+    form.current = val
+    onSearch()
   }
 
   async function onSearch() {
@@ -180,7 +191,10 @@ export function useOperationLog() {
     onSearch();
   };
 
-  const handleDetail = (data) => {
+  const detail = ref<operationLogGetOneVO>({})
+
+  const handleDetail =async (data) => {
+    detail.value = await operationLogGetOne({logId: data.logId})
     dialogVisible.value = true
   };
 
@@ -209,12 +223,12 @@ export function useOperationLog() {
     type,
     requestType,
     datetimeRange,
+    detail,
     onSearch,
     resetForm,
     handleRemove,
     handleSizeChange,
     handleCurrentChange,
-    handleSelectionChange,
     handleOk,
     handleClose,
     handleDetail
