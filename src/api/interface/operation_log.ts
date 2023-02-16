@@ -1,4 +1,4 @@
-/** 在线用户列表 类型声明 */
+/** 操作日志分页 类型声明 */
 export type operationLogListPageDTO = {
   /** 开始耗时 */
   beginDuration?: number;
