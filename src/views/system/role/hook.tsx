@@ -126,15 +126,13 @@ export function useRole() {
   }
 
   function handleSizeChange(val: number) {
-    console.log(`${val} items per page`);
+    form.size = val;
+    onSearch();
   }
 
   function handleCurrentChange(val: number) {
-    console.log(`current page: ${val}`);
-  }
-
-  function handleSelectionChange(val) {
-    console.log("handleSelectionChange", val);
+    form.current = val;
+    onSearch();
   }
 
   async function onSearch() {
@@ -222,7 +220,6 @@ export function useRole() {
     handleDelete,
     handleSizeChange,
     handleCurrentChange,
-    handleSelectionChange,
     handleClose,
     handleOk,
     handleCancel

@@ -29,7 +29,6 @@ const {
   handleDelete,
   handleSizeChange,
   handleCurrentChange,
-  handleSelectionChange,
   handleClose,
   dialogVisible,
   title,
@@ -100,7 +99,7 @@ const {
             background: 'var(--el-table-row-hover-bg-color)',
             color: 'var(--el-text-color-primary)'
           }"
-          @selection-change="handleSelectionChange"
+          @selection-change="handleCurrentChange"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
