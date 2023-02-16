@@ -36,7 +36,6 @@ const {
   ruleForm,
   rules,
   handleOk,
-  handleCancle,
   type,
   menuList,
   treeProps

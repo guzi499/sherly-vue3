@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import {useLoginLog} from "./hook";
-import {PureTableBar} from "@/components/RePureTableBar";
-import {useRenderIcon} from "@/components/ReIcon/src/hooks";
+import { ref } from "vue";
+import { useLoginLog } from "./hook";
+import { PureTableBar } from "@/components/RePureTableBar";
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 
 import Delete from "@iconify-icons/ep/delete";
 import Search from "@iconify-icons/ep/search";
@@ -47,13 +47,33 @@ const {
         />
       </el-form-item>
       <el-form-item label="登录方式：" prop="type">
-        <el-select v-model="form.type" placeholder="请选择登录方式" clearable style="width: 215px">
-          <el-option v-for="item in loginType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        <el-select
+          v-model="form.type"
+          placeholder="请选择登录方式"
+          clearable
+          style="width: 215px"
+        >
+          <el-option
+            v-for="item in loginType"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="登录结果：" prop="result">
-        <el-select v-model="form.result" placeholder="请选择登录结果" clearable style="width: 215px">
-          <el-option v-for="item in loginResults" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        <el-select
+          v-model="form.result"
+          placeholder="请选择登录结果"
+          clearable
+          style="width: 215px"
+        >
+          <el-option
+            v-for="item in loginResults"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="登录时间：" prop="datetimeRange">
@@ -66,7 +86,8 @@ const {
           format="YYYY-MM-DD HH:mm:ss"
           value-format="YYYY-MM-DD HH:mm:ss"
           start-placeholder="开始日期"
-          end-placeholder="结束日期"/>
+          end-placeholder="结束日期"
+        />
       </el-form-item>
       <el-form-item>
         <el-button

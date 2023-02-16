@@ -1,13 +1,20 @@
 import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import { isEmpty } from "@/globalType";
-import {loginLogListPageDTO, loginLogListPageVO} from "@/api/interface/login_log";
+import {
+  loginLogListPageDTO,
+  loginLogListPageVO
+} from "@/api/interface/login_log";
 
 /** 登录日志分页 */
 export const loginLogListPage = (params?: loginLogListPageDTO) => {
-  return http.request<loginLogListPageVO>("get", baseUrlApi("/login_log/list_page"), {
-    params
-  });
+  return http.request<loginLogListPageVO>(
+    "get",
+    baseUrlApi("/login_log/list_page"),
+    {
+      params
+    }
+  );
 };
 
 /** 登录日志清空 */
@@ -16,4 +23,3 @@ export const loginLogRemoveAll = (params?: isEmpty) => {
     params
   });
 };
-

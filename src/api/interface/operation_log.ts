@@ -72,7 +72,7 @@ export type operationLogGetOneVO = {
   /** 耗时 */
   duration?: number;
   /** 异常描述 */
-  exception?:string;
+  exception?: string;
   /** 请求ip */
   ip?: number;
   /** 日志编号 */

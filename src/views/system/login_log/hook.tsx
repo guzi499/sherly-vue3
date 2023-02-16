@@ -1,13 +1,16 @@
 import dayjs from "dayjs";
-import type {PaginationProps} from "@pureadmin/table";
-import {reactive, ref, onMounted} from "vue";
-import {ElMessageBox} from 'element-plus'
-import {message} from "@/utils/message";
-import {loginLogListPage, loginLogRemoveAll} from "@/api/login_log";
-import {loginLogListPageDTO, loginLogListPageVO} from "@/api/interface/login_log";
+import type { PaginationProps } from "@pureadmin/table";
+import { reactive, ref, onMounted } from "vue";
+import { ElMessageBox } from "element-plus";
+import { message } from "@/utils/message";
+import { loginLogListPage, loginLogRemoveAll } from "@/api/login_log";
+import {
+  loginLogListPageDTO,
+  loginLogListPageVO
+} from "@/api/interface/login_log";
 
 export function useLoginLog() {
-  const datetimeRange = ref(['', ''],)
+  const datetimeRange = ref([]);
   const form: loginLogListPageDTO = reactive({
     current: 1,
     size: 10
@@ -25,13 +28,13 @@ export function useLoginLog() {
       type: "selection",
       width: 55,
       align: "left",
-      hide: ({checkList}) => !checkList.includes("勾选列")
+      hide: ({ checkList }) => !checkList.includes("勾选列")
     },
     {
       label: "序号",
       type: "index",
       width: 70,
-      hide: ({checkList}) => !checkList.includes("序号列")
+      hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
       label: "日志id",
@@ -77,68 +80,66 @@ export function useLoginLog() {
       label: "登录时间",
       minWidth: 180,
       prop: "createTime",
-      formatter: ({createTime}) =>
+      formatter: ({ createTime }) =>
         dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     }
   ];
   // 登录方式枚举
   const loginType = reactive([
     {
-      value: 'PASSWORD',
-      label: '密码'
+      value: "PASSWORD",
+      label: "密码"
     }
-  ])
+  ]);
 
   // 登录结果枚举
   const loginResults = reactive([
     {
-      value: 'SUCCESS',
-      label: '成功'
-    },{
-      value: 'DISABLE',
-      label: '用户禁用'
-    },{
-      value: 'CHECK_FAIL',
-      label: '其他'
+      value: "SUCCESS",
+      label: "成功"
+    },
+    {
+      value: "DISABLE",
+      label: "用户禁用"
+    },
+    {
+      value: "CHECK_FAIL",
+      label: "其他"
     }
-  ])
+  ]);
 
   function handleRemove() {
-    ElMessageBox.confirm(
-      '该操作不可撤回，确认清除全部登录日志吗?',
-      '提示',
-      {
-        confirmButtonText: '是的，我确定',
-        cancelButtonText: '我不想删了',
-        type: 'warning',
-      }
-    )
+    ElMessageBox.confirm("该操作不可撤回，确认清除全部登录日志吗?", "提示", {
+      confirmButtonText: "是的，我确定",
+      cancelButtonText: "我不想删了",
+      type: "warning"
+    })
       .then(async () => {
         await loginLogRemoveAll();
         await onSearch();
       })
       .catch(() => {
-        message('取消操作', {type: "info"})
-      })
+        message("取消操作", { type: "info" });
+      });
   }
 
   function handleSizeChange(val: number) {
-    form.size = val
-    onSearch()
+    form.size = val;
+    onSearch();
   }
 
   function handleCurrentChange(val: number) {
-    form.current = val
-    onSearch()
+    form.current = val;
+    onSearch();
   }
 
   async function onSearch() {
     loading.value = true;
-    let _obj = {
+    const _obj = {
       ...form,
       beginTime: datetimeRange.value[0],
-      endTime: datetimeRange.value[1],
-    }
+      endTime: datetimeRange.value[1]
+    };
     const data: loginLogListPageVO = await loginLogListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
@@ -150,7 +151,7 @@ export function useLoginLog() {
   const resetForm = formEl => {
     if (!formEl) return;
     formEl.resetFields();
-    datetimeRange.value = []
+    datetimeRange.value = [];
     onSearch();
   };
 
@@ -171,6 +172,6 @@ export function useLoginLog() {
     resetForm,
     handleRemove,
     handleSizeChange,
-    handleCurrentChange,
+    handleCurrentChange
   };
 }
