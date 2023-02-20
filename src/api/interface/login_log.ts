@@ -1,5 +1,5 @@
 /** 登录日志分页 类型声明 */
-export type loginLogListPageDTO = {
+export type LoginLogListPageDTO = {
   /** 开始时间 */
   beginTime?: string;
   /** 当前页 */
@@ -16,7 +16,7 @@ export type loginLogListPageDTO = {
   username?: string;
 };
 
-export type loginLogListPageVO = {
+export type LoginLogListPageVO = {
   result?: Array<PageResult>;
   total?: number;
 };

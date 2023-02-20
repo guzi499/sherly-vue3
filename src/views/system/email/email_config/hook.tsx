@@ -1,11 +1,11 @@
 import { reactive, ref, onMounted } from "vue";
 import type { FormRules, FormInstance } from "element-plus";
-import { emailGetOneVO, emailSaveOrUpdateDTO } from "@/api/interface/email";
+import { EmailGetOneVO, EmailSaveOrUpdateDTO } from "@/api/interface/email";
 import { emailGetOne, emailSaveOrUpdate } from "@/api/email";
 
 export function useEmailConfig() {
   const loading = ref(true);
-  const ruleForm = ref<emailSaveOrUpdateDTO>({
+  const ruleForm = ref<EmailSaveOrUpdateDTO>({
     senderEmail: "",
     senderUser: "",
     password: "",
@@ -25,7 +25,7 @@ export function useEmailConfig() {
   });
   async function onSearch() {
     loading.value = true;
-    const data: emailGetOneVO = await emailGetOne();
+    const data: EmailGetOneVO = await emailGetOne();
     ruleForm.value = data;
     setTimeout(() => {
       loading.value = false;

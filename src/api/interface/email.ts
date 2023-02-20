@@ -1,5 +1,5 @@
 /** 邮件配置详情 类型声明 */
-export type emailGetOneVO = {
+export type EmailGetOneVO = {
   /** 创建时间 */
   createTime?: string;
   /** 邮件服务器SMTP地址 */
@@ -15,7 +15,7 @@ export type emailGetOneVO = {
 };
 
 /** 邮件配置保存或修改 类型声明 */
-export type emailSaveOrUpdateDTO = {
+export type EmailSaveOrUpdateDTO = {
   /** 编号 */
   id?: number;
   /** 邮件服务器SMTP地址 */
@@ -31,7 +31,7 @@ export type emailSaveOrUpdateDTO = {
 };
 
 /** 邮件发送 类型声明 */
-export type emailSendDTO = {
+export type EmailSendDTO = {
   /** 正文 */
   content?: string;
   /** 主题 */

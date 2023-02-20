@@ -16,7 +16,7 @@ import type { PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted } from "vue";
 import type { FormRules, FormInstance } from "element-plus";
 import { menuListTree } from "@/api/menu";
-import { menuListTreeVO } from "@/api/interface/menu";
+import { MenuListTreeVO } from "@/api/interface/menu";
 
 export function useRole() {
   const form: RolePageDTO = reactive({
@@ -98,7 +98,7 @@ export function useRole() {
       { min: 1, max: 20, message: "最大输入20个字符", trigger: "blur" }
     ]
   });
-  const menuList = ref<menuListTreeVO[]>([]);
+  const menuList = ref<MenuListTreeVO[]>([]);
   const treeProps = {
     children: "children",
     label: "menuName"
@@ -147,7 +147,7 @@ export function useRole() {
 
   // 查询菜单树
   async function menuTree() {
-    const data: menuListTreeVO[] = await menuListTree();
+    const data: MenuListTreeVO[] = await menuListTree();
     menuList.value = data;
   }
 

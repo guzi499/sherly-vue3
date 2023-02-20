@@ -1,9 +1,9 @@
-import { emailSendDTO } from "@/api/interface/email";
+import { EmailSendDTO } from "@/api/interface/email";
 import { emailSend } from "@/api/email";
 import { reactive, ref, computed, onMounted } from "vue";
 import type { FormRules, FormInstance } from "element-plus";
 import { menuListTree } from "@/api/menu";
-import { menuListTreeVO } from "@/api/interface/menu";
+import { MenuListTreeVO } from "@/api/interface/menu";
 import type { TabsPaneContext } from "element-plus";
 
 export function useEmailSend() {
@@ -21,7 +21,7 @@ export function useEmailSend() {
   const dialogVisible = ref(false as boolean);
   const title = ref("编辑" as string);
   const type = ref<string>("");
-  const ruleForm = ref<emailSendDTO>({
+  const ruleForm = ref<EmailSendDTO>({
     subject: "",
     tos: "",
     content: ""
@@ -31,7 +31,7 @@ export function useEmailSend() {
     tos: [{ required: true, message: "请选择收件用户", trigger: "change" }],
     content: [{ required: true, message: "请输入邮件正文", trigger: "blur" }]
   });
-  const menuList = ref<menuListTreeVO[]>([]);
+  const menuList = ref<MenuListTreeVO[]>([]);
   const treeProps = {
     children: "children",
     label: "menuName"
@@ -41,7 +41,7 @@ export function useEmailSend() {
 
   // 查询菜单树
   async function menuTree() {
-    const data: menuListTreeVO[] = await menuListTree();
+    const data: MenuListTreeVO[] = await menuListTree();
     menuList.value = data;
   }
 

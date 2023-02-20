@@ -2,9 +2,9 @@ import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import {
   DepartmentListTreeVO,
-  departmentRemoveOneDTO,
-  departmentSaveOneDTO,
-  departmentUpdateOneDTO
+  DepartmentRemoveOneDTO,
+  DepartmentSaveOneDTO,
+  DepartmentUpdateOneDTO
 } from "@/api/interface/department";
 import { isEmpty } from "@/globalType";
 
@@ -20,21 +20,21 @@ export const departmentListTree = (params?: isEmpty) => {
 };
 
 /** 部门删除 */
-export const departmentRemoveOne = (params?: departmentRemoveOneDTO) => {
+export const departmentRemoveOne = (params?: DepartmentRemoveOneDTO) => {
   return http.request<isEmpty>("delete", baseUrlApi("/department/remove_one"), {
     params
   });
 };
 
 /** 部门新增 */
-export const departmentSaveOne = (data?: departmentSaveOneDTO) => {
+export const departmentSaveOne = (data?: DepartmentSaveOneDTO) => {
   return http.request<isEmpty>("post", baseUrlApi("/department/save_one"), {
     data
   });
 };
 
 /** 部门更新 */
-export const departmentUpdateOne = (data?: departmentUpdateOneDTO) => {
+export const departmentUpdateOne = (data?: DepartmentUpdateOneDTO) => {
   return http.request<isEmpty>("put", baseUrlApi("/department/update_one"), {
     data
   });

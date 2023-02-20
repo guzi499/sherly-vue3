@@ -2,13 +2,13 @@ import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import { isEmpty } from "@/globalType";
 import {
-  loginLogListPageDTO,
-  loginLogListPageVO
+  LoginLogListPageDTO,
+  LoginLogListPageVO
 } from "@/api/interface/login_log";
 
 /** 登录日志分页 */
-export const loginLogListPage = (params?: loginLogListPageDTO) => {
-  return http.request<loginLogListPageVO>(
+export const loginLogListPage = (params?: LoginLogListPageDTO) => {
+  return http.request<LoginLogListPageVO>(
     "get",
     baseUrlApi("/login_log/list_page"),
     {

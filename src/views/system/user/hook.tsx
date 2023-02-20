@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { roleListPage } from "@/api/role";
 import { RolePageVO } from "@/api/interface/role";
-import { userGetOneVO, userListPageVO } from "@/api/interface/userManagement";
+import { UserGetOneVO, UserListPageVO } from "@/api/interface/userManagement";
 import type { PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted } from "vue";
 import type { FormRules, FormInstance } from "element-plus";
@@ -13,12 +13,12 @@ import {
   userSaveOne,
   userUpdateOne
 } from "@/api/userManagement";
-import { userListPageDTO } from "@/api/interface/userManagement";
+import { UserListPageDTO } from "@/api/interface/userManagement";
 import { DepartmentListTreeVO } from "@/api/interface/department";
 import { departmentListTree } from "@/api/department";
 
 export function useDepartment() {
-  const form: userListPageDTO = reactive({
+  const form: UserListPageDTO = reactive({
     realName: "",
     nickname: "",
     phone: "",
@@ -146,7 +146,7 @@ export function useDepartment() {
   const dialogVisible = ref(false as boolean);
   const title = ref("编辑" as string);
   const type = ref<string>("");
-  const ruleForm = ref<userGetOneVO>({
+  const ruleForm = ref<UserGetOneVO>({
     phone: "",
     departmentId: null,
     gender: "",
@@ -214,7 +214,7 @@ export function useDepartment() {
       endTime: form.createTime[1]
     };
     delete _obj["createTime"];
-    const data: userListPageVO = await userListPage(_obj);
+    const data: UserListPageVO = await userListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
     setTimeout(() => {

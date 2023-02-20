@@ -16,13 +16,13 @@ export type DepartmentListTreeVO = {
 };
 
 /** 部门删除 类型声明 */
-export type departmentRemoveOneDTO = {
+export type DepartmentRemoveOneDTO = {
   /** 部门id */
   departmentId?: number;
 };
 
 /** 部门新增 类型声明 */
-export type departmentSaveOneDTO = {
+export type DepartmentSaveOneDTO = {
   /** 部门名称 */
   departmentName?: string;
   /** 描述 */
@@ -34,7 +34,7 @@ export type departmentSaveOneDTO = {
 };
 
 /** 部门更新 类型声明 */
-export type departmentUpdateOneDTO = {
+export type DepartmentUpdateOneDTO = {
   /** 部门id */
   departmentId?: number;
   /** 部门名称 */

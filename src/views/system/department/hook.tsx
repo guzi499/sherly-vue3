@@ -9,7 +9,7 @@ import {
 } from "@/api/department";
 import {
   DepartmentListTreeVO,
-  departmentUpdateOneDTO
+  DepartmentUpdateOneDTO
 } from "@/api/interface/department";
 
 export function useDepartment() {
@@ -72,7 +72,7 @@ export function useDepartment() {
   const dialogVisible = ref(false as boolean);
   const title = ref("编辑" as string);
   const type = ref<string>("");
-  const ruleForm = ref<departmentUpdateOneDTO>({
+  const ruleForm = ref<DepartmentUpdateOneDTO>({
     departmentId: null,
     departmentName: "",
     description: "",
