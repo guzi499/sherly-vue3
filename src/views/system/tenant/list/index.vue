@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useUser } from "./hook";
+import { useTenantList } from "./hook";
 import { PureTableBar } from "@/components/RePureTableBar";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 
@@ -37,10 +37,11 @@ const {
   handleOk,
   handleCancel,
   type,
-  departmentList,
-  treeProps,
-  roleList
-} = useUser();
+  roleList,
+  handleSelect,
+  datetimerangeCreateTime,
+  datetimerangeExpireTime
+} = useTenantList();
 </script>
 
 <template>
@@ -52,71 +53,78 @@ const {
       :model="form"
       class="bg-bg_color w-[99/100] pl-8 pt-4"
     >
-      <el-form-item label="姓名：" prop="realName">
+      <el-form-item label="租户代码：" prop="tenantCode">
         <el-input
-          v-model="form.realName"
-          placeholder="请输入姓名"
+          v-model="form.tenantCode"
+          placeholder="请输入租户代码"
           clearable
           class="!w-[200px]"
         />
       </el-form-item>
-      <el-form-item label="昵称：" prop="nickname">
+      <el-form-item label="租户名称：" prop="tenantName">
         <el-input
-          v-model="form.nickname"
-          placeholder="请输入昵称"
+          v-model="form.tenantName"
+          placeholder="请输入租户名称"
           clearable
           class="!w-[200px]"
         />
       </el-form-item>
-      <el-form-item label="手机号：" prop="phone">
+      <el-form-item label="联系人：" prop="contactUser">
         <el-input
-          v-model="form.phone"
-          placeholder="请输入手机号"
+          v-model="form.contactUser"
+          placeholder="请输入联系人"
           clearable
           class="!w-[200px]"
         />
       </el-form-item>
-      <el-form-item label="邮箱：" prop="email">
+      <el-form-item label="联系电话：" prop="contactPhone">
         <el-input
-          v-model="form.email"
-          placeholder="请输入邮箱"
+          v-model="form.contactPhone"
+          placeholder="请输入联系电话"
           clearable
           class="!w-[200px]"
-        />
-      </el-form-item>
-      <el-form-item label="部门：" prop="departmentIds">
-        <el-tree-select
-          v-model="form.departmentIds"
-          node-key="departmentId"
-          :data="departmentList"
-          :props="treeProps"
-          multiple
-          :render-after-expand="false"
-          show-checkbox
-          check-strictly
-          check-on-click-node
         />
       </el-form-item>
       <el-form-item label="创建时间：" prop="createTime">
         <el-date-picker
-          v-model="form.createTime"
+          v-model="datetimerangeCreateTime"
           type="datetimerange"
           :shortcuts="shortcuts"
           range-separator="至"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
-          value-format="YY-MM-DD hh:mm:ss"
+          value-format="YYYY-MM-DD hh:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="禁用状态：" prop="enable">
-        <el-select
-          v-model="form.enable"
-          class="!w-[200px]"
-          placeholder="请选择禁用状态"
-        >
-          <el-option value="ENABLE" label="启用" />
-          <el-option value="DISABLE" label="禁用" />
-        </el-select>
+      <el-form-item label="过期时间：" prop="expireTime">
+        <el-date-picker
+          v-model="datetimerangeExpireTime"
+          type="datetimerange"
+          :shortcuts="shortcuts"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          value-format="YYYY-MM-DD hh:mm:ss"
+        />
+      </el-form-item>
+      <el-form-item label="用户上限：">
+        <div class="input-box">
+          <el-input
+            v-model="form.beginUserLimit"
+            placeholder="0"
+            maxlength="4"
+            minlength="1"
+            class="!w-[80px]"
+          />
+          ~
+          <el-input
+            v-model="form.endUserLimit"
+            placeholder="9999"
+            maxlength="4"
+            minlength="1"
+            class="!w-[80px]"
+          />
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -133,14 +141,14 @@ const {
       </el-form-item>
     </el-form>
     <!--表格-->
-    <PureTableBar title="用户列表" @refresh="onSearch">
+    <PureTableBar title="租户列表" @refresh="onSearch">
       <template #buttons>
         <el-button
           type="primary"
           :icon="useRenderIcon(AddFill)"
           @click="handleUpdate('add', '')"
         >
-          新增用户
+          新增租户
         </el-button>
       </template>
       <template v-slot="{ size, checkList }">
@@ -165,6 +173,16 @@ const {
           @current-change="handleCurrentChange"
         >
           <template #operation="{ row }">
+            <el-button
+              class="reset-margin"
+              link
+              type="primary"
+              :size="size"
+              :icon="useRenderIcon('ant-design:tags-filled')"
+              @click="handleSelect(row)"
+            >
+              套餐选择
+            </el-button>
             <el-button
               class="reset-margin"
               link
@@ -195,7 +213,7 @@ const {
     <!--  新增/编辑弹框组件-->
     <el-dialog
       v-model="dialogVisible"
-      :title="'角色' + title"
+      :title="'租户' + title"
       width="30%"
       :before-close="handleClose"
     >
@@ -207,36 +225,11 @@ const {
         class="demo-ruleForm"
         status-icon
       >
-        <el-form-item label="手机号" prop="phone">
-          <el-input :disabled="type === 'update'" v-model="ruleForm.phone" />
-        </el-form-item>
-        <el-form-item label="昵称" prop="nickname" v-if="type === 'update'">
-          <el-input :disabled="type === 'update'" v-model="ruleForm.nickname" />
-        </el-form-item>
-        <el-form-item label="姓名" prop="realName">
-          <el-input v-model="ruleForm.realName" />
-        </el-form-item>
-        <el-form-item label="性别" prop="gender">
-          <el-radio-group v-model="ruleForm.gender" class="ml-4">
-            <el-radio label="MALE" size="large">男</el-radio>
-            <el-radio label="FEMALE" size="large">女</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="部门" prop="departmentId">
-          <el-tree-select
-            v-model="ruleForm.departmentId"
-            node-key="departmentId"
-            :data="departmentList"
-            :props="treeProps"
-            :render-after-expand="false"
-            check-strictly
-          />
-        </el-form-item>
-        <el-form-item label="角色" prop="roleIds">
+        <el-form-item label="套餐选择" prop="roleIds" v-if="type === 'select'">
           <el-select
-            v-model="ruleForm.roleIds"
+            v-model="ruleForm.contactPhone"
             multiple
-            placeholder="请选择角色"
+            placeholder="请选择套餐选择"
             style="width: 240px"
           >
             <el-option
@@ -247,6 +240,48 @@ const {
             />
           </el-select>
         </el-form-item>
+        <div v-else>
+          <el-form-item label="租户名称" prop="tenantName">
+            <el-input
+              :disabled="type === 'update'"
+              v-model="ruleForm.tenantName"
+              class="!w-[300px]"
+            />
+          </el-form-item>
+          <el-form-item label="租户代码" prop="tenantCode">
+            <el-input
+              :disabled="type === 'update'"
+              v-model="ruleForm.tenantCode"
+              class="!w-[300px]"
+            />
+          </el-form-item>
+          <el-form-item label="过期时间" prop="expireTime">
+            <el-date-picker
+              v-model="ruleForm.expireTime"
+              type="datetime"
+              value-format="YYYY-MM-DD hh:mm:ss"
+              placeholder="请选择过期时间"
+              class="!w-[300px]"
+            />
+          </el-form-item>
+          <el-form-item label="用户上限" prop="userLimit">
+            <el-input v-model="ruleForm.userLimit" class="!w-[300px]" />
+          </el-form-item>
+          <el-form-item label="联系人" prop="contactUser">
+            <el-input
+              :disabled="type === 'update'"
+              v-model="ruleForm.contactUser"
+              class="!w-[300px]"
+            />
+          </el-form-item>
+          <el-form-item label="联系电话" prop="contactPhone">
+            <el-input
+              :disabled="type === 'update'"
+              v-model="ruleForm.contactPhone"
+              class="!w-[300px]"
+            />
+          </el-form-item>
+        </div>
         <el-form-item>
           <el-button @click="handleCancel(ruleFormRef)">取消</el-button>
           <el-button type="primary" @click="handleOk(ruleFormRef)">
@@ -258,4 +293,14 @@ const {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.input-box {
+  box-shadow: 0 0 0 1px #dcdfe6;
+  border-radius: 2px;
+
+  :deep(.el-input__wrapper) {
+    padding: 0 15px;
+    box-shadow: 0 0 0 0px #dcdfe6;
+  }
+}
+</style>

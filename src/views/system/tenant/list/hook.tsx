@@ -1,31 +1,21 @@
 import dayjs from "dayjs";
-import { roleListPage } from "@/api/role";
-import { RolePageVO } from "@/api/interface/role";
-import { UserGetOneVO, UserListPageVO } from "@/api/interface/userManagement";
 import type { PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted } from "vue";
 import type { FormRules, FormInstance } from "element-plus";
 import {
-  userBanOne,
-  userGetOne,
-  userListPage,
-  userRemoveOne,
-  userSaveOne,
-  userUpdateOne
-} from "@/api/userManagement";
-import { UserListPageDTO } from "@/api/interface/userManagement";
-import { DepartmentListTreeVO } from "@/api/interface/department";
-import { departmentListTree } from "@/api/department";
+  tenantListPage,
+  tenantRemoveOne,
+  tenantSaveOne,
+  tenantUpdateOne
+} from "@/api/tenant_list";
+import {
+  TenantListPageDTO,
+  TenantListPageVO,
+  TenantSaveOneDTO
+} from "@/api/interface/tenant_list";
 
-export function useUser() {
-  const form: UserListPageDTO = reactive({
-    realName: "",
-    nickname: "",
-    phone: "",
-    email: "",
-    departmentIds: [],
-    enable: null,
-    createTime: ["", ""],
+export function useTenantList() {
+  const form: TenantListPageDTO = reactive({
     current: 1,
     size: 10
   });
@@ -37,6 +27,10 @@ export function useUser() {
     currentPage: 1,
     background: true
   });
+  // 开始时间
+  const datetimerangeCreateTime = ref([]);
+  // 过期时间
+  const datetimerangeExpireTime = ref([]);
   const columns: TableColumnList = [
     {
       type: "selection",
@@ -51,74 +45,36 @@ export function useUser() {
       hide: ({ checkList }) => !checkList.includes("序号列")
     },
     {
-      label: "姓名",
-      prop: "realName",
+      label: "租户代码",
+      prop: "tenantCode",
       minWidth: 100
     },
     {
-      label: "昵称",
-      prop: "nickname",
+      label: "租户名称",
+      prop: "tenantName",
       minWidth: 120
     },
     {
-      label: "性别",
-      prop: "gender",
-      minWidth: 120,
-      cellRenderer: ({ row }) => {
-        function name() {
-          if (row.gender === "MALE") {
-            return "男";
-          } else if (row.gender === "FEMALE") {
-            return "女";
-          } else {
-            return "";
-          }
-        }
-
-        return <div>{name()}</div>;
-      }
-    },
-    {
-      label: "手机号",
-      prop: "phone",
+      label: "联系人",
+      prop: "contactUser",
       minWidth: 120
     },
     {
-      label: "邮箱",
-      prop: "email",
+      label: "联系电话",
+      prop: "contactPhone",
       minWidth: 120
     },
     {
-      label: "部门",
-      prop: "departmentName",
-      minWidth: 120
+      label: "过期时间",
+      prop: "expireTime",
+      minWidth: 150,
+      formatter: ({ expireTime }) =>
+        dayjs(expireTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
-      label: "状态",
-      prop: "departmentName",
-      minWidth: 120,
-      cellRenderer: ({ row }) => {
-        function isDisabled() {
-          if (row.enable === "ENABLE") {
-            return true;
-          } else {
-            return false;
-          }
-        }
-
-        return (
-          <el-switch
-            value={isDisabled()}
-            onChange={async val => {
-              await userBanOne({
-                enable: val ? "ENABLE" : "DISABLE",
-                userId: row.userId
-              });
-              await onSearch();
-            }}
-          />
-        );
-      }
+      label: "用户上限",
+      prop: "userLimit",
+      minWidth: 120
     },
     {
       label: "创建时间",
@@ -130,7 +86,7 @@ export function useUser() {
     {
       label: "操作",
       fixed: "right",
-      width: 180,
+      width: 240,
       slot: "operation"
     }
   ];
@@ -146,41 +102,42 @@ export function useUser() {
   const dialogVisible = ref(false as boolean);
   const title = ref("编辑" as string);
   const type = ref<string>("");
-  const ruleForm = ref<UserGetOneVO>({
-    phone: "",
-    departmentId: null,
-    gender: "",
-    realName: "",
-    roleIds: [],
-    nickname: ""
+  const ruleForm = ref<TenantSaveOneDTO>({
+    tenantName: "",
+    tenantCode: "",
+    expireTime: "",
+    contactPhone: "",
+    contactUser: "",
+    userLimit: null
   });
   const rules = reactive<FormRules>({
-    phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
-    realName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-    gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
-    departmentId: [{ required: true, message: "请选择部门", trigger: "blur" }],
-    roleIds: [{ required: true, message: "请选择角色", trigger: "blur" }]
+    tenantName: [
+      { required: true, message: "请输入租户名称", trigger: "blur" }
+    ],
+    tenantCode: [
+      { required: true, message: "请输入租户代码", trigger: "blur" }
+    ],
+    expireTime: [
+      { required: true, message: "请选择过期时间", trigger: "blur" }
+    ],
+    contactPhone: [
+      { required: true, message: "请输入联系电话", trigger: "blur" }
+    ],
+    contactUser: [{ required: true, message: "请输入联系人", trigger: "blur" }],
+    userLimit: [{ required: true, message: "请输入用户上限", trigger: "blur" }]
   });
-  const departmentList = ref<DepartmentListTreeVO[]>([]);
-  const treeProps = {
-    children: "children",
-    label: "departmentName"
-  };
 
-  const roleList = ref<RolePageVO[]>([]);
-
-  // 查询角色
-  async function getRoleList() {
-    const data = await roleListPage({ current: 1 });
-    roleList.value = data.result;
+  // 套餐选择
+  function handleSelect(data) {
+    type.value = 'select';
+    console.log(data);
   }
 
   // 新增 / 编辑
   async function handleUpdate(ty, row) {
     ruleForm.value = {};
     if (ty !== "add") {
-      const data = await userGetOne({ userId: row.userId });
-      ruleForm.value = data;
+      ruleForm.value = row;
     }
     type.value = ty;
     ty === "add" ? (title.value = "新增") : (title.value = "编辑");
@@ -192,7 +149,7 @@ export function useUser() {
   }
 
   async function handleDelete(row) {
-    await userRemoveOne({ userId: row.userId });
+    await tenantRemoveOne({ tenantId: row.tenantId });
     await onSearch();
   }
 
@@ -210,11 +167,13 @@ export function useUser() {
     loading.value = true;
     const _obj = {
       ...form,
-      beginTime: form.createTime[0],
-      endTime: form.createTime[1]
+      beginTime: datetimerangeCreateTime.value[0],
+      endTime: datetimerangeCreateTime.value[1],
+      beginExpireTime: datetimerangeExpireTime.value[0],
+      endExpireTime: datetimerangeExpireTime.value[1]
     };
     delete _obj["createTime"];
-    const data: UserListPageVO = await userListPage(_obj);
+    const data: TenantListPageVO = await tenantListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
     setTimeout(() => {
@@ -222,15 +181,11 @@ export function useUser() {
     }, 500);
   }
 
-  // 查询菜单树
-  async function departmentTree() {
-    const data: DepartmentListTreeVO[] = await departmentListTree();
-    departmentList.value = data;
-  }
-
   const resetForm = formEl => {
     if (!formEl) return;
     formEl.resetFields();
+    datetimerangeCreateTime.value = [];
+    datetimerangeExpireTime.value = [];
     onSearch();
   };
 
@@ -245,9 +200,9 @@ export function useUser() {
   const update = async data => {
     loading.value = true;
     if (type.value === "add") {
-      await userSaveOne(data);
+      await tenantSaveOne(data);
     } else {
-      await userUpdateOne(data);
+      await tenantUpdateOne(data);
     }
     setTimeout(() => {
       loading.value = false;
@@ -270,8 +225,6 @@ export function useUser() {
 
   onMounted(() => {
     onSearch();
-    departmentTree();
-    getRoleList();
   });
 
   return {
@@ -286,9 +239,8 @@ export function useUser() {
     ruleForm,
     rules,
     type,
-    departmentList,
-    treeProps,
-    roleList,
+    datetimerangeCreateTime,
+    datetimerangeExpireTime,
     onSearch,
     resetForm,
     handleUpdate,
@@ -297,6 +249,7 @@ export function useUser() {
     handleCurrentChange,
     handleClose,
     handleOk,
-    handleCancel
+    handleCancel,
+    handleSelect
   };
 }
