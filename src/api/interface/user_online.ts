@@ -1,10 +1,10 @@
 /** 在线用户列表 类型声明 */
-export type UserOnlineListAllDTO = {
+export type UserOnlineListAllReqDTO = {
   /** 手机号 */
   phone?: string;
 };
 
-export type UserOnlineListAllVO = {
+export type UserOnlineListAllRespDTO = {
   /** 登录地址 */
   address?: string;
   /** 登录浏览器 */
@@ -30,7 +30,7 @@ export type UserOnlineListAllVO = {
 };
 
 /** 强制退出 类型声明 */
-export type UserOnlineForceQuitDTO = {
+export type UserOnlineForceQuitReqDTO = {
   /** 会话编号 */
   sessionId?: number;
 };

@@ -18,7 +18,7 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
 import Home from "@iconify-icons/ri/home-2-fill";
-import { LoginDTO } from "@/api/login";
+import { LoginReqDTO } from "@/api/login";
 
 defineOptions({
   name: "Login"
@@ -34,7 +34,7 @@ const { dataTheme, dataThemeChange } = useDataThemeChange();
 dataThemeChange();
 const { title } = useNav();
 
-const ruleForm: LoginDTO = reactive({
+const ruleForm: LoginReqDTO = reactive({
   phone: "18888888888",
   password: "123456",
   tenant: ""

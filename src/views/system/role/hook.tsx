@@ -8,18 +8,18 @@ import {
 } from "@/api/role";
 import {
   PageResult,
-  RolePageDTO,
-  RoleSaveOneDTO,
-  RoleUpdateOneDTO
+  RolePageReqDTO,
+  RoleSaveOneReqDTO,
+  RoleUpdateOneReqDTO
 } from "@/api/interface/role";
 import type { PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted } from "vue";
 import type { FormRules, FormInstance } from "element-plus";
 import { menuListTree } from "@/api/menu";
-import { MenuListTreeVO } from "@/api/interface/menu";
+import { MenuListTreeRespDTO } from "@/api/interface/menu";
 
 export function useRole() {
-  const form: RolePageDTO = reactive({
+  const form: RolePageReqDTO = reactive({
     roleName: "",
     current: 1,
     size: 10
@@ -86,7 +86,7 @@ export function useRole() {
   const dialogVisible = ref(false as boolean);
   const title = ref("编辑" as string);
   const type = ref<string>("");
-  const ruleForm = ref<RoleUpdateOneDTO>({
+  const ruleForm = ref<RoleUpdateOneReqDTO>({
     roleId: null,
     roleName: "",
     menuIds: [],
@@ -98,7 +98,7 @@ export function useRole() {
       { min: 1, max: 20, message: "最大输入20个字符", trigger: "blur" }
     ]
   });
-  const menuList = ref<MenuListTreeVO[]>([]);
+  const menuList = ref<MenuListTreeRespDTO[]>([]);
   const treeProps = {
     children: "children",
     label: "menuName"
@@ -147,7 +147,7 @@ export function useRole() {
 
   // 查询菜单树
   async function menuTree() {
-    const data: MenuListTreeVO[] = await menuListTree();
+    const data: MenuListTreeRespDTO[] = await menuListTree();
     menuList.value = data;
   }
 
@@ -168,7 +168,7 @@ export function useRole() {
   const update = async data => {
     loading.value = true;
     if (type.value === "add") {
-      const _obj: RoleSaveOneDTO = {
+      const _obj: RoleSaveOneReqDTO = {
         roleName: data.roleName,
         description: data.description
       };

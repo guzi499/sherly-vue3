@@ -1,6 +1,6 @@
 /** 菜单树 类型声明 */
-export type MenuListTreeVO = {
-  children?: Array<MenuListTreeVO>;
+export type MenuListTreeRespDTO = {
+  children?: Array<MenuListTreeRespDTO>;
   /** 创建时间 */
   createTime?: string;
   /** 菜单编号 */
@@ -22,7 +22,7 @@ export type MenuListTreeVO = {
 };
 
 /** 菜单新增 类型声明 */
-export type MenuSaveOneDTO = {
+export type MenuSaveOneReqDTO = {
   /** 菜单图标 */
   icon?: string;
   /** 菜单名称	*/
@@ -40,7 +40,7 @@ export type MenuSaveOneDTO = {
 };
 
 /** 菜单修改 类型声明 */
-export type MenuUpdateOneDTO = {
+export type MenuUpdateOneReqDTO = {
   /** 菜单图标 */
   icon?: string;
   /** 菜单编号 */
@@ -60,7 +60,7 @@ export type MenuUpdateOneDTO = {
 };
 
 /** 菜单删除 类型声明 */
-export type MenuRemoveOneDTO = {
+export type MenuRemoveOneReqDTO = {
   /** 菜单编号 */
   menuId?: number;
 };

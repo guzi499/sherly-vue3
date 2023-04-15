@@ -5,12 +5,12 @@ import { ElMessageBox } from "element-plus";
 import { message } from "@/utils/message";
 import { userOnlineListAll, userOnlineForceQuit } from "@/api/user_online";
 import {
-  UserOnlineListAllDTO,
-  UserOnlineListAllVO
+  UserOnlineListAllReqDTO,
+  UserOnlineListAllRespDTO
 } from "@/api/interface/user_online";
 
 export function useUserOnline() {
-  const form: UserOnlineListAllDTO = reactive({
+  const form: UserOnlineListAllReqDTO = reactive({
     phone: ""
   });
   const pageData = reactive({
@@ -110,7 +110,7 @@ export function useUserOnline() {
 
   async function onSearch() {
     loading.value = true;
-    const data: UserOnlineListAllVO[] = await userOnlineListAll(form);
+    const data: UserOnlineListAllRespDTO[] = await userOnlineListAll(form);
     dataList.value = data;
     pagination.total = data.length;
     setTimeout(() => {

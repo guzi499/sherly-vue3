@@ -17,7 +17,7 @@ const { ruleForm, rules, handleOk, handleCancel } = useEmailConfig();
         ref="ruleFormRef"
         :model="ruleForm"
         :rules="rules"
-        label-width="120px"
+        label-width="130px"
         class="demo-ruleForm"
         status-icon
       >
@@ -35,6 +35,12 @@ const { ruleForm, rules, handleOk, handleCancel } = useEmailConfig();
         </el-form-item>
         <el-form-item label="SMTP端口" prop="port">
           <el-input clearable v-model="ruleForm.port" />
+        </el-form-item>
+        <el-form-item label="SSL链接" prop="port">
+          <el-input clearable v-model="ruleForm.sslFlag" />
+        </el-form-item>
+        <el-form-item label="STARTTLS链接" prop="port">
+          <el-input clearable v-model="ruleForm.startTlsFlag" />
         </el-form-item>
         <el-form-item>
           <el-button @click="handleCancel(ruleFormRef)">一键还原</el-button>

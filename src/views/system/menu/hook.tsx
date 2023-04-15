@@ -7,7 +7,7 @@ import {
   menuSaveOne,
   menuUpdateOne
 } from "@/api/menu";
-import { MenuListTreeVO, MenuUpdateOneDTO } from "@/api/interface/menu";
+import { MenuListTreeRespDTO, MenuUpdateOneReqDTO } from "@/api/interface/menu";
 
 export function useMenu() {
   const form = reactive({
@@ -95,7 +95,7 @@ export function useMenu() {
       value: "BUTTON"
     }
   ];
-  const ruleForm = ref<MenuUpdateOneDTO>({
+  const ruleForm = ref<MenuUpdateOneReqDTO>({
     icon: "",
     menuId: null,
     menuName: "",
@@ -120,7 +120,7 @@ export function useMenu() {
     parentId: [{ required: true, message: "请选择父级菜单", trigger: "blur" }]
   });
   const menuList = ref({
-    children: [] as Array<MenuListTreeVO>,
+    children: [] as Array<MenuListTreeRespDTO>,
     menuId: 0,
     menuName: "主菜单",
     parentId: null
@@ -154,7 +154,7 @@ export function useMenu() {
   async function onSearch() {
     loading.value = true;
     if (!form.menuName) {
-      const data: MenuListTreeVO[] = await menuListTree();
+      const data: MenuListTreeRespDTO[] = await menuListTree();
       dataList.value = data;
       menuList.value.children = data;
     } else {

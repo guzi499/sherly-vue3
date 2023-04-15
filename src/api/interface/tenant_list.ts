@@ -1,13 +1,13 @@
 /** 租户菜单列表 类型声明 */
-export type TenantListMenuDTO = {
+export type TenantListMenuReqDTO = {
   /** 租户ID */
   tenantId?: number;
 };
 
-export type TenantListMenuVO = [];
+export type TenantListMenuRespDTO = [];
 
 /** 租户分页 类型声明 */
-export type TenantListPageDTO = {
+export type TenantListPageReqDTO = {
   /** 开始过期时间 */
   beginExpireTime?: string;
   /** 开始时间 */
@@ -34,7 +34,7 @@ export type TenantListPageDTO = {
   tenantName?: string;
 };
 
-export type TenantListPageVO = {
+export type TenantListPageRespDTO = {
   result?: Array<PageResult>;
   total?: number;
 };
@@ -59,7 +59,7 @@ export type PageResult = {
 };
 
 /** 租户新增 类型声明 */
-export type TenantSaveOneDTO = {
+export type TenantSaveOneReqDTO = {
   /** 联系电话 */
   contactPhone?: string;
   /** 联系人 */
@@ -75,7 +75,7 @@ export type TenantSaveOneDTO = {
 };
 
 /** 租户更新 类型声明 */
-export type TenantUpdateOneDTO = {
+export type TenantUpdateOneReqDTO = {
   /** 过期时间 */
   expireTime?: string;
   /** 租户编号 */
@@ -85,13 +85,13 @@ export type TenantUpdateOneDTO = {
 };
 
 /** 租户删除 类型声明 */
-export type TenantRemoveOneDTO = {
+export type TenantRemoveOneReqDTO = {
   /** 租户编号 */
   tenantId?: number;
 };
 
 /** 租户菜单更新 类型声明 */
-export type TenantUpdateMenuDTO = {
+export type TenantUpdateMenuReqDTO = {
   /** 菜单ID */
   menuIds?: number[];
   /** 租户ID */

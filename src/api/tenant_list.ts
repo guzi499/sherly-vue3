@@ -2,19 +2,19 @@ import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import { isEmpty } from "@/globalType";
 import {
-  TenantListMenuDTO,
-  TenantListMenuVO,
-  TenantListPageDTO,
-  TenantListPageVO,
-  TenantRemoveOneDTO,
-  TenantSaveOneDTO,
-  TenantUpdateMenuDTO,
-  TenantUpdateOneDTO
+  TenantListMenuReqDTO,
+  TenantListMenuRespDTO,
+  TenantListPageReqDTO,
+  TenantListPageRespDTO,
+  TenantRemoveOneReqDTO,
+  TenantSaveOneReqDTO,
+  TenantUpdateMenuReqDTO,
+  TenantUpdateOneReqDTO
 } from "@/api/interface/tenant_list";
 
 /** 租户菜单列表 */
-export const tenantListMenu = (params?: TenantListMenuDTO) => {
-  return http.request<TenantListMenuVO>(
+export const tenantListMenu = (params?: TenantListMenuReqDTO) => {
+  return http.request<TenantListMenuRespDTO>(
     "get",
     baseUrlApi("/tenant/list_menu"),
     {
@@ -24,8 +24,8 @@ export const tenantListMenu = (params?: TenantListMenuDTO) => {
 };
 
 /** 租户分页 */
-export const tenantListPage = (params?: TenantListPageDTO) => {
-  return http.request<TenantListPageVO>(
+export const tenantListPage = (params?: TenantListPageReqDTO) => {
+  return http.request<TenantListPageRespDTO>(
     "get",
     baseUrlApi("/tenant/list_page"),
     {
@@ -35,28 +35,28 @@ export const tenantListPage = (params?: TenantListPageDTO) => {
 };
 
 /** 租户新增 */
-export const tenantSaveOne = (data?: TenantSaveOneDTO) => {
+export const tenantSaveOne = (data?: TenantSaveOneReqDTO) => {
   return http.request<isEmpty>("post", baseUrlApi("/tenant/save_one"), {
     data
   });
 };
 
 /** 租户更新 */
-export const tenantUpdateOne = (data?: TenantUpdateOneDTO) => {
+export const tenantUpdateOne = (data?: TenantUpdateOneReqDTO) => {
   return http.request<isEmpty>("put", baseUrlApi("/tenant/update_one"), {
     data
   });
 };
 
 /** 租户删除 */
-export const tenantRemoveOne = (params?: TenantRemoveOneDTO) => {
+export const tenantRemoveOne = (params?: TenantRemoveOneReqDTO) => {
   return http.request<isEmpty>("delete", baseUrlApi("/tenant/remove_one"), {
     params
   });
 };
 
 /** 租户菜单更新 */
-export const tenantUpdateMenu = (data?: TenantUpdateMenuDTO) => {
+export const tenantUpdateMenu = (data?: TenantUpdateMenuReqDTO) => {
   return http.request<isEmpty>("put", baseUrlApi("/tenant/update_menu"), {
     data
   });

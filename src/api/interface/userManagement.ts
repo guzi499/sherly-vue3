@@ -1,5 +1,5 @@
 /** 用户分页 类型声明 */
-export type UserListPageDTO = {
+export type UserListPageReqDTO = {
   /** 开始时间 */
   beginTime?: string;
   /** 当前页 */
@@ -24,7 +24,7 @@ export type UserListPageDTO = {
   createTime?: ["", ""];
 };
 
-export type UserListPageVO = {
+export type UserListPageRespDTO = {
   result?: Array<PageResult>;
   total?: number;
 };
@@ -53,7 +53,7 @@ export type PageResult = {
 };
 
 /** 用户新增 类型声明 */
-export type UserSaveOneDTO = {
+export type UserSaveOneReqDTO = {
   /** 部门编号 */
   departmentId?: number;
   /** 性别,可用值:FEMALE,MALE,UNKNOWN */
@@ -67,7 +67,7 @@ export type UserSaveOneDTO = {
 };
 
 /** 用户编辑 类型声明 */
-export type UserUpdateOneDTO = {
+export type UserUpdateOneReqDTO = {
   /** 部门编号 */
   departmentId?: number;
   /** 性别,可用值:FEMALE,MALE,UNKNOWN */
@@ -85,13 +85,13 @@ export type UserUpdateOneDTO = {
 };
 
 /** 用户删除 类型声明 */
-export type UserRemoveOneDTO = {
+export type UserRemoveOneReqDTO = {
   /** 用户编号 */
   userId?: number;
 };
 
 /** 用户详情 类型声明 */
-export type UserGetOneVO = {
+export type UserGetOneRespDTO = {
   /** 部门编号 */
   departmentId?: number;
   /** 性别,可用值:FEMALE,MALE,UNKNOWN */
@@ -111,7 +111,7 @@ export type UserGetOneVO = {
 };
 
 /** 用户查询 类型声明 */
-export type UserListAllDTO = {
+export type UserListAllReqDTO = {
   /** 部门ids */
   departmentIds?: number[];
   /** 用户邮箱 */
@@ -130,7 +130,7 @@ export type UserListAllDTO = {
   userIds?: number[];
 };
 
-export type UserListAllVO = {
+export type UserListAllRespDTO = {
   /** 用户邮箱 */
   email?: string;
   /** 手机号 */
@@ -142,7 +142,7 @@ export type UserListAllVO = {
 };
 
 /** 用户禁用 - 启用 类型声明 */
-export type UserBanOneDTO = {
+export type UserBanOneReqDTO = {
   /** 可用性,可用值:ENABLE,DISABLE */
   enable?: string;
   /** 用户id */

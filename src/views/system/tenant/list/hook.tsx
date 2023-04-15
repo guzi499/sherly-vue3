@@ -9,13 +9,13 @@ import {
   tenantUpdateOne
 } from "@/api/tenant_list";
 import {
-  TenantListPageDTO,
-  TenantListPageVO,
-  TenantSaveOneDTO
+  TenantListPageReqDTO,
+  TenantListPageRespDTO,
+  TenantSaveOneReqDTO
 } from "@/api/interface/tenant_list";
 
 export function useTenantList() {
-  const form: TenantListPageDTO = reactive({
+  const form: TenantListPageReqDTO = reactive({
     current: 1,
     size: 10
   });
@@ -102,7 +102,7 @@ export function useTenantList() {
   const dialogVisible = ref(false as boolean);
   const title = ref("编辑" as string);
   const type = ref<string>("");
-  const ruleForm = ref<TenantSaveOneDTO>({
+  const ruleForm = ref<TenantSaveOneReqDTO>({
     tenantName: "",
     tenantCode: "",
     expireTime: "",
@@ -129,7 +129,7 @@ export function useTenantList() {
 
   // 套餐选择
   function handleSelect(data) {
-    type.value = 'select';
+    type.value = "select";
     console.log(data);
   }
 
@@ -173,7 +173,7 @@ export function useTenantList() {
       endExpireTime: datetimerangeExpireTime.value[1]
     };
     delete _obj["createTime"];
-    const data: TenantListPageVO = await tenantListPage(_obj);
+    const data: TenantListPageRespDTO = await tenantListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
     setTimeout(() => {

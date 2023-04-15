@@ -182,17 +182,17 @@ function initRouter() {
       });
     } else {
       return new Promise(resolve => {
-        genericBasicData().then(({ basicMenuInfoVO }) => {
-          handleAsyncRoutes(cloneDeep(basicMenuInfoVO));
-          storageSession().setItem(key, basicMenuInfoVO);
+        genericBasicData().then(({ basicMenuInfoRespDTO }) => {
+          handleAsyncRoutes(cloneDeep(basicMenuInfoRespDTO));
+          storageSession().setItem(key, basicMenuInfoRespDTO);
           resolve(router);
         });
       });
     }
   } else {
     return new Promise(resolve => {
-      genericBasicData().then(({ basicMenuInfoVO }) => {
-        handleAsyncRoutes(cloneDeep(basicMenuInfoVO));
+      genericBasicData().then(({ basicMenuInfoRespDTO }) => {
+        handleAsyncRoutes(cloneDeep(basicMenuInfoRespDTO));
         resolve(router);
       });
     });

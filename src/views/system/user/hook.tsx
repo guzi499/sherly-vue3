@@ -1,7 +1,10 @@
 import dayjs from "dayjs";
 import { roleListPage } from "@/api/role";
-import { RolePageVO } from "@/api/interface/role";
-import { UserGetOneVO, UserListPageVO } from "@/api/interface/userManagement";
+import { RolePageRespDTO } from "@/api/interface/role";
+import {
+  UserGetOneRespDTO,
+  UserListPageRespDTO
+} from "@/api/interface/userManagement";
 import type { PaginationProps } from "@pureadmin/table";
 import { reactive, ref, computed, onMounted } from "vue";
 import type { FormRules, FormInstance } from "element-plus";
@@ -13,12 +16,12 @@ import {
   userSaveOne,
   userUpdateOne
 } from "@/api/userManagement";
-import { UserListPageDTO } from "@/api/interface/userManagement";
-import { DepartmentListTreeVO } from "@/api/interface/department";
+import { UserListPageReqDTO } from "@/api/interface/userManagement";
+import { DepartmentListTreeRespDTO } from "@/api/interface/department";
 import { departmentListTree } from "@/api/department";
 
 export function useUser() {
-  const form: UserListPageDTO = reactive({
+  const form: UserListPageReqDTO = reactive({
     realName: "",
     nickname: "",
     phone: "",
@@ -146,7 +149,7 @@ export function useUser() {
   const dialogVisible = ref(false as boolean);
   const title = ref("编辑" as string);
   const type = ref<string>("");
-  const ruleForm = ref<UserGetOneVO>({
+  const ruleForm = ref<UserGetOneRespDTO>({
     phone: "",
     departmentId: null,
     gender: "",
@@ -161,13 +164,13 @@ export function useUser() {
     departmentId: [{ required: true, message: "请选择部门", trigger: "blur" }],
     roleIds: [{ required: true, message: "请选择角色", trigger: "blur" }]
   });
-  const departmentList = ref<DepartmentListTreeVO[]>([]);
+  const departmentList = ref<DepartmentListTreeRespDTO[]>([]);
   const treeProps = {
     children: "children",
     label: "departmentName"
   };
 
-  const roleList = ref<RolePageVO[]>([]);
+  const roleList = ref<RolePageRespDTO[]>([]);
 
   // 查询角色
   async function getRoleList() {
@@ -214,7 +217,7 @@ export function useUser() {
       endTime: form.createTime[1]
     };
     delete _obj["createTime"];
-    const data: UserListPageVO = await userListPage(_obj);
+    const data: UserListPageRespDTO = await userListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
     setTimeout(() => {
@@ -224,7 +227,7 @@ export function useUser() {
 
   // 查询菜单树
   async function departmentTree() {
-    const data: DepartmentListTreeVO[] = await departmentListTree();
+    const data: DepartmentListTreeRespDTO[] = await departmentListTree();
     departmentList.value = data;
   }
 

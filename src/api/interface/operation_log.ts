@@ -1,5 +1,5 @@
 /** 操作日志分页 类型声明 */
-export type OperationLogListPageDTO = {
+export type OperationLogListPageReqDTO = {
   /** 开始耗时 */
   beginDuration?: number;
   /** 开始时间 */
@@ -24,7 +24,7 @@ export type OperationLogListPageDTO = {
   userIds?: number[];
 };
 
-export type OperationLogListPageVO = {
+export type OperationLogListPageRespDTO = {
   result?: Array<PageResult>;
   total?: number;
 };
@@ -57,12 +57,12 @@ export type PageResult = {
 };
 
 /** 操作日志详情 类型声明 */
-export type OperationLogGetOneDTO = {
+export type OperationLogGetOneReqDTO = {
   /** 日志编号 */
   logId?: number;
 };
 
-export type OperationLogGetOneVO = {
+export type OperationLogGetOneRespDTO = {
   /** 请求地址 */
   address?: string;
   /** 请求浏览器 */

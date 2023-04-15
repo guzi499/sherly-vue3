@@ -8,15 +8,15 @@ import {
   operationLogRemoveAll
 } from "@/api/operation_log";
 import {
-  OperationLogGetOneVO,
-  OperationLogListPageDTO,
-  OperationLogListPageVO
+  OperationLogGetOneRespDTO,
+  OperationLogListPageReqDTO,
+  OperationLogListPageRespDTO
 } from "@/api/interface/operation_log";
 import { message } from "@/utils/message";
 
 export function useOperationLog() {
   const datetimeRange = ref(["", ""]);
-  const form: OperationLogListPageDTO = reactive({
+  const form: OperationLogListPageReqDTO = reactive({
     current: 1,
     size: 10
   });
@@ -147,7 +147,7 @@ export function useOperationLog() {
   const dialogVisible = ref(false as boolean);
   const title = ref("详情" as string);
   const type = ref<string>("");
-  const ruleForm = ref<OperationLogGetOneVO>({
+  const ruleForm = ref<OperationLogGetOneRespDTO>({
     // ....
   });
 
@@ -183,7 +183,7 @@ export function useOperationLog() {
       beginTime: datetimeRange.value[0],
       endTime: datetimeRange.value[1]
     };
-    const data: OperationLogListPageVO = await operationLogListPage(_obj);
+    const data: OperationLogListPageRespDTO = await operationLogListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
     setTimeout(() => {
@@ -200,7 +200,7 @@ export function useOperationLog() {
     onSearch();
   };
 
-  const detail = ref<OperationLogGetOneVO>({});
+  const detail = ref<OperationLogGetOneRespDTO>({});
 
   const handleDetail = async data => {
     detail.value = await operationLogGetOne({ logId: data.logId });

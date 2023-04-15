@@ -1,6 +1,6 @@
 /** 查询部门树 类型声明 */
-export type DepartmentListTreeVO = {
-  children?: Array<DepartmentListTreeVO[]>;
+export type DepartmentListTreeRespDTO = {
+  children?: Array<DepartmentListTreeRespDTO[]>;
   /** 创建时间 */
   createTime?: string;
   /** 部门编号 */
@@ -16,13 +16,13 @@ export type DepartmentListTreeVO = {
 };
 
 /** 部门删除 类型声明 */
-export type DepartmentRemoveOneDTO = {
+export type DepartmentRemoveOneReqDTO = {
   /** 部门id */
   departmentId?: number;
 };
 
 /** 部门新增 类型声明 */
-export type DepartmentSaveOneDTO = {
+export type DepartmentSaveOneReqDTO = {
   /** 部门名称 */
   departmentName?: string;
   /** 描述 */
@@ -34,7 +34,7 @@ export type DepartmentSaveOneDTO = {
 };
 
 /** 部门更新 类型声明 */
-export type DepartmentUpdateOneDTO = {
+export type DepartmentUpdateOneReqDTO = {
   /** 部门id */
   departmentId?: number;
   /** 部门名称 */

@@ -5,13 +5,13 @@ import { ElMessageBox } from "element-plus";
 import { message } from "@/utils/message";
 import { loginLogListPage, loginLogRemoveAll } from "@/api/login_log";
 import {
-  LoginLogListPageDTO,
-  LoginLogListPageVO
+  LoginLogListPageReqDTO,
+  LoginLogListPageRespDTO
 } from "@/api/interface/login_log";
 
 export function useLoginLog() {
   const datetimeRange = ref([]);
-  const form: LoginLogListPageDTO = reactive({
+  const form: LoginLogListPageReqDTO = reactive({
     current: 1,
     size: 10
   });
@@ -140,7 +140,7 @@ export function useLoginLog() {
       beginTime: datetimeRange.value[0],
       endTime: datetimeRange.value[1]
     };
-    const data: LoginLogListPageVO = await loginLogListPage(_obj);
+    const data: LoginLogListPageRespDTO = await loginLogListPage(_obj);
     dataList.value = data.result;
     pagination.total = data.total;
     setTimeout(() => {

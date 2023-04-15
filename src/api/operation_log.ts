@@ -2,15 +2,15 @@ import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import { isEmpty } from "@/globalType";
 import {
-  OperationLogGetOneDTO,
-  OperationLogGetOneVO,
-  OperationLogListPageDTO,
-  OperationLogListPageVO
+  OperationLogGetOneReqDTO,
+  OperationLogGetOneRespDTO,
+  OperationLogListPageReqDTO,
+  OperationLogListPageRespDTO
 } from "@/api/interface/operation_log";
 
 /** 操作日志分页 */
-export const operationLogListPage = (params?: OperationLogListPageDTO) => {
-  return http.request<OperationLogListPageVO>(
+export const operationLogListPage = (params?: OperationLogListPageReqDTO) => {
+  return http.request<OperationLogListPageRespDTO>(
     "get",
     baseUrlApi("/operation_log/list_page"),
     {
@@ -20,8 +20,8 @@ export const operationLogListPage = (params?: OperationLogListPageDTO) => {
 };
 
 /** 操作日志详情 */
-export const operationLogGetOne = (params?: OperationLogGetOneDTO) => {
-  return http.request<OperationLogGetOneVO>(
+export const operationLogGetOne = (params?: OperationLogGetOneReqDTO) => {
+  return http.request<OperationLogGetOneRespDTO>(
     "get",
     baseUrlApi("/operation_log/get_one"),
     {

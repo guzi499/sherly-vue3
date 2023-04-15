@@ -1,32 +1,32 @@
 import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 
-export type LoginVO = {
+export type LoginRespDTO = {
   token: string;
 };
 
-export type LoginDTO = {
+export type LoginReqDTO = {
   phone: string;
   password: string;
   tenant: string;
 };
 
-export type BasicMenuInfoVO = {
-  children: BasicMenuInfoVO[];
+export type BasicMenuInfoRespDTO = {
+  children: BasicMenuInfoRespDTO[];
   icon: string;
   path: string;
   menuId: number;
   menuName: string;
 };
 
-export type BasicInfoVO = {
-  basicMenuInfoVO: Array<BasicMenuInfoVO>;
-  basicPermissionVO: string[];
-  basicRoleInfoVO: {
+export type BasicInfoRespDTO = {
+  basicMenuInfoRespDTO: Array<BasicMenuInfoRespDTO>;
+  basicPermissionRespDTO: string[];
+  basicRoleInfoRespDTO: {
     roleId: number;
     roleName: string;
   };
-  basicUserInfoVO: {
+  basicUserInfoRespDTO: {
     avatar: string;
     departmentId: number;
     email: string;
@@ -41,11 +41,14 @@ export type BasicInfoVO = {
 };
 
 /** 登录 */
-export const login = (data?: LoginDTO) => {
-  return http.request<LoginVO>("post", baseUrlApi("/login"), { data });
+export const login = (data?: LoginReqDTO) => {
+  return http.request<LoginRespDTO>("post", baseUrlApi("/login"), { data });
 };
 
 /** 用户登录基本信息 */
 export const genericBasicData = () => {
-  return http.request<BasicInfoVO>("get", baseUrlApi("/generic/basic_data"));
+  return http.request<BasicInfoRespDTO>(
+    "get",
+    baseUrlApi("/generic/basic_data")
+  );
 };

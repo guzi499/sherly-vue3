@@ -1,16 +1,16 @@
 import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import {
-  DepartmentListTreeVO,
-  DepartmentRemoveOneDTO,
-  DepartmentSaveOneDTO,
-  DepartmentUpdateOneDTO
+  DepartmentListTreeRespDTO,
+  DepartmentRemoveOneReqDTO,
+  DepartmentSaveOneReqDTO,
+  DepartmentUpdateOneReqDTO
 } from "@/api/interface/department";
 import { isEmpty } from "@/globalType";
 
 /** 查询部门树 */
 export const departmentListTree = (params?: isEmpty) => {
-  return http.request<DepartmentListTreeVO[]>(
+  return http.request<DepartmentListTreeRespDTO[]>(
     "get",
     baseUrlApi("/department/list_tree"),
     {
@@ -20,21 +20,21 @@ export const departmentListTree = (params?: isEmpty) => {
 };
 
 /** 部门删除 */
-export const departmentRemoveOne = (params?: DepartmentRemoveOneDTO) => {
+export const departmentRemoveOne = (params?: DepartmentRemoveOneReqDTO) => {
   return http.request<isEmpty>("delete", baseUrlApi("/department/remove_one"), {
     params
   });
 };
 
 /** 部门新增 */
-export const departmentSaveOne = (data?: DepartmentSaveOneDTO) => {
+export const departmentSaveOne = (data?: DepartmentSaveOneReqDTO) => {
   return http.request<isEmpty>("post", baseUrlApi("/department/save_one"), {
     data
   });
 };
 
 /** 部门更新 */
-export const departmentUpdateOne = (data?: DepartmentUpdateOneDTO) => {
+export const departmentUpdateOne = (data?: DepartmentUpdateOneReqDTO) => {
   return http.request<isEmpty>("put", baseUrlApi("/department/update_one"), {
     data
   });

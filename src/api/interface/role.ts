@@ -1,5 +1,5 @@
 /** 角色分页 类型声明 */
-export type RolePageDTO = {
+export type RolePageReqDTO = {
   /** 当前页 */
   current?: number;
   /** 页大小 */
@@ -9,11 +9,11 @@ export type RolePageDTO = {
 };
 
 export type PageResult = {
-  result?: Array<RolePageVO>;
+  result?: Array<RolePageRespDTO>;
   total?: number;
 };
 
-export type RolePageVO = {
+export type RolePageRespDTO = {
   /** 创建时间 */
   createTime?: string;
   /** 角色编号 */
@@ -25,7 +25,7 @@ export type RolePageVO = {
 };
 
 /** 角色新增 类型声明 */
-export type RoleSaveOneDTO = {
+export type RoleSaveOneReqDTO = {
   /** 描述 */
   description?: string;
   /** 角色名称 */
@@ -33,7 +33,7 @@ export type RoleSaveOneDTO = {
 };
 
 /** 角色编辑 类型声明 */
-export type RoleUpdateOneDTO = {
+export type RoleUpdateOneReqDTO = {
   /** 菜单ids */
   menuIds?: number[];
   /** 角色编号 */
@@ -45,7 +45,7 @@ export type RoleUpdateOneDTO = {
 };
 
 /** 角色删除 类型声明 */
-export type RoleRemoveOneDTO = {
+export type RoleRemoveOneReqDTO = {
   /** 角色编号 */
   roleId?: number;
 };
